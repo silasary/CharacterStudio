@@ -61,6 +61,8 @@ namespace ParagonLib
                     );
             }
         }
+        // Workaround for Mono:
+        public delegate void Action<in T1, in T2>(T1 arg1, T2 arg2);
 
         /// <summary>
         /// public void Calculate(CharElement element, Workspace workspace);
