@@ -3,16 +3,20 @@ using System.Linq;
 
 namespace ParagonLib
 {
-    internal class RulesElement
+    public class RulesElement
     {
-        private List<Instruction> Rules = new List<Instruction>();
-        private List<string> Specifics = new List<string>();
+        public List<Instruction> Rules = new List<Instruction>();
+        public List<string> Specifics = new List<string>();
 
         public RulesElement(System.Xml.Linq.XElement item)
         {
             this.Name = item.Attribute("name").Value;
             this.Type = item.Attribute("type").Value;
-            this.Source = item.Attribute("source").Value;
+            if (item.Attribute("source") == null)
+                this.Source = "ERROR: Source Unknown";
+            else
+                this.Source = item.Attribute("source").Value;
+            this.InternalId = item.Attribute("internal-id").Value;
             this.System = item.Parent.Attribute("game-system").Value;
 
             foreach (var element in item.Elements())
@@ -51,5 +55,7 @@ namespace ParagonLib
         public string Source { get; set; }
 
         public string System { get; set; }
+
+        public string InternalId { get; set; }
     }
 }

@@ -50,7 +50,11 @@ namespace ParagonLib
 
         private static void Load(XElement item)
         {
-            Rules[item.Attribute("internal-id").Value] = new RulesElement(item);
+            var re = new RulesElement(item);
+            Rules[re.InternalId] = re;
+            if (!String.IsNullOrEmpty(re.System))
+                Rules[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+
         }
 
         private static RulesElement Load(string id)
@@ -78,5 +82,13 @@ namespace ParagonLib
         }
 
         public static bool Loading { get; set; }
+
+        public static void Load(XDocument doc)
+        {
+            foreach (var item in doc.Root.Elements())
+            {
+                Load(item);
+            }
+        }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParagonLib
 {
@@ -16,17 +13,26 @@ namespace ParagonLib
             SelfId = p;
             this.workspace = workspace;
             this.RulesElement = re;
+            workspace.AllElements[id] = new WeakReference(this);
         }
-        public string RulesElementId {get; private set;}
+
+        public WeakReference Parent { get; set; }
+
+        public string RulesElementId { get; private set; }
 
         public int SelfId { get; set; }
 
-        public void Grant(string name, string type, string requires, string Level)
+        public Workspace workspace { get; set; }
+
+        internal RulesElement RulesElement { get; set; }
+
+        public void Grant(string InternalId, string type, string requires, string Level)
         {
-            var child = RuleFactory.New(name, workspace, type);
+            if (this.Children.Find(e => e.RulesElementId == InternalId) != null)
+                return;
+            var child = RuleFactory.New(InternalId, workspace, type);
             this.Children.Add(child);
-            //child.Parent = this;
-            
+            child.Parent = new WeakReference(this);
         }
 
         public void Select(string name, string number, string type, string requires, string Level)
@@ -34,9 +40,16 @@ namespace ParagonLib
             throw new NotImplementedException();
         }
 
-
-        public Workspace workspace { get; set; }
-
-        internal RulesElement RulesElement { get; set; }
+        internal void Recalculate()
+        {
+            foreach (var rule in this.RulesElement.Rules)
+            {
+                rule.Calculate(this, this.workspace);
+                foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
+                {                                   //  Don't change this method, fix the cause.
+                    child.Recalculate();
+                }
+            }
+        }
     }
 }

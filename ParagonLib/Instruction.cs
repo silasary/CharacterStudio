@@ -36,11 +36,11 @@ namespace ParagonLib
                     throw new MissingMethodException(String.Format("{0}.{1}() not found.", t, m));
                 return method;
             }
-            public static Expression StatAdd(string name, string value, string condition, string requires, string type)
+            public static Expression StatAdd(string name, string[] args)
             {
                 return Expression.Call(
                     Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "Add"),
-                        Expression.Constant(value, typeof(String)), Expression.Constant(condition, typeof(string)), Expression.Constant(requires, typeof(string)), Expression.Constant(type, typeof(string))
+                        args.Select(e => Expression.Constant(e, typeof(String)))
                     );
             }
 
@@ -53,11 +53,11 @@ namespace ParagonLib
                     );
             }
 
-            internal static Expression Grant(string name, string type, string requires, string Level)
+            internal static Expression Grant(string[] args)
             {
                 return Expression.Call(
                     pCharElement, Builders.RefGetMethod(typeof(CharElement), "Grant"),
-                        Expression.Constant(name, typeof(String)), Expression.Constant(type, typeof(string)), Expression.Constant(requires, typeof(string)), Expression.Constant(Level, typeof(string))
+                        args.Select(e => Expression.Constant(e, typeof(String)))
                     );
             }
         }
@@ -83,18 +83,32 @@ namespace ParagonLib
                 case "statadd":
                     //lambda = (e, ws) => ws.GetStat(name).Add(value,null,null);
                     Debug.Assert(Parameters.Count < 5);
-                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Parameters["value"],Parameters["condition"],Parameters["requires"],Parameters["type"]));
+                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters,"value","condition","requires","type")));
                     break;
                 case "statalias":
                     func = Builders.Lambda(Builders.StatAlias(Parameters["name"], Parameters["alias"]));
                     break;
                 case "grant":
-                    func = Builders.Lambda(Builders.Grant(Parameters["name"], Parameters["type"], Parameters["requires"], Parameters["Level"]));
+                    func = Builders.Lambda(Builders.Grant(Params(Parameters,"name","type","requires","Level")));
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));
             }
             Calculate = func.Compile();
+        }
+
+        private string[] Params(DefaultDictionary<string, string> Parameters, params string[] keys)
+        {
+            string[] vals = new string[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                vals[i] = Parameters[keys[i]];
+                Parameters.Remove(keys[i]);
+            }
+            Parameters.Remove("name");
+            Debug.Assert(Parameters.Count == 0);
+                
+            return vals;
         }
     }
 }
