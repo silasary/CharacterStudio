@@ -6,6 +6,7 @@ namespace ParagonLib
     public class CharElement
     {
         public List<CharElement> Children = new List<CharElement>();
+        public Dictionary<string, Selection> Choices = new Dictionary<string, Selection>();
 
         public CharElement(string id, int p, Workspace workspace, RulesElement re)
         {
@@ -35,9 +36,25 @@ namespace ParagonLib
             child.Parent = new WeakReference(this);
         }
 
-        public void Select(string name, string number, string type, string requires, string Level)
+        public void Select(string category, string number, string type, string requires, string Level)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.Assert(!String.IsNullOrEmpty(number), "<select> requires a number.");
+            var num = workspace.ParseInt(number);
+            for (int i = 0; i < num; i++)
+            {
+                var hash = String.Format("{0}{1}:{2}", category, type, number);
+                Selection sel;
+                if (!Choices.ContainsKey(hash))
+                    sel = this.Choices[hash] = new Selection();
+                else
+                    sel = this.Choices[hash];
+                sel.workspace = workspace;
+                sel.Category = category;
+                sel.Type = type;
+                sel.Requires = requires;
+                sel.Level = int.Parse(Level??"0"); //Let's not use Workspace here.
+                sel.Recalculate();
+            }
         }
 
         internal void Recalculate()

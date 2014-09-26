@@ -57,16 +57,17 @@ namespace ParagonLib
             {
                 case '+':
                     plus = true;
+                    p = p.Substring(1);
                     break;
-
                 case '-':
                     plus = false;
+                    p = p.Substring(1);
                     break;
-
                 default:
-                    throw new ArgumentOutOfRangeException(String.Format("'{0}' is not a valid sign. Full string: {1}", p[0], p));
+                    //throw new ArgumentOutOfRangeException(String.Format("'{0}' is not a valid sign. Full string: {1}", p[0], p));
+                    plus = true;
+                    break;
             }
-            p = p.Substring(1);
             return (plus ? 1 : -1) * int.Parse(p);
         }
 
@@ -130,6 +131,14 @@ namespace ParagonLib
                     this.requires = requires;
                     this.type = type;
                 }
+            }
+        }
+
+        public int Level
+        {
+            get
+            {
+                return 1; // TODO: Calculate!
             }
         }
     }

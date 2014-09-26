@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryComparer.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharElement.cs" />
     <Compile Include="DefaultDictionary.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleFactory.cs" />
     <Compile Include="RulesElement.cs" />
+    <Compile Include="Selection.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>

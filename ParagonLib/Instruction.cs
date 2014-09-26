@@ -60,6 +60,14 @@ namespace ParagonLib
                         args.Select(e => Expression.Constant(e, typeof(String)))
                     );
             }
+
+            internal static Expression Select(string[] args)
+            {
+                return Expression.Call(
+                    pCharElement, Builders.RefGetMethod(typeof(CharElement), "Select"),
+                        args.Select(e => Expression.Constant(e, typeof(String)))
+                    );
+            }
         }
         // Workaround for Mono:
         public delegate void Action<in T1, in T2>(T1 arg1, T2 arg2);
@@ -92,6 +100,9 @@ namespace ParagonLib
                     break;
                 case "grant":
                     func = Builders.Lambda(Builders.Grant(Params(Parameters,"name","type","requires","Level")));
+                    break;
+                case "select":
+                    func = Builders.Lambda(Builders.Select(Params(Parameters, "category", "number", "type", "requires", "Level")));
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));

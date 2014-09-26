@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace ParagonLib
 {
@@ -10,10 +11,12 @@ namespace ParagonLib
     {
         private static int num = 0;
         private static Dictionary<string, RulesElement> Rules;
+        private static Dictionary<string, RulesElement> RulesBySystem;
         static AutoResetEvent FileLoaded = new AutoResetEvent(false);
         static RuleFactory()
         {
             Rules = new Dictionary<string, RulesElement>();
+            RulesBySystem = new Dictionary<string, RulesElement>();
             var RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
             Directory.CreateDirectory(RulesFolder);
             ThreadPool.QueueUserWorkItem((o) =>
@@ -28,12 +31,12 @@ namespace ParagonLib
             });
         }
 
-        public static CharElement New(string id, Workspace workspace, string type = null, string System = "")
+        public static CharElement New(string id, Workspace workspace, string type = null)
         {
             var sysid = String.Format("{0}+{1}",workspace.System, id);
             RulesElement re;
-            if (Rules.ContainsKey(sysid))
-                re = Rules[sysid];
+            if (RulesBySystem.ContainsKey(sysid))
+                re = RulesBySystem[sysid];
             else if (Rules.ContainsKey(id))
                 re = Rules[id];
             else
@@ -53,7 +56,7 @@ namespace ParagonLib
             var re = new RulesElement(item);
             Rules[re.InternalId] = re;
             if (!String.IsNullOrEmpty(re.System))
-                Rules[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+                RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
 
         }
 
@@ -61,7 +64,7 @@ namespace ParagonLib
         {
             while (Loading)
             {
-                FileLoaded.WaitOne();
+                FileLoaded.WaitOne(1000);
                 if (Rules.ContainsKey(id))
                     return Rules[id];
 
@@ -89,6 +92,24 @@ namespace ParagonLib
             {
                 Load(item);
             }
+        }
+
+        internal static IEnumerable<RulesElement> Search(string System, string Type, string Category)
+        {
+            var Categories = Category.Split(',');
+            var catCount = Categories.Count();
+            var Comparer = new CategoryComparer();
+            foreach (var item in Rules.Values)
+            {
+                if (String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System)
+                {
+                    if (Categories.Intersect(item.Category, Comparer).Count() == catCount)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+            yield break;
         }
     }
 }

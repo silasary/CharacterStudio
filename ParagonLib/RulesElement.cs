@@ -18,6 +18,10 @@ namespace ParagonLib
                 this.Source = item.Attribute("source").Value;
             this.InternalId = item.Attribute("internal-id").Value;
             this.System = item.Parent.Attribute("game-system").Value;
+            if (item.Element("Category") == null)
+                this.Category = new string[0];
+            else
+                this.Category = item.Element("Category").Value.Split(',');
 
             foreach (var element in item.Elements())
             {
@@ -57,5 +61,7 @@ namespace ParagonLib
         public string System { get; set; }
 
         public string InternalId { get; set; }
+
+        public string[] Category { get; set; }
     }
 }
