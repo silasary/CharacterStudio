@@ -7,13 +7,26 @@ namespace ParagonLib
     public class Workspace
     {
         private Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
-        public Dictionary<string, WeakReference> AllElements { get; set; }
-        public string System { get; set; }
 
         public Workspace()
         {
             AllElements = new Dictionary<string, WeakReference>();
+            AdventureLog = new List<Adventure>();
         }
+
+        public List<Adventure> AdventureLog { get; set; }
+
+        public Dictionary<string, WeakReference> AllElements { get; set; }
+
+        public int Level
+        {
+            get
+            {
+                return 1; // TODO: Calculate!
+            }
+        }
+
+        public string System { get; set; }
 
         public void AliasStat(string Stat, string Alias)
         {
@@ -40,6 +53,10 @@ namespace ParagonLib
             {
                 stat.Value.Reset();
             }
+            foreach (var adventure in AdventureLog)
+            {
+                GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null);
+            }
             foreach (var item in AllElements.Values.ToArray())
             {
                 CharElement el;
@@ -59,10 +76,12 @@ namespace ParagonLib
                     plus = true;
                     p = p.Substring(1);
                     break;
+
                 case '-':
                     plus = false;
                     p = p.Substring(1);
                     break;
+
                 default:
                     //throw new ArgumentOutOfRangeException(String.Format("'{0}' is not a valid sign. Full string: {1}", p[0], p));
                     plus = true;
@@ -89,6 +108,8 @@ namespace ParagonLib
                     int total = 0;
                     foreach (var bit in bits)
                     {
+                        if (bit.Level > workspace.Level)
+                            continue;
                         int val = calc(bit.value);
                         total += val;
                         //Todo: Type.
@@ -99,9 +120,15 @@ namespace ParagonLib
 
             private bool Dirty { get; set; }
 
-            public void Add(string value, string condition, string requires, string type)
+            public void Add(string value, string condition, string requires, string type, string Level)
             {
-                bits.Add(new bit(value, condition, requires, type));
+                bits.Add(new bit(value, condition, requires, type, String.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                this.Dirty = true;
+            }
+
+            public void Reset()
+            {
+                this.bits.Clear();
                 this.Dirty = true;
             }
 
@@ -111,34 +138,22 @@ namespace ParagonLib
                 return workspace.ParseInt(p);
             }
 
-            public void Reset()
-            {
-                this.bits.Clear();
-                this.Dirty = true;
-            }
-
             private struct bit
             {
                 public string condition;
+                public int Level;
                 public string requires;
                 public string type;
                 public string value;
 
-                public bit(string value, string condition, string requires, string type)
+                public bit(string value, string condition, string requires, string type, int Level)
                 {
                     this.value = value;
                     this.condition = condition;
                     this.requires = requires;
                     this.type = type;
+                    this.Level = Level;
                 }
-            }
-        }
-
-        public int Level
-        {
-            get
-            {
-                return 1; // TODO: Calculate!
             }
         }
     }

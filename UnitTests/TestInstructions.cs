@@ -8,7 +8,7 @@ using System.Linq;
 namespace UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class TestInstructions
     {
         [TestMethod]
         public void TestStatAdd()
@@ -141,5 +141,31 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             GC.KeepAlive(charElement);
 
         }
+
+        [TestMethod]
+        public void TestTextstring()
+        {
+            var ws = new Workspace();
+            var elements =
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+    new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "Selector"),
+        new XAttribute("type", "Test"),
+        new XAttribute("internal-id", "TEST_TEXTSTRING_ELEMENT"),
+        new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To set a text string.")),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("textstring"), new XAttribute("name", "TEST_TEXTSTRING"), new XAttribute("value", "VALUEGOESHERE"))
+            )
+        )));
+
+            RuleFactory.Load(elements);
+            var charElement = RuleFactory.New("TEST_TEXTSTRING_ELEMENT", ws);
+            ws.Recalculate(true);
+            throw new NotImplementedException();
+            //Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String == "VALUEGOESHERE");
+            
+        }
+
+
     }
 }

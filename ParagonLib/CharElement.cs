@@ -36,7 +36,7 @@ namespace ParagonLib
             child.Parent = new WeakReference(this);
         }
 
-        public void Select(string category, string number, string type, string requires, string Level)
+        public void Select(string category, string number, string type, string requires, string optional, string Level)
         {
             System.Diagnostics.Debug.Assert(!String.IsNullOrEmpty(number), "<select> requires a number.");
             var num = workspace.ParseInt(number);

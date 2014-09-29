@@ -92,8 +92,7 @@ namespace ParagonLib
             {
                 case "statadd":
                     //lambda = (e, ws) => ws.GetStat(name).Add(value,null,null);
-                    Debug.Assert(Parameters.Count < 5);
-                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters,"value","condition","requires","type")));
+                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters,"value","condition","requires","type", "Level")));
                     break;
                 case "statalias":
                     func = Builders.Lambda(Builders.StatAlias(Parameters["name"], Parameters["alias"]));
@@ -102,7 +101,7 @@ namespace ParagonLib
                     func = Builders.Lambda(Builders.Grant(Params(Parameters,"name","type","requires","Level")));
                     break;
                 case "select":
-                    func = Builders.Lambda(Builders.Select(Params(Parameters, "category", "number", "type", "requires", "Level")));
+                    func = Builders.Lambda(Builders.Select(Params(Parameters, "category", "number", "type", "requires", "optional", "Level")));
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));

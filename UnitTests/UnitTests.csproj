@@ -52,8 +52,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="TestInstructions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCharacter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParagonLib\ParagonLib.csproj">
