@@ -22,16 +22,15 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin/Debug/</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin/Release/</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -103,13 +102,12 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <UsingTask AssemblyFile="..\packages\MSBuild.NUnit.1.0.2\tools\MSBuild.NUnit.dll" TaskName="MSBuild.Tasks.NUnit" />
+<!--  <UsingTask AssemblyFile="..\packages\MSBuild.NUnit.1.0.2\tools\MSBuild.NUnit.dll" TaskName="MSBuild.Tasks.NUnit" />
   <Target Name="RunUnitTest">
-    <!--<NUnit Assemblies="$(ProjectName).csproj" ToolPath="..\packages\NUnit.Runners.2.6.3\tools" DisableShadowCopy="true" Force32Bit="false" ProjectConfiguration="$(Configuration)" FrameworkToUse="net-4.0" WorkingDirectory="$(ProjectDir)" ContinueOnError="true" ProcessModel="Single" HideDots="true" />-->
 	<NUnit Assemblies="$(ProjectName).csproj" ToolPath="..\packages\NUnit.Runners.2.6.3\tools" />	
   </Target>
   <Target Name="AfterBuild" DependsOnTargets="RunUnitTest">
-  </Target>
+  </Target> -->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
