@@ -162,7 +162,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             ws.Recalculate(true);
             throw new NotImplementedException();
             //Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String == "VALUEGOESHERE");
-            
+            GC.KeepAlive(charElement);
         }
 
 

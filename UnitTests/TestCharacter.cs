@@ -37,6 +37,30 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
+        ),
+        new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "3"),
+        new XAttribute("type", "Level"),
+        new XAttribute("internal-id", "TEST_LEVEL_3"),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
+            )
+        ),
+    new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "4"),
+        new XAttribute("type", "Level"),
+        new XAttribute("internal-id", "TEST_LEVEL_4"),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
+            )
+        ),
+    new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "5"),
+        new XAttribute("type", "Level"),
+        new XAttribute("internal-id", "TEST_LEVEL_5"),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
+            )
         )
         ));
             RuleFactory.Load(elements);
@@ -50,6 +74,10 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 30 });
             ws.Recalculate(); 
             Debug.Assert(ws.Level == 3); // Earned 30, which brings us to a total of 100. Exactly level 3.
+            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 120 });
+            ws.Recalculate();
+            Debug.Assert(ws.Level == 5); // Earned 120, which brings us to a total of 220. Level 5.
+            GC.KeepAlive(ruleset);
         }
     }
 }
