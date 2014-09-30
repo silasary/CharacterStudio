@@ -94,7 +94,12 @@ namespace ParagonLib
                     plus = true;
                     break;
             }
-            return (plus ? 1 : -1) * int.Parse(p);
+            int val;
+            if (!int.TryParse(p, out val))
+            {
+                val = GetStat(p).Value;
+            }
+            return (plus ? 1 : -1) * val;
         }
 
         public class Stat

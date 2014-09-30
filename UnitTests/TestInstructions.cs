@@ -9,38 +9,9 @@ namespace UnitTests
 {
     public class TestInstructions
     {
-        [Test]
-        public void TestStatAdd()
-        {
-            Workspace ws = new Workspace();
-            CharElement ce = new CharElement("test_statadd", 0,ws,null);
-            var param =new System.Collections.Generic.Dictionary<string,string>();
-            param.Add("name","Speed");
-            param.Add("value", "+5");
-            var inst= new Instruction("statadd", param);
-            inst.Calculate(ce, ws);
-            Debug.Assert(ws.GetStat("Speed").Value == 5);
-        }
 
-        [Test]
-        public void TestStatAlias()
-        {
-            Workspace ws = new Workspace();
-            CharElement ce = new CharElement("test_statalias", 0,ws,null);
-            var param = new System.Collections.Generic.Dictionary<string, string>();
-            param.Add("name", "Strength");
-            param.Add("value", "+12");
-            var inst = new Instruction("statadd", param);
-            inst.Calculate(ce, ws);
-            var param2 = new System.Collections.Generic.Dictionary<string, string>();
-            param2.Add("name", "Strength");
-            param2.Add("alias", "str");
-            var inst2 = new Instruction("statalias", param2);
-            inst2.Calculate(ce, ws);
-            Debug.Assert(ws.GetStat("str").Value == 12, "Expected 'str' to equal assigned value of 'Strength'");
-        }
 
-        [Test]
+        [Test][Ignore]
         public void LoadRules()
         {
             Workspace ws = new Workspace();
