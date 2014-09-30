@@ -1,15 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParagonLib;
 using System.Xml.Linq;
 using System.Diagnostics;
+using NUnit.Framework;
 
 namespace UnitTests
 {
-    [TestClass]
     public class TestCharacter
     {
-        [TestMethod]
+        [Test]
         public void TestLeveling()
         {
             var elements =

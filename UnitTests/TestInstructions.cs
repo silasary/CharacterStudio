@@ -1,16 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParagonLib;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.Linq;
+using NUnit.Framework;
 
 namespace UnitTests
 {
-    [TestClass]
     public class TestInstructions
     {
-        [TestMethod]
+        [Test]
         public void TestStatAdd()
         {
             Workspace ws = new Workspace();
@@ -23,7 +22,7 @@ namespace UnitTests
             Debug.Assert(ws.GetStat("Speed").Value == 5);
         }
 
-        [TestMethod]
+        [Test]
         public void TestStatAlias()
         {
             Workspace ws = new Workspace();
@@ -41,14 +40,14 @@ namespace UnitTests
             Debug.Assert(ws.GetStat("str").Value == 12, "Expected 'str' to equal assigned value of 'Strength'");
         }
 
-        [TestMethod]
+        [Test]
         public void LoadRules()
         {
             Workspace ws = new Workspace();
             RuleFactory.New("ID_INTERNAL_LEVEL_1",ws);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGrant()
         {
             var ws = new Workspace();
@@ -84,7 +83,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             GC.KeepAlive(charElement);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSelect()
         {
             var ws = new Workspace();
@@ -142,7 +141,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTextstring()
         {
             var ws = new Workspace();

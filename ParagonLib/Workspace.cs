@@ -18,11 +18,18 @@ namespace ParagonLib
 
         public Dictionary<string, WeakReference> AllElements { get; set; }
 
+        protected int level;
+
         public int Level
         {
             get
             {
-                return 1; // TODO: Calculate!
+                level = 1;
+                var earned = GetStat("XP Earned");
+                var needed = GetStat("XP Needed");
+                while (earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
+                    level++;
+                return level;
             }
         }
 
@@ -105,18 +112,25 @@ namespace ParagonLib
             {
                 get
                 {
-                    int total = 0;
-                    foreach (var bit in bits)
-                    {
-                        if (bit.Level > workspace.Level)
-                            continue;
-                        int val = calc(bit.value);
-                        total += val;
-                        //Todo: Type.
-                    }
-                    return total;
+                    return ValueAt(workspace.level);
                 }
             }
+
+            public int ValueAt(int Level)
+            {
+                int total = 0;
+                foreach (var bit in bits)
+                {
+                    if (bit.Level > Level)
+                        continue;
+                    int val = calc(bit.value);
+                    total += val;
+                    //Todo: Type.
+                }
+                return total;
+            }
+
+
 
             private bool Dirty { get; set; }
 
