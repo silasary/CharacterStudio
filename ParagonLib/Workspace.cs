@@ -124,13 +124,20 @@ namespace ParagonLib
             public int ValueAt(int Level)
             {
                 int total = 0;
+                DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
                 foreach (var bit in bits)
                 {
                     if (bit.Level > Level)
                         continue;
                     int val = calc(bit.value);
-                    total += val;
-                    //Todo: Type.
+                    if (string.IsNullOrEmpty(bit.type))
+                        total += val;
+                    else if (TypeBonus[bit.type] < val)
+                        TypeBonus[bit.type] = val;
+                }
+                foreach (var type in TypeBonus)
+                {
+                    total += type.Value;
                 }
                 return total;
             }
@@ -153,7 +160,6 @@ namespace ParagonLib
 
             private int calc(string p)
             {
-                //TODO: Stat references. eg: <statadd name="Fortitude Defense" value="+Great Fortitude" type="Feat" />
                 return workspace.ParseInt(p);
             }
 

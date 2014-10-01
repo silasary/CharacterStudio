@@ -24,6 +24,11 @@ namespace ParagonLib
             this.Core = core;
         }
 
+        public DefaultDictionary()
+        {
+            this.Core = new Dictionary<T1, T2>();
+        }
+
         public void Add(T1 key, T2 value)
         {
             Core.Add(key, value);

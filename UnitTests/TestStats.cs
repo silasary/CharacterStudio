@@ -56,7 +56,7 @@ namespace UnitTests
              new XElement(XName.Get("statadd"), new XAttribute("name", "Intelligence modifier"), new XAttribute("value","3")),
              new XElement(XName.Get("statadd"), new XAttribute("name", "Languages Known"), new XAttribute("value", "+1")), 
              new XElement(XName.Get("statadd"), new XAttribute("name", "Languages Known"), new XAttribute("value", "+Intelligence modifier")),
-             new XElement(XName.Get("select"), new XAttribute("category", "TEST_SELECT_SELECTOR"), new XAttribute("type", "Test"), new XAttribute("number", "1"))
+             new XElement(XName.Get("select"), new XAttribute("category", "LANGUAGE"), new XAttribute("type", "Test"), new XAttribute("number", "Languages Known"))
              )
          ))));
 
@@ -66,6 +66,27 @@ namespace UnitTests
             Debug.Assert(ws.GetStat("Languages Known").Value == 4); // 1 + int mod.
 
             GC.KeepAlive(ele);
+        }
+        [Test]
+        public void TestStatTypes()
+        {
+            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+     new XElement(XName.Get("RulesElement"),
+         new XAttribute("name", "Languages"),
+         new XAttribute("type", "Test"),
+         new XAttribute("internal-id", "TEST_STAT_TYPES"),
+         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To test that stats can reference stats.")),
+         new XElement(XName.Get("rules"),
+             new XElement(XName.Get("statadd"), new XAttribute("name", "Buff"), new XAttribute("value", "3")),
+             new XElement(XName.Get("statadd"), new XAttribute("name", "Buff"), new XAttribute("value", "+1"), new XAttribute("type", "Feat")),
+             new XElement(XName.Get("statadd"), new XAttribute("name", "Buff"), new XAttribute("value", "+2"), new XAttribute("type", "Feat"))
+             )
+         ))));
+
+            var ws = new Workspace();
+            RuleFactory.New("TEST_STAT_TYPES", ws);
+            ws.Recalculate();
+            Assert.AreEqual(ws.GetStat("Buff").Value, 5);
         }
     }
 }
