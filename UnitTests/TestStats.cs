@@ -88,5 +88,29 @@ namespace UnitTests
             ws.Recalculate();
             Assert.AreEqual(ws.GetStat("Buff").Value, 5);
         }
+
+        [Test]
+        public void TestStatFunctions()
+        {
+            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+     new XElement(XName.Get("RulesElement"),
+         new XAttribute("name", "Languages"),
+         new XAttribute("type", "Test"),
+         new XAttribute("internal-id", "TEST_STAT_FUNC"),
+         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To test that stats can reference stats.")),
+         new XElement(XName.Get("rules"),
+             new XElement(XName.Get("statadd"), new XAttribute("name", "int"), new XAttribute("value", "+16")),
+             new XElement(XName.Get("statadd"), new XAttribute("name", "int mod"), new XAttribute("value", "+ABILITYMOD(int)"))
+             )
+         ))));
+
+            var ws = new Workspace();
+            RuleFactory.New("TEST_STAT_FUNC", ws);
+            ws.Recalculate();
+            var Int = ws.GetStat("int");
+            var IntMod = ws.GetStat("int mod");
+            Assert.AreEqual((Int.Value - 10) / 2, IntMod.Value);
+
+        }
     }
 }

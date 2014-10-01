@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ParagonLib
 {
     public class Workspace
     {
         private Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
+        Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
+        private Dictionary<string, Func<string, int>> ParserFunctions;
 
         public Workspace()
         {
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
+            ParserFunctions = new Dictionary<string, Func<string, int>>();
+            ParserFunctions["ABILITYMOD"] = (p) => { return (ParseInt(p) - 10 ) / 2; };
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -38,7 +43,7 @@ namespace ParagonLib
         public void AliasStat(string Stat, string Alias)
         {
             if (Stats.ContainsKey(Stat) && Stats.ContainsKey(Alias))
-                throw new NotImplementedException();
+                throw new InvalidOperationException("You can't Alias into an existing stat.");
             if (!Stats.ContainsKey(Stat))
                 Stats[Stat] = new Stat(this);
             Stats[Alias] = Stats[Stat];
@@ -97,7 +102,11 @@ namespace ParagonLib
             int val;
             if (!int.TryParse(p, out val))
             {
-                val = GetStat(p).Value;
+                var m = funcregex.Match(p);
+                if (m.Success)
+                    val = ParserFunctions[m.Groups["Func"].Value](m.Groups["Arg"].Value);
+                else    
+                    val = GetStat(p).Value;
             }
             return (plus ? 1 : -1) * val;
         }
@@ -141,8 +150,6 @@ namespace ParagonLib
                 }
                 return total;
             }
-
-
 
             private bool Dirty { get; set; }
 
