@@ -19,21 +19,63 @@ namespace ParagonLib
             RulesBySystem = new Dictionary<string, RulesElement>();
             var RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
             Directory.CreateDirectory(RulesFolder);
-            ThreadPool.QueueUserWorkItem((o) =>
+            ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
+        }
+
+        private static void LoadRulesFolder(object RulesFolderString)
+        {
+            LoadRulesFolder((string)RulesFolderString);
+        }
+
+        private static void LoadRulesFolder(string RulesFolder)
+        {
+            Loading = true;
+            foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
-                Loading = true;
-                foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
+                LoadFile(file);
+                FileLoaded.Set();
+            }
+            Loading = false;
+            if (Validate)
+                ThreadPool.QueueUserWorkItem(ValidateRules);
+        }
+
+        private static void ValidateRules(object state)
+        {
+            foreach (var item in Rules)
+            {
+                var CSV_Specifics = new string[] { "Racial Traits" };
+                foreach (var spec in CSV_Specifics)
                 {
-                    LoadFile(file);
-                    FileLoaded.Set();
+                    if (item.Value.Specifics.ContainsKey(spec))
+                    {
+                        var errors = item.Value.Specifics[spec].Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
+                        foreach (var e in errors)
+                        {
+                            if (e.Value == null)
+                                Console.WriteLine("ERROR: {0} not found.", e.Key);
+                            else
+                                Console.WriteLine("WARNING: {0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
+                        }
+                    }
                 }
-                Loading = false;
-            });
+
+
+
+            }
         }
 
         public static CharElement New(string id, Workspace workspace, string type = null)
         {
-            var sysid = String.Format("{0}+{1}",workspace.System, id);
+            RulesElement re = FindRulesElement(id, workspace.System);
+            var el = new CharElement(id, GenerateUID(), workspace, re);
+
+            return el;
+        }
+
+        internal static RulesElement FindRulesElement(string id, string System)
+        {
+            var sysid = String.Format("{0}+{1}", System, id);
             RulesElement re;
             if (RulesBySystem.ContainsKey(sysid))
                 re = RulesBySystem[sysid];
@@ -41,9 +83,7 @@ namespace ParagonLib
                 re = Rules[id];
             else
                 re = Load(id);
-            var el = new CharElement(id, GenerateUID(), workspace, re);
-
-            return el;
+            return re;
         }
 
         private static int GenerateUID()
@@ -111,5 +151,7 @@ namespace ParagonLib
             }
             yield break;
         }
+
+        public static bool Validate { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace ParagonLib
     public class RulesElement
     {
         public List<Instruction> Rules = new List<Instruction>();
-        public List<string> Specifics = new List<string>();
+        public Dictionary<string, string> Specifics = new Dictionary<string, string>();
 
         public RulesElement(System.Xml.Linq.XElement item)
         {
@@ -28,7 +28,7 @@ namespace ParagonLib
                 switch (element.Name.LocalName)
                 {
                     case "specific":
-                        Specifics.Add(string.Format("{0}:{1}", element.Attribute("name").Value, element.Value));
+                        Specifics.Add(element.Attribute("name").Value, element.Value);
                         break;
                     case "rules":
                         foreach (var rule in element.Elements())

@@ -9,14 +9,16 @@ namespace ParagonLib
     {
         private Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
-        private Dictionary<string, Func<string, int>> ParserFunctions;
+        private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
         public Workspace()
         {
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
-            ParserFunctions = new Dictionary<string, Func<string, int>>();
-            ParserFunctions["ABILITYMOD"] = (p) => { return (ParseInt(p) - 10 ) / 2; };
+            ParserFunctions = new Dictionary<string, Func<string,string, int>>();
+            ParserFunctions["ABILITYMOD"] = (p,q) => { return (ParseInt(p) - 10 ) / 2; };
+            ParserFunctions["HALF"] = (p, q) => { return ParseInt(p) / 2; };
+            
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -104,7 +106,7 @@ namespace ParagonLib
             {
                 var m = funcregex.Match(p);
                 if (m.Success)
-                    val = ParserFunctions[m.Groups["Func"].Value](m.Groups["Arg"].Value);
+                    val = ParserFunctions[m.Groups["Func"].Value](m.Groups["Arg"].Value,null);
                 else    
                     val = GetStat(p).Value;
             }
@@ -177,6 +179,7 @@ namespace ParagonLib
                 public string requires;
                 public string type;
                 public string value;
+                public string String;
 
                 public bit(string value, string condition, string requires, string type, int Level)
                 {
@@ -185,7 +188,29 @@ namespace ParagonLib
                     this.requires = requires;
                     this.type = type;
                     this.Level = Level;
+                    this.String = "";
                 }
+                
+
+                pu
+            }
+
+            public string String { get {
+                return StringAt(workspace.Level);
+            } }
+
+            public string StringAt(int Level)
+            {
+                string val = "";
+                DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
+                foreach (var bit in bits)
+                {
+                    if (bit.Level > Level)
+                        continue;
+                    if (!String.IsNullOrEmpty(bit.String))
+                        val = bit.String;
+                }
+                return val;
             }
         }
     }

@@ -112,7 +112,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
 
         }
 
-        [Test][Ignore]
+        [Test]
         public void TestTextstring()
         {
             var ws = new Workspace();
@@ -131,8 +131,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             RuleFactory.Load(elements);
             var charElement = RuleFactory.New("TEST_TEXTSTRING_ELEMENT", ws);
             ws.Recalculate(true);
-            throw new NotImplementedException();
-            //Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String == "VALUEGOESHERE");
+            Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String == "VALUEGOESHERE");
             GC.KeepAlive(charElement);
         }
 
