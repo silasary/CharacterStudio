@@ -92,7 +92,12 @@ namespace ParagonLib
             {
                 case "statadd":
                     //lambda = (e, ws) => ws.GetStat(name).Add(value,null,null);
-                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters,"value","condition","requires","type", "Level")));
+                    /*
+                     void anon(Workspace ws, CharElement ce){
+                        ws.GetStat("blah").Add("Example", "bkagt", "+4","7",null);
+                      }
+                     */
+                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters,"value","condition","requires","type", "Level"))); // TODO: Support wearing= at some point
                     break;
                 case "statalias":
                     func = Builders.Lambda(Builders.StatAlias(Parameters["name"], Parameters["alias"]));
@@ -118,7 +123,7 @@ namespace ParagonLib
                 Parameters.Remove(keys[i]);
             }
             Parameters.Remove("name");
-            Debug.Assert(Parameters.Count == 0);
+            Debug.Assert(Parameters.Count == 0); // We got a value we weren't expecting.  Let someone know.
                 
             return vals;
         }
