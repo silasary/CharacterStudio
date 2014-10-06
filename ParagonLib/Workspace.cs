@@ -161,6 +161,12 @@ namespace ParagonLib
                 this.Dirty = true;
             }
 
+            public void AddText(string text, string condition, string requires, string Level)
+            {
+                bits.Add(new bit(text, condition, requires, String.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                this.Dirty = true;
+            }
+
             public void Reset()
             {
                 this.bits.Clear();
@@ -190,8 +196,17 @@ namespace ParagonLib
                     this.Level = Level;
                     this.String = "";
                 }
-                
 
+                public bit(string text, string condition, string requires, int Level)
+                {
+                    this.String = text;
+                    this.condition = condition;
+                    this.requires = requires;
+                    this.type = "";
+                    this.Level = Level;
+                    this.value = "";
+
+                }
                 
             }
 

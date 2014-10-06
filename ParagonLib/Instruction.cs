@@ -44,6 +44,14 @@ namespace ParagonLib
                     );
             }
 
+            public static Expression TextString(string name, string[] args)
+            {
+                return Expression.Call(
+                    Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "AddText"),
+                        args.Select(e => Expression.Constant(e, typeof(String)))
+                    );
+            }
+
 
             internal static Expression StatAlias(string name, string alias)
             {
@@ -107,6 +115,9 @@ namespace ParagonLib
                     break;
                 case "select":
                     func = Builders.Lambda(Builders.Select(Params(Parameters, "category", "number", "type", "requires", "optional", "Level")));
+                    break;
+                case "textstring":
+                    func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters,"String","condition","requires", "Level")));
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));
