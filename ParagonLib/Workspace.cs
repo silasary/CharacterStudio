@@ -59,6 +59,18 @@ namespace ParagonLib
             return Stats[name];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string[] GetTextStringData(string name)
+        {
+            if (!Stats.ContainsKey(name))
+                return new string[0];
+            return Stats[name].String;
+        }
+
         public void Recalculate(bool block = true) //TODO: Default should be false.
         {
             if (!block)
@@ -158,13 +170,13 @@ namespace ParagonLib
 
             public void Add(string value, string condition, string requires, string type, string Level)
             {
-                bits.Add(new bit(value, condition, requires, type, String.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                bits.Add(new bit(value, condition, requires, type, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
                 this.Dirty = true;
             }
 
             public void AddText(string text, string condition, string requires, string Level)
             {
-                bits.Add(new bit(text, condition, requires, String.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                bits.Add(new bit(text, condition, requires, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
                 this.Dirty = true;
             }
 
@@ -211,22 +223,22 @@ namespace ParagonLib
                 
             }
 
-            public string String { get {
+            public string[] String { get {
                 return StringAt(workspace.Level);
             } }
 
-            public string StringAt(int Level)
+            public string[] StringAt(int Level)
             {
-                string val = "";
+                List<string> val = new List<string>();
                 DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
                 foreach (var bit in bits)
                 {
                     if (bit.Level > Level)
                         continue;
-                    if (!String.IsNullOrEmpty(bit.String))
-                        val = bit.String;
+                    if (!string.IsNullOrEmpty(bit.String))
+                        val.Add(bit.String);
                 }
-                return val;
+                return val.ToArray();
             }
         }
     }

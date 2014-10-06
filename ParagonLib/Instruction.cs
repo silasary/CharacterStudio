@@ -50,7 +50,7 @@ namespace ParagonLib
                     break;
 
                 case "textstring":
-                    func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters, "String", "condition", "requires", "Level")));
+                    func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters, "value", "condition", "requires", "Level")));
                     break;
 
                 default:

@@ -131,7 +131,8 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             RuleFactory.Load(elements);
             var charElement = RuleFactory.New("TEST_TEXTSTRING_ELEMENT", ws);
             ws.Recalculate(true);
-            Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String == "VALUEGOESHERE");
+            Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String.Count() == 1);
+            Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String[0] == "VALUEGOESHERE");
             GC.KeepAlive(charElement);
         }
 
