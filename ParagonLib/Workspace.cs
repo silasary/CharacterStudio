@@ -115,6 +115,7 @@ namespace ParagonLib
 
         public class Stat
         {
+
             private List<bit> bits = new List<bit>();
 
             private Workspace workspace;
