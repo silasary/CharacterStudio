@@ -136,16 +136,19 @@ namespace ParagonLib
 
         internal static IEnumerable<RulesElement> Search(string System, string Type, string Category)
         {
-            var Categories = Category.Split(',');
+            var Categories = Category == null ? new string[0] : Category.Split(',');
             var catCount = Categories.Count();
             var Comparer = new CategoryComparer();
             foreach (var item in Rules.Values)
             {
-                if (String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System)
+                if (String.IsNullOrEmpty(Type) || item.Type == Type)
                 {
-                    if (Categories.Intersect(item.Category, Comparer).Count() == catCount)
+                    if (String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System)
                     {
-                        yield return item;
+                        if (Categories.Intersect(item.Category, Comparer).Count() == catCount)
+                        {
+                            yield return item;
+                        }
                     }
                 }
             }

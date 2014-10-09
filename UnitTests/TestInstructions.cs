@@ -68,7 +68,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("internal-id", "TEST_SELECT_SELECTOR"),
         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To offer a choice of Elements")),
         new XElement(XName.Get("rules"),
-            new XElement(XName.Get("select"), new XAttribute("category", "TEST_SELECT_SELECTOR"), new XAttribute("type", "Test"), new XAttribute("number", "1"))
+            new XElement(XName.Get("select"), new XAttribute("Category", "TEST_SELECT_SELECTOR"), new XAttribute("type", "Test"), new XAttribute("number", "1"))
             )
         ),
     new XElement(XName.Get("RulesElement"),
@@ -99,6 +99,16 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("Select one of these.")),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "SELECTED_VALUE"), new XAttribute("value", "+3"))
+            )
+        ),
+            new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "Not Option D"),
+        new XAttribute("type", "Not Option"),
+        new XAttribute("internal-id", "TEST_SELECT_NOT_OPTIOND"),
+        new XElement(XName.Get("Category"), "TEST_SELECT_SELECTOR"),
+        new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("Select one of these.")),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "SELECTED_VALUE"), new XAttribute("value", "+1025"))
             )
         )
     ));
