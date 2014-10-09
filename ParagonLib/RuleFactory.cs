@@ -117,7 +117,7 @@ namespace ParagonLib
             if (Path.GetExtension(file) == ".part")
             {
                 XDocument doc = XDocument.Load(file);
-                foreach (var item in doc.Root.Elements())
+                foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                 {
                     Load(item);
                 }

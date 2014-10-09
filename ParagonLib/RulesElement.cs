@@ -10,6 +10,7 @@ namespace ParagonLib
 
         public RulesElement(System.Xml.Linq.XElement item)
         {
+            
             this.Name = item.Attribute("name").Value;
             this.Type = item.Attribute("type").Value;
             if (item.Attribute("source") == null)
@@ -17,7 +18,7 @@ namespace ParagonLib
             else
                 this.Source = item.Attribute("source").Value;
             this.InternalId = item.Attribute("internal-id").Value;
-            this.System = item.Parent.Attribute("game-system").Value;
+            this.System = item.Document.Root.Attribute("game-system").Value;
             if (item.Element("Category") == null)
                 this.Category = new string[0];
             else

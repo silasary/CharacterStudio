@@ -11,7 +11,8 @@ namespace UnitTests
     {
 
 
-        [Test][Ignore]
+        [Test]
+        //[Ignore]
         public void LoadRules()
         {
             Workspace ws = new Workspace();

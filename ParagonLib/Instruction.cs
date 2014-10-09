@@ -46,7 +46,7 @@ namespace ParagonLib
                     break;
 
                 case "select":
-                    func = Builders.Lambda(Builders.Select(Params(Parameters, "category", "number", "type", "requires", "optional", "Level")));
+                    func = Builders.Lambda(Builders.Select(Params(Parameters, "Category", "number", "type", "requires", "optional", "Level")));
                     break;
 
                 case "textstring":
@@ -71,8 +71,7 @@ namespace ParagonLib
                 Parameters.Remove(keys[i]);
             }
             Parameters.Remove("name");
-            Debug.Assert(Parameters.Count == 0); // We got a value we weren't expecting.  Let someone know.
-
+            Debug.WriteLineIf(Parameters.Count > 0, String.Format("Unexpected params! {0}", Parameters.FirstOrDefault())); // We got a value we weren't expecting.  Let someone know.
             return vals;
         }
 
