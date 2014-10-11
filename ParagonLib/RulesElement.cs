@@ -10,7 +10,8 @@ namespace ParagonLib
 
         public RulesElement(System.Xml.Linq.XElement item)
         {
-            
+            if (item == null)
+                return;
             this.Name = item.Attribute("name").Value;
             this.Type = item.Attribute("type").Value;
             if (item.Attribute("source") == null)

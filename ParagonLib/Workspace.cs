@@ -11,14 +11,17 @@ namespace ParagonLib
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
-        public Workspace()
+        private CharElement Levelset;
+
+        public Workspace(string System)
         {
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
             ParserFunctions = new Dictionary<string, Func<string,string, int>>();
             ParserFunctions["ABILITYMOD"] = (p,q) => { return (ParseInt(p) - 10 ) / 2; };
             ParserFunctions["HALF"] = (p, q) => { return ParseInt(p) / 2; };
-            
+            if (!String.IsNullOrEmpty(System))
+                Levelset = RuleFactory.New("_LEVELSET_", this);
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -40,7 +43,7 @@ namespace ParagonLib
             }
         }
 
-        public string System { get; set; }
+        public string System { get; private set; }
 
         public void AliasStat(string Stat, string Alias)
         {

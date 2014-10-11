@@ -64,7 +64,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         )
         ));
             RuleFactory.Load(elements);
-            var c = new Character();
+            var c = new Character("Test");
             var ws = c.workspace;
             var ruleset = RuleFactory.New("TEST_RULESET", ws); // This should be implicit at some point.
             Debug.Assert(ws.Level == 1); // Start at level 1.

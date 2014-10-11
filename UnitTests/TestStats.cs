@@ -15,7 +15,7 @@ namespace UnitTests
         [Test]
         public void TestStatAdd()
         {
-            Workspace ws = new Workspace();
+            Workspace ws = new Workspace("Test");
             CharElement ce = new CharElement("test_statadd", 0, ws, null);
             var param = new System.Collections.Generic.Dictionary<string, string>();
             param.Add("name", "Speed");
@@ -28,7 +28,7 @@ namespace UnitTests
         [Test]
         public void TestStatAlias()
         {
-            Workspace ws = new Workspace();
+            Workspace ws = new Workspace("Test");
             CharElement ce = new CharElement("test_statalias", 0, ws, null);
             var param = new System.Collections.Generic.Dictionary<string, string>();
             param.Add("name", "Strength");
@@ -56,11 +56,11 @@ namespace UnitTests
              new XElement(XName.Get("statadd"), new XAttribute("name", "Intelligence modifier"), new XAttribute("value","3")),
              new XElement(XName.Get("statadd"), new XAttribute("name", "Languages Known"), new XAttribute("value", "+1")), 
              new XElement(XName.Get("statadd"), new XAttribute("name", "Languages Known"), new XAttribute("value", "+Intelligence modifier")),
-             new XElement(XName.Get("select"), new XAttribute("category", "LANGUAGE"), new XAttribute("type", "Test"), new XAttribute("number", "Languages Known"))
+             new XElement(XName.Get("select"), new XAttribute("Category", "LANGUAGE"), new XAttribute("type", "Test"), new XAttribute("number", "Languages Known"))
              )
          ))));
 
-            var ws = new Workspace();
+            var ws = new Workspace("Test");
             var ele = RuleFactory.New("TEST_STAT_RECURSION", ws);
             ws.Recalculate();
             Debug.Assert(ws.GetStat("Languages Known").Value == 4); // 1 + int mod.
@@ -83,7 +83,7 @@ namespace UnitTests
              )
          ))));
 
-            var ws = new Workspace();
+            var ws = new Workspace("Test");
             RuleFactory.New("TEST_STAT_TYPES", ws);
             ws.Recalculate();
             Assert.AreEqual(ws.GetStat("Buff").Value, 5);
@@ -104,7 +104,7 @@ namespace UnitTests
              )
          ))));
 
-            var ws = new Workspace();
+            var ws = new Workspace("Test");
             RuleFactory.New("TEST_STAT_FUNC", ws);
             ws.Recalculate();
             var Int = ws.GetStat("int");

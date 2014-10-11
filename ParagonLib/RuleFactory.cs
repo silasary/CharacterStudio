@@ -75,6 +75,8 @@ namespace ParagonLib
 
         internal static RulesElement FindRulesElement(string id, string System)
         {
+            if (id == "_LEVELSET_")
+                return GenerateLevelset(System);
             var sysid = String.Format("{0}+{1}", System, id);
             RulesElement re;
             if (RulesBySystem.ContainsKey(sysid))
@@ -84,6 +86,21 @@ namespace ParagonLib
             else
                 re = Load(id);
             return re;
+        }
+
+        private static RulesElement GenerateLevelset(string System)
+        {
+            var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
+            foreach (var level in Search(System, "Level", null))
+            {
+                var Parameters = new Dictionary<string, string>();
+                Parameters.Add("name", level.InternalId);
+                Parameters.Add("Level", level.Name);
+                Parameters.Add("type", "Level");
+                levelset.Rules.Add(new Instruction("grant", Parameters));
+            }
+            return levelset;
+
         }
 
         private static int GenerateUID()

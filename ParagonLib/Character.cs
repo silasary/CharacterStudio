@@ -11,7 +11,12 @@ namespace ParagonLib
     /// </summary>
     public class Character
     {
-        public Workspace workspace = new Workspace();
+        public Workspace workspace;
+
+        public Character(string System)
+        {
+            workspace = new Workspace(System);
+        }
         
 
     }
