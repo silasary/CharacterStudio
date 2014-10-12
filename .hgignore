@@ -3,3 +3,5 @@ syntax: glob
 *\obj\
 *.suo
 TestResult.xml
+publish/
+*.csproj.user
