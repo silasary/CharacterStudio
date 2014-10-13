@@ -73,16 +73,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Controls\Common\Field.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Common\Field.Designer.cs">
+      <DependentUpon>Field.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Common\OldField.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\DetailsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\DetailsPane.Designer.cs">
+      <DependentUpon>DetailsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Panes\LoadCharacterPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\LoadCharacterPane.Designer.cs">
+      <DependentUpon>LoadCharacterPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrimaryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="PrimaryForm.Designer.cs">
+      <DependentUpon>PrimaryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentPane.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Common\Field.resx">
+      <DependentUpon>Field.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Panes\DetailsPane.resx">
+      <DependentUpon>DetailsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Panes\LoadCharacterPane.resx">
+      <DependentUpon>LoadCharacterPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrimaryForm.resx">
+      <DependentUpon>PrimaryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

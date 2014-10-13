@@ -18,7 +18,7 @@ namespace CharacterStudio
             Application.SetCompatibleTextRenderingDefault(false);
             if (ParagonLib.RuleFactory.Loading)
                 Console.WriteLine("Loading");
-            Application.Run(new Form1());
+            Application.Run(new PrimaryForm());
         }
     }
 }
