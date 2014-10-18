@@ -15,14 +15,14 @@ namespace UnitTests
         //[Ignore]
         public void LoadRules()
         {
-            Workspace ws = new Workspace("Test");
+            Workspace ws = new Workspace("Test", null);
             RuleFactory.New("ID_INTERNAL_LEVEL_1",ws);
         }
 
         [Test]
         public void TestGrant()
         {
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             var elements = 
                 //===Start===
 new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
@@ -58,7 +58,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         [Test]
         public void TestSelect()
         {
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             var elements =
                 //===Start===
 new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
@@ -126,7 +126,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         [Test]
         public void TestTextstring()
         {
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             var elements =
 new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
     new XElement(XName.Get("RulesElement"),

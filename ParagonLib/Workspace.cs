@@ -13,7 +13,9 @@ namespace ParagonLib
 
         private CharElement Levelset;
 
-        public Workspace(string System)
+        public Character CharacterRef { get; private set; }
+
+        public Workspace(string System, Character character)
         {
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
@@ -22,6 +24,7 @@ namespace ParagonLib
             ParserFunctions["HALF"] = (p, q) => { return ParseInt(p) / 2; };
             if (!String.IsNullOrEmpty(System))
                 Levelset = RuleFactory.New("_LEVELSET_", this);
+            CharacterRef = character;
         }
 
         public List<Adventure> AdventureLog { get; set; }

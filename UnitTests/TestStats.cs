@@ -15,7 +15,7 @@ namespace UnitTests
         [Test]
         public void TestStatAdd()
         {
-            Workspace ws = new Workspace("Test");
+            Workspace ws = new Workspace("Test", null);
             CharElement ce = new CharElement("test_statadd", 0, ws, null);
             var param = new System.Collections.Generic.Dictionary<string, string>();
             param.Add("name", "Speed");
@@ -28,7 +28,7 @@ namespace UnitTests
         [Test]
         public void TestStatAlias()
         {
-            Workspace ws = new Workspace("Test");
+            Workspace ws = new Workspace("Test", null);
             CharElement ce = new CharElement("test_statalias", 0, ws, null);
             var param = new System.Collections.Generic.Dictionary<string, string>();
             param.Add("name", "Strength");
@@ -60,7 +60,7 @@ namespace UnitTests
              )
          ))));
 
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             var ele = RuleFactory.New("TEST_STAT_RECURSION", ws);
             ws.Recalculate();
             Debug.Assert(ws.GetStat("Languages Known").Value == 4); // 1 + int mod.
@@ -83,7 +83,7 @@ namespace UnitTests
              )
          ))));
 
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             RuleFactory.New("TEST_STAT_TYPES", ws);
             ws.Recalculate();
             Assert.AreEqual(ws.GetStat("Buff").Value, 5);
@@ -104,7 +104,7 @@ namespace UnitTests
              )
          ))));
 
-            var ws = new Workspace("Test");
+            var ws = new Workspace("Test", null);
             RuleFactory.New("TEST_STAT_FUNC", ws);
             ws.Recalculate();
             var Int = ws.GetStat("int");

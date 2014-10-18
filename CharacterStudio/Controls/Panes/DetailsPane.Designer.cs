@@ -28,45 +28,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.field3 = new CharacterStudio.Controls.Common.Field();
-            this.field2 = new CharacterStudio.Controls.Common.Field();
-            this.field1 = new CharacterStudio.Controls.Common.Field();
+            this.XPLabel = new System.Windows.Forms.Label();
+            this.LevelUpButton = new System.Windows.Forms.Button();
+            this.DeityField = new CharacterStudio.Controls.Common.Field();
+            this.playerNameField = new CharacterStudio.Controls.Common.Field();
+            this.charNameField = new CharacterStudio.Controls.Common.Field();
             this.SuspendLayout();
             // 
-            // field3
+            // XPLabel
             // 
-            this.field3.AutoSize = true;
-            this.field3.Label = "Deity";
-            this.field3.Location = new System.Drawing.Point(3, 67);
-            this.field3.Name = "field3";
-            this.field3.Size = new System.Drawing.Size(216, 27);
-            this.field3.TabIndex = 0;
+            this.XPLabel.AutoSize = true;
+            this.XPLabel.Location = new System.Drawing.Point(240, 12);
+            this.XPLabel.Name = "XPLabel";
+            this.XPLabel.Size = new System.Drawing.Size(90, 13);
+            this.XPLabel.TabIndex = 2;
+            this.XPLabel.Text = "Level {0} ({1} XP)";
             // 
-            // field2
+            // LevelUpButton
             // 
-            this.field2.AutoSize = true;
-            this.field2.Label = "Player Name";
-            this.field2.Location = new System.Drawing.Point(3, 35);
-            this.field2.Name = "field2";
-            this.field2.Size = new System.Drawing.Size(216, 27);
-            this.field2.TabIndex = 0;
+            this.LevelUpButton.Location = new System.Drawing.Point(345, 6);
+            this.LevelUpButton.Name = "LevelUpButton";
+            this.LevelUpButton.Size = new System.Drawing.Size(75, 23);
+            this.LevelUpButton.TabIndex = 1;
+            this.LevelUpButton.Text = "Level Up";
+            this.LevelUpButton.UseVisualStyleBackColor = true;
+            this.LevelUpButton.Click += new System.EventHandler(this.LevelUpButton_Click);
             // 
-            // field1
+            // DeityField
             // 
-            this.field1.AutoSize = true;
-            this.field1.Label = "Character Name";
-            this.field1.Location = new System.Drawing.Point(3, 3);
-            this.field1.Name = "field1";
-            this.field1.Size = new System.Drawing.Size(216, 27);
-            this.field1.TabIndex = 0;
+            this.DeityField.AutoSize = true;
+            this.DeityField.Label = "Deity";
+            this.DeityField.Location = new System.Drawing.Point(3, 67);
+            this.DeityField.Name = "DeityField";
+            this.DeityField.Size = new System.Drawing.Size(216, 27);
+            this.DeityField.TabIndex = 0;
+            // 
+            // playerNameField
+            // 
+            this.playerNameField.AutoSize = true;
+            this.playerNameField.Label = "Player Name";
+            this.playerNameField.Location = new System.Drawing.Point(3, 35);
+            this.playerNameField.Name = "playerNameField";
+            this.playerNameField.Size = new System.Drawing.Size(216, 27);
+            this.playerNameField.TabIndex = 0;
+            // 
+            // charNameField
+            // 
+            this.charNameField.AutoSize = true;
+            this.charNameField.Label = "Character Name";
+            this.charNameField.Location = new System.Drawing.Point(3, 3);
+            this.charNameField.Name = "charNameField";
+            this.charNameField.Size = new System.Drawing.Size(216, 27);
+            this.charNameField.TabIndex = 0;
             // 
             // DetailsPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.field3);
-            this.Controls.Add(this.field2);
-            this.Controls.Add(this.field1);
+            this.Controls.Add(this.XPLabel);
+            this.Controls.Add(this.LevelUpButton);
+            this.Controls.Add(this.DeityField);
+            this.Controls.Add(this.playerNameField);
+            this.Controls.Add(this.charNameField);
             this.Name = "DetailsPane";
             this.Size = new System.Drawing.Size(423, 390);
             this.ResumeLayout(false);
@@ -76,8 +99,10 @@
 
         #endregion
 
-        private Common.Field field1;
-        private Common.Field field2;
-        private Common.Field field3;
+        private Common.Field charNameField;
+        private Common.Field playerNameField;
+        private Common.Field DeityField;
+        private System.Windows.Forms.Button LevelUpButton;
+        private System.Windows.Forms.Label XPLabel;
     }
 }

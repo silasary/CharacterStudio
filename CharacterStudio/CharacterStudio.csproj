@@ -79,9 +79,6 @@
     <Compile Include="Controls\Common\Field.Designer.cs">
       <DependentUpon>Field.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Common\OldField.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\Panes\DetailsPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,6 +90,12 @@
     </Compile>
     <Compile Include="Controls\Panes\LoadCharacterPane.Designer.cs">
       <DependentUpon>LoadCharacterPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Panes\NewCharacterPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\NewCharacterPane.Designer.cs">
+      <DependentUpon>NewCharacterPane.cs</DependentUpon>
     </Compile>
     <Compile Include="PrimaryForm.cs">
       <SubType>Form</SubType>
@@ -113,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panes\LoadCharacterPane.resx">
       <DependentUpon>LoadCharacterPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Panes\NewCharacterPane.resx">
+      <DependentUpon>NewCharacterPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PrimaryForm.resx">
       <DependentUpon>PrimaryForm.cs</DependentUpon>

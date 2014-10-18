@@ -20,7 +20,7 @@ namespace CharacterStudio.Controls.Common
         [Description("Label for the textbox")]
         public string Label { get { return label1.Text; } set { label1.Text = value; } }
 
-        public string Text { get { return textBox1.Text; } set { textBox1.Text = value; } }
+        public override string Text { get { return textBox1.Text; } set { textBox1.Text = value; } }
 
         private void Field_Resize(object sender, EventArgs e)
         {

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Xml.Linq;
 using System.Linq;
+using System.Xml;
 
 namespace ParagonLib
 {
@@ -12,14 +13,20 @@ namespace ParagonLib
         private static int num = 0;
         private static Dictionary<string, RulesElement> Rules;
         private static Dictionary<string, RulesElement> RulesBySystem;
-        static AutoResetEvent FileLoaded = new AutoResetEvent(false);
+        static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
+        
+        public delegate void FileLoadedEventHandler(string Filename);
+        public static event FileLoadedEventHandler FileLoaded;
         static RuleFactory()
         {
             Rules = new Dictionary<string, RulesElement>();
             RulesBySystem = new Dictionary<string, RulesElement>();
             var RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
             Directory.CreateDirectory(RulesFolder);
+            FileLoaded += (e) => WaitFileLoaded.Set();
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
+            Validate = true;
+            
         }
 
         private static void LoadRulesFolder(object RulesFolderString)
@@ -33,7 +40,7 @@ namespace ParagonLib
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
                 LoadFile(file);
-                FileLoaded.Set();
+                FileLoaded(file);
             }
             Loading = false;
             if (Validate)
@@ -121,7 +128,7 @@ namespace ParagonLib
         {
             while (Loading)
             {
-                FileLoaded.WaitOne(1000);
+                WaitFileLoaded.WaitOne(1000);
                 if (Rules.ContainsKey(id))
                     return Rules[id];
 
@@ -133,10 +140,26 @@ namespace ParagonLib
         {
             if (Path.GetExtension(file) == ".part")
             {
-                XDocument doc = XDocument.Load(file);
-                foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
+                try
                 {
-                    Load(item);
+                    XDocument doc = XDocument.Load(file);
+                    var system = doc.Root.Attribute("game-system").Value;
+                    if (!knownSystems.Contains(system))
+                        knownSystems.Add(system);
+                    foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
+                    {
+                        Load(item);
+                    }
+                    var UpdateInfo = doc.Root.Element("UpdateInfo");
+                    if (UpdateInfo != null)
+                    {
+
+
+                    }
+                }
+                catch (XmlException v)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
                 }
             }
         }
@@ -156,7 +179,7 @@ namespace ParagonLib
             var Categories = Category == null ? new string[0] : Category.Split(',');
             var catCount = Categories.Count();
             var Comparer = new CategoryComparer();
-            foreach (var item in Rules.Values)
+            foreach (var item in Rules.Values.ToArray())
             {
                 if (String.IsNullOrEmpty(Type) || item.Type == Type)
                 {
@@ -173,5 +196,15 @@ namespace ParagonLib
         }
 
         public static bool Validate { get; set; }
+
+        private static List<string> knownSystems = new List<string>();
+
+        public static IEnumerable<object> KnownSystems
+        {
+            get
+            {
+                return knownSystems.ToArray();
+            }
+        }
     }
 }
