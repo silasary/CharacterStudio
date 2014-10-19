@@ -24,7 +24,7 @@ namespace ParagonLib
                 Value = "";
                 return;
             }
-            Options = RuleFactory.Search(workspace.System, Type, Category);
+            Options = RuleFactory.Search(workspace.System, Type, Category).Results();
             if (string.IsNullOrEmpty(Value))
             {
                 Value = "";

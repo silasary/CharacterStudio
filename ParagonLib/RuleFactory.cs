@@ -11,7 +11,7 @@ namespace ParagonLib
     public static class RuleFactory
     {
         private static int num = 0;
-        private static Dictionary<string, RulesElement> Rules;
+        internal static Dictionary<string, RulesElement> Rules;
         private static Dictionary<string, RulesElement> RulesBySystem;
         static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
         
@@ -98,7 +98,7 @@ namespace ParagonLib
         private static RulesElement GenerateLevelset(string System)
         {
             var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
-            foreach (var level in Search(System, "Level", null))
+            foreach (var level in Search(System, "Level", null).Results())
             {
                 var Parameters = new Dictionary<string, string>();
                 Parameters.Add("name", level.InternalId);
@@ -174,25 +174,9 @@ namespace ParagonLib
             }
         }
 
-        internal static IEnumerable<RulesElement> Search(string System, string Type, string Category)
+        internal static Search Search(string System, string Type, string Category)
         {
-            var Categories = Category == null ? new string[0] : Category.Split(',');
-            var catCount = Categories.Count();
-            var Comparer = new CategoryComparer();
-            foreach (var item in Rules.Values.ToArray())
-            {
-                if (String.IsNullOrEmpty(Type) || item.Type == Type)
-                {
-                    if (String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System)
-                    {
-                        if (Categories.Intersect(item.Category, Comparer).Count() == catCount)
-                        {
-                            yield return item;
-                        }
-                    }
-                }
-            }
-            yield break;
+            return new Search(System, Type, Category);
         }
 
         public static bool Validate { get; set; }

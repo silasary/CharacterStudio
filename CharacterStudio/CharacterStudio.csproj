@@ -79,6 +79,12 @@
     <Compile Include="Controls\Common\Field.Designer.cs">
       <DependentUpon>Field.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Common\SelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Common\SelectionControl.Designer.cs">
+      <DependentUpon>SelectionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Panes\DetailsPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,6 +103,12 @@
     <Compile Include="Controls\Panes\NewCharacterPane.Designer.cs">
       <DependentUpon>NewCharacterPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Panes\SelectionPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\SelectionPane.Designer.cs">
+      <DependentUpon>SelectionPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrimaryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +123,9 @@
     <EmbeddedResource Include="Controls\Common\Field.resx">
       <DependentUpon>Field.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Common\SelectionControl.resx">
+      <DependentUpon>SelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panes\DetailsPane.resx">
       <DependentUpon>DetailsPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panes\NewCharacterPane.resx">
       <DependentUpon>NewCharacterPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Panes\SelectionPane.resx">
+      <DependentUpon>SelectionPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PrimaryForm.resx">
       <DependentUpon>PrimaryForm.cs</DependentUpon>
