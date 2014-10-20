@@ -46,7 +46,7 @@ namespace ParagonLib
                     break;
 
                 case "select":
-                    func = Builders.Lambda(Builders.Select(Params(Parameters, "Category", "number", "type", "requires", "optional", "Level")));
+                    func = Builders.Lambda(Builders.Select(Params(Parameters, "Category", "number", "type", "requires", "optional", "Level", "default")));
                     break;
 
                 case "textstring":

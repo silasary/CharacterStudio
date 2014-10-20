@@ -14,6 +14,8 @@ namespace ParagonLib
         public string Requires { get; set; }
 
         public string Type { get; set; }
+
+        public string Default { get; set; }
         
         public Workspace workspace { get; set; }
 
@@ -24,7 +26,7 @@ namespace ParagonLib
                 Value = "";
                 return;
             }
-            Options = RuleFactory.Search(workspace.System, Type, Category).Results();
+            Options = RuleFactory.Search(workspace.System, Type, Category, Default).Results();
             if (string.IsNullOrEmpty(Value))
             {
                 Value = "";

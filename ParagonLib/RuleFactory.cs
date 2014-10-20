@@ -98,7 +98,7 @@ namespace ParagonLib
         private static RulesElement GenerateLevelset(string System)
         {
             var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
-            foreach (var level in Search(System, "Level", null).Results())
+            foreach (var level in Search(System, "Level", null, null).Results())
             {
                 var Parameters = new Dictionary<string, string>();
                 Parameters.Add("name", level.InternalId);
@@ -174,9 +174,9 @@ namespace ParagonLib
             }
         }
 
-        internal static Search Search(string System, string Type, string Category)
+        internal static Search Search(string System, string Type, string Category, string Default)
         {
-            return new Search(System, Type, Category);
+            return new Search(System, Type, Category, Default);
         }
 
         public static bool Validate { get; set; }

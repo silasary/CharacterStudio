@@ -7,15 +7,17 @@ namespace ParagonLib
 {
     public class Search
     {
-        private string System;
-        private string Type;
-        private string Category;
+        public string System { get; set; }
+        public string Type { get; set; }
+        public string Category { get; set; }
+        public string Default { get; set; }
 
-        public Search(string System, string Type, string Category)
+        public Search(string System, string Type, string Category, string Default)
         {
             this.System = System;
             this.Type = Type;
             this.Category = Category;
+            this.Default = Default;
         }
 
         public IEnumerable<RulesElement> Results()
