@@ -107,7 +107,6 @@ namespace ParagonLib
                 levelset.Rules.Add(new Instruction("grant", Parameters));
             }
             return levelset;
-
         }
 
         private static int GenerateUID()

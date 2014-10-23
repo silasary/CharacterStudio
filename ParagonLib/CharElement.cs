@@ -70,10 +70,10 @@ namespace ParagonLib
             foreach (var rule in this.RulesElement.Rules)
             {
                 rule.Calculate(this, this.workspace);
-                foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
-                {                                   //  Don't change this method, fix the cause.
-                    child.Recalculate();
-                }
+            }
+            foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
+            {                                   //  Don't change this method, fix the cause.
+                child.Recalculate();
             }
         }
     }
