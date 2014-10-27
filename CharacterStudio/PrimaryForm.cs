@@ -46,6 +46,7 @@ namespace CharacterStudio
         internal void LoadCharacter(Character Char)
         {
             this.CurrentWorkspace = Char.workspace;
+            this.Text = string.Format("Character Studio [{0}]", Char.workspace.System);
             foreach (var item in LoadedPanels.Values)
             {
                 item.OnCharacterLoad();

@@ -39,6 +39,7 @@ namespace ParagonLib
             if (!String.IsNullOrEmpty(System))
                 Levelset = RuleFactory.New("_LEVELSET_", this);
             CharacterRef = character;
+            this.System = System;
         }
 
         public List<Adventure> AdventureLog { get; set; }

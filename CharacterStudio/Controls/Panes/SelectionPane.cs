@@ -20,6 +20,12 @@ namespace CharacterStudio.Controls.Panes
             Selectables = p;
         }
 
+        public override void OnCharacterLoad()
+        {
+            base.OnCharacterLoad();
+            OnCharacterUpdated();
+        }
+
         public override void OnCharacterUpdated()
         {
             base.OnCharacterUpdated();
