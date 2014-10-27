@@ -48,6 +48,7 @@ namespace CharacterStudio.Controls.Panes
         {
             Character Char = new Character((string)listBox1.SelectedItem);
             LoadCharacter(Char);
+            DisplayPanel<SelectionPanes.SelectRace>();
         }
     }
 }

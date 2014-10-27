@@ -13,6 +13,20 @@ namespace ParagonLib
 
         private CharElement Levelset;
 
+        public IEnumerable<Selection> Selections(params string[] Types)
+        {
+            foreach (var item in AllElements)
+            {
+                var choices = (item.Value.Target as CharElement).Choices;
+                foreach (var c in choices)
+                {
+                    if (Types.Length == 0 || Types.Contains(c.Value.Type,StringComparer.CurrentCultureIgnoreCase))
+                        yield return c.Value;
+                }
+            }
+            yield break;
+        }
+
         public Character CharacterRef { get; private set; }
 
         public Workspace(string System, Character character)
