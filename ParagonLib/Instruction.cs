@@ -30,6 +30,8 @@ namespace ParagonLib
             Expression<Action<CharElement, Workspace>> func;
             // This here is extreme optimization.  We're taking the instruction set and compiling it to refer to constant values,
             // rather than the dictionary (or XML) we started with
+
+            Expression<Func<string>> validation;
             switch (Operation)
             {
                 case "statadd":
@@ -48,6 +50,7 @@ namespace ParagonLib
 
                 case "grant":
                     func = Builders.Lambda(Builders.Grant(Params(Parameters, "name", "type", "requires", "Level")));
+                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
                     break;
 
                 case "select":
@@ -99,6 +102,14 @@ namespace ParagonLib
                     return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(pa, Body), pa); //Not sure if this works.
             }
 
+            public static Expression<Func<string>> ValidationLambda(params Expression[] Body)
+            {
+                var pa = new ParameterExpression[] { pCharElement, pWorkspace };
+                if (Body.Count() == 1)
+                    return Expression<Func<string>>.Lambda<Func<string>>(Body.First(), pa);
+                else
+                    return Expression<Func<string>>.Lambda<Func<string>>(Expression.Block(pa, Body), pa); //Not sure if this works.
+            }
             public static MethodInfo RefGetMethod(Type t, string m)
             {
                 var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic);
@@ -145,6 +156,22 @@ namespace ParagonLib
                     pWorkspace, Builders.RefGetMethod(typeof(Workspace), "AliasStat"),
                         Expression.Constant(name, typeof(String)), Expression.Constant(alias, typeof(string))
                     );
+            }
+
+            internal static Expression ValidateExists(string[] args)
+            {
+                var id = args[0];
+                var type = args[1];
+                LabelTarget returnTarget = Expression.Label(typeof(string));
+                return Expression.Block(
+                 Expression.IfThen( // if (RuleFactory.GetRule(id))
+                    Expression.Equal(Expression.Call(null, RefGetMethod(typeof(RuleFactory), "GetRule"), Expression.Constant(id)), Expression.Constant(null))
+                    , // {
+                        Expression.Return(returnTarget, Expression.Call(null, RefGetMethod(typeof(string), "Format"), Expression.Constant("Cannot grant nonexistant element '{0}'"), Expression.Constant(id))
+                    // return string.Format("blah blah {0}", id);
+                    ) // }
+                 ),
+                Expression.Label(returnTarget));
             }
         }
     }

@@ -77,7 +77,7 @@ namespace ParagonLib
             else if (Rules.ContainsKey(id))
                 re = Rules[id];
             else
-                re = Load(id);
+                re = GetRule(id);
             return re;
         }
 
@@ -113,7 +113,7 @@ namespace ParagonLib
                 RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
         }
 
-        private static RulesElement Load(string id)
+        private static RulesElement GetRule(string id)
         {
             while (Loading)
             {
@@ -213,7 +213,7 @@ namespace ParagonLib
                         string newfile;
                         var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
                         File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
-                        Load(newfile);
+                        LoadFile(newfile);
                     }
                 }
                 catch (WebException v)
