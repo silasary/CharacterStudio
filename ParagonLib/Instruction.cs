@@ -31,7 +31,7 @@ namespace ParagonLib
             // This here is extreme optimization.  We're taking the instruction set and compiling it to refer to constant values,
             // rather than the dictionary (or XML) we started with
 
-            Expression<Func<string>> validation;
+            Expression<Func<string>> validation = null;
             switch (Operation)
             {
                 case "statadd":
@@ -50,7 +50,7 @@ namespace ParagonLib
 
                 case "grant":
                     func = Builders.Lambda(Builders.Grant(Params(Parameters, "name", "type", "requires", "Level")));
-                    //validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
+                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
                     break;
 
                 case "select":
@@ -65,6 +65,8 @@ namespace ParagonLib
                     throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));
             }
             Calculate = func.Compile();
+            if (validation != null)
+                Validate = validation.Compile();
         }
 
         // Workaround for Mono:
@@ -72,6 +74,7 @@ namespace ParagonLib
 
         private string[] Params(DefaultDictionary<string, string> Parameters, params string[] keys)
         {
+            Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
             string[] vals = new string[keys.Length];
             for (int i = 0; i < keys.Length; i++)
             {
@@ -106,13 +109,13 @@ namespace ParagonLib
             {
                 var pa = new ParameterExpression[] { pCharElement, pWorkspace };
                 if (Body.Count() == 1)
-                    return Expression<Func<string>>.Lambda<Func<string>>(Body.First(), pa);
+                    return Expression<Func<string>>.Lambda<Func<string>>(Body.First());
                 else
-                    return Expression<Func<string>>.Lambda<Func<string>>(Expression.Block(pa, Body), pa); //Not sure if this works.
+                    return Expression<Func<string>>.Lambda<Func<string>>(Expression.Block(pa, Body)); //Not sure if this works.
             }
             public static MethodInfo RefGetMethod(Type t, string m)
             {
-                var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic) ?? t.GetMethod(m, BindingFlags.Static);
+                var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic) ?? t.GetMethod(m, BindingFlags.Static) ?? t.GetMethod(m, BindingFlags.Static | BindingFlags.NonPublic);
                 if (method == null)
                     throw new MissingMethodException(String.Format("{0}.{1}() not found.", t, m));
                 return method;
@@ -163,15 +166,22 @@ namespace ParagonLib
                 var id = args[0];
                 var type = args[1];
                 LabelTarget returnTarget = Expression.Label(typeof(string));
+                var RuleIsNull = Expression.Equal(Expression.Call(null, RefGetMethod(typeof(RuleFactory), "FindRulesElement"), Expression.Constant(id, typeof(string)), Expression.Constant(null, typeof(string))), Expression.Constant(null));
+
+                var returnError = Expression.Return(returnTarget, StringFormat(Expression.Constant("Cannot grant nonexistant element '{0}'", typeof(string)), Expression.Constant(id)));
+                
                 return Expression.Block(
-                 Expression.IfThen( // if (RuleFactory.GetRule(id))
-                    Expression.Equal(Expression.Call(null, RefGetMethod(typeof(RuleFactory), "GetRule"), Expression.Constant(id)), Expression.Constant(null))
-                    , // {
-                        Expression.Return(returnTarget, Expression.Call(null, RefGetMethod(typeof(string), "Format"), Expression.Constant("Cannot grant nonexistant element '{0}'"), Expression.Constant(id))
-                    // return string.Format("blah blah {0}", id);
-                    ) // }
-                 ),
-                Expression.Label(returnTarget));
+                 Expression.IfThen(RuleIsNull, returnError),
+                 Expression.Label(returnTarget,Expression.Constant(null, typeof(string)))
+                 );
+                // if (RuleFactory.GetRule(id))
+                //   return string.Format("blah blah {0}", id);
+                // return null;
+            }
+
+            private static Expression StringFormat(ConstantExpression Format,  ConstantExpression arg0)
+            {
+               return Expression.Call(typeof(string).GetMethod("Format", new Type[] { typeof(string), typeof(object)}), Format, arg0);
             }
         }
     }

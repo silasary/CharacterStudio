@@ -250,6 +250,9 @@ namespace ParagonLib
                     if (rule.Validate == null)
                         continue;
                     var error = rule.Validate();
+                    if (error != null)
+                        Logging.Log("Xml Validation", error);
+
                 }
             }
         }
