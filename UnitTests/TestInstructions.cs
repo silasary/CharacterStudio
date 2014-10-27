@@ -22,10 +22,9 @@ namespace UnitTests
         [Test]
         public void TestGrant()
         {
-            var ws = new Workspace("Test", null);
             var elements = 
                 //===Start===
-new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
     new XElement(XName.Get("RulesElement"),
         new XAttribute("name", "Granter"),
         new XAttribute("type", "Test"),
@@ -47,6 +46,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
     ));
             //===END===
             RuleFactory.Load(elements);
+            var ws = new Workspace("Test", null);
             var charElement = RuleFactory.New("TEST_GRANT_GRANTER", ws);
             ws.Recalculate(true);
             Debug.Assert(ws.GetStat("GRANTEE_VALUE").Value == 1);
@@ -58,10 +58,9 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         [Test]
         public void TestSelect()
         {
-            var ws = new Workspace("Test", null);
             var elements =
                 //===Start===
-new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
     new XElement(XName.Get("RulesElement"),
         new XAttribute("name", "Selector"),
         new XAttribute("type", "Test"),
@@ -112,8 +111,8 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             )
         )
     ));
-
             RuleFactory.Load(elements);
+            var ws = new Workspace("Test", null); 
             var charElement = RuleFactory.New("TEST_SELECT_SELECTOR", ws);
             ws.Recalculate(true);
             Debug.Assert(charElement.Choices.Count == 1);
@@ -126,9 +125,8 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         [Test]
         public void TestTextstring()
         {
-            var ws = new Workspace("Test", null);
             var elements =
-new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
     new XElement(XName.Get("RulesElement"),
         new XAttribute("name", "Selector"),
         new XAttribute("type", "Test"),
@@ -140,6 +138,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         )));
 
             RuleFactory.Load(elements);
+            var ws = new Workspace("Test", null);
             var charElement = RuleFactory.New("TEST_TEXTSTRING_ELEMENT", ws);
             ws.Recalculate(true);
             Debug.Assert(ws.GetStat("TEST_TEXTSTRING").String.Count() == 1);

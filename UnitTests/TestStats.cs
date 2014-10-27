@@ -46,7 +46,7 @@ namespace UnitTests
         [Test]
         public void TestStatRecursion()
         {
-            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
      new XElement(XName.Get("RulesElement"),
          new XAttribute("name", "Languages"),
          new XAttribute("type", "Test"),
@@ -70,7 +70,7 @@ namespace UnitTests
         [Test]
         public void TestStatTypes()
         {
-            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
      new XElement(XName.Get("RulesElement"),
          new XAttribute("name", "Languages"),
          new XAttribute("type", "Test"),
@@ -92,7 +92,7 @@ namespace UnitTests
         [Test]
         public void TestStatFunctions()
         {
-            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+            RuleFactory.Load(new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
      new XElement(XName.Get("RulesElement"),
          new XAttribute("name", "Languages"),
          new XAttribute("type", "Test"),
