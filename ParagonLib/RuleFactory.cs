@@ -230,7 +230,7 @@ namespace ParagonLib
         {
             foreach (var item in Rules)
             {
-                var CSV_Specifics = new string[] { "Racial Traits" };
+                var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
                 foreach (var spec in CSV_Specifics)
                 {
                     if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec]))
@@ -241,9 +241,15 @@ namespace ParagonLib
                             if (e.Value == null)
                                 Logging.Log("Xml Validation", "ERROR: {0} not found.", e.Key);
                             else
-                                Console.WriteLine("WARNING: {0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
+                                Logging.Log("Xml Validation", "WARNING: {0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
                         }
                     }
+                }
+                foreach (var rule in item.Value.Rules)
+                {
+                    if (rule.Validate == null)
+                        continue;
+                    var error = rule.Validate();
                 }
             }
         }

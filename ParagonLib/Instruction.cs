@@ -14,6 +14,11 @@ namespace ParagonLib
         /// </summary>
         public Action<CharElement, Workspace> Calculate;
 
+        /// <summary>
+        /// public string Validate();
+        /// </summary>
+        public Func<string> Validate;
+
         public Instruction(string Operation, Dictionary<string, string> Parameters)
         {
             //Expression<Func<int, bool>> tree = s => s < 5;
