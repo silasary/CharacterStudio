@@ -157,21 +157,8 @@ namespace ParagonLib
                 var UpdateInfo = doc.Root.Element("UpdateInfo");
                 if (UpdateInfo != null)
                 {
-                    try
-                    {
-                        string filename = UpdateInfo.Element("Filename").Value;
-                        Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
-                        if (verRemote > verLocal)
-                        {
-                            string newfile;
-                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value,filename));
-                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
-                            Load(newfile);
-                        }
-                    }
-                    catch (WebException v)
-                    { Logging.Log("Updater", "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
+                    UpdateInfo.Add(new XAttribute("filename", file));
+                    QueueUpdate(UpdateInfo);
                 }
                 if (ext == ".index")
                 {
@@ -196,6 +183,43 @@ namespace ParagonLib
             }
         }
 
+        static Thread UpdateThread;
+        static Queue<XElement> UpdateQueue = new Queue<XElement>();
+        private static void QueueUpdate(XElement UpdateInfo)
+        {
+            UpdateQueue.Enqueue(UpdateInfo); 
+            if (UpdateThread == null || !UpdateThread.IsAlive)
+            {
+                UpdateThread = new Thread(UpdateLoop) { IsBackground = true, Name = "UpdateLoop" };
+                UpdateThread.Start();
+            }
+        
+        }
+
+        private static void UpdateLoop()
+        {
+            while (UpdateQueue.Count > 0)
+            {
+                var UpdateInfo = UpdateQueue.Dequeue();
+                var file = UpdateInfo.Attribute("filename").Value;
+                try
+                {
+                    string filename = UpdateInfo.Element("Filename").Value;
+                    Version verLocal = new Version(UpdateInfo.Element("Version").Value);
+                    Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
+                    if (verRemote > verLocal)
+                    {
+                        string newfile;
+                        var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                        File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
+                        Load(newfile);
+                    }
+                }
+                catch (WebException v)
+                { Logging.Log("Updater", "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
+            }
+        }
+
         private static Uri Uri(string p, string filename)
         {
             return new Uri(p.Replace("^", filename));
@@ -209,6 +233,9 @@ namespace ParagonLib
             {
                 Load(item);
             }
+            var system = doc.Root.Attribute("game-system").Value;
+            if (!knownSystems.Contains(system))
+                knownSystems.Add(system);
         }
 
         internal static Search Search(string System, string Type, string Category, string Default)
