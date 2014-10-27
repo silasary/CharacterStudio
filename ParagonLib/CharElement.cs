@@ -64,7 +64,7 @@ namespace ParagonLib
                 this.RulesElement = RuleFactory.FindRulesElement(RulesElementId, workspace.System);
             if (this.RulesElement == null)
             {
-                Console.WriteLine("ERROR: {0} could not be loaded.", RulesElementId);
+                Logging.Log("PartLoader", "ERROR: {0} could not be loaded.", RulesElementId);
                 return;
             }
             foreach (var rule in this.RulesElement.Rules)

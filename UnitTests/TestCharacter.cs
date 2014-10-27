@@ -12,7 +12,7 @@ namespace UnitTests
         public void TestLeveling()
         {
             var elements =
-new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Tests"),
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "Test"),
     //new XElement(XName.Get("RulesElement"),
     //    new XAttribute("name", "TestRules"),
     //    new XAttribute("type", "Ruleset"),

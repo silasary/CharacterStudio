@@ -56,13 +56,13 @@ namespace ParagonLib
                 var CSV_Specifics = new string[] { "Racial Traits" };
                 foreach (var spec in CSV_Specifics)
                 {
-                    if (item.Value.Specifics.ContainsKey(spec))
+                    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec]))
                     {
                         var errors = item.Value.Specifics[spec].Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
                         foreach (var e in errors)
                         {
                             if (e.Value == null)
-                                Console.WriteLine("ERROR: {0} not found.", e.Key);
+                                Logging.Log("Xml Validation", "ERROR: {0} not found.", e.Key);
                             else
                                 Console.WriteLine("WARNING: {0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
                         }
@@ -159,19 +159,19 @@ namespace ParagonLib
                 {
                     try
                     {
-
+                        string filename = UpdateInfo.Element("Filename").Value;
                         Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(UpdateInfo.Element("VersionAddress").Value));
+                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
                         if (verRemote > verLocal)
                         {
                             string newfile;
-                            var xml = Singleton<WebClient>.Instance.DownloadString(new Uri(UpdateInfo.Element("PartAddress").Value));
-                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), UpdateInfo.Element("Filename").Value), xml);
+                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value,filename));
+                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             Load(newfile);
                         }
                     }
                     catch (WebException v)
-                    { Console.WriteLine("Error: {0}", v.ToString()); }
+                    { Logging.Log("Updater", "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
                 }
                 if (ext == ".index")
                 {
@@ -184,7 +184,7 @@ namespace ParagonLib
                         string newfile;
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
-                            var xml = Singleton<WebClient>.Instance.DownloadString(new Uri(n.Element("PartAddress").Value));
+                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(n.Element("PartAddress").Value, newfile));
                             File.WriteAllText(newfile, xml);
                         }
                     }
@@ -194,6 +194,11 @@ namespace ParagonLib
             {
                 System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
             }
+        }
+
+        private static Uri Uri(string p, string filename)
+        {
+            return new Uri(p.Replace("^", filename));
         }
 
         public static bool Loading { get; set; }
