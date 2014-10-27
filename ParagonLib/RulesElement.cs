@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ParagonLib
 {
@@ -8,7 +10,7 @@ namespace ParagonLib
         public List<Instruction> Rules = new List<Instruction>();
         public Dictionary<string, string> Specifics = new Dictionary<string, string>();
 
-        public RulesElement(System.Xml.Linq.XElement item)
+        public RulesElement(XElement item)
         {
             if (item == null)
                 return;
@@ -44,9 +46,9 @@ namespace ParagonLib
             }
         }
 
-        private Dictionary<string, string> MakeDict(IEnumerable<System.Xml.Linq.XAttribute> enumerable)
+        private Dictionary<string, string> MakeDict(IEnumerable<XAttribute> enumerable)
         {
-            Dictionary<string, string> d = new Dictionary<string, string>();
+            Dictionary<string, string> d = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
             foreach (var item in enumerable)
             {
                 d.Add(item.Name.LocalName, item.Value);

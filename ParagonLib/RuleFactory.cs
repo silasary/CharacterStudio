@@ -5,6 +5,8 @@ using System.Threading;
 using System.Xml.Linq;
 using System.Linq;
 using System.Xml;
+using Kamahl.Common;
+using System.Net;
 
 namespace ParagonLib
 {
@@ -137,29 +139,60 @@ namespace ParagonLib
 
         private static void LoadFile(string file)
         {
-            if (Path.GetExtension(file) == ".part")
+            string ext = Path.GetExtension(file);
+            if (!new string[] { ".part", ".index", ".setting" }.Contains(ext))
+                return;
+            try
             {
-                try
-                {
-                    XDocument doc = XDocument.Load(file);
-                    var system = doc.Root.Attribute("game-system").Value;
-                    if (!knownSystems.Contains(system))
-                        knownSystems.Add(system);
+                
+                XDocument doc = XDocument.Load(file);
+                var system = doc.Root.Attribute("game-system").Value;
+                if (!knownSystems.Contains(system))
+                    knownSystems.Add(system);
+                if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {
                         Load(item);
                     }
-                    var UpdateInfo = doc.Root.Element("UpdateInfo");
-                    if (UpdateInfo != null)
+                var UpdateInfo = doc.Root.Element("UpdateInfo");
+                if (UpdateInfo != null)
+                {
+                    try
                     {
 
-
+                        Version verLocal = new Version(UpdateInfo.Element("Version").Value);
+                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(UpdateInfo.Element("VersionAddress").Value));
+                        if (verRemote > verLocal)
+                        {
+                            string newfile;
+                            var xml = Singleton<WebClient>.Instance.DownloadString(new Uri(UpdateInfo.Element("PartAddress").Value));
+                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), UpdateInfo.Element("Filename").Value), xml);
+                            Load(newfile);
+                        }
+                    }
+                    catch (WebException v)
+                    { Console.WriteLine("Error: {0}", v.ToString()); }
+                }
+                if (ext == ".index")
+                {
+                    foreach (var n in UpdateInfo.Elements("Obsolete"))
+                    {
+                        File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
+                    }
+                    foreach (var n in UpdateInfo.Elements("Part"))
+                    {
+                        string newfile;
+                        if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
+                        {
+                            var xml = Singleton<WebClient>.Instance.DownloadString(new Uri(n.Element("PartAddress").Value));
+                            File.WriteAllText(newfile, xml);
+                        }
                     }
                 }
-                catch (XmlException v)
-                {
-                    System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
-                }
+            }
+            catch (XmlException v)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
             }
         }
 
