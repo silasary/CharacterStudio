@@ -50,7 +50,7 @@ namespace ParagonLib
 
                 case "grant":
                     func = Builders.Lambda(Builders.Grant(Params(Parameters, "name", "type", "requires", "Level")));
-                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
+                    //validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
                     break;
 
                 case "select":
@@ -112,7 +112,7 @@ namespace ParagonLib
             }
             public static MethodInfo RefGetMethod(Type t, string m)
             {
-                var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic);
+                var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic) ?? t.GetMethod(m, BindingFlags.Static);
                 if (method == null)
                     throw new MissingMethodException(String.Format("{0}.{1}() not found.", t, m));
                 return method;
