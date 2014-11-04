@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.SidebarPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.ContentPanel = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
+            this.Help = new System.Windows.Forms.HelpProvider();
             this.HeaderPanel.SuspendLayout();
+            this.SidebarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // HeaderPanel
@@ -47,6 +50,16 @@
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Size = new System.Drawing.Size(837, 71);
             this.HeaderPanel.TabIndex = 0;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(228, 12);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(99, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "SaveCharacter";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -70,11 +83,22 @@
             // 
             // SidebarPanel
             // 
+            this.SidebarPanel.Controls.Add(this.label1);
             this.SidebarPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.SidebarPanel.Location = new System.Drawing.Point(0, 71);
             this.SidebarPanel.Name = "SidebarPanel";
             this.SidebarPanel.Size = new System.Drawing.Size(156, 662);
             this.SidebarPanel.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(209, 52);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Need Layout concepts.\r\nDo people want horizonal flow (Old Builder)\r\nOr Vertical f" +
+    "low (New Builder)\r\nOr something else?\r\n";
             // 
             // ContentPanel
             // 
@@ -83,16 +107,6 @@
             this.ContentPanel.Name = "ContentPanel";
             this.ContentPanel.Size = new System.Drawing.Size(681, 662);
             this.ContentPanel.TabIndex = 2;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(228, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(99, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "SaveCharacter";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // PrimaryForm
             // 
@@ -105,6 +119,8 @@
             this.Name = "PrimaryForm";
             this.Text = "Form1";
             this.HeaderPanel.ResumeLayout(false);
+            this.SidebarPanel.ResumeLayout(false);
+            this.SidebarPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -117,6 +133,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.HelpProvider Help;
     }
 }
 

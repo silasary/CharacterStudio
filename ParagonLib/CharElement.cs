@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ParagonLib
 {
@@ -64,7 +65,7 @@ namespace ParagonLib
                 this.RulesElement = RuleFactory.FindRulesElement(RulesElementId, workspace.System);
             if (this.RulesElement == null)
             {
-                Logging.Log("PartLoader", "ERROR: {0} could not be loaded.", RulesElementId);
+                Logging.Log("PartLoader", TraceEventType.Error, "{0} could not be loaded.", RulesElementId);
                 return;
             }
             foreach (var rule in this.RulesElement.Rules)

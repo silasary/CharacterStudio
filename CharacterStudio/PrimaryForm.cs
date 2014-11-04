@@ -19,6 +19,7 @@ namespace CharacterStudio
             InitializeComponent();
             CurrentWorkspace = new Workspace(null,null);
             DisplayPanel<DetailsPane>();
+            this.HelpButton = true;
         }
 
         public ParagonLib.Workspace CurrentWorkspace { get; set; }

@@ -14,6 +14,7 @@ namespace ParagonLib
     [DataContract(Name="D20Character", Namespace="")]
     public class Character
     {
+
         public Workspace workspace;
 
         public string Name { get; set; }

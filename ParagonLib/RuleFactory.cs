@@ -1,6 +1,7 @@
 ﻿using Kamahl.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -132,9 +133,15 @@ namespace ParagonLib
             try
             {
                 XDocument doc = XDocument.Load(file);
-                var system = doc.Root.Attribute("game-system").Value;
-                if (!knownSystems.Contains(system))
-                    knownSystems.Add(system);
+                string system = null;
+                if (doc.Root.Attribute("game-system") != null)
+                {
+                    system = doc.Root.Attribute("game-system").Value;
+                    if (!knownSystems.Contains(system))
+                        knownSystems.Add(system);
+                }
+                else
+                    Logging.LogIf(ext != ".setting", "Xml Validation", "{0} does not have a defined system.", file);
                 if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {
@@ -217,7 +224,7 @@ namespace ParagonLib
                     }
                 }
                 catch (WebException v)
-                { Logging.Log("Updater", "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
+                { Logging.Log("Updater", TraceEventType.Information, "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
             }
         }
 
@@ -239,9 +246,9 @@ namespace ParagonLib
                         foreach (var e in errors)
                         {
                             if (e.Value == null)
-                                Logging.Log("Xml Validation", "ERROR: {0} not found.", e.Key);
+                                Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
                             else
-                                Logging.Log("Xml Validation", "WARNING: {0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
+                                Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
                         }
                     }
                 }
@@ -251,7 +258,7 @@ namespace ParagonLib
                         continue;
                     var error = rule.Validate();
                     if (error != null)
-                        Logging.Log("Xml Validation", error);
+                        Logging.Log("Xml Validation", TraceEventType.Error, error);
 
                 }
             }

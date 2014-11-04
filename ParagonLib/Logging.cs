@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,10 @@ namespace ParagonLib
 {
     static class Logging
     {
+        
         static List<string> OpenLogs = new List<string>();
-        internal static void Log(string Log, string Message, params object[] args)
+
+        internal static void Log(string Log, TraceEventType level, string Message, params object[] args)
         {
             lock (OpenLogs)
             {
@@ -18,7 +21,7 @@ namespace ParagonLib
             Message = String.Format(Message, args);
             string logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", Log + ".log");
 #else
-                Message = Log + ": \t" + String.Format(Message, args);
+                Message = String.Format("{0}: \t{1}: {2}",Log,level.ToString(), String.Format(Message, args));
                 string logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "debug" + ".log");
 #endif
                 if (!OpenLogs.Contains(logfile))
@@ -28,6 +31,19 @@ namespace ParagonLib
                 }
                 File.AppendAllLines(logfile, new string[] { Message });
             }
+
+        }
+        [Obsolete("Set a logging level")]
+        internal static void Log(string Log, string Message, params object[] args)
+        {
+            Logging.Log(Log, TraceEventType.Information, Message, args);
+        }
+
+        internal static void LogIf(bool test, string Log, string Message, params object[] args)
+        {
+            if (test)
+                Logging.Log(Log, Message, args);
+            
         }
     }
 }

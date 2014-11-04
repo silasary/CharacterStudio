@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -33,7 +34,7 @@ namespace ParagonLib
         {
             this.System = System;
             if (System != "" && !RuleFactory.KnownSystems.Contains(System))
-                Logging.Log("Load Character", "Warning: Requested system '{0}' not loaded.", System);
+                Logging.Log("Load Character", TraceEventType.Warning,"Warning: Requested system '{0}' not loaded.", System);
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
             ParserFunctions = new Dictionary<string, Func<string,string, int>>();
