@@ -32,10 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ManualBuild = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.field1 = new CharacterStudio.Controls.Common.Field();
-            this.field2 = new CharacterStudio.Controls.Common.Field();
-            this.field3 = new CharacterStudio.Controls.Common.Field();
             this.AutoBuild = new System.Windows.Forms.Button();
+            this.field3 = new CharacterStudio.Controls.Common.Field();
+            this.field2 = new CharacterStudio.Controls.Common.Field();
+            this.field1 = new CharacterStudio.Controls.Common.Field();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +59,7 @@
             // 
             // ManualBuild
             // 
+            this.ManualBuild.Enabled = false;
             this.ManualBuild.Location = new System.Drawing.Point(32, 196);
             this.ManualBuild.Name = "ManualBuild";
             this.ManualBuild.Size = new System.Drawing.Size(124, 23);
@@ -81,21 +82,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Autobuild";
             // 
-            // field1
+            // AutoBuild
             // 
-            this.field1.Label = "Class";
-            this.field1.Location = new System.Drawing.Point(16, 28);
-            this.field1.Name = "field1";
-            this.field1.Size = new System.Drawing.Size(187, 32);
-            this.field1.TabIndex = 0;
-            // 
-            // field2
-            // 
-            this.field2.Label = "Race";
-            this.field2.Location = new System.Drawing.Point(16, 66);
-            this.field2.Name = "field2";
-            this.field2.Size = new System.Drawing.Size(187, 32);
-            this.field2.TabIndex = 0;
+            this.AutoBuild.Location = new System.Drawing.Point(16, 146);
+            this.AutoBuild.Name = "AutoBuild";
+            this.AutoBuild.Size = new System.Drawing.Size(187, 23);
+            this.AutoBuild.TabIndex = 1;
+            this.AutoBuild.Text = "AutoBuild";
+            this.AutoBuild.UseVisualStyleBackColor = true;
             // 
             // field3
             // 
@@ -105,14 +99,21 @@
             this.field3.Size = new System.Drawing.Size(187, 32);
             this.field3.TabIndex = 0;
             // 
-            // AutoBuild
+            // field2
             // 
-            this.AutoBuild.Location = new System.Drawing.Point(16, 146);
-            this.AutoBuild.Name = "AutoBuild";
-            this.AutoBuild.Size = new System.Drawing.Size(187, 23);
-            this.AutoBuild.TabIndex = 1;
-            this.AutoBuild.Text = "AutoBuild";
-            this.AutoBuild.UseVisualStyleBackColor = true;
+            this.field2.Label = "Race";
+            this.field2.Location = new System.Drawing.Point(16, 66);
+            this.field2.Name = "field2";
+            this.field2.Size = new System.Drawing.Size(187, 32);
+            this.field2.TabIndex = 0;
+            // 
+            // field1
+            // 
+            this.field1.Label = "Class";
+            this.field1.Location = new System.Drawing.Point(16, 28);
+            this.field1.Name = "field1";
+            this.field1.Size = new System.Drawing.Size(187, 32);
+            this.field1.TabIndex = 0;
             // 
             // NewCharacterPane
             // 

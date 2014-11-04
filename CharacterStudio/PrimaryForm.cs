@@ -56,7 +56,10 @@ namespace CharacterStudio
 
         private void button3_Click(object sender, EventArgs e)
         {
-            CurrentWorkspace.CharacterRef.Save("test.D20Character");
+            if (CurrentWorkspace.CharacterRef == null)
+                MessageBox.Show("No character Loaded!");
+            else
+                CurrentWorkspace.CharacterRef.Save("test.D20Character");
         }
     }
 }

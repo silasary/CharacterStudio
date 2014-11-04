@@ -141,7 +141,7 @@ namespace ParagonLib
                         knownSystems.Add(system);
                 }
                 else
-                    Logging.LogIf(ext != ".setting", "Xml Validation", "{0} does not have a defined system.", file);
+                    Logging.LogIf(ext != ".setting", TraceEventType.Critical, "Xml Validation", "{0} does not have a defined system.", file);
                 if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {

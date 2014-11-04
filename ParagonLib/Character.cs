@@ -11,13 +11,17 @@ namespace ParagonLib
     /// <summary>
     /// Base class for a character.
     /// </summary>
-    [DataContract(Name="D20Character", Namespace="")]
+    [DataContract(Name="D20Character")]
     public class Character
     {
 
         public Workspace workspace;
-
+        
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
+        List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
 
         public Character(string System)
         {

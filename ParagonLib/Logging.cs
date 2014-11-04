@@ -39,10 +39,10 @@ namespace ParagonLib
             Logging.Log(Log, TraceEventType.Information, Message, args);
         }
 
-        internal static void LogIf(bool test, string Log, string Message, params object[] args)
+        internal static void LogIf(bool test, TraceEventType level,string Log, string Message, params object[] args)
         {
             if (test)
-                Logging.Log(Log, Message, args);
+                Logging.Log(Log, level, Message, args);
             
         }
     }
