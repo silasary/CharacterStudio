@@ -45,16 +45,17 @@ namespace CharacterStudio
 
         }
 
-        public override DockStyle Dock
-        {
-            get
-            {
-                return DockStyle.Fill;
-            }
-            set
-            {
-                throw new InvalidOperationException();
-            }
-        }
+        //public override DockStyle Dock
+        //{
+        //    get
+        //    {
+                
+        //        return DockStyle.Fill;
+        //    }
+        //    set
+        //    {
+        //        base.Dock = value;
+        //    }
+        //}
     }
 }

@@ -28,18 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.listView1 = new System.Windows.Forms.ListView();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
+            // 
+            // listView1
+            // 
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Location = new System.Drawing.Point(112, 0);
+            this.listView1.Margin = new System.Windows.Forms.Padding(10);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(352, 391);
+            this.listView1.TabIndex = 1;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.listView1_RetrieveVirtualItem);
             // 
             // checkedListBox1
             // 
             this.checkedListBox1.AllowDrop = true;
-            this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(4, 4);
+            this.checkedListBox1.Location = new System.Drawing.Point(0, 0);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(112, 379);
+            this.checkedListBox1.Size = new System.Drawing.Size(112, 391);
             this.checkedListBox1.Sorted = true;
             this.checkedListBox1.TabIndex = 0;
             // 
@@ -47,6 +58,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.checkedListBox1);
             this.Name = "LoadCharacterPane";
             this.Size = new System.Drawing.Size(464, 391);
@@ -57,5 +70,6 @@
         #endregion
 
         private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.ListView listView1;
     }
 }

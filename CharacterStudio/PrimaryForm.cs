@@ -32,6 +32,8 @@ namespace CharacterStudio
                 LoadedPanels.Add(typeof(PanelType), new PanelType() { PrimaryForm = this });
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(LoadedPanels[typeof(PanelType)]);
+            LoadedPanels[typeof(PanelType)].Dock = DockStyle.Fill;
+            this.PerformLayout();
         }
 
         private void button1_Click(object sender, EventArgs e)
