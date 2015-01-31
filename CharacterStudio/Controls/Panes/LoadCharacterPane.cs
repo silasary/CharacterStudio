@@ -38,10 +38,5 @@ namespace CharacterStudio.Controls.Panes
             checkedListBox1.Items.Add(new Folder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters")),true);
 
         }
-
-        private void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-
-        }
     }
 }

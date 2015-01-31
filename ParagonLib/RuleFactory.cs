@@ -141,7 +141,7 @@ namespace ParagonLib
                         knownSystems.Add(system);
                 }
                 else
-                    Logging.LogIf(ext != ".setting", TraceEventType.Critical, "Xml Validation", "{0} does not have a defined system.", file);
+                    Logging.LogIf(ext == ".part", TraceEventType.Critical, "Xml Validation", "{0} does not have a defined system.", file);
                 if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {
@@ -213,14 +213,30 @@ namespace ParagonLib
                 try
                 {
                     string filename = UpdateInfo.Element("Filename") != null ? UpdateInfo.Element("Filename").Value : Path.GetFileName(file);
-                    Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                    Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
-                    if (verRemote > verLocal)
+                    try
                     {
-                        string newfile;
-                        var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
-                        File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
-                        LoadFile(newfile);
+                        Version verLocal = new Version(UpdateInfo.Element("Version").Value);
+                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
+                        if (verRemote > verLocal)
+                        {
+                            string newfile;
+                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
+                            LoadFile(newfile);
+                        }
+                    }
+                    catch (ArgumentException v)
+                    {
+                        Logging.Log("Updater", TraceEventType.Warning, "Invalid Version number '{0}' in file {1}.", UpdateInfo.Element("Version").Value, Path.GetFileName(file));
+                        string verLocal = UpdateInfo.Element("Version").Value;
+                        string verRemote = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename));
+                        if (verRemote != verLocal)
+                        {
+                            string newfile;
+                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
+                            LoadFile(newfile);
+                        }
                     }
                 }
                 catch (WebException v)
