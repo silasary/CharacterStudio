@@ -225,7 +225,7 @@ namespace ParagonLib
                             LoadFile(newfile);
                         }
                     }
-                    catch (ArgumentException v)
+                    catch (ArgumentException)
                     {
                         Logging.Log("Updater", TraceEventType.Warning, "Invalid Version number '{0}' in file {1}.", UpdateInfo.Element("Version").Value, Path.GetFileName(file));
                         string verLocal = UpdateInfo.Element("Version").Value;

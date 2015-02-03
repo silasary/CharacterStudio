@@ -14,7 +14,7 @@ namespace ParagonLib
     [DataContract(Name="D20Character")]
     public class Character
     {
-
+        [DataMember]
         public Workspace workspace;
         
         [DataMember]
@@ -36,9 +36,8 @@ namespace ParagonLib
             if (!Directory.Exists(folder = Path.GetDirectoryName(savefile)))
                 Directory.CreateDirectory(folder);
             var s = File.OpenWrite(savefile);
-            new System.Runtime.Serialization.DataContractSerializer(typeof(Character)).WriteObject(s, this);
+            new DataContractSerializer(typeof(Character), new DataContractSerializerSettings() { DataContractResolver = new ContractResolver() }).WriteObject(s, this);
             s.Close();
         }
-
     }
 }

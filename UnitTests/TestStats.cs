@@ -84,7 +84,7 @@ namespace UnitTests
          ))));
 
             var ws = new Workspace("Test", null);
-            RuleFactory.New("TEST_STAT_TYPES", ws);
+            RuleFactory.New("TEST_STAT_TYPES", ws); //This is very fickle, and risks the wrath of the GC.  But it should be safe for the lifespan of the test.
             ws.Recalculate();
             Assert.AreEqual(ws.GetStat("Buff").Value, 5);
         }

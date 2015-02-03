@@ -60,6 +60,7 @@
     <Compile Include="CategoryComparer.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharElement.cs" />
+    <Compile Include="ContractResolver.cs" />
     <Compile Include="DefaultDictionary.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Logging.cs" />
@@ -70,6 +71,9 @@
     <Compile Include="Selection.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Workspace.cs" />
+    <Compile Include="Workspace.Serialization.cs">
+      <DependentUpon>Workspace.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll" />

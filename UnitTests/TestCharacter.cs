@@ -78,8 +78,34 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             ws.Recalculate();
             Debug.Assert(ws.Level == 5); // Earned 120, which brings us to a total of 220. Level 5.
             //GC.KeepAlive(ruleset);
+            
         }
 
+        [Test]
+        public void TestSave()
+        {
+            var elements =
+new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", "TestSave"),
+    new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "1"),
+        new XAttribute("type", "Level"),
+        new XAttribute("internal-id", "TEST_LEVEL_1"),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50")),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "Strength"), new XAttribute("value", "12")),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "Constitution"), new XAttribute("value", "15")),
+            new XElement(XName.Get("statalias"), new XAttribute("name", "Strength"), new XAttribute("alias", "str")),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "str mod"), new XAttribute("value", "+ABILITYMOD(str)"))
+        )        
+    )
+));
+            RuleFactory.Load(elements);
+            var c = new Character("TestSave");
+            var ws = c.workspace;
+            ws.Recalculate();
+            c.Save("Test");
 
+
+        }
     }
 }
