@@ -64,7 +64,7 @@ namespace ParagonLib
 
         private void WriteRulesElementTally()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 
