@@ -105,7 +105,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             var ws = c.workspace;
             ws.Recalculate();
             c.Save("Test.D20Character");
-            File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", "Test.D20Character"), "./Test.D20Character");
+            File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", "Test.D20Character"), "./Test.D20Character", true);
         }
     }
 }

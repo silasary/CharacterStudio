@@ -21,6 +21,7 @@ namespace ParagonLib
 
         public bool Save(Character c, string savefile)
         {
+            c.workspace.Recalculate(true);
             SaveFileVersion = PreferedSaveFileVersion;
             var writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );
