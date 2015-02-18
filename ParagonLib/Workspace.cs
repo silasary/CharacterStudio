@@ -73,20 +73,21 @@ namespace ParagonLib
         {
             if (Stats.ContainsKey(Stat) && Stats.ContainsKey(Alias))
             {
-                //TODO: Cleanup empty stats.  We appear to be getting weird race conditions.
-                // Or we can atually merge.
+                if (Stats[Stat] == Stats[Alias]) // We've already done the Alias.  Let's not get into a massive headache.
+                    return;
                 throw new InvalidOperationException("You can't Alias into an existing stat.");
             }
             if (!Stats.ContainsKey(Stat))
-                Stats[Stat] = new Stat(this);
+                Stats[Stat] = new Stat(this, Stat);
             Stats[Alias] = Stats[Stat];
+            Stats[Alias].AddAlias(Alias);
         }
 
         //TODO: Make this better.
         public Workspace.Stat GetStat(string name)
         {
             if (!Stats.ContainsKey(name))
-                Stats[name] = new Stat(this);
+                Stats[name] = new Stat(this, name);
             return Stats[name];
         }
 
@@ -161,12 +162,13 @@ namespace ParagonLib
         {
             [DataMember]
             private List<bit> bits = new List<bit>();
-
+            private List<string> Aliases = new List<string>();
             private Workspace workspace;
 
-            public Stat(Workspace workspace)
+            public Stat(Workspace workspace, string Alias)
             {
                 this.workspace = workspace;
+                this.Aliases.Add(Alias);
             }
             [DataMember, XmlAttribute]
             public int Value
@@ -278,6 +280,11 @@ namespace ParagonLib
                         val.Add(bit.String);
                 }
                 return val.ToArray();
+            }
+
+            internal void AddAlias(string Alias)
+            {
+                this.Aliases.Add(Alias);
             }
         }
     }

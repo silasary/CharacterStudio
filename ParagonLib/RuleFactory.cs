@@ -165,7 +165,7 @@ namespace ParagonLib
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
-                            var xml = WebClientPool.Client.DownloadString(Uri(n.Element("PartAddress").Value, newfile));
+                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
                         }

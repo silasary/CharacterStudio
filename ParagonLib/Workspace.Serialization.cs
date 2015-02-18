@@ -23,13 +23,21 @@ namespace ParagonLib
             {
                 writer.WriteStartElement("Stat");
                 writer.WriteAttributeString("value", this.Value.ToString( ));
+                foreach (var alias in Aliases)
+                {
+                    writer.WriteStartElement("alias");
+                    writer.WriteAttributeString("name", alias);
+                    writer.WriteEndElement();
+                }
                 foreach (var bit in bits)
                 {
-                    writer.WriteStartElement(bit.type);
+                    writer.WriteStartElement("statadd");
                     foreach (var field in typeof(bit).GetFields())
                     {
-                        if (!string.IsNullOrEmpty( (string)field.GetValue(bit)))
+                        if (!string.IsNullOrEmpty( field.GetValue(bit) as string))
                             writer.WriteAttributeString(field.Name, (string)field.GetValue(bit));
+                        if (field.GetValue(bit) is int)
+                            writer.WriteAttributeString(field.Name, field.GetValue(bit).ToString());
                     }
                     //writer.WriteAttributeString(
                     writer.WriteEndElement( );

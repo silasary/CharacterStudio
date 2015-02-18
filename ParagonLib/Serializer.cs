@@ -19,18 +19,22 @@ namespace ParagonLib
         const string PreferedSaveFileVersion = "0.08a";
         string SaveFileVersion;
 
+        XmlWriter writer;
+        Character c;
+
         public bool Save(Character c, string savefile)
         {
+            this.c = c;
             c.workspace.Recalculate(true);
             SaveFileVersion = PreferedSaveFileVersion;
-            var writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
+            writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );
             writer.WriteStartElement("D20Character");
             writer.WriteAttributeString("game-system", c.workspace.System);
             writer.WriteAttributeString("Version", SaveFileVersion); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
-            writer.WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
+            WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
 
-            WriteCharacterSheet(c, writer);
+            WriteCharacterSheet();
 
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
@@ -38,21 +42,33 @@ namespace ParagonLib
             return true;
         }
 
-        private void WriteCharacterSheet(Character c, XmlWriter writer)
+        private void WriteComment(string p)
+        {
+      
+            writer.WriteComment(string.Format("{0}", p));
+        }
+
+        private void WriteCharacterSheet()
         {
             writer.WriteStartElement("CharacterSheet");
             // Details are a quick summary of your character.  Almost entirely fluff.
-            WriteDetails(c, writer);
+            WriteDetails();
             // AbilityScores. Summary of your 6 scores.  Just the totals.
-            WriteAbilityScores(c, writer);
+            WriteAbilityScores();
             // StatBlock. Array of Stats.  There's a lot of them.
-            WriteStatBlock(c, writer);
+            WriteStatBlock();
             // RulesElementTally.  Boring.
+            WriteRulesElementTally();
             writer.WriteEndElement( );
         }
 
+        private void WriteRulesElementTally()
+        {
+            throw new NotImplementedException();
+        }
 
-        private void WriteDetails(Character c, XmlWriter writer)
+
+        private void WriteDetails()
         {
             // 0.07[ab] both agree on the format here.
             writer.WriteStartElement("Details");
@@ -77,9 +93,9 @@ namespace ParagonLib
             writer.WriteEndElement( );
         }
 
-        private void WriteAbilityScores(Character c, XmlWriter writer)
+        private void WriteAbilityScores()
         {
-            writer.WriteComment("Base ability scores (see stats of same name for final adjusted score)");
+            WriteComment("Base ability scores (see stats of same name for final adjusted score)");
             writer.WriteStartElement("AbilityScores");
             var Scores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
             foreach (var score in Scores)
@@ -91,9 +107,9 @@ namespace ParagonLib
             writer.WriteEndElement( );
         }
 
-        private void WriteStatBlock(Character c, XmlWriter writer)
+        private void WriteStatBlock()
         {
-            writer.WriteComment("Final computed stat values - the various numbers\n         on the character sheet are here along with behind the scenes\n         values to build them.");
+            WriteComment("Final computed stat values - the various numbers\n         on the character sheet are here along with behind the scenes\n         values to build them.");
             writer.WriteStartElement("StatBlock");
             foreach (var stat in c.workspace.Stats.Values.Distinct()) 
             {
