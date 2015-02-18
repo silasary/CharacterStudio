@@ -16,15 +16,19 @@ namespace ParagonLib
         /// 0.07a is also Silverlight [Henceforth called 0.07b for sanity reasons]
         /// 0.08a is CharacterStudio Alpha format.
         /// </summary>
-        const string SaveFileVersion = "0.08a";
+        const string PreferedSaveFileVersion = "0.08a";
+        string SaveFileVersion;
 
         public bool Save(Character c, string savefile)
         {
+            SaveFileVersion = PreferedSaveFileVersion;
             var writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );
             writer.WriteStartElement("D20Character");
             writer.WriteAttributeString("game-system", c.workspace.System);
             writer.WriteAttributeString("Version", SaveFileVersion); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
+            writer.WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
+
             WriteCharacterSheet(c, writer);
 
             writer.WriteEndElement( );
@@ -39,7 +43,7 @@ namespace ParagonLib
             // Details are a quick summary of your character.  Almost entirely fluff.
             WriteDetails(c, writer);
             // AbilityScores. Summary of your 6 scores.  Just the totals.
-
+            WriteAbilityScores(c, writer);
             // StatBlock. Array of Stats.  There's a lot of them.
 
             // RulesElementTally.  Boring.
@@ -69,6 +73,20 @@ namespace ParagonLib
             //Companions
             //Notes
 
+            writer.WriteEndElement( );
+        }
+
+        private void WriteAbilityScores(Character c, XmlWriter writer)
+        {
+            writer.WriteComment("Base ability scores (see stats of same name for final adjusted score)");
+            writer.WriteStartElement("AbilityScores");
+            var Scores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
+            foreach (var score in Scores)
+            {
+                writer.WriteStartElement(score);
+                writer.WriteAttributeString("score", c.workspace.GetStat(score).Value.ToString());
+                writer.WriteEndElement( );
+            }
             writer.WriteEndElement( );
         }
 	}
