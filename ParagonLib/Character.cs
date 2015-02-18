@@ -31,6 +31,8 @@ namespace ParagonLib
 
         public void Save(string savefile)
         {
+            if (!Path.HasExtension(savefile))
+                savefile = Path.ChangeExtension(savefile, ".D20Character");
             if (!Path.IsPathRooted(savefile))
                 savefile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", savefile);
             string folder;

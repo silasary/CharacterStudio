@@ -103,9 +103,8 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             var c = new Character("TestSave");
             var ws = c.workspace;
             ws.Recalculate();
-            c.Save("./Test");
-
-
+            c.Save("Test.D20Character");
+            System.IO.File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", "Test.D20Character"), "./Test.D20Character");
         }
     }
 }
