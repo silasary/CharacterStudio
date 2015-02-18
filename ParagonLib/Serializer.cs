@@ -16,9 +16,9 @@ namespace ParagonLib
         /// 0.07a is also Silverlight [Henceforth called 0.07b for sanity reasons]
         /// 0.08a is CharacterStudio Alpha format.
         /// </summary>
-        const int SaveFileVersion = "0.08a";
+        const string SaveFileVersion = "0.08a";
 
-        public static bool Save(Character c, string savefile)
+        public bool Save(Character c, string savefile)
         {
             var writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );

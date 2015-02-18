@@ -39,7 +39,7 @@ namespace ParagonLib
 //            var s = File.OpenWrite(savefile);
 //            new DataContractSerializer(typeof(Character), new DataContractSerializerSettings() { DataContractResolver = new ContractResolver() }).WriteObject(s, this);
 //            s.Close();
-            Serializer.Save(this, savefile);
+            new Serializer().Save(this, savefile);
         }
     }
 }
