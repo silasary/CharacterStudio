@@ -63,7 +63,7 @@ namespace ParagonLib
                     break;
 
                 default:
-                    throw new InvalidOperationException(String.Format("Operation '{0}' unknown.", Operation));
+                    throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
             Calculate = func.Compile();
             if (validation != null)

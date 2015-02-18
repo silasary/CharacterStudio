@@ -155,23 +155,25 @@ namespace ParagonLib
                 }
                 if (ext == ".index")
                 {
-                    foreach (var n in UpdateInfo.Elements("Obsolete"))
+                    foreach (var n in doc.Root.Elements("Obsolete"))
                     {
                         File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
                     }
-                    foreach (var n in UpdateInfo.Elements("Part"))
+                    foreach (var n in doc.Root.Elements("Part"))
                     {
                         string newfile;
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
-                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(n.Element("PartAddress").Value, newfile));
+                            var xml = WebClientPool.Client.DownloadString(Uri(n.Element("PartAddress").Value, newfile));
                             File.WriteAllText(newfile, xml);
+                            LoadFile(newfile);
                         }
                     }
                 }
             }
             catch (XmlException v)
             {
+                Logging.Log("Xml Loader", TraceEventType.Error, "Failed to load {0}. {1}", file, v.Message);
                 System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
             }
         }
@@ -216,7 +218,7 @@ namespace ParagonLib
                     try
                     {
                         Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                        Version verRemote = new Version(Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
+                        Version verRemote = new Version(WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
                         if (verRemote > verLocal)
                         {
                             string newfile;
@@ -229,11 +231,11 @@ namespace ParagonLib
                     {
                         Logging.Log("Updater", TraceEventType.Warning, "Invalid Version number '{0}' in file {1}.", UpdateInfo.Element("Version").Value, Path.GetFileName(file));
                         string verLocal = UpdateInfo.Element("Version").Value;
-                        string verRemote = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename));
+                        string verRemote = WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename));
                         if (verRemote != verLocal)
                         {
                             string newfile;
-                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            var xml = WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             LoadFile(newfile);
                         }
@@ -256,9 +258,9 @@ namespace ParagonLib
                 var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
                 foreach (var spec in CSV_Specifics)
                 {
-                    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec]))
+                    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
                     {
-                        var errors = item.Value.Specifics[spec].Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
+                        var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
                         foreach (var e in errors)
                         {
                             if (e.Value == null)

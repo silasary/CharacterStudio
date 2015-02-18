@@ -8,7 +8,7 @@ namespace ParagonLib
     public class RulesElement
     {
         public List<Instruction> Rules = new List<Instruction>();
-        public Dictionary<string, string> Specifics = new Dictionary<string, string>();
+        public SpecificsDict Specifics = new SpecificsDict();
 
         public RulesElement(XElement item)
         {
