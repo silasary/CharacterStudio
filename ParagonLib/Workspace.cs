@@ -72,7 +72,11 @@ namespace ParagonLib
         public void AliasStat(string Stat, string Alias)
         {
             if (Stats.ContainsKey(Stat) && Stats.ContainsKey(Alias))
+            {
+                //TODO: Cleanup empty stats.  We appear to be getting weird race conditions.
+                // Or we can atually merge.
                 throw new InvalidOperationException("You can't Alias into an existing stat.");
+            }
             if (!Stats.ContainsKey(Stat))
                 Stats[Stat] = new Stat(this);
             Stats[Alias] = Stats[Stat];
