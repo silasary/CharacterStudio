@@ -45,7 +45,7 @@ namespace ParagonLib
             // AbilityScores. Summary of your 6 scores.  Just the totals.
             WriteAbilityScores(c, writer);
             // StatBlock. Array of Stats.  There's a lot of them.
-
+            WriteStatBlock(c, writer);
             // RulesElementTally.  Boring.
             writer.WriteEndElement( );
         }
@@ -88,6 +88,17 @@ namespace ParagonLib
                 writer.WriteEndElement( );
             }
             writer.WriteEndElement( );
+        }
+
+        private void WriteStatBlock(Character c, XmlWriter writer)
+        {
+            writer.WriteComment("Final computed stat values - the various numbers\n         on the character sheet are here along with behind the scenes\n         values to build them.");
+            writer.WriteStartElement("StatBlock");
+            foreach (var stat in c.workspace.Stats.Values.Distinct()) 
+            {
+                stat.Write(writer);
+            }
+            writer.WriteEndElement();
         }
 	}
 

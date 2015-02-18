@@ -10,7 +10,7 @@ namespace ParagonLib
 {
     public partial class Workspace
     {
-        private Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
+        internal Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
@@ -153,7 +153,7 @@ namespace ParagonLib
         }
         [DataContract]
         [KnownType(typeof(bit))]
-        public class Stat
+        public partial class Stat
         {
             [DataMember]
             private List<bit> bits = new List<bit>();
