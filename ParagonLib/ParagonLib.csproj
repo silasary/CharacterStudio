@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="WebClientPool.cs" />
     <Compile Include="SpecificsDict.cs" />
+    <Compile Include="Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll" />

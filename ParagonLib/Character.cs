@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ParagonLib
 {
@@ -35,9 +36,10 @@ namespace ParagonLib
             string folder;
             if (!Directory.Exists(folder = Path.GetDirectoryName(savefile)))
                 Directory.CreateDirectory(folder);
-            var s = File.OpenWrite(savefile);
-            new DataContractSerializer(typeof(Character), new DataContractSerializerSettings() { DataContractResolver = new ContractResolver() }).WriteObject(s, this);
-            s.Close();
+//            var s = File.OpenWrite(savefile);
+//            new DataContractSerializer(typeof(Character), new DataContractSerializerSettings() { DataContractResolver = new ContractResolver() }).WriteObject(s, this);
+//            s.Close();
+            Serializer.Save(this, savefile);
         }
     }
 }
