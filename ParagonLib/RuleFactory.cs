@@ -164,6 +164,7 @@ namespace ParagonLib
                         string newfile;
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
+                            Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
                             var xml = WebClientPool.Client.DownloadString(Uri(n.Element("PartAddress").Value, newfile));
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
@@ -208,6 +209,7 @@ namespace ParagonLib
 
         private static void UpdateLoop()
         {
+            WebClient wc = new WebClient();
             while (UpdateQueue.Count > 0)
             {
                 var UpdateInfo = UpdateQueue.Dequeue();
@@ -218,11 +220,12 @@ namespace ParagonLib
                     try
                     {
                         Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                        Version verRemote = new Version(WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
+                        Version verRemote = new Version(wc.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
                         if (verRemote > verLocal)
                         {
+                            Logging.Log("Updater", TraceEventType.Information, "Updating {0} to {1}", filename, verRemote);
                             string newfile;
-                            var xml = Singleton<WebClient>.Instance.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            var xml = wc.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             LoadFile(newfile);
                         }
@@ -231,18 +234,19 @@ namespace ParagonLib
                     {
                         Logging.Log("Updater", TraceEventType.Warning, "Invalid Version number '{0}' in file {1}.", UpdateInfo.Element("Version").Value, Path.GetFileName(file));
                         string verLocal = UpdateInfo.Element("Version").Value;
-                        string verRemote = WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename));
+                        string verRemote = wc.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename));
                         if (verRemote != verLocal)
                         {
+                            Logging.Log("Updater", TraceEventType.Information, "Updating {0} to {1}", filename, verRemote);
                             string newfile;
-                            var xml = WebClientPool.Client.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            var xml = wc.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             LoadFile(newfile);
                         }
                     }
                 }
                 catch (WebException v)
-                { Logging.Log("Updater", TraceEventType.Information, "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
+                { Logging.Log("Updater", TraceEventType.Warning, "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
             }
         }
 

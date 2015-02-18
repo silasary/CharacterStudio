@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 namespace ParagonLib
 {
+    [Obsolete]
 	static class WebClientPool
 	{
         static List<WebClient> pool = new List<WebClient>();
