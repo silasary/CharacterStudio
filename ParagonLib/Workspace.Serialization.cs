@@ -23,9 +23,11 @@ namespace ParagonLib
             {
                 writer.WriteStartElement("Stat");
                 writer.WriteAttributeString("value", this.Value.ToString( ));
+                var ser = new DataContractSerializer(typeof(bit));
                 foreach (var bit in bits)
                 {
                     writer.WriteStartElement(bit.type);
+
                     //writer.WriteAttributeString(
                     writer.WriteEndElement( );
                 }
