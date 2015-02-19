@@ -59,12 +59,61 @@ namespace ParagonLib
             WriteStatBlock();
             // RulesElementTally.  Boring.
             WriteRulesElementTally();
+            // LootTally.  
+            WriteLootTally();
+            //PowerStats. This one is important. iPlay4e uses it.  
+            WritePowerStats();
+
             writer.WriteEndElement( );
+        }
+
+        private void WritePowerStats()
+        {
+            //0.07a includes basic stat calculations - Attack, Damage, and defences.
+            //0.07b Includes more detailed data. 
+            //WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
+            
+        }
+
+        private void WriteLootTally()
+        {
+            WriteComment("\n         The tally of the character&apos;s loot\n      ");
+            writer.WriteStartElement("LootTally");
+            //TODO: Loot!
+            writer.WriteEndElement();
         }
 
         private void WriteRulesElementTally()
         {
-            //throw new NotImplementedException();
+            //0.07a includes just the Short Description.
+            //0.07b includes Significantly more. (All non-internal specifics, and fluff text).
+            //TODO: Right now we're emulating 0.07a. 
+            // I'm not sure if anyone uses the full-text there, or if they refer to the other listings.  
+            // Experiment further with ip4e before bloating file?
+            WriteComment("\n         The list of all rules elements the character has, after taking into\n         account retraining, multiclass power swapping, etc.\n      ");
+            writer.WriteStartElement("RulesElementTally");
+            foreach (var rule in c.workspace.AllElements)
+            {
+                if (!rule.Value.IsAlive)
+                    continue;
+                var ele = (rule.Value.Target as CharElement);
+                writer.WriteStartElement("RulesElement");
+                writer.WriteAttributeString("name", ele.RulesElement.Name);
+                writer.WriteAttributeString("type", ele.RulesElement.Type);
+                writer.WriteAttributeString("internal-id", rule.Key);
+                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+                // TODO: URL
+                // Legality
+                if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                {
+                    writer.WriteStartElement("specific");
+                    writer.WriteAttributeString("name", "Short Description");
+                    writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
         }
 
 

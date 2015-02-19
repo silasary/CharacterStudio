@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ParagonLib
@@ -286,6 +287,16 @@ namespace ParagonLib
             {
                 this.Aliases.Add(Alias);
             }
+        }
+
+        IEnumerable<int> counter() { var i = 0; while (true) yield return i++; }
+        internal int GenerateUID()
+        {
+            var ids = AllElements.Where(i => i.Value.IsAlive)
+                                 .Select(i => (i.Value.Target as CharElement).SelfId)
+                                 .ToArray();
+            return counter().First(i => !ids.Contains(i));
+
         }
     }
 }

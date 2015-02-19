@@ -62,7 +62,7 @@ namespace ParagonLib
         public static CharElement New(string id, Workspace workspace, string type = null)
         {
             RulesElement re = FindRulesElement(id, workspace.System);
-            var el = new CharElement(id, GenerateUID(), workspace, re);
+            var el = new CharElement(id, workspace.GenerateUID(), workspace, re);
 
             return el;
         }
@@ -101,6 +101,7 @@ namespace ParagonLib
             return levelset;
         }
 
+        [Obsolete]
         private static int GenerateUID()
         {
             return num++;
