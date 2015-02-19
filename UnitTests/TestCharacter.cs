@@ -98,11 +98,21 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             new XElement(XName.Get("statalias"), new XAttribute("name", "Strength"), new XAttribute("alias", "str")),
             new XElement(XName.Get("statadd"), new XAttribute("name", "str mod"), new XAttribute("value", "+ABILITYMOD(str)"))
         )        
-    )
+    ),
+    new XElement(XName.Get("RulesElement"),
+        new XAttribute("name", "2"),
+        new XAttribute("type", "Level"),
+        new XAttribute("internal-id", "TEST_LEVEL_2"),
+        new XElement(XName.Get("rules"),
+            new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
+            )
+        )
+
 ));
             RuleFactory.Load(elements);
             var c = new Character("TestSave");
             var ws = c.workspace;
+            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 70 });
             ws.Recalculate();
             c.Save("Test.D20Character");
             File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", "Test.D20Character"), "./Test.D20Character", true);

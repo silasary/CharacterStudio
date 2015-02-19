@@ -114,6 +114,7 @@ namespace ParagonLib
             }
             foreach (var adventure in AdventureLog)
             {
+                adventure.StartXp = GetStat("XP Earned").Value;
                 GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null);
             }
             foreach (var item in AllElements.Values.ToArray())

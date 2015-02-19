@@ -7,28 +7,31 @@ using System.Text;
 
 namespace ParagonLib
 {
-    [DataContract]
+    [DataContract(Name = "JournalEntry", Namespace = "")]
     public class Adventure
     {
-        [DataMember]
+        [DataMember(Order = 1)]
+        public string Title { get; set; }
+        [DataMember(Order = 2)]
+        public int StartXp { get; set; }
+        [DataMember(Order = 3)]
         public int XpEarned { get; set; }
-        [DataMember]
+        [DataMember(Order = 4)]
+        public int EndXp { get { return StartXp + XpEarned; } private set { } }
+
+        [DataMember(Order = 6)]
         public int GpEarned { get; set; }
 
-        [DataMember]
+        [DataMember(Order = 7)]
+        public string Treasure { get; set; }
+
+        [DataMember(Order = 8)]
         [Description("Sometimes Living campaigns require you to mark the region/setting of the adventure.")]
         public string Region { get; set; }
 
-        [DataMember]
-        public string Treasure { get; set; }
 
-        [DataMember]
-        public string Text { get; set; }
-
-        public int StartXp { get; set; }
-        public int EndXp { get { return StartXp + XpEarned; } }
-
-
+        [DataMember(Order = 9)]
+        public string Notes { get; set; }
 
     }
 }

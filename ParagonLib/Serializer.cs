@@ -63,8 +63,23 @@ namespace ParagonLib
             WriteLootTally();
             //PowerStats. This one is important. iPlay4e uses it.  
             WritePowerStats();
+            //Companions.  Need to reseach what actually goes here, and also implement them myself.
+            //Journal.  Our Adventure Log is far superior to the original, But it's also vital we remain Backwards-Compatible.
+            WriteJournal();
 
+            WriteComment("WARNING: This character sheet is incomplete.");
             writer.WriteEndElement( );
+        }
+
+        private void WriteJournal()
+        {
+            writer.WriteStartElement("Journal");
+            var ser = new DataContractSerializer(typeof(Adventure));
+            foreach (var entry in c.workspace.AdventureLog)
+            {
+                ser.WriteObject(writer, entry);
+            }
+            writer.WriteEndElement();
         }
 
         private void WritePowerStats()
