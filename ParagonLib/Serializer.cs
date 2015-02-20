@@ -73,6 +73,9 @@ namespace ParagonLib
 
         private void WriteJournal()
         {
+            //This instance of the journal is used for External Reference Only 
+            // This makes sense considering that they put it in the <CharacterSheet> tag.  
+            // DDI's builder keeps the 'real' Entries as escaped XML in a Textstring. [For the record, that's really gross]
             writer.WriteStartElement("Journal");
             var ser = new DataContractSerializer(typeof(Adventure));
             foreach (var entry in c.workspace.AdventureLog)
