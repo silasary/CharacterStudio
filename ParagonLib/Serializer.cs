@@ -42,14 +42,13 @@ namespace ParagonLib
             return true;
         }
 
-        private void WriteComment(string p)
-        {
       
-            writer.WriteComment(string.Format("{0}", p));
-        }
 
+
+        #region CharacterSheet
         private void WriteCharacterSheet()
         {
+            WriteComment("The Character Sheet element contains data readable by 3rd Party Apps. iPlay4e is the one we're testing against, but we'll try to be as compatible as possible.");
             writer.WriteStartElement("CharacterSheet");
             // Details are a quick summary of your character.  Almost entirely fluff.
             WriteDetails();
@@ -90,7 +89,7 @@ namespace ParagonLib
             //0.07a includes basic stat calculations - Attack, Damage, and defences.
             //0.07b Includes more detailed data. 
             //WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
-            
+            //TODO: Power Blocks!  VERY IMPORTANT.
         }
 
         private void WriteLootTally()
@@ -184,6 +183,13 @@ namespace ParagonLib
             }
             writer.WriteEndElement();
         }
-	}
+
+        #endregion
+
+        private void WriteComment(string p)
+        {
+            writer.WriteComment(string.Format("{0}", p));
+        }
+    }
 
 }
