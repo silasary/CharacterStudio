@@ -69,6 +69,7 @@
     <Compile Include="RulesElement.cs" />
     <Compile Include="Search.cs" />
     <Compile Include="Selection.cs" />
+    <Compile Include="CampaignSetting.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Workspace.Serialization.cs">

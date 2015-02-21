@@ -37,10 +37,32 @@ namespace ParagonLib
 
             WriteCharacterSheet();
 
+            WriteD20CampaignSetting();
+
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
             writer.Close( );
             return true;
+        }
+
+        private void WriteD20CampaignSetting()
+        {
+
+            writer.WriteStartElement("D20CampaignSetting");
+            if (c.workspace.Setting == null)
+                writer.WriteAttributeString("name", "");
+            else
+                writer.WriteAttributeString("name", c.workspace.Setting.Name);
+            WriteComment("\n         Character Builder campaign save file.\n      ");
+            //TODO: Write URL.
+            /*
+               <Houserules>
+                <RulesElement name="UpdateURL" type="Internal" internal-id="ID_INTERNAL_INTERNAL_UPDATEURL" >
+                 https://dl.dropboxusercontent.com/u/4187827/CharBuilder/Eberron/eberron.setting
+                </RulesElement>
+               </Houserules>
+             */
+            writer.WriteEndElement();
         }
 
         public Character Load(string savefile)
@@ -73,7 +95,7 @@ namespace ParagonLib
             // If we fail, load it from in here.
             // Note that DDI will crash if we insert anything other than the 
             // individual <Restricted> entries, so most of this data is useless.
-            
+            var setting = node.Attribute("name").Value;
             // We can cheat though:
             var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
             // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
@@ -81,7 +103,7 @@ namespace ParagonLib
                 return;
             // And store a URL inside it.
             var url = updateurl.Value;
-
+            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
         }
 
 

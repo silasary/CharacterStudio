@@ -172,6 +172,10 @@ namespace ParagonLib
                         }
                     }
                 }
+                if (ext == ".setting")
+                {
+                    CampaignSetting.ImportSetting(doc);
+                }
             }
             catch (XmlException v)
             {

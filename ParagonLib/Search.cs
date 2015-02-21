@@ -22,6 +22,7 @@ namespace ParagonLib
 
         public IEnumerable<RulesElement> Results()
         {
+            //TODO: We need to deal with the Campaign Setting at some point here. 
             var Categories = Category == null ? new string[0] : Category.Split(',');
             var catCount = Categories.Count();
             var Comparer = new CategoryComparer();

@@ -97,7 +97,7 @@ namespace ParagonLib
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string[] GetTextStringData(string name)
+        public string[] GetStatString(string name)
         {
             if (!Stats.ContainsKey(name))
                 return new string[0];
@@ -299,5 +299,7 @@ namespace ParagonLib
             return counter().First(i => !ids.Contains(i));
 
         }
+
+        public CampaignSetting Setting { get; set; }
     }
 }
