@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ParagonLib
 {
@@ -42,7 +43,46 @@ namespace ParagonLib
             return true;
         }
 
-      
+        public Character Load(string savefile)
+        {
+            var doc = XDocument.Load(savefile);
+            SaveFileVersion = doc.Root.Attribute("Version").Value;
+            var system = doc.Root.Attribute("game-system").Value;
+            c = new Character(system);
+            foreach (var node in doc.Root.Elements())
+            {
+                switch (node.Name.LocalName)
+                {
+                    case "CharacterSheet":
+                        break; // We shouldn't need this data. 
+                    case "D20CampaignSetting":
+                        ReadD20CampaignSetting(node);
+                        break;
+                    default:
+
+                        break;
+                }
+            }
+            return c;
+
+        }
+
+        private void ReadD20CampaignSetting(XElement node)
+        {
+            // Ideally, we match these to a Campaign Setting file.
+            // If we fail, load it from in here.
+            // Note that DDI will crash if we insert anything other than the 
+            // individual <Restricted> entries, so most of this data is useless.
+            
+            // We can cheat though:
+            var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
+            // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
+            if (updateurl == null)
+                return;
+            // And store a URL inside it.
+            var url = updateurl.Value;
+
+        }
 
 
         #region CharacterSheet

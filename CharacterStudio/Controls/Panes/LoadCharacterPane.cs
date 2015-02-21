@@ -15,8 +15,8 @@ namespace CharacterStudio.Controls.Panes
     {
         struct Folder
         {
-            private string path;
-            private string Name;
+            public string path;
+            public string Name;
             public Folder(string path)
             {
                 this.path = path;
@@ -36,7 +36,31 @@ namespace CharacterStudio.Controls.Panes
         {
             InitializeComponent();
             checkedListBox1.Items.Add(new Folder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters")),true);
+            
+        }
 
+        private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (checkedListBox1.SelectedItem == null)
+            {
+                listView1.Items.Clear();
+            }
+            else
+            {
+                var folder = (Folder)checkedListBox1.SelectedItem;
+                var chars = Directory.GetFiles(folder.path);
+                listView1.Items.Clear();
+                listView1.Items.AddRange(chars.Select(c => new ListViewItem(c)).ToArray());
+            }
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                new ParagonLib.Serializer().Load(listView1.SelectedItems[0].Text); 
+
+            }
         }
     }
 }
