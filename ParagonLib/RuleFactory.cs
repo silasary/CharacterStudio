@@ -174,6 +174,10 @@ namespace ParagonLib
                 }
                 if (ext == ".setting")
                 {
+                    if (doc.Root.Attribute("name") == null)
+                    {
+                        doc.Root.Add(new XAttribute("name", Path.GetFileNameWithoutExtension(file)));
+                    }
                     CampaignSetting.ImportSetting(doc);
                 }
             }
