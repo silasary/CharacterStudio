@@ -125,14 +125,15 @@ namespace ParagonLib
                 adventure.StartXp = GetStat("XP Earned").Value;
                 GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null);
             }
-            foreach (var item in AllElements.Values.ToArray())
-            {
-                CharElement el;
-                if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive))
-                {
-                    el.Recalculate();
-                }
-            }
+            //foreach (var item in AllElements.Values.ToArray())
+            //{
+            //    CharElement el;
+            //    if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive))
+            //    {
+            //        el.Recalculate();
+            //    }
+            //}
+            Levelset.Recalculate();
         }
 
         internal int ParseInt(string p)
