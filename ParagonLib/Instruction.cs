@@ -41,7 +41,7 @@ namespace ParagonLib
                         ws.GetStat("blah").Add("Example", "bkagt", "+4","7",null);
                       }
                      */
-                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters, "value", "condition", "requires", "type", "Level"))); // TODO: Support wearing= at some point
+                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters, StatAddInfo))); // TODO: Support wearing= at some point
                     break;
 
                 case "statalias":
@@ -87,6 +87,13 @@ namespace ParagonLib
             return vals;
         }
 
+        private string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
+        {
+            return Params(Parameters, method.GetParameters().Select(p => p.Name).ToArray());
+        }
+
+        private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
+
         private static class Builders
         {
             private static ParameterExpression pCharElement = Expression.Parameter(typeof(CharElement), "e");
@@ -122,11 +129,23 @@ namespace ParagonLib
                 return method;
             }
 
+            private static IEnumerable<Expression> Args(string[] args)
+            {
+                foreach (var a in args)
+                {
+                    if (a == "charelem")
+                        yield return pCharElement;
+                    else
+                        yield return Expression.Constant(a, typeof(String));
+                }
+                yield break;
+            }
+
             public static Expression StatAdd(string name, string[] args)
             {
                 return Expression.Call(
                     Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "Add"),
-                        args.Select(e => Expression.Constant(e, typeof(String)))
+                        Args(args)
                     );
             }
 
