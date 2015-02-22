@@ -15,7 +15,7 @@ namespace ParagonLib
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
-        private CharElement Levelset;
+        internal CharElement Levelset;
 
         public IEnumerable<Selection> Selections(params string[] Types)
         {

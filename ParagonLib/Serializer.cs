@@ -80,13 +80,51 @@ namespace ParagonLib
                     case "D20CampaignSetting":
                         ReadD20CampaignSetting(node);
                         break;
+                    case "Level": // This is the beefy one.
+                        ReadLevel(node);
+                        break;
+                    case "textstring":
+                        // TODO: These things have so many different meanings :/
+                        break;
                     default:
 
                         break;
                 }
             }
+            c.Save("Temp");
             return c;
 
+        }
+
+        private void ReadLevel(XElement node)
+        {
+            //This is the Level Node.  It's a terrifying thing.
+            // On the plus side, due to the (slightly nasty) way Grant works, 
+            // we can actually infer inheritance when we call Recalculate().
+            // Selections, on the other hand...
+            foreach (var element in node.Elements("RulesElement"))
+            {
+                ReadRulesElement(element, c.workspace.Levelset);
+            }
+            //c.workspace.Recalculate();
+        }
+
+        private void ReadRulesElement(XElement element, CharElement parent)
+        {
+            if (element.Attribute("internal-id") == null)
+                return; // Empty Choice.
+            var ruleid = element.Attribute("internal-id").Value;
+            int charid;
+            if (!int.TryParse(element.Attribute("charelem").Value, out charid))
+                charid = -1;
+            var child = new CharElement(ruleid, charid, c.workspace, RuleFactory.FindRulesElement(ruleid, c.workspace.System));
+            if (parent != null)
+                parent.Children.Add(child);
+            child.Method = CharElement.AquistitionMethod.Unknown;
+            foreach (var xc in element.Elements("RulesElement"))
+            {
+                ReadRulesElement(xc, child);
+            }
         }
 
         private void ReadD20CampaignSetting(XElement node)
@@ -177,18 +215,29 @@ namespace ParagonLib
                     continue;
                 var ele = (rule.Value.Target as CharElement);
                 writer.WriteStartElement("RulesElement");
-                writer.WriteAttributeString("name", ele.RulesElement.Name);
-                writer.WriteAttributeString("type", ele.RulesElement.Type);
-                writer.WriteAttributeString("internal-id", rule.Key);
-                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-                // TODO: URL
-                // Legality
-                if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                if (ele.RulesElement == null)
                 {
-                    writer.WriteStartElement("specific");
-                    writer.WriteAttributeString("name", "Short Description");
-                    writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
-                    writer.WriteEndElement();
+                    writer.WriteAttributeString("name", "");
+                    writer.WriteAttributeString("type", "");
+                    writer.WriteAttributeString("internal-id", rule.Key);
+                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+                }
+                else
+                {
+                    writer.WriteAttributeString("name", ele.RulesElement.Name);
+                    writer.WriteAttributeString("type", ele.RulesElement.Type);
+                    writer.WriteAttributeString("internal-id", rule.Key);
+                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+
+                    // TODO: URL
+                    // Legality
+                    if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                    {
+                        writer.WriteStartElement("specific");
+                        writer.WriteAttributeString("name", "Short Description");
+                        writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
+                        writer.WriteEndElement();
+                    }
                 }
                 writer.WriteEndElement();
             }
