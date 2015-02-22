@@ -28,6 +28,10 @@ namespace ParagonLib
         public Character(string System)
         {
             workspace = new Workspace(System, this);
+            foreach (var abil in Workspace.D20AbilityScores)
+            {
+                AbilityScores[abil] = 10;
+            }
         }
 
         public void Save(string savefile)

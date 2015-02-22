@@ -116,6 +116,8 @@ namespace ParagonLib
             }
             foreach (var abil in D20AbilityScores)
             {
+                if (CharacterRef == null) //TODO: Fix the Unit Tests to use Characters.
+                    break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
                 GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "");
             }
             foreach (var adventure in AdventureLog)
