@@ -79,7 +79,10 @@ namespace ParagonLib
             string[] vals = new string[keys.Length];
             for (int i = 0; i < keys.Length; i++)
             {
-                vals[i] = Parameters[keys[i]];
+                if (keys[i] == "charelem")
+                    vals[i] = keys[i];
+                else
+                    vals[i] = Parameters[keys[i]];
                 Parameters.Remove(keys[i]);
             }
             Parameters.Remove("name");

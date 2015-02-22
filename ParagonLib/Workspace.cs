@@ -118,21 +118,24 @@ namespace ParagonLib
             {
                 if (CharacterRef == null) //TODO: Fix the Unit Tests to use Characters.
                     break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
-                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "");
+                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "", null);
             }
             foreach (var adventure in AdventureLog)
             {
                 adventure.StartXp = GetStat("XP Earned").Value;
-                GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null);
+                GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null,null);
             }
-            //foreach (var item in AllElements.Values.ToArray())
-            //{
-            //    CharElement el;
-            //    if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive))
-            //    {
-            //        el.Recalculate();
-            //    }
-            //}
+#if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
+            foreach (var item in AllElements.Values.ToArray())
+            {
+                CharElement el;
+                if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive))
+                {
+                    if (el.RulesElement.Type == "Test")
+                        el.Recalculate();
+                }
+            }
+#endif
             Levelset.Recalculate();
         }
 
@@ -216,7 +219,7 @@ namespace ParagonLib
 
             private bool Dirty { get; set; }
 
-            public void Add(string value, string condition, string requires, string type, string Level)
+            public void Add(string value, string condition, string requires, string type, string Level, CharElement charelem)
             {
                 bits.Add(new bit(value, condition, requires, type, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
                 this.Dirty = true;

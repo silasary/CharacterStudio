@@ -39,7 +39,7 @@ namespace ParagonLib
                         if (field.GetValue(bit) is int)
                             writer.WriteAttributeString(field.Name, field.GetValue(bit).ToString());
                     }
-                    //writer.WriteAttributeString(
+                    //writer.WriteAttributeString("calcvalue",
                     writer.WriteEndElement( );
                 }
                 writer.WriteEndElement( );
