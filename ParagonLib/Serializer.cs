@@ -39,6 +39,9 @@ namespace ParagonLib
 
             WriteD20CampaignSetting();
 
+            // WriteLevels();
+
+            // WriteTextStrings();
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
             writer.Close( );
@@ -80,13 +83,68 @@ namespace ParagonLib
                     case "D20CampaignSetting":
                         ReadD20CampaignSetting(node);
                         break;
+                    case "Level": // This is the beefy one.
+                        ReadLevel(node);
+                        break;
+                    case "textstring":
+                        // TODO: These things have so many different meanings :/
+                        ReadTextString(node);
+                        break;
                     default:
 
                         break;
                 }
             }
+            c.Save("Temp");
             return c;
 
+        }
+
+        private void ReadTextString(XElement node)
+        {
+            var name = node.Attribute("name").Value;
+            var value = node.Value.Trim();
+            switch (name)
+            {
+                case "Name":
+                    c.Name = value;
+                    break;
+                default:
+                    c.TextStrings[name] = value;
+                    break;
+            }
+            
+        }
+
+        private void ReadLevel(XElement node)
+        {
+            //This is the Level Node.  It's a terrifying thing.
+            // On the plus side, due to the (slightly nasty) way Grant works, 
+            // we can actually infer inheritance when we call Recalculate().
+            // Selections, on the other hand...
+            foreach (var element in node.Elements("RulesElement"))
+            {
+                ReadRulesElement(element, c.workspace.Levelset);
+            }
+            //c.workspace.Recalculate();
+        }
+
+        private void ReadRulesElement(XElement element, CharElement parent)
+        {
+            if (element.Attribute("internal-id") == null)
+                return; // Empty Choice.
+            var ruleid = element.Attribute("internal-id").Value;
+            int charid;
+            if (!int.TryParse(element.Attribute("charelem").Value, out charid))
+                charid = -1;
+            var child = new CharElement(ruleid, charid, c.workspace, RuleFactory.FindRulesElement(ruleid, c.workspace.System));
+            if (parent != null)
+                parent.Children.Add(child);
+            child.Method = CharElement.AquistitionMethod.Unknown;
+            foreach (var xc in element.Elements("RulesElement"))
+            {
+                ReadRulesElement(xc, child);
+            }
         }
 
         private void ReadD20CampaignSetting(XElement node)
@@ -96,14 +154,23 @@ namespace ParagonLib
             // Note that DDI will crash if we insert anything other than the 
             // individual <Restricted> entries, so most of this data is useless.
             var setting = node.Attribute("name").Value;
-            // We can cheat though:
-            var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
-            // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
-            if (updateurl == null)
-                return;
-            // And store a URL inside it.
-            var url = updateurl.Value;
+
             c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
+            if (c.workspace.Setting == null)
+            {
+                // We can cheat though:
+                var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
+                // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
+                if (updateurl == null)
+                    return;
+                // And store a URL inside it.
+                var url = updateurl.Value;
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    url = url.Trim();
+
+                }
+            }
         }
 
 
@@ -177,18 +244,29 @@ namespace ParagonLib
                     continue;
                 var ele = (rule.Value.Target as CharElement);
                 writer.WriteStartElement("RulesElement");
-                writer.WriteAttributeString("name", ele.RulesElement.Name);
-                writer.WriteAttributeString("type", ele.RulesElement.Type);
-                writer.WriteAttributeString("internal-id", rule.Key);
-                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-                // TODO: URL
-                // Legality
-                if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                if (ele.RulesElement == null)
                 {
-                    writer.WriteStartElement("specific");
-                    writer.WriteAttributeString("name", "Short Description");
-                    writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
-                    writer.WriteEndElement();
+                    writer.WriteAttributeString("name", "");
+                    writer.WriteAttributeString("type", "");
+                    writer.WriteAttributeString("internal-id", rule.Key);
+                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+                }
+                else
+                {
+                    writer.WriteAttributeString("name", ele.RulesElement.Name);
+                    writer.WriteAttributeString("type", ele.RulesElement.Type);
+                    writer.WriteAttributeString("internal-id", rule.Key);
+                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+
+                    // TODO: URL
+                    // Legality
+                    if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                    {
+                        writer.WriteStartElement("specific");
+                        writer.WriteAttributeString("name", "Short Description");
+                        writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
+                        writer.WriteEndElement();
+                    }
                 }
                 writer.WriteEndElement();
             }

@@ -6,8 +6,11 @@ namespace ParagonLib
 {
     public class CharElement
     {
+        public enum AquistitionMethod { Unknown, Granted, Selected}
         public List<CharElement> Children = new List<CharElement>();
         public Dictionary<string, Selection> Choices = new Dictionary<string, Selection>();
+
+        public AquistitionMethod Method;
 
         public CharElement(string id, int p, Workspace workspace, RulesElement re)
         {
@@ -30,9 +33,16 @@ namespace ParagonLib
 
         public void Grant(string InternalId, string type, string requires, string Level)
         {
-            if (this.Children.Find(e => e.RulesElementId == InternalId) != null)
+            CharElement child;
+            if ((child = this.Children.Find(e => e.RulesElementId == InternalId)) != null)
+            {
+                if (child.Parent == null || !child.Parent.IsAlive) 
+                    child.Parent = new WeakReference(this);
+                child.Method = AquistitionMethod.Granted;
                 return;
-            var child = RuleFactory.New(InternalId, workspace, type);
+            }
+            child = RuleFactory.New(InternalId, workspace, type);
+            child.Method = AquistitionMethod.Granted;
             this.Children.Add(child);
             child.Parent = new WeakReference(this);
         }
