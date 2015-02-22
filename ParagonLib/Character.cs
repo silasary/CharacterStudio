@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -12,16 +11,18 @@ namespace ParagonLib
     /// <summary>
     /// Base class for a character.
     /// </summary>
-    [DataContract(Name="D20Character")]
     public class Character
     {
-        [DataMember]
-        public Workspace workspace;
         
-        [DataMember]
+        public Workspace workspace;
+
+        /// <summary>
+        /// These things are nasty, and for internal storage.  Try not to use them where possible.
+        /// </summary>
+        public Dictionary<string, string> TextStrings = new Dictionary<string, string>();
+
         public string Name { get; set; }
 
-        [DataMember]
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
 
         public Character(string System)

@@ -39,6 +39,9 @@ namespace ParagonLib
 
             WriteD20CampaignSetting();
 
+            // WriteLevels();
+
+            // WriteTextStrings();
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
             writer.Close( );
@@ -85,6 +88,7 @@ namespace ParagonLib
                         break;
                     case "textstring":
                         // TODO: These things have so many different meanings :/
+                        ReadTextString(node);
                         break;
                     default:
 
@@ -94,6 +98,22 @@ namespace ParagonLib
             c.Save("Temp");
             return c;
 
+        }
+
+        private void ReadTextString(XElement node)
+        {
+            var name = node.Attribute("name").Value;
+            var value = node.Value.Trim();
+            switch (name)
+            {
+                case "Name":
+                    c.Name = value;
+                    break;
+                default:
+                    c.TextStrings[name] = value;
+                    break;
+            }
+            
         }
 
         private void ReadLevel(XElement node)
@@ -134,14 +154,23 @@ namespace ParagonLib
             // Note that DDI will crash if we insert anything other than the 
             // individual <Restricted> entries, so most of this data is useless.
             var setting = node.Attribute("name").Value;
-            // We can cheat though:
-            var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
-            // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
-            if (updateurl == null)
-                return;
-            // And store a URL inside it.
-            var url = updateurl.Value;
+
             c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
+            if (c.workspace.Setting == null)
+            {
+                // We can cheat though:
+                var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
+                // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
+                if (updateurl == null)
+                    return;
+                // And store a URL inside it.
+                var url = updateurl.Value;
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    url = url.Trim();
+
+                }
+            }
         }
 
 
