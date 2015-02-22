@@ -129,6 +129,8 @@ namespace ParagonLib
 
         internal int ParseInt(string p)
         {
+            if (string.IsNullOrEmpty(p))
+                return 0;
             bool plus;
             switch (p[0])
             {

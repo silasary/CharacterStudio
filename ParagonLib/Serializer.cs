@@ -317,7 +317,7 @@ namespace ParagonLib
         {
             WriteComment("Final computed stat values - the various numbers\n         on the character sheet are here along with behind the scenes\n         values to build them.");
             writer.WriteStartElement("StatBlock");
-            foreach (var stat in c.workspace.Stats.Values.Distinct()) 
+            foreach (var stat in c.workspace.Stats.Values.ToArray().Distinct()) 
             {
                 stat.Write(writer);
             }

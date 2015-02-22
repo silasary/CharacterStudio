@@ -2,4 +2,4 @@
 **.txt = native
 **.csproj = CRLF
 **.sln = CRLF
-**.cs = LF
+**.cs = native
