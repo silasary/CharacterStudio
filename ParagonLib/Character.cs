@@ -44,5 +44,7 @@ namespace ParagonLib
 //            s.Close();
             new Serializer().Save(this, savefile);
         }
+
+        public Dictionary<string, int> AbilityScores = new Dictionary<string, int>();
     }
 }

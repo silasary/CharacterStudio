@@ -15,6 +15,8 @@ namespace ParagonLib
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
+        public static readonly string[] D20AbilityScores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
+
         internal CharElement Levelset;
 
         public IEnumerable<Selection> Selections(params string[] Types)
@@ -111,6 +113,10 @@ namespace ParagonLib
             foreach (var stat in Stats)
             {
                 stat.Value.Reset();
+            }
+            foreach (var abil in D20AbilityScores)
+            {
+                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "");
             }
             foreach (var adventure in AdventureLog)
             {

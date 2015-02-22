@@ -75,7 +75,6 @@
     <Compile Include="Workspace.Serialization.cs">
       <DependentUpon>Workspace.cs</DependentUpon>
     </Compile>
-    <Compile Include="WebClientPool.cs" />
     <Compile Include="SpecificsDict.cs" />
     <Compile Include="Serializer.cs" />
   </ItemGroup>

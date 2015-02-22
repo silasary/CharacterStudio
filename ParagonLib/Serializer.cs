@@ -18,6 +18,7 @@ namespace ParagonLib
         /// 0.08a is CharacterStudio Alpha format.
         /// </summary>
         const string PreferedSaveFileVersion = "0.08a";
+        static readonly string[] D20AbilityScores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
         string SaveFileVersion;
 
         XmlWriter writer;
@@ -36,7 +37,7 @@ namespace ParagonLib
             WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
 
             WriteCharacterSheet();
-
+            
             WriteD20CampaignSetting();
 
             // WriteLevels();
@@ -78,8 +79,9 @@ namespace ParagonLib
             {
                 switch (node.Name.LocalName)
                 {
-                    case "CharacterSheet":
-                        break; // We shouldn't need this data. 
+                    case "CharacterSheet": 
+                        ReadCharacterSheet(node); // Documentation actually lies to us.  
+                        break;                    // We store the base ability scores here.
                     case "D20CampaignSetting":
                         ReadD20CampaignSetting(node);
                         break;
@@ -98,6 +100,17 @@ namespace ParagonLib
             c.Save("Temp");
             return c;
 
+        }
+
+        private void ReadCharacterSheet(XElement node)
+        {
+            // Despite what is mentioned in the comments, 
+            // there is one node here that is actually used:
+            var xscores = node.Element("AbilityScores");
+            foreach (var score in D20AbilityScores)
+            {
+                c.AbilityScores[score] = int.Parse(xscores.Element(score).Attribute("score").Value);
+            }
         }
 
         private void ReadTextString(XElement node)
@@ -303,11 +316,10 @@ namespace ParagonLib
         {
             WriteComment("Base ability scores (see stats of same name for final adjusted score)");
             writer.WriteStartElement("AbilityScores");
-            var Scores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
-            foreach (var score in Scores)
+            foreach (var score in D20AbilityScores)
             {
                 writer.WriteStartElement(score);
-                writer.WriteAttributeString("score", c.workspace.GetStat(score).Value.ToString());
+                writer.WriteAttributeString("score", c.AbilityScores[score].ToString());
                 writer.WriteEndElement( );
             }
             writer.WriteEndElement( );
