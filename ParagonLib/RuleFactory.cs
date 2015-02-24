@@ -20,15 +20,17 @@ namespace ParagonLib
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
+        public static readonly string RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
+        public static readonly string SettingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Settings");
 
         static RuleFactory()
         {
             Rules = new Dictionary<string, RulesElement>();
             RulesBySystem = new Dictionary<string, RulesElement>();
-            var RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
             Directory.CreateDirectory(RulesFolder);
             FileLoaded += (e) => WaitFileLoaded.Set();
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
+            ThreadPool.QueueUserWorkItem(LoadRulesFolder, SettingsFolder);
             Validate = true;
         }
 
@@ -126,7 +128,7 @@ namespace ParagonLib
             return null;
         }
 
-        private static void LoadFile(string file)
+        internal static void LoadFile(string file)
         {
             string ext = Path.GetExtension(file);
             if (!new string[] { ".part", ".index", ".setting" }.Contains(ext))
@@ -195,6 +197,10 @@ namespace ParagonLib
 
         private static void LoadRulesFolder(string RulesFolder)
         {
+            if (!Directory.Exists(RulesFolder))
+                return;
+            while (Loading)
+                Thread.Sleep(0);
             Loading = true;
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {

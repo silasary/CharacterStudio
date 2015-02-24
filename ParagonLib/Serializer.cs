@@ -206,6 +206,17 @@ namespace ParagonLib
                 {
                     url = url.Trim();
                     // TODO:  Download and Apply.
+                    var wc = new System.Net.WebClient();
+                    var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
+                    Directory.CreateDirectory(RuleFactory.SettingsFolder);
+                    wc.DownloadFileCompleted += (o, e) => 
+                    {
+                        if (e.Error != null)
+                            return;
+                        RuleFactory.LoadFile(file);
+                        c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
+                    };
+                    wc.DownloadFileAsync(new Uri(url), file);
                 }
             }
         }
