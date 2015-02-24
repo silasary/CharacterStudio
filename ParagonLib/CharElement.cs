@@ -25,6 +25,36 @@ namespace ParagonLib
 
         public string RulesElementId { get; private set; }
 
+        private string cached_name;
+        public string Name
+        {
+            get
+            {
+                if (RulesElement != null && string.IsNullOrEmpty(cached_name))
+                    cached_name = RulesElement.Name;
+                return cached_name;
+            }
+            set
+            {
+                cached_name = value; // Custom Name or Serializer.
+            }
+        }
+
+        private string cached_type;
+        public string Type
+        {
+            get
+            {
+                if (RulesElement != null && string.IsNullOrEmpty(cached_type))
+                    cached_type = RulesElement.Type;
+                return cached_type;
+            }
+            set
+            {
+                cached_type = value; // Serializer.
+            }
+        }
+
         public int SelfId { get; set; }
 
         public Workspace workspace { get; set; }

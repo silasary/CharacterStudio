@@ -63,20 +63,7 @@ namespace ParagonLib
         {
             writer.WriteStartElement("RulesElement");
 
-            if (ele.RulesElement == null)
-            {
-                writer.WriteAttributeString("name", "");
-                writer.WriteAttributeString("type", "");
-                writer.WriteAttributeString("internal-id", ele.RulesElementId);
-                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-            }
-            else
-            {
-                writer.WriteAttributeString("name", ele.RulesElement.Name);
-                writer.WriteAttributeString("type", ele.RulesElement.Type);
-                writer.WriteAttributeString("internal-id", ele.RulesElementId);
-                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-            }
+            SerializeRuleElement(ele, false);
             foreach (var child in ele.Children)
             {
                 WriteRulesElementNested(child);
@@ -186,6 +173,8 @@ namespace ParagonLib
             if (!int.TryParse(element.Attribute("charelem").Value, out charid))
                 charid = GenericNegativeNumber--;
             var child = new CharElement(ruleid, charid, c.workspace, RuleFactory.FindRulesElement(ruleid, c.workspace.System));
+            child.Name = element.Attribute("name").Value;
+            child.Type = element.Attribute("type").Value;
             if (parent != null)
                 parent.Children.Add(child);
             child.Method = CharElement.AquistitionMethod.Unknown;
@@ -292,33 +281,39 @@ namespace ParagonLib
                     continue;
                 var ele = (rule.Value.Target as CharElement);
                 writer.WriteStartElement("RulesElement");
-                if (ele.RulesElement == null)
-                {
-                    writer.WriteAttributeString("name", "");
-                    writer.WriteAttributeString("type", "");
-                    writer.WriteAttributeString("internal-id", rule.Key);
-                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-                }
-                else
-                {
-                    writer.WriteAttributeString("name", ele.RulesElement.Name);
-                    writer.WriteAttributeString("type", ele.RulesElement.Type);
-                    writer.WriteAttributeString("internal-id", rule.Key);
-                    writer.WriteAttributeString("charelem", ele.SelfId.ToString());
-
-                    // TODO: URL
-                    // Legality
-                    if (ele.RulesElement.Specifics.ContainsKey("Short Description"))
-                    {
-                        writer.WriteStartElement("specific");
-                        writer.WriteAttributeString("name", "Short Description");
-                        writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
-                        writer.WriteEndElement();
-                    }
-                }
+                SerializeRuleElement(ele, true);
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Attaches the attributes to a RulesElement.  Called for both RulesElementTally and WriteLevels.
+        /// </summary>
+        /// <param name="ele">CharElement to serialize</param>
+        /// <param name="IncludeDetails">The Tally includes specifics, while Levels doesn't.</param>
+        /// <remarks>This method just attaches the attributes.  It's up to you to Open and Close the Xml Element.</remarks>
+        private void SerializeRuleElement(CharElement ele, bool IncludeDetails)
+        {
+            writer.WriteAttributeString("name", ele.Name);
+            writer.WriteAttributeString("type", ele.Type);
+            writer.WriteAttributeString("internal-id", ele.RulesElementId);
+            writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+            if (ele.RulesElement == null)
+                writer.WriteAttributeString("loaded", "false");
+            else
+            {
+
+                // TODO: URL
+                // Legality
+                if (IncludeDetails && ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                {
+                    writer.WriteStartElement("specific");
+                    writer.WriteAttributeString("name", "Short Description");
+                    writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
+                    writer.WriteEndElement();
+                }
+            }
         }
 
 
