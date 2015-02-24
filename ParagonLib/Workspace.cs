@@ -172,11 +172,8 @@ namespace ParagonLib
             }
             return (plus ? 1 : -1) * val;
         }
-        [DataContract]
-        [KnownType(typeof(bit))]
         public partial class Stat
         {
-            [DataMember]
             private List<bit> bits = new List<bit>();
             private List<string> Aliases = new List<string>();
             private Workspace workspace;
@@ -186,14 +183,12 @@ namespace ParagonLib
                 this.workspace = workspace;
                 this.Aliases.Add(Alias);
             }
-            [DataMember, XmlAttribute]
             public int Value
             {
                 get
                 {
                     return ValueAt(workspace.level);
                 }
-                private set { } // Exists for the serializer.
             }
 
             public int ValueAt(int Level)
@@ -241,20 +236,13 @@ namespace ParagonLib
             {
                 return workspace.ParseInt(p);
             }
-            [DataContract]
             private struct bit
             {
-                [DataMember(IsRequired=false), XmlAttribute]
                 public string condition;
-                [DataMember(IsRequired = false), XmlAttribute]
                 public int Level;
-                [DataMember(IsRequired = false), XmlAttribute]
                 public string requires;
-                [DataMember(IsRequired = false), XmlAttribute]
                 public string type;
-                [DataMember(IsRequired = false), XmlAttribute]
                 public string value;
-                [DataMember(IsRequired = false), XmlAttribute]
                 public string String;
 
                 public bit(string value, string condition, string requires, string type, int Level)
