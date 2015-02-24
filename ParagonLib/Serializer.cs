@@ -44,11 +44,36 @@ namespace ParagonLib
 
             WriteLevels();
 
-            // WriteTextStrings();
+            c.TextStrings["Character Save File"] = savefile; 
+            WriteTextStrings();
+
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
             writer.Close( );
             return true;
+        }
+
+        private void WriteTextStrings()
+        {
+            WriteComment("\n      Textstrings are builder variables and contain entered text data, such\n      as character names, as well as internal data\n   ");
+            SerializeTextString("Name", c.Name);
+            foreach (var item in c.TextStrings) // The ones that we didn't care about.
+            {
+                SerializeTextString(item.Key, item.Value);
+            }
+        }
+
+        /// <summary>
+        /// This one does the brunt work of Serializing TextStrings.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        private void SerializeTextString(string name, string value)
+        {
+            writer.WriteStartElement("textstring");
+            writer.WriteAttributeString("name", name);
+            writer.WriteValue(string.Format("\n      {0}\n   ", value));
+            writer.WriteEndElement();
         }
 
         private void WriteLevels()
@@ -147,6 +172,7 @@ namespace ParagonLib
                 case "Name":
                     c.Name = value;
                     break;
+
                 default:
                     c.TextStrings[name] = value;
                     break;
@@ -261,6 +287,8 @@ namespace ParagonLib
             {
                 ser.WriteObject(writer, entry);
             }
+            if (c.workspace.AdventureLog.Count==0)             writer.WriteRaw("\n    ");
+
             writer.WriteEndElement();
         }
 
@@ -277,6 +305,7 @@ namespace ParagonLib
             WriteComment("\n         The tally of the character&apos;s loot\n      ");
             writer.WriteStartElement("LootTally");
             //TODO: Loot!
+            writer.WriteRaw("\n    ");
             writer.WriteEndElement();
         }
 
