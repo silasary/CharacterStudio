@@ -29,6 +29,8 @@ namespace ParagonLib
             this.c = c;
             c.workspace.Recalculate(true);
             SaveFileVersion = PreferedSaveFileVersion;
+            if (Path.GetExtension(savefile) == ".dnd4e")
+                SaveFileVersion = "0.07a";
             writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );
             writer.WriteStartElement("D20Character");
@@ -120,6 +122,7 @@ namespace ParagonLib
                 }
             }
             c.Save("Temp");
+            c.Save("Temp.dnd4e");
             return c;
 
         }
@@ -372,7 +375,7 @@ namespace ParagonLib
             writer.WriteStartElement("StatBlock");
             foreach (var stat in c.workspace.Stats.Values.ToArray().Distinct()) 
             {
-                stat.Write(writer);
+                stat.Write(writer, SaveFileVersion);
             }
             writer.WriteEndElement();
         }

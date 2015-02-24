@@ -11,7 +11,7 @@ namespace ParagonLib
     partial class Workspace
     {
         partial class Stat {
-            internal void Write(XmlWriter writer)
+            internal void Write(XmlWriter writer, string SaveFileVersion)
             {
                 writer.WriteStartElement("Stat");
                 writer.WriteAttributeString("value", this.Value.ToString( ));
@@ -32,7 +32,7 @@ namespace ParagonLib
                             writer.WriteAttributeString(field.Name, field.GetValue(bit).ToString());
                     }
                     var realval = calc(bit, workspace.level);
-                    if (realval.ToString() != bit.value)
+                    if (SaveFileVersion != "0.07a" && realval.ToString() != bit.value)
                         writer.WriteAttributeString("calcvalue", realval.ToString());
                     writer.WriteEndElement( );
                 }
