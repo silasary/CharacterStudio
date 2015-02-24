@@ -7,6 +7,13 @@ namespace ParagonLib
 {
     public class Selection
     {
+        private CharElement Parent;
+
+        public Selection(CharElement parent)
+        {
+            // TODO: Complete member initialization
+            this.Parent = parent;
+        }
         public string Category { get; set; }
 
         public int Level { get; set; }
@@ -50,6 +57,7 @@ namespace ParagonLib
         }
 
         public string Value { get; set; }
+        [Obsolete]
         public CharElement Child { get; set; }
 
         public IEnumerable<RulesElement> Options { get; set; }

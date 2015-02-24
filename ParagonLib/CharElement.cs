@@ -56,7 +56,7 @@ namespace ParagonLib
                 var hash = String.Format("{0}{1}:{2}", category, type, number);
                 Selection sel;
                 if (!Choices.ContainsKey(hash))
-                    sel = this.Choices[hash] = new Selection();
+                    sel = this.Choices[hash] = new Selection(parent: this);
                 else
                     sel = this.Choices[hash];
                 sel.workspace = workspace;
