@@ -118,7 +118,7 @@ namespace ParagonLib
             {
                 if (CharacterRef == null) //TODO: Fix the Unit Tests to use Characters.
                     break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
-                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "", null);
+                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "0", null);
             }
             foreach (var adventure in AdventureLog)
             {
@@ -197,9 +197,7 @@ namespace ParagonLib
                 DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
                 foreach (var bit in bits)
                 {
-                    if (bit.Level > Level)
-                        continue;
-                    int val = calc(bit.value);
+                    int val = calc(bit, Level);
                     if (string.IsNullOrEmpty(bit.type))
                         total += val;
                     else if (TypeBonus[bit.type] < val)
@@ -210,6 +208,18 @@ namespace ParagonLib
                     total += type.Value;
                 }
                 return total;
+            }
+
+            private int calc(Stat.bit bit, int Level)
+            {
+                int val;
+                if (bit.Level > Level)
+                    val = 0;
+                else if (!workspace.MeetsRequirement(bit.requires))
+                    val = 0;
+                else
+                    val = calc(bit.value);
+                return val;
             }
 
             private bool Dirty { get; set; }
@@ -303,5 +313,10 @@ namespace ParagonLib
         }
 
         public CampaignSetting Setting { get; set; }
+
+        internal bool MeetsRequirement(string p)
+        {
+            return true;
+        }
     }
 }
