@@ -34,30 +34,42 @@ namespace ParagonLib
                 return;
             }
             Options = RuleFactory.Search(workspace.System, Type, Category, Default).Results();
+            // TODO:  If Method = Grant, Set value ""
             if (string.IsNullOrEmpty(Value))
             {
-                Value = "";
-                return;
+                var guess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).Select(n => n.RulesElementId).Intersect(Options.Select(r => r.InternalId)).FirstOrDefault( );
+                if (!string.IsNullOrEmpty(guess))
+                {
+                    Value = guess;
+                    Child = Parent.Children.Where(n => n.RulesElementId == guess).FirstOrDefault();
+                    Child.Method = CharElement.AquistitionMethod.Selected;
+                }
+                else
+                {
+                    Value = "";
+                    return;
+                }
             }
             var chosen = Options.Where(r => r.InternalId == Value);
             if (chosen.Count() == 0)
                 Value = "";
             if (String.IsNullOrEmpty(Value))
             {
-                Child = null;
-            }
+                    Parent.Children.Remove(Child);
+                    Child = null;
+             }
             else
             {
                 if (Child == null)
+                {
                     Child = RuleFactory.New(Value, workspace, Type);
-
-
+                    Child.Method = CharElement.AquistitionMethod.Selected;
+                    Parent.Children.Add(Child);
+                }
             }
-
         }
 
         public string Value { get; set; }
-        [Obsolete]
         public CharElement Child { get; set; }
 
         public IEnumerable<RulesElement> Options { get; set; }
