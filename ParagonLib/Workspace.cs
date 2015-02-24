@@ -120,6 +120,7 @@ namespace ParagonLib
                     break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
                 GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "0", null);
             }
+            //GetStat("XP Earned").Add(CharacterRef.StartingXp.ToString(), "", "", "", "0", null);
             foreach (var adventure in AdventureLog)
             {
                 adventure.StartXp = GetStat("XP Earned").Value;

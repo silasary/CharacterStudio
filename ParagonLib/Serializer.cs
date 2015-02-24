@@ -167,12 +167,26 @@ namespace ParagonLib
         {
             var name = node.Attribute("name").Value;
             var value = node.Value.Trim();
+            // TODO: Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
+            // These are unfortunately important.  We're also going to abuse them even further:
+            // Extra info for the AdventureLog needs to survive a round trip, 
+            // so we'll use name=EXTRA_{GUID}
             switch (name)
             {
                 case "Name":
                     c.Name = value;
                     break;
-
+                case "Experience Points":
+                    int val = int.Parse(value);
+                    if (c.workspace.AdventureLog.Count==0 && val > 0)
+                    {
+                        c.workspace.AdventureLog.Add(new Adventure() {
+                            Title = "Early Adventures", 
+                            XpEarned = val, 
+                            Notes = "This is a generic entry explaining the XP that was earned before I got my Journal." 
+                        });
+                    }
+                    break;
                 default:
                     c.TextStrings[name] = value;
                     break;

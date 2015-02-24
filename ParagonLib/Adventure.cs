@@ -10,6 +10,8 @@ namespace ParagonLib
     [DataContract(Name = "JournalEntry", Namespace = "")]
     public class Adventure
     {
+
+        public Guid guid { get; set; }
         [DataMember(Order = 1)]
         public string Title { get; set; }
         [DataMember(Order = 2)]

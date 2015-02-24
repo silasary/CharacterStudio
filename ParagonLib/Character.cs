@@ -23,6 +23,8 @@ namespace ParagonLib
 
         public string Name { get; set; }
 
+        //public int StartingXp { get; set; }
+
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
 
         public Character(string System)
