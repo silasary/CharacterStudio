@@ -71,6 +71,8 @@ namespace ParagonLib
 
         internal void Recalculate()
         {
+            if (this.SelfId == -1)
+                SelfId = workspace.GenerateUID();
             if (this.RulesElement == null)
                 this.RulesElement = RuleFactory.FindRulesElement(RulesElementId, workspace.System);
             if (this.RulesElement == null)

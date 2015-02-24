@@ -37,16 +37,51 @@ namespace ParagonLib
             WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
 
             WriteCharacterSheet();
-            
+            writer.Flush();
             WriteD20CampaignSetting();
 
-            // WriteLevels();
+            WriteLevels();
 
             // WriteTextStrings();
             writer.WriteEndElement( );
             writer.WriteEndDocument( );
             writer.Close( );
             return true;
+        }
+
+        private void WriteLevels()
+        {
+            foreach (var level in c.workspace.Levelset.Children)
+            {
+                writer.WriteStartElement("Level");
+                WriteRulesElementNested(level);
+                writer.WriteEndElement();
+            }
+        }
+
+        private void WriteRulesElementNested(CharElement ele)
+        {
+            writer.WriteStartElement("RulesElement");
+
+            if (ele.RulesElement == null)
+            {
+                writer.WriteAttributeString("name", "");
+                writer.WriteAttributeString("type", "");
+                writer.WriteAttributeString("internal-id", ele.RulesElementId);
+                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+            }
+            else
+            {
+                writer.WriteAttributeString("name", ele.RulesElement.Name);
+                writer.WriteAttributeString("type", ele.RulesElement.Type);
+                writer.WriteAttributeString("internal-id", ele.RulesElementId);
+                writer.WriteAttributeString("charelem", ele.SelfId.ToString());
+            }
+            foreach (var child in ele.Children)
+            {
+                WriteRulesElementNested(child);
+            }
+            writer.WriteEndElement();
         }
 
         private void WriteD20CampaignSetting()
@@ -141,7 +176,7 @@ namespace ParagonLib
             }
             //c.workspace.Recalculate();
         }
-
+        int GenericNegativeNumber = -1;
         private void ReadRulesElement(XElement element, CharElement parent)
         {
             if (element.Attribute("internal-id") == null)
@@ -149,7 +184,7 @@ namespace ParagonLib
             var ruleid = element.Attribute("internal-id").Value;
             int charid;
             if (!int.TryParse(element.Attribute("charelem").Value, out charid))
-                charid = -1;
+                charid = GenericNegativeNumber--;
             var child = new CharElement(ruleid, charid, c.workspace, RuleFactory.FindRulesElement(ruleid, c.workspace.System));
             if (parent != null)
                 parent.Children.Add(child);
