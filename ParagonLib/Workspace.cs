@@ -129,7 +129,7 @@ namespace ParagonLib
             foreach (var item in AllElements.Values.ToArray())
             {
                 CharElement el;
-                if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive))
+                if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive) && el.RulesElement != null)
                 {
                     if (el.RulesElement.Type == "Test")
                         el.Recalculate();
