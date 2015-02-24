@@ -8,16 +8,8 @@ using System.Xml;
 
 namespace ParagonLib
 {
-    [Serializable]
-    [KnownType(typeof(Stat))]
-    partial class Workspace : ISerializable
+    partial class Workspace
     {
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("statblock", Stats.Values.Distinct().ToArray(),typeof(Stat[]));
-        }
-
         partial class Stat {
             internal void Write(XmlWriter writer)
             {
