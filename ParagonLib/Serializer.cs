@@ -57,10 +57,47 @@ namespace ParagonLib
         {
             WriteComment("\n      Textstrings are builder variables and contain entered text data, such\n      as character names, as well as internal data\n   ");
             SerializeTextString("Name", c.Name);
+            foreach (var adv in c.workspace.AdventureLog)
+            {
+                SerializeAdventure(adv);
+            }
             foreach (var item in c.TextStrings) // The ones that we didn't care about.
             {
                 SerializeTextString(item.Key, item.Value);
             }
+        }
+
+        private void SerializeAdventure(Adventure adv)
+        {
+            var sb = new StringBuilder();
+            sb.Append("ENTRY:");
+            var writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
+            bool ImageEntry = !string.IsNullOrEmpty(adv.Uri) && adv.XPGain == 0;
+            writer.WriteStartDocument();
+            writer.WriteStartElement("JournalEntry");
+            //writer.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
+            
+            if (ImageEntry)
+                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
+            else
+                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
+            foreach (var p in typeof(Adventure).GetProperties())
+            {
+                var v = p.GetValue(adv);
+                    writer.WriteStartElement(p.Name);
+                    if (v != null)
+                    {
+                        if (p.PropertyType == typeof(DateTime))
+                            writer.WriteValue(((DateTime)v).ToString("o"));
+                        else
+                            writer.WriteValue(v.ToString());
+                    }
+                    writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Close();
+            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
         }
 
         /// <summary>
@@ -231,6 +268,8 @@ namespace ParagonLib
             {
                 var prop = typeof(Adventure).GetProperty(item.Name.LocalName);
                 if (prop == null)
+                    continue;
+                if (string.IsNullOrEmpty(item.Value))
                     continue;
                 if (prop.PropertyType == typeof(DateTime))
                     prop.SetValue(adv, DateTime.Parse(item.Value));
