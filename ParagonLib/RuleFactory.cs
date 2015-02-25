@@ -242,6 +242,9 @@ namespace ParagonLib
             {
                 var UpdateInfo = UpdateQueue.Dequeue();
                 var file = UpdateInfo.Attribute("filename").Value;
+                bool SettingSpecific = false;
+                if (UpdateInfo.Document.Root.Attribute("SettingSpecific") != null)
+                    Boolean.TryParse(UpdateInfo.Document.Root.Attribute("SettingSpecific").Value, out SettingSpecific);
                 try
                 {
                     string filename = UpdateInfo.Element("Filename") != null ? UpdateInfo.Element("Filename").Value : Path.GetFileName(file);
@@ -254,6 +257,21 @@ namespace ParagonLib
                             Logging.Log("Updater", TraceEventType.Information, "Updating {0} to {1}", filename, verRemote);
                             string newfile;
                             var xml = wc.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            XDocument upd = XDocument.Parse(xml);
+                            Version verUpdated = new Version(upd.Root.Element("UpdateInfo").Element("Version").Value);
+                            if (verUpdated != verRemote) // Someone screwed up.  Probably Adam again.
+                            {
+                                upd.Root.Element("UpdateInfo").Element("Version").Value = verRemote.ToString();
+                                xml = upd.ToString(SaveOptions.None);
+                            }
+                            if (SettingSpecific)
+                            {
+                                if (upd.Root.Attribute("SettingSpecific") == null)
+                                    upd.Root.Add(new XAttribute("SettingSpecific", "true"));
+                                else
+                                    upd.Root.Attribute("SettingSpecific").Value = "true";
+                                xml = upd.ToString(SaveOptions.None);
+                            }
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             LoadFile(newfile);
                         }
@@ -268,6 +286,21 @@ namespace ParagonLib
                             Logging.Log("Updater", TraceEventType.Information, "Updating {0} to {1}", filename, verRemote);
                             string newfile;
                             var xml = wc.DownloadString(Uri(UpdateInfo.Element("PartAddress").Value, filename));
+                            XDocument upd = XDocument.Parse(xml);
+                            string verUpdated = upd.Root.Element("UpdateInfo").Element("Version").Value;
+                            if (verUpdated != verRemote) // Someone screwed up.  Probably Adam again.
+                            {
+                                upd.Root.Element("UpdateInfo").Element("Version").Value = verRemote;
+                                xml = upd.ToString(SaveOptions.None);
+                            }
+                            if (SettingSpecific)
+                            {
+                                if (upd.Root.Attribute("SettingSpecific") == null)
+                                    upd.Root.Add(new XAttribute("SettingSpecific", "true"));
+                                else
+                                    upd.Root.Attribute("SettingSpecific").Value = "true";
+                                xml = upd.ToString(SaveOptions.None);
+                            }
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
                             LoadFile(newfile);
                         }
