@@ -10,19 +10,26 @@ namespace ParagonLib
     [DataContract(Name = "JournalEntry", Namespace = "")]
     public class Adventure
     {
+        public Adventure() : this(Guid.NewGuid()) { }
+        public Adventure(Guid guid)
+        {
+            this.guid = guid;
+        }
 
         public Guid guid { get; set; }
+        [DataMember(Order=0)]
+        public DateTime TimeStamp { get; set; }
         [DataMember(Order = 1)]
         public string Title { get; set; }
         [DataMember(Order = 2)]
-        public int StartXp { get; set; }
+        public int XPStart { get; set; }
         [DataMember(Order = 3)]
-        public int XpEarned { get; set; }
+        public int XPGain { get; set; }
         [DataMember(Order = 4)]
-        public int EndXp { get { return StartXp + XpEarned; } private set { } }
+        public int XPTotal { get { return XPStart + XPGain; } private set { } }
 
         [DataMember(Order = 6)]
-        public int GpEarned { get; set; }
+        public int GPDelta { get; set; }
 
         [DataMember(Order = 7)]
         public string Treasure { get; set; }
@@ -35,5 +42,8 @@ namespace ParagonLib
         [DataMember(Order = 9)]
         public string Notes { get; set; }
 
+        [DataMember(Order = 10, IsRequired=false)]
+        [Description("Image Entries use these.")]
+        public string Uri { get; set; }
     }
 }

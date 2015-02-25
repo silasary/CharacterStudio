@@ -146,10 +146,36 @@ namespace ParagonLib
                         break;
                 }
             }
+            // Done reading everything.  Time to do housekeeping:
+            c.workspace.Recalculate(true);
+            ValidateExperiencePoints();
+                    
             c.Save("Temp");
             c.Save("Temp.dnd4e");
             return c;
 
+        }
+
+        private void ValidateExperiencePoints()
+        {
+            int val = int.Parse(c.TextStrings["Experience Points"]);
+            if (val != c.workspace.GetStat("XP Earned").Value)
+            {
+                if (c.workspace.AdventureLog.Count==0)
+                c.workspace.AdventureLog.Add(new Adventure()
+                {
+                    Title = "Early Adventures",
+                    XPGain = val,
+                    Notes = "This is a generic entry explaining the XP that was earned before I got my Journal."
+                });
+                else
+                    c.workspace.AdventureLog.Add(new Adventure()
+                    {
+                        Title = "Missing Adventures",
+                        XPGain = val,
+                        Notes = "This is a generic entry explaining the XP that I forgot to write in my Journal."
+                    });
+            }
         }
 
         private void ReadCharacterSheet(XElement node)
@@ -170,28 +196,49 @@ namespace ParagonLib
             // TODO: Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
             // These are unfortunately important.  We're also going to abuse them even further:
             // Extra info for the AdventureLog needs to survive a round trip, 
-            // so we'll use name=EXTRA_{GUID}
+            // so we'll use name=EXT_{GUID}
+            if (name.StartsWith("NOTE_") || name.StartsWith("EXT_"))
+                DeserializeAdventure(node);
+            else
             switch (name)
             {
                 case "Name":
                     c.Name = value;
                     break;
-                case "Experience Points":
-                    int val = int.Parse(value);
-                    if (c.workspace.AdventureLog.Count==0 && val > 0)
-                    {
-                        c.workspace.AdventureLog.Add(new Adventure() {
-                            Title = "Early Adventures", 
-                            XpEarned = val, 
-                            Notes = "This is a generic entry explaining the XP that was earned before I got my Journal." 
-                        });
-                    }
+                case "Experience Points":  //We'll deal with this later.
+                    c.TextStrings[name] = value;
                     break;
                 default:
                     c.TextStrings[name] = value;
                     break;
             }
             
+        }
+
+        private void DeserializeAdventure(XElement node)
+        {
+            var name = node.Attribute("name").Value;
+            var gs = name.Substring(4).Trim('_'); // This works for both NOTE_ and EXT_, leaving just the guid.
+            Guid guid = Guid.Parse(gs);
+            var adv = c.workspace.AdventureLog.FirstOrDefault(n => n.guid == guid);
+            if (adv == null)
+                c.workspace.AdventureLog.Add(adv = new Adventure(guid));
+            var value = node.Value.Trim();
+            if (value.StartsWith("ENTRY:"))
+                value = value.Substring(6);
+            var xml = XDocument.Parse(value);
+            foreach (var item in xml.Root.Elements())
+            {
+                var prop = typeof(Adventure).GetProperty(item.Name.LocalName);
+                if (prop == null)
+                    continue;
+                if (prop.PropertyType == typeof(DateTime))
+                    prop.SetValue(adv, DateTime.Parse(item.Value));
+                else if (prop.PropertyType == typeof(int))
+                    prop.SetValue(adv, int.Parse(item.Value));
+                else
+                    prop.SetValue(adv, item.Value);
+            }
         }
 
         private void ReadLevel(XElement node)

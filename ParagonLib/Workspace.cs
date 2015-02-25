@@ -123,8 +123,8 @@ namespace ParagonLib
             //GetStat("XP Earned").Add(CharacterRef.StartingXp.ToString(), "", "", "", "0", null);
             foreach (var adventure in AdventureLog)
             {
-                adventure.StartXp = GetStat("XP Earned").Value;
-                GetStat("XP Earned").Add(adventure.XpEarned.ToString(), null, null, null, null,null);
+                adventure.XPStart = GetStat("XP Earned").Value;
+                GetStat("XP Earned").Add(adventure.XPGain.ToString(), null, null, null, null,null);
             }
 #if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
             foreach (var item in AllElements.Values.ToArray())

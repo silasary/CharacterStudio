@@ -69,13 +69,13 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             var ws = c.workspace;
             //var ruleset = RuleFactory.New("TEST_RULESET", ws); // This should be implicit at some point.
             Debug.Assert(ws.Level == 1); // Start at level 1.
-            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 70 });
+            c.workspace.AdventureLog.Add(new Adventure() { XPGain = 70 });
             ws.Recalculate();
             Debug.Assert(ws.Level == 2); // We earned 70, which is 50+leftovers. Expect 2.
-            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 30 });
+            c.workspace.AdventureLog.Add(new Adventure() { XPGain = 30 });
             ws.Recalculate(); 
             Debug.Assert(ws.Level == 3); // Earned 30, which brings us to a total of 100. Exactly level 3.
-            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 120 });
+            c.workspace.AdventureLog.Add(new Adventure() { XPGain = 120 });
             ws.Recalculate();
             Debug.Assert(ws.Level == 5); // Earned 120, which brings us to a total of 220. Level 5.
             //GC.KeepAlive(ruleset);
@@ -112,7 +112,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             RuleFactory.Load(elements);
             var c = new Character("TestSave");
             var ws = c.workspace;
-            c.workspace.AdventureLog.Add(new Adventure() { XpEarned = 70 });
+            c.workspace.AdventureLog.Add(new Adventure() { XPGain = 70 });
             ws.Recalculate();
             c.Save("Test.D20Character");
             File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Saved Characters", "Test.D20Character"), "./Test.D20Character", true);
