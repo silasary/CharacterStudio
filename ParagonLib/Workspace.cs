@@ -125,6 +125,7 @@ namespace ParagonLib
             {
                 adventure.XPStart = GetStat("XP Earned").Value;
                 GetStat("XP Earned").Add(adventure.XPGain.ToString(), null, null, null, null,null);
+                adventure.LevelAtEnd = Level;
             }
 #if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
             foreach (var item in AllElements.Values.ToArray())

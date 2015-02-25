@@ -27,7 +27,8 @@ namespace ParagonLib
         public int XPGain { get; set; }
         [DataMember(Order = 4)]
         public int XPTotal { get { return XPStart + XPGain; } private set { } }
-
+        [DataMember(Order = 5)]
+        public int LevelAtEnd { get; set; }
         [DataMember(Order = 6)]
         public int GPDelta { get; set; }
 

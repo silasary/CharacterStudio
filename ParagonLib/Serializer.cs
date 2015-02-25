@@ -57,6 +57,7 @@ namespace ParagonLib
         {
             WriteComment("\n      Textstrings are builder variables and contain entered text data, such\n      as character names, as well as internal data\n   ");
             SerializeTextString("Name", c.Name);
+            SerializeTextString("Experience Points", c.workspace.GetStat("XP Earned").Value.ToString());
             foreach (var adv in c.workspace.AdventureLog)
             {
                 SerializeAdventure(adv);
@@ -213,6 +214,7 @@ namespace ParagonLib
                         Notes = "This is a generic entry explaining the XP that I forgot to write in my Journal."
                     });
             }
+            c.TextStrings.Remove("Experience Points");
         }
 
         private void ReadCharacterSheet(XElement node)
