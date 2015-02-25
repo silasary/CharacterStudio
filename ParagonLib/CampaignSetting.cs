@@ -20,7 +20,7 @@ namespace ParagonLib
         
         public static CampaignSetting Load(string Setting, string System)
         {
-            return null;
+            return Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
         }
 
         internal static void ImportSetting(System.Xml.Linq.XDocument doc)

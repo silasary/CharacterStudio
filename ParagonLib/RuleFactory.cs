@@ -145,6 +145,7 @@ namespace ParagonLib
                 }
                 else
                     Logging.LogIf(ext == ".part", TraceEventType.Critical, "Xml Validation", "{0} does not have a defined system.", file);
+
                 if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {
@@ -158,6 +159,9 @@ namespace ParagonLib
                 }
                 if (ext == ".index")
                 {
+                    bool SettingSpecific = false;
+                    if (doc.Root.Attribute("SettingSpecific") != null)
+                        Boolean.TryParse(doc.Root.Attribute("SettingSpecific").Value, out SettingSpecific);
                     foreach (var n in doc.Root.Elements("Obsolete"))
                     {
                         File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
@@ -169,6 +173,15 @@ namespace ParagonLib
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
                             var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
+                            if (SettingSpecific)
+                            {
+                                var nd = XDocument.Parse(xml);
+                                if (nd.Root.Attribute("SettingSpecific") == null)
+                                    nd.Root.Add(new XAttribute("SettingSpecific", "true"));
+                                else
+                                    nd.Root.Attribute("SettingSpecific").Value = "true";
+                                xml = nd.ToString(SaveOptions.None);
+                            }    
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
                         }

@@ -227,7 +227,7 @@ namespace ParagonLib
             private bool Dirty { get; set; }
 
             public void Add(string value, string condition, string requires, string type, string Level, CharElement charelem)
-            {
+            { // TODO: Support wearing= at some point
                 bits.Add(new bit(value, condition, requires, type, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
                 this.Dirty = true;
             }

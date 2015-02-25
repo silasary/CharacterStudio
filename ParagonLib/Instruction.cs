@@ -41,7 +41,7 @@ namespace ParagonLib
                         ws.GetStat("blah").Add("Example", "bkagt", "+4","7",null);
                       }
                      */
-                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters, StatAddInfo))); // TODO: Support wearing= at some point
+                    func = Builders.Lambda(Builders.StatAdd(Parameters["name"], Params(Parameters, StatAddInfo)));
                     break;
 
                 case "statalias":
