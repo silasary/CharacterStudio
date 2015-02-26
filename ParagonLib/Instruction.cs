@@ -55,11 +55,10 @@ namespace ParagonLib
 
                 case "select":
                     func = Builders.Lambda(Builders.Select(Params(Parameters, SelectInfo)));
-
                     break;
 
                 case "textstring":
-                    func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters, "value", "condition", "requires", "Level")));
+                    func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters, TextStringInfo)));
                     break;
 
                 default:
@@ -96,6 +95,7 @@ namespace ParagonLib
         }
 
         private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
+        private static MethodInfo TextStringInfo = typeof(Workspace.Stat).GetMethod("AddText");
         private static MethodInfo GrantInfo = typeof(CharElement).GetMethod("Grant");
         private static MethodInfo SelectInfo = typeof(CharElement).GetMethod("Select");
 
@@ -158,7 +158,7 @@ namespace ParagonLib
             {
                 return Expression.Call(
                     Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "AddText"),
-                        args.Select(e => Expression.Constant(e, typeof(String)))
+                        Args(args)
                     );
             }
 

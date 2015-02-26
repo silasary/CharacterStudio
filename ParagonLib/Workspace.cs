@@ -228,13 +228,13 @@ namespace ParagonLib
 
             public void Add(string value, string condition, string requires, string type, string Level, CharElement charelem)
             { // TODO: Support wearing= at some point
-                bits.Add(new bit(value, condition, requires, type, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                bits.Add(new bit(value, condition, requires, type, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level), charelem));
                 this.Dirty = true;
             }
 
-            public void AddText(string text, string condition, string requires, string Level)
+            public void AddText(string value, string condition, string requires, string Level, CharElement charelem)
             {
-                bits.Add(new bit(text, condition, requires, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level)));
+                bits.Add(new bit(value, condition, requires, string.IsNullOrEmpty(Level) ? workspace.Level : int.Parse(Level), charelem));
                 this.Dirty = true;
             }
 
@@ -256,8 +256,9 @@ namespace ParagonLib
                 public string type;
                 public string value;
                 public string String;
+                private int charelem;
 
-                public bit(string value, string condition, string requires, string type, int Level)
+                public bit(string value, string condition, string requires, string type, int Level, CharElement source)
                 {
                     this.value = value;
                     this.condition = condition;
@@ -265,9 +266,13 @@ namespace ParagonLib
                     this.type = type;
                     this.Level = Level;
                     this.String = "";
+                    if (source == null)
+                        this.charelem = 0;
+                    else
+                        this.charelem = source.SelfId;
                 }
 
-                public bit(string text, string condition, string requires, int Level)
+                public bit(string text, string condition, string requires, int Level, CharElement source)
                 {
                     this.String = text;
                     this.condition = condition;
@@ -275,7 +280,10 @@ namespace ParagonLib
                     this.type = "";
                     this.Level = Level;
                     this.value = "";
-
+                    if (source == null)
+                        this.charelem = 0;
+                    else
+                        this.charelem = source.SelfId;
                 }
                 
             }

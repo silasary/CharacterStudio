@@ -28,7 +28,7 @@ namespace ParagonLib
                     {
                         if (!string.IsNullOrEmpty( field.GetValue(bit) as string))
                             writer.WriteAttributeString(field.Name, (string)field.GetValue(bit));
-                        if (field.GetValue(bit) is int && (int)field.GetValue(bit) != 0) // Level.
+                        if (field.GetValue(bit) is int && (int)field.GetValue(bit) != 0) // Level and charelem
                             writer.WriteAttributeString(field.Name, field.GetValue(bit).ToString());
                     }
                     var realval = calc(bit, workspace.level);
