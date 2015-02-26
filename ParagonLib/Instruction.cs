@@ -50,7 +50,7 @@ namespace ParagonLib
 
                 case "grant":
                     func = Builders.Lambda(Builders.Grant(Params(Parameters, GrantInfo)));
-                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
+                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, GrantInfo)));
                     break;
 
                 case "select":
@@ -65,6 +65,10 @@ namespace ParagonLib
                     func = Builders.Lambda(Builders.Replace(Params(Parameters, ReplaceInfo)));
                     break;
 
+                case "modify":
+                    func = Builders.Lambda(Builders.Modify(Params(Parameters, ModifyInfo)));
+                    break;
+
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
@@ -76,6 +80,7 @@ namespace ParagonLib
         // Workaround for Mono:
         public delegate void Action<in T1, in T2>(T1 arg1, T2 arg2);
 
+        [Obsolete]
         private string[] Params(DefaultDictionary<string, string> Parameters, params string[] keys)
         {
             Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
@@ -89,13 +94,26 @@ namespace ParagonLib
                 Parameters.Remove(keys[i]);
             }
             Parameters.Remove("name");
-            Debug.WriteLineIf(Parameters.Count > 0, String.Format("Unexpected params! {0}", Parameters.FirstOrDefault())); // We got a value we weren't expecting.  Let someone know.
+            Logging.LogIf(Parameters.Count > 0, TraceEventType.Warning, "Xml Loader", "Unexpected params! {0}", Parameters.FirstOrDefault()); // We got a value we weren't expecting.  Let someone know.
             return vals;
         }
 
         private string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
         {
-            return Params(Parameters, method.GetParameters().Select(p => p.Name).ToArray());
+            var keys = method.GetParameters().Select(p => p.Name).ToArray();
+            Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
+            string[] vals = new string[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (keys[i] == "charelem")
+                    vals[i] = keys[i];
+                else
+                    vals[i] = Parameters[keys[i]];
+                Parameters.Remove(keys[i]);
+            }
+            Parameters.Remove("name");
+            Logging.LogIf(Parameters.Count > 0, TraceEventType.Warning, "Xml Loader", "Unexpected {0} params! {1}", method.Name, Parameters.FirstOrDefault()); // We got a value we weren't expecting.  Let someone know.
+            return vals;
         }
 
         private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
@@ -103,6 +121,7 @@ namespace ParagonLib
         private static MethodInfo GrantInfo = typeof(CharElement).GetMethod("Grant");
         private static MethodInfo SelectInfo = typeof(CharElement).GetMethod("Select");
         private static MethodInfo ReplaceInfo = typeof(CharElement).GetMethod("Replace");
+        private static MethodInfo ModifyInfo = typeof(CharElement).GetMethod("Modify");
 
         private static class Builders
         {
@@ -173,6 +192,14 @@ namespace ParagonLib
                     pCharElement, Builders.RefGetMethod(typeof(CharElement), "Grant"),
                         args.Select(e => Expression.Constant(e, typeof(String)))
                     );
+            }
+
+            internal static Expression Modify(string[] args)
+            {
+                return Expression.Call(
+                    pCharElement, Builders.RefGetMethod(typeof(CharElement), "Modify"),
+                    args.Select(e => Expression.Constant(e, typeof(String)))
+                );
             }
 
             internal static Expression Replace(string[] args)

@@ -104,6 +104,11 @@ namespace ParagonLib
             //TODO: Fill me in!
         }
 
+        public void Modify(string name, string Field, string value, string requires)
+        {
+            //TODO: Fill me in!
+        }
+
         internal void Recalculate()
         {
             if (this.SelfId == -1)
