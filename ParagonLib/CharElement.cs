@@ -99,6 +99,11 @@ namespace ParagonLib
             }
         }
 
+        public void Replace(string power_replace, string optional)
+        {
+            //TODO: Fill me in!
+        }
+
         internal void Recalculate()
         {
             if (this.SelfId == -1)

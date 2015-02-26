@@ -61,6 +61,10 @@ namespace ParagonLib
                     func = Builders.Lambda(Builders.TextString(Parameters["name"], Params(Parameters, TextStringInfo)));
                     break;
 
+                case "replace":
+                    func = Builders.Lambda(Builders.Replace(Params(Parameters, ReplaceInfo)));
+                    break;
+
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
@@ -98,6 +102,7 @@ namespace ParagonLib
         private static MethodInfo TextStringInfo = typeof(Workspace.Stat).GetMethod("AddText");
         private static MethodInfo GrantInfo = typeof(CharElement).GetMethod("Grant");
         private static MethodInfo SelectInfo = typeof(CharElement).GetMethod("Select");
+        private static MethodInfo ReplaceInfo = typeof(CharElement).GetMethod("Replace");
 
         private static class Builders
         {
@@ -168,6 +173,14 @@ namespace ParagonLib
                     pCharElement, Builders.RefGetMethod(typeof(CharElement), "Grant"),
                         args.Select(e => Expression.Constant(e, typeof(String)))
                     );
+            }
+
+            internal static Expression Replace(string[] args)
+            {
+                return Expression.Call(
+                    pCharElement, Builders.RefGetMethod(typeof(CharElement), "Replace"),
+                    args.Select(e => Expression.Constant(e, typeof(String)))
+                );
             }
 
             internal static Expression Select(string[] args)

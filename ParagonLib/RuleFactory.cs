@@ -111,10 +111,18 @@ namespace ParagonLib
 
         private static void Load(XElement item)
         {
-            var re = new RulesElement(item);
-            Rules[re.InternalId] = re;
-            if (!String.IsNullOrEmpty(re.System))
-                RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+            try
+            {
+                var re = new RulesElement(item);
+                Rules[re.InternalId] = re;
+                if (!String.IsNullOrEmpty(re.System))
+                    RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+            }
+            catch (XmlException c)
+            {
+                Logging.Log("Xml Loader", TraceEventType.Error, "Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
+                System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
+            }
         }
 
         private static RulesElement GetRule(string id)

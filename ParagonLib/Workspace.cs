@@ -312,7 +312,7 @@ namespace ParagonLib
             }
         }
 
-        IEnumerable<int> counter() { var i = 0; while (true) yield return i++; }
+        IEnumerable<int> counter() { var i = 1; while (true) yield return i++; }
         internal int GenerateUID()
         {
             var ids = AllElements.Where(i => i.Value.IsAlive)

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ParagonLib
 {
-    static class Logging
+    public static class Logging
     {
         
         static List<string> OpenLogs = new List<string>();
 
-        internal static void Log(string Log, TraceEventType level, string Message, params object[] args)
+        public static void Log(string Log, TraceEventType level, string Message, params object[] args)
         {
             lock (OpenLogs)
             {

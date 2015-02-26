@@ -242,6 +242,7 @@ namespace ParagonLib
             switch (name)
             {
                 case "Name":
+                case "name":
                     c.Name = value;
                     break;
                 case "Experience Points":  //We'll deal with this later.

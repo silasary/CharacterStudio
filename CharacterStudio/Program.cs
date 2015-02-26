@@ -14,11 +14,17 @@ namespace CharacterStudio
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (ParagonLib.RuleFactory.Loading)
                 Console.WriteLine("Loading");
             Application.Run(new PrimaryForm());
+        }
+
+        static void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
+        {
+            ParagonLib.Logging.Log("Crashlog", System.Diagnostics.TraceEventType.Critical, e.ToString( ));
         }
     }
 }
