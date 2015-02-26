@@ -49,12 +49,12 @@ namespace ParagonLib
                     break;
 
                 case "grant":
-                    func = Builders.Lambda(Builders.Grant(Params(Parameters, "name", "type", "requires", "Level")));
+                    func = Builders.Lambda(Builders.Grant(Params(Parameters, GrantInfo)));
                     validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, "name", "type")));
                     break;
 
                 case "select":
-                    func = Builders.Lambda(Builders.Select(Params(Parameters, "Category", "number", "type", "requires", "optional", "Level", "default")));
+                    func = Builders.Lambda(Builders.Select(Params(Parameters, SelectInfo)));
 
                     break;
 
@@ -96,6 +96,8 @@ namespace ParagonLib
         }
 
         private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
+        private static MethodInfo GrantInfo = typeof(CharElement).GetMethod("Grant");
+        private static MethodInfo SelectInfo = typeof(CharElement).GetMethod("Select");
 
         private static class Builders
         {

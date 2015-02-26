@@ -61,17 +61,17 @@ namespace ParagonLib
 
         internal RulesElement RulesElement { get; set; }
 
-        public void Grant(string InternalId, string type, string requires, string Level)
+        public void Grant(string name, string type, string requires, string Level)
         {
             CharElement child;
-            if ((child = this.Children.Find(e => e.RulesElementId == InternalId)) != null)
+            if ((child = this.Children.Find(e => e.RulesElementId == name)) != null)
             {
                 if (child.Parent == null || !child.Parent.IsAlive) 
                     child.Parent = new WeakReference(this);
                 child.Method = AquistitionMethod.Granted;
                 return;
             }
-            child = RuleFactory.New(InternalId, workspace, type);
+            child = RuleFactory.New(name, workspace, type);
             child.Method = AquistitionMethod.Granted;
             this.Children.Add(child);
             child.Parent = new WeakReference(this);
