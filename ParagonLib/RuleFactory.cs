@@ -318,8 +318,13 @@ namespace ParagonLib
 
         private static void ValidateRules(object state)
         {
-            foreach (var item in Rules)
+            return; // Causing hangs?
+            for (int n = 0; n < Rules.Count; n++)
             {
+                Thread.Sleep(0);
+                KeyValuePair<string, RulesElement> item;
+                
+                item = Rules.ElementAt(n);
                 var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
                 foreach (var spec in CSV_Specifics)
                 {
