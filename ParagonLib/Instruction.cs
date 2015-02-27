@@ -80,7 +80,7 @@ namespace ParagonLib
         // Workaround for Mono:
         public delegate void Action<in T1, in T2>(T1 arg1, T2 arg2);
 
-        [Obsolete]
+        [Obsolete("", true)]
         private string[] Params(DefaultDictionary<string, string> Parameters, params string[] keys)
         {
             Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
@@ -100,7 +100,7 @@ namespace ParagonLib
 
         private string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
         {
-            var keys = method.GetParameters().Select(p => p.Name).ToArray();
+            var keys = method.GetParameters().Select(p => p.Name.Replace('-','_')).ToArray();
             Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
             string[] vals = new string[keys.Length];
             for (int i = 0; i < keys.Length; i++)

@@ -63,18 +63,27 @@ namespace ParagonLib
 
         public void Grant(string name, string type, string requires, string Level)
         {
+            int level;
+            int.TryParse(Level, out level);
+            bool disabled = false;
+            if (!workspace.MeetsRequirement(requires) || workspace.Level < level)
+                disabled = true;
             CharElement child;
             if ((child = this.Children.Find(e => e.RulesElementId == name)) != null)
             {
                 if (child.Parent == null || !child.Parent.IsAlive) 
                     child.Parent = new WeakReference(this);
                 child.Method = AquistitionMethod.Granted;
+                child.Disabled = disabled;
                 return;
             }
+
             child = RuleFactory.New(name, workspace, type);
             child.Method = AquistitionMethod.Granted;
             this.Children.Add(child);
             child.Parent = new WeakReference(this);
+            child.Disabled = disabled;
+
         }
 
         public void Select(string category, string number, string type, string requires, string optional, string Level, string Default)
@@ -99,12 +108,12 @@ namespace ParagonLib
             }
         }
 
-        public void Replace(string power_replace, string optional)
+        public void Replace(string power_replace, string optional, string Level)
         {
             //TODO: Fill me in!
         }
 
-        public void Modify(string name, string Field, string value, string requires)
+        public void Modify(string name, string type, string Field, string value, string requires)
         {
             //TODO: Fill me in!
         }
@@ -113,6 +122,8 @@ namespace ParagonLib
         {
             if (this.SelfId == -1)
                 SelfId = workspace.GenerateUID();
+            if (Disabled)
+                return; 
             if (this.RulesElement == null)
                 this.RulesElement = RuleFactory.FindRulesElement(RulesElementId, workspace.System);
             if (this.RulesElement == null)
@@ -129,5 +140,7 @@ namespace ParagonLib
                 child.Recalculate();
             }
         }
+
+        public bool Disabled { get; set; }
     }
 }

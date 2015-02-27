@@ -1,5 +1,6 @@
 ﻿using Kamahl.Common;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,10 +14,10 @@ namespace ParagonLib
 {
     public static class RuleFactory
     {
-        internal static Dictionary<string, RulesElement> Rules;
+        internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
         private static int num = 0;
-        private static Dictionary<string, RulesElement> RulesBySystem;
+        private static ConcurrentDictionary<string, RulesElement> RulesBySystem;
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
@@ -25,8 +26,8 @@ namespace ParagonLib
 
         static RuleFactory()
         {
-            Rules = new Dictionary<string, RulesElement>();
-            RulesBySystem = new Dictionary<string, RulesElement>();
+            Rules = new ConcurrentDictionary<string, RulesElement>();
+            RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
             Directory.CreateDirectory(RulesFolder);
             FileLoaded += (e) => WaitFileLoaded.Set();
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
@@ -327,37 +328,37 @@ namespace ParagonLib
         private static void ValidateRules(object state)
         {
             return; // Causing hangs?
-            for (int n = 0; n < Rules.Count; n++)
-            {
-                Thread.Sleep(0);
-                KeyValuePair<string, RulesElement> item;
+            //for (int n = 0; n < Rules.Count; n++)
+            //{
+            //    Thread.Sleep(0);
+            //    KeyValuePair<string, RulesElement> item;
                 
-                item = Rules.ElementAt(n);
-                var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
-                foreach (var spec in CSV_Specifics)
-                {
-                    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
-                    {
-                        var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
-                        foreach (var e in errors)
-                        {
-                            if (e.Value == null)
-                                Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
-                            else
-                                Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
-                        }
-                    }
-                }
-                foreach (var rule in item.Value.Rules)
-                {
-                    if (rule.Validate == null)
-                        continue;
-                    var error = rule.Validate();
-                    if (error != null)
-                        Logging.Log("Xml Validation", TraceEventType.Error, error);
+            //    item = Rules.ElementAt(n);
+            //    var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
+            //    foreach (var spec in CSV_Specifics)
+            //    {
+            //        if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
+            //        {
+            //            var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
+            //            foreach (var e in errors)
+            //            {
+            //                if (e.Value == null)
+            //                    Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
+            //                else
+            //                    Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
+            //            }
+            //        }
+            //    }
+            //    foreach (var rule in item.Value.Rules)
+            //    {
+            //        if (rule.Validate == null)
+            //            continue;
+            //        var error = rule.Validate();
+            //        if (error != null)
+            //            Logging.Log("Xml Validation", TraceEventType.Error, error);
 
-                }
-            }
+            //    }
+            //}
         }
     }
 }

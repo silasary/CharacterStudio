@@ -326,7 +326,17 @@ namespace ParagonLib
 
         internal bool MeetsRequirement(string p)
         {
-            return true;
+            if (string.IsNullOrEmpty(p))
+                return true;
+            var negate = p.StartsWith("!");
+            if (negate)
+                p = p.Substring(1);
+            var success = AllElements.Where(n => n.Value.IsAlive).Select(n => n.Value.Target as CharElement).FirstOrDefault(n => n.Name == p) != null;
+            if (negate)
+                return !success;
+            else
+                return success;
+
         }
     }
 }

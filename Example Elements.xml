@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rules>
+  <!-- This element demonstrates the usage of <select existing="true"> -->
+  <RulesElement name="Signature Spell (Archspell)" type="Class Feature" internal-id="ID_FMP_CLASS_FEATURE_1460" source="Arcane Power">
+      <Category> 21 </Category>
+      <Prereqs> 21st level, any arcane class </Prereqs>
+      <specific name="Short Description"> Gain +2 attack with an arcane daily attack power. </specific>
+      <specific name="Level"> 21 </specific>
+      <rules>
+         <select type="Power" name="Signature Spell" number="1" Category="daily,arcane" existing="true" />
+         <statadd name="[Signature Spell]:attack" value="+2" />
+      </rules>
+Choose one of your arcane daily attack powers. You gain a +2 bonus to attack rolls with that power. If you retrain that power, you can choose a new arcane daily attack power as your Signature Spell.
+   </RulesElement>
+  <!-- Apparently if we drop the name, it can make assumptions. This seems messy. -->
+  <!-- This is also an example of <modify list-addition="">, whatever that means. -->
+  <RulesElement name="Fluid Form" type="Class Feature" internal-id="ID_FMP_CLASS_FEATURE_3507" source="Dragon Magazine 394" revision-date="6/2/2011 1:18:35 PM">
+    <Category> 16 </Category>
+    <specific name="Short Description"> One at-will power gains the Beast Form keyword </specific>
+    <specific name="Level"> 16 </specific>
+    <rules>
+      <select type="Power" number="1" category="at-will" existing="true" />
+      <modify Field="Keywords" list-addition="Beast Form" />
+    </rules>
+    Your ability to switch between chaotic forms allows you a unique balance between beast form and humanoid form. Choose a 1st-level at-will attack power that you know. That power gains the beast form keyword while you are in beast form.
+  </RulesElement>
+</Rules>
