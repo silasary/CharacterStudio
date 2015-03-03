@@ -93,7 +93,7 @@ namespace ParagonLib
         private static RulesElement GenerateLevelset(string System)
         {
             var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
-            foreach (var level in Search(System, "Level", null, null).Results())
+            foreach (var level in Search(System, "Level", null, null).Results().OrderBy(n => int.Parse(n.Name)))
             {
                 var Parameters = new Dictionary<string, string>();
                 Parameters.Add("name", level.InternalId);
@@ -130,7 +130,7 @@ namespace ParagonLib
         {
             while (Loading)
             {
-                WaitFileLoaded.WaitOne(1000);
+                WaitFileLoaded.WaitOne(50);
                 if (Rules.ContainsKey(id))
                     return Rules[id];
             }
