@@ -17,9 +17,10 @@ namespace ParagonLib
         /// 0.07a is also Silverlight [Henceforth called 0.07b for sanity reasons]
         /// 0.08a is CharacterStudio Alpha format.
         /// </summary>
-        const string PreferedSaveFileVersion = "0.08a";
+        public enum SFVersion { v007a, v007b, v008a }
+        const SFVersion PreferedSaveFileVersion = SFVersion.v008a;
         static readonly string[] D20AbilityScores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
-        string SaveFileVersion;
+        SFVersion SaveFileVersion;
 
         XmlWriter writer;
         Character c;
@@ -30,12 +31,12 @@ namespace ParagonLib
             c.workspace.Recalculate(true);
             SaveFileVersion = PreferedSaveFileVersion;
             if (Path.GetExtension(savefile) == ".dnd4e")
-                SaveFileVersion = "0.07a";
+                SaveFileVersion = SFVersion.v007a;
             writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
             writer.WriteStartDocument( );
             writer.WriteStartElement("D20Character");
             writer.WriteAttributeString("game-system", c.workspace.System);
-            writer.WriteAttributeString("Version", SaveFileVersion); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
+            writer.WriteAttributeString("Version", SaveFileVersion.ToString().Replace("v0","0.").Replace("0.07b","0.07a")); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
             WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
 
             WriteCharacterSheet();
@@ -99,6 +100,31 @@ namespace ParagonLib
             writer.WriteEndDocument();
             writer.Close();
             SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
+            if (SaveFileVersion > SFVersion.v007b)
+                return;
+            sb = new StringBuilder();
+            writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
+            writer.WriteStartDocument();
+            writer.WriteStartElement("JournalEntry");
+            foreach (var p in typeof(Adventure).GetProperties())
+            {
+                if (new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes", "Uri" }.Contains(p.Name))
+                    continue;
+                var v = p.GetValue(adv);
+                writer.WriteStartElement(p.Name);
+                if (v != null)
+                {
+                    if (p.PropertyType == typeof(DateTime))
+                        writer.WriteValue(((DateTime)v).ToString("o"));
+                    else
+                        writer.WriteValue(v.ToString());
+                }
+                writer.WriteEndElement();
+            }
+
+            writer.Close();
+            SerializeTextString("EXT_" + adv.guid.ToString(), sb.ToString());
+
         }
 
         /// <summary>
@@ -172,7 +198,7 @@ namespace ParagonLib
         public Character Load(string savefile)
         {
             var doc = XDocument.Load(savefile);
-            SaveFileVersion = doc.Root.Attribute("Version").Value;
+            SaveFileVersion = (SFVersion)Enum.Parse(typeof(SFVersion), doc.Root.Attribute("Version").Value.Replace("0.", "v0"));
             var system = doc.Root.Attribute("game-system").Value;
             c = new Character(system);
             foreach (var node in doc.Root.Elements())

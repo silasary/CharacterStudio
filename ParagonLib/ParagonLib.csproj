@@ -48,7 +48,9 @@
     <Compile Include="ContractResolver.cs" />
     <Compile Include="DefaultDictionary.cs" />
     <Compile Include="Instruction.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="Loot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleFactory.cs" />
     <Compile Include="RulesElement.cs" />

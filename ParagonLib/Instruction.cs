@@ -69,6 +69,11 @@ namespace ParagonLib
                     func = Builders.Lambda(Builders.Modify(Params(Parameters, ModifyInfo)));
                     break;
 
+                case "suggest":
+                    Logging.Log("Xml Loader", TraceEventType.Information, "Suggest is not supported yet.");
+                    func = Builders.Lambda();
+                    break;
+
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
@@ -100,7 +105,7 @@ namespace ParagonLib
 
         private string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
         {
-            var keys = method.GetParameters().Select(p => p.Name.Replace('-','_')).ToArray();
+            var keys = method.GetParameters().Select(p => p.Name.Replace('_','-')).ToArray();
             Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
             string[] vals = new string[keys.Length];
             for (int i = 0; i < keys.Length; i++)
@@ -136,7 +141,9 @@ namespace ParagonLib
             public static Expression<Action<CharElement, Workspace>> Lambda(params Expression[] Body)
             {
                 var pa = new ParameterExpression[] { pCharElement, pWorkspace };
-                if (Body.Count() == 1)
+                if (Body.Length == 0)
+                    return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(pCharElement, pWorkspace), pa);
+                else if (Body.Length == 1)
                     return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Body.First(), pa);
                 else
                     return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(pa, Body), pa); //Not sure if this works.
