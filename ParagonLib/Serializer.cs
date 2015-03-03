@@ -144,6 +144,8 @@ namespace ParagonLib
         {
             foreach (var level in c.workspace.Levelset.Children)
             {
+                if (level.Children.Count==0)
+                    continue;
                 writer.WriteStartElement("Level");
                 WriteRulesElementNested(level);
                 writer.WriteEndElement();
@@ -152,12 +154,14 @@ namespace ParagonLib
 
         private void WriteRulesElementNested(CharElement ele)
         {
+            if (ele.Disabled && ele.Type != "Level")
+                return;
             writer.WriteStartElement("RulesElement");
 
             SerializeRuleElement(ele, false);
             foreach (var child in ele.Children)
             {
-                WriteRulesElementNested(child);
+                    WriteRulesElementNested(child);
             }
             writer.WriteEndElement();
         }
@@ -465,6 +469,8 @@ namespace ParagonLib
                 if (!rule.Value.IsAlive)
                     continue;
                 var ele = (rule.Value.Target as CharElement);
+                if (ele.Disabled)
+                    continue;
                 writer.WriteStartElement("RulesElement");
                 SerializeRuleElement(ele, true);
                 writer.WriteEndElement();

@@ -13,7 +13,7 @@ namespace ParagonLib
         public string System { get; set; }
         public string UpdateUrl { get; set; }
 
-        List<FilterType> Filters;
+        List<FilterType> Filters = new List<FilterType>();
 
         public CampaignSetting(string name, string system)
         {
@@ -29,7 +29,7 @@ namespace ParagonLib
         internal static void ImportSetting(System.Xml.Linq.XDocument doc)
         {
             var name = doc.Root.Attribute("name").Value;
-            var url = doc.Element("UpdateUrl").Element("PartAddress").Value;
+            var url = doc.Root.Element("UpdateInfo").Element("PartAddress").Value;
             foreach (var system in doc.Root.Elements("System"))
             {
                 var setting = new CampaignSetting(name, system.Attribute("game-system").Value);
