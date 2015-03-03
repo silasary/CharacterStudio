@@ -108,7 +108,7 @@ namespace ParagonLib
             }
         }
 
-        public void Replace(string power_replace, string optional, string Level)
+        public void Replace(string power_replace, string optional, string Level, string retrain)
         {
             //TODO: Fill me in!
         }
