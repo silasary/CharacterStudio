@@ -141,18 +141,31 @@ namespace ParagonLib
 
             writer.WriteStartElement("D20CampaignSetting");
             if (c.workspace.Setting == null)
+            {
                 writer.WriteAttributeString("name", "");
+                WriteComment("\n         Character Builder campaign save file.\n      ");
+            }
             else
+            {
                 writer.WriteAttributeString("name", c.workspace.Setting.Name);
-            WriteComment("\n         Character Builder campaign save file.\n      ");
-            //TODO: Write URL.
-            /*
+                WriteComment("\n         Character Builder campaign save file.\n      ");
+                writer.WriteStartElement("Houserules");
+                writer.WriteStartElement("RulesElement");
+                writer.WriteAttributeString("name", "UpdateURL");
+                writer.WriteAttributeString("type", "Internal");
+                writer.WriteAttributeString("internal-id", "ID_INTERNAL_INTERNAL_UPDATEURL");
+                writer.WriteString(c.workspace.Setting.UpdateUrl);
+                writer.WriteEndElement( );
+                writer.WriteEndElement( );
+                //TODO: Write URL.
+                /*
                <Houserules>
                 <RulesElement name="UpdateURL" type="Internal" internal-id="ID_INTERNAL_INTERNAL_UPDATEURL" >
                  https://dl.dropboxusercontent.com/u/4187827/CharBuilder/Eberron/eberron.setting
                 </RulesElement>
                </Houserules>
              */
+            }
             writer.WriteEndElement();
         }
 
