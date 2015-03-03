@@ -99,6 +99,31 @@ namespace ParagonLib
             writer.WriteEndDocument();
             writer.Close();
             SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
+            if (SaveFileVersion != "0.07a")
+                return;
+            sb = new StringBuilder();
+            writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
+            writer.WriteStartDocument();
+            writer.WriteStartElement("JournalEntry");
+            foreach (var p in typeof(Adventure).GetProperties())
+            {
+                if (new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes", "Uri" }.Contains(p.Name))
+                    continue;
+                var v = p.GetValue(adv);
+                writer.WriteStartElement(p.Name);
+                if (v != null)
+                {
+                    if (p.PropertyType == typeof(DateTime))
+                        writer.WriteValue(((DateTime)v).ToString("o"));
+                    else
+                        writer.WriteValue(v.ToString());
+                }
+                writer.WriteEndElement();
+            }
+
+            writer.Close();
+            SerializeTextString("EXT_" + adv.guid.ToString(), sb.ToString());
+
         }
 
         /// <summary>

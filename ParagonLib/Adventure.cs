@@ -46,5 +46,8 @@ namespace ParagonLib
         [DataMember(Order = 10, IsRequired=false)]
         [Description("Image Entries use these.")]
         public string Uri { get; set; }
+
+        [DataMember(Order=11)]
+        public Loot[] LootDiff { get; set; }
     }
 }
