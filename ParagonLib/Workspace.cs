@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace ParagonLib
 {
@@ -54,6 +52,7 @@ namespace ParagonLib
         public List<Adventure> AdventureLog { get; set; }
 
         public Dictionary<string, WeakReference> AllElements { get; set; }
+        public Dictionary<string, Loot> AllLoot { get; set; }
 
         protected int level;
 
@@ -126,6 +125,10 @@ namespace ParagonLib
                 adventure.XPStart = GetStat("XP Earned").Value;
                 GetStat("XP Earned").Add(adventure.XPGain.ToString(), null, null, null, null,null);
                 adventure.LevelAtEnd = Level;
+                foreach (var loot in adventure.LootDiff)
+                {
+                    //TODO DO THINGS HERE!!!
+                }
             }
 #if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
             foreach (var item in AllElements.Values.ToArray())
@@ -139,6 +142,7 @@ namespace ParagonLib
             }
 #endif
             Levelset.Recalculate();
+
         }
 
         internal int ParseInt(string p)

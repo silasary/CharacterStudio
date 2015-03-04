@@ -150,6 +150,8 @@ namespace ParagonLib
                 WriteRulesElementNested(level);
                 writer.WriteEndElement();
             }
+            //TODO: if (0.07)
+            // select adv from AdventureLog where adv.LevelAtEnd == level
         }
 
         private void WriteRulesElementNested(CharElement ele)

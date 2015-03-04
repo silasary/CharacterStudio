@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ParagonLib
 {
-    public struct Loot
+    public class Loot
     {
         /*
             <loot count="-1" equip-count="0" ShowPowerCard="1" >
@@ -26,5 +26,7 @@ namespace ParagonLib
         /// Does this need to be an int?
         /// </summary>
         public bool ShowPowerCard { get; set; }
+
+        public CharElement ItemRef { get; set; }
     }
 }
