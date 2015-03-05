@@ -265,7 +265,10 @@ namespace ParagonLib
         private void ReadCharacterSheet(XElement node)
         {
             // Despite what is mentioned in the comments, 
-            // there is one node here that is actually used:
+            // we do actually need to pull things from here.
+            var xdetails = node.Element("Details");
+            c.TextStrings["Experience Points"] = xdetails.Element("Experience").Value;
+
             var xscores = node.Element("AbilityScores");
             foreach (var score in D20AbilityScores)
             {
@@ -417,11 +420,18 @@ namespace ParagonLib
             //PowerStats. This one is important. iPlay4e uses it.  
             WritePowerStats();
             //Companions.  Need to reseach what actually goes here, and also implement them myself.
+            WriteCompanions();
             //Journal.  Our Adventure Log is far superior to the original, But it's also vital we remain Backwards-Compatible.
             WriteJournal();
 
             WriteComment("WARNING: This character sheet is incomplete.");
             writer.WriteEndElement( );
+        }
+
+        private void WriteCompanions()
+        {
+            writer.WriteStartElement("Companions");
+            writer.WriteEndElement();
         }
 
         private void WriteJournal()
@@ -444,8 +454,11 @@ namespace ParagonLib
         {
             //0.07a includes basic stat calculations - Attack, Damage, and defences.
             //0.07b Includes more detailed data. 
-            //WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
+            WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
             //TODO: Power Blocks!  VERY IMPORTANT.
+            writer.WriteStartElement("PowerStats");
+
+            writer.WriteEndElement();
         }
 
         private void WriteLootTally()

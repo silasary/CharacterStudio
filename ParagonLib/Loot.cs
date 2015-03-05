@@ -27,6 +27,6 @@ namespace ParagonLib
         /// </summary>
         public bool ShowPowerCard { get; set; }
 
-        public CharElement ItemRef { get; set; }
+        
     }
 }

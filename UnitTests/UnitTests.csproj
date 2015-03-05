@@ -69,6 +69,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="FullTests.cs" />
     <Compile Include="TestInstructions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCharacter.cs" />
@@ -81,7 +82,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Celindara.dnd4e">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="Paela.dnd4e">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
