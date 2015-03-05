@@ -8,5 +8,9 @@ namespace ParagonLib
 {
     class Item
     {
+        RulesElement Base;
+        RulesElement Enchantment;
+        RulesElement Augment;
+        RulesElement Curse;
     }
 }

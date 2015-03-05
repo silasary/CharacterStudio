@@ -268,6 +268,8 @@ namespace ParagonLib
             // we do actually need to pull things from here.
             var xdetails = node.Element("Details");
             c.TextStrings["Experience Points"] = xdetails.Element("Experience").Value;
+            c.Name = xdetails.Element("name").Value.Trim();
+            c.Player = xdetails.Element("Player").Value.Trim();
 
             var xscores = node.Element("AbilityScores");
             foreach (var score in D20AbilityScores)
@@ -291,7 +293,7 @@ namespace ParagonLib
             {
                 case "Name":
                 case "name":
-                    c.Name = value;
+                    //c.Name = value;
                     break;
                 case "Experience Points":  //We'll deal with this later.
                     c.TextStrings[name] = value;
@@ -529,7 +531,7 @@ namespace ParagonLib
             writer.WriteStartElement("Details");
             writer.WriteElementString("name", c.Name); // This one is lowercase, whilst everything else is uppercase.  It confuses me. 
             writer.WriteElementString("Level", c.workspace.Level.ToString( ));
-            //Player
+            writer.WriteElementString("Player", c.Player); //Player
             //Height
             //Weight
             //Gender

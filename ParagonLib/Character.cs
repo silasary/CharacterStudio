@@ -52,5 +52,7 @@ namespace ParagonLib
         }
 
         public Dictionary<string, int> AbilityScores = new Dictionary<string, int>();
+
+        public string Player { get; set; }
     }
 }
