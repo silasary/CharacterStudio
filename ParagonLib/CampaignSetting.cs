@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ParagonLib
 {
@@ -21,9 +22,27 @@ namespace ParagonLib
             this.System = system;
         }
         
-        public static CampaignSetting Load(string Setting, string System)
+        public static CampaignSetting Load(string Setting, string System, string url = null)
         {
-            return Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
+            var setting = Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
+
+            if (setting == null)
+            {
+                setting = new CampaignSetting(Setting, System);
+                var wc = new System.Net.WebClient();
+                Directory.CreateDirectory(RuleFactory.SettingsFolder);
+                var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
+                wc.DownloadDataCompleted += (o, e) => 
+                    {
+                        if (e.Error != null)
+                            return;
+                        //File.WriteAllText(
+                        RuleFactory.LoadFile(file);
+
+                    };
+                wc.DownloadDataAsync(new Uri(url), file);
+            }
+            return setting;
         }
 
         internal static void ImportSetting(System.Xml.Linq.XDocument doc)

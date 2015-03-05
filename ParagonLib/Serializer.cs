@@ -37,8 +37,10 @@ namespace ParagonLib
             writer.WriteStartElement("D20Character");
             writer.WriteAttributeString("game-system", c.workspace.System);
             writer.WriteAttributeString("Version", SaveFileVersion.ToString().Replace("v0","0.").Replace("0.07b","0.07a")); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
-            WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
-
+            if (SaveFileVersion < SFVersion.v008a)
+                WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
+            else
+                WriteComment("Character Studio character save file.  \n *** Incompatibile with the Dungeons and Dragons Insider: Character Builder ***");
             WriteCharacterSheet();
             writer.Flush();
             WriteD20CampaignSetting();
@@ -389,33 +391,11 @@ namespace ParagonLib
             // individual <Restricted> entries, so most of this data is useless.
             var setting = node.Attribute("name").Value;
 
-            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
-            if (c.workspace.Setting == null)
-            {
-                // We can cheat though:
-                var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
-                // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
-                if (updateurl == null)
-                    return;
-                // And store a URL inside it.
-                var url = updateurl.Value;
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    url = url.Trim();
-                    // TODO:  Download and Apply.
-                    var wc = new System.Net.WebClient();
-                    var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
-                    Directory.CreateDirectory(RuleFactory.SettingsFolder);
-                    wc.DownloadFileCompleted += (o, e) => 
-                        {
-                            if (e.Error != null)
-                                return;
-                            RuleFactory.LoadFile(file);
-                            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
-                        };
-                    wc.DownloadFileAsync(new Uri(url), file);
-                }
-            }
+            // But we cheat and define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
+            // And store a URL inside it.
+            var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
+            var url = updateurl.Value.Trim();
+            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System, url);
         }
         #endregion
         #region Levels
