@@ -54,105 +54,7 @@ namespace ParagonLib
             return true;
         }
 
-        private void WriteTextStrings()
-        {
-            WriteComment("\n      Textstrings are builder variables and contain entered text data, such\n      as character names, as well as internal data\n   ");
-            SerializeTextString("Name", c.Name);
-            SerializeTextString("Experience Points", c.workspace.GetStat("XP Earned").Value.ToString());
-            foreach (var adv in c.workspace.AdventureLog)
-            {
-                SerializeAdventure(adv);
-            }
-            foreach (var item in c.TextStrings) // The ones that we didn't care about.
-            {
-                SerializeTextString(item.Key, item.Value);
-            }
-        }
 
-        private void SerializeAdventure(Adventure adv)
-        {
-            var sb = new StringBuilder();
-            sb.Append("ENTRY:");
-            var writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
-            bool ImageEntry = !string.IsNullOrEmpty(adv.Uri) && adv.XPGain == 0;
-            writer.WriteStartDocument();
-            writer.WriteStartElement("JournalEntry");
-            //writer.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
-            
-            if (ImageEntry)
-                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
-            else
-                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
-            foreach (var p in typeof(Adventure).GetProperties())
-            {
-                var v = p.GetValue(adv);
-                    writer.WriteStartElement(p.Name);
-                    if (v != null)
-                    {
-                        if (p.PropertyType == typeof(DateTime))
-                            writer.WriteValue(((DateTime)v).ToString("o"));
-                        else
-                            writer.WriteValue(v.ToString());
-                    }
-                    writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Close();
-            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
-            if (SaveFileVersion > SFVersion.v007b)
-                return;
-            sb = new StringBuilder();
-            writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
-            writer.WriteStartDocument();
-            writer.WriteStartElement("JournalEntry");
-            foreach (var p in typeof(Adventure).GetProperties())
-            {
-                if (new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes", "Uri" }.Contains(p.Name))
-                    continue;
-                var v = p.GetValue(adv);
-                writer.WriteStartElement(p.Name);
-                if (v != null)
-                {
-                    if (p.PropertyType == typeof(DateTime))
-                        writer.WriteValue(((DateTime)v).ToString("o"));
-                    else
-                        writer.WriteValue(v.ToString());
-                }
-                writer.WriteEndElement();
-            }
-
-            writer.Close();
-            SerializeTextString("EXT_" + adv.guid.ToString(), sb.ToString());
-
-        }
-
-        /// <summary>
-        /// This one does the brunt work of Serializing TextStrings.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        private void SerializeTextString(string name, string value)
-        {
-            writer.WriteStartElement("textstring");
-            writer.WriteAttributeString("name", name);
-            writer.WriteValue(string.Format("\n      {0}\n   ", value));
-            writer.WriteEndElement();
-        }
-
-        private void WriteLevels()
-        {
-            foreach (var level in c.workspace.Levelset.Children)
-            {
-                if (level.Children.Count==0)
-                    continue;
-                writer.WriteStartElement("Level");
-                WriteRulesElementNested(level);
-                writer.WriteEndElement();
-            }
-            //TODO: if (0.07)
-            // select adv from AdventureLog where adv.LevelAtEnd == level
-        }
 
         private void WriteRulesElementNested(CharElement ele)
         {
@@ -168,38 +70,7 @@ namespace ParagonLib
             writer.WriteEndElement();
         }
 
-        private void WriteD20CampaignSetting()
-        {
-
-            writer.WriteStartElement("D20CampaignSetting");
-            if (c.workspace.Setting == null)
-            {
-                writer.WriteAttributeString("name", "");
-                WriteComment("\n         Character Builder campaign save file.\n      ");
-            }
-            else
-            {
-                writer.WriteAttributeString("name", c.workspace.Setting.Name);
-                WriteComment("\n         Character Builder campaign save file.\n      ");
-                writer.WriteStartElement("Houserules");
-                writer.WriteStartElement("RulesElement");
-                writer.WriteAttributeString("name", "UpdateURL");
-                writer.WriteAttributeString("type", "Internal");
-                writer.WriteAttributeString("internal-id", "ID_INTERNAL_INTERNAL_UPDATEURL");
-                writer.WriteString(c.workspace.Setting.UpdateUrl);
-                writer.WriteEndElement( );
-                writer.WriteEndElement( );
-                //TODO: Write URL.
-                /*
-               <Houserules>
-                <RulesElement name="UpdateURL" type="Internal" internal-id="ID_INTERNAL_INTERNAL_UPDATEURL" >
-                 https://dl.dropboxusercontent.com/u/4187827/CharBuilder/Eberron/eberron.setting
-                </RulesElement>
-               </Houserules>
-             */
-            }
-            writer.WriteEndElement();
-        }
+       
 
         public Character Load(string savefile)
         {
@@ -261,90 +132,12 @@ namespace ParagonLib
             }
             c.TextStrings.Remove("Experience Points");
         }
-
-        private void ReadCharacterSheet(XElement node)
-        {
-            // Despite what is mentioned in the comments, 
-            // we do actually need to pull things from here.
-            var xdetails = node.Element("Details");
-            c.TextStrings["Experience Points"] = xdetails.Element("Experience").Value;
-            c.Name = xdetails.Element("name").Value.Trim();
-            c.Player = xdetails.Element("Player").Value.Trim();
-
-            var xscores = node.Element("AbilityScores");
-            foreach (var score in D20AbilityScores)
-            {
-                c.AbilityScores[score] = int.Parse(xscores.Element(score).Attribute("score").Value);
-            }
-        }
-
-        private void ReadTextString(XElement node)
-        {
-            var name = node.Attribute("name").Value;
-            var value = node.Value.Trim();
-            // TODO: Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
-            // These are unfortunately important.  We're also going to abuse them even further:
-            // Extra info for the AdventureLog needs to survive a round trip, 
-            // so we'll use name=EXT_{GUID}
-            if (name.StartsWith("NOTE_") || name.StartsWith("EXT_"))
-                DeserializeAdventure(node);
-            else
-            switch (name)
-            {
-                case "Name":
-                case "name":
-                    //c.Name = value;
-                    break;
-                case "Experience Points":  //We'll deal with this later.
-                    c.TextStrings[name] = value;
-                    break;
-                default:
-                    c.TextStrings[name] = value;
-                    break;
-            }
             
-        }
 
-        private void DeserializeAdventure(XElement node)
-        {
-            var name = node.Attribute("name").Value;
-            var gs = name.Substring(4).Trim('_'); // This works for both NOTE_ and EXT_, leaving just the guid.
-            Guid guid = Guid.Parse(gs);
-            var adv = c.workspace.AdventureLog.FirstOrDefault(n => n.guid == guid);
-            if (adv == null)
-                c.workspace.AdventureLog.Add(adv = new Adventure(guid));
-            var value = node.Value.Trim();
-            if (value.StartsWith("ENTRY:"))
-                value = value.Substring(6);
-            var xml = XDocument.Parse(value);
-            foreach (var item in xml.Root.Elements())
-            {
-                var prop = typeof(Adventure).GetProperty(item.Name.LocalName);
-                if (prop == null)
-                    continue;
-                if (string.IsNullOrEmpty(item.Value))
-                    continue;
-                if (prop.PropertyType == typeof(DateTime))
-                    prop.SetValue(adv, DateTime.Parse(item.Value));
-                else if (prop.PropertyType == typeof(int))
-                    prop.SetValue(adv, int.Parse(item.Value));
-                else
-                    prop.SetValue(adv, item.Value);
-            }
-        }
 
-        private void ReadLevel(XElement node)
-        {
-            //This is the Level Node.  It's a terrifying thing.
-            // On the plus side, due to the (slightly nasty) way Grant works, 
-            // we can actually infer inheritance when we call Recalculate().
-            // Selections, on the other hand...
-            foreach (var element in node.Elements("RulesElement"))
-            {
-                ReadRulesElement(element, c.workspace.Levelset);
-            }
-            //c.workspace.Recalculate();
-        }
+
+
+
         int GenericNegativeNumber = -1;
         private void ReadRulesElement(XElement element, CharElement parent)
         {
@@ -366,45 +159,25 @@ namespace ParagonLib
             }
         }
 
-        private void ReadD20CampaignSetting(XElement node)
-        {
-            // Ideally, we match these to a Campaign Setting file.
-            // If we fail, load it from in here.
-            // Note that DDI will crash if we insert anything other than the 
-            // individual <Restricted> entries, so most of this data is useless.
-            var setting = node.Attribute("name").Value;
-
-            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
-            if (c.workspace.Setting == null)
-            {
-                // We can cheat though:
-                var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
-                // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
-                if (updateurl == null)
-                    return;
-                // And store a URL inside it.
-                var url = updateurl.Value;
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    url = url.Trim();
-                    // TODO:  Download and Apply.
-                    var wc = new System.Net.WebClient();
-                    var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
-                    Directory.CreateDirectory(RuleFactory.SettingsFolder);
-                    wc.DownloadFileCompleted += (o, e) => 
-                    {
-                        if (e.Error != null)
-                            return;
-                        RuleFactory.LoadFile(file);
-                        c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
-                    };
-                    wc.DownloadFileAsync(new Uri(url), file);
-                }
-            }
-        }
 
 
         #region CharacterSheet
+        private void ReadCharacterSheet(XElement node)
+        {
+            // Despite what is mentioned in the comments, 
+            // we do actually need to pull things from here.
+            var xdetails = node.Element("Details");
+            c.TextStrings["Experience Points"] = xdetails.Element("Experience").Value;
+            c.Name = xdetails.Element("name").Value.Trim();
+            c.Player = xdetails.Element("Player").Value.Trim();
+
+            var xscores = node.Element("AbilityScores");
+            foreach (var score in D20AbilityScores)
+            {
+                c.AbilityScores[score] = int.Parse(xscores.Element(score).Attribute("score").Value);
+            }
+        }
+
         private void WriteCharacterSheet()
         {
             WriteComment("The Character Sheet element contains data readable by 3rd Party Apps. iPlay4e is the one we're testing against, but we'll try to be as compatible as possible.");
@@ -531,13 +304,13 @@ namespace ParagonLib
             writer.WriteStartElement("Details");
             writer.WriteElementString("name", c.Name); // This one is lowercase, whilst everything else is uppercase.  It confuses me. 
             writer.WriteElementString("Level", c.workspace.Level.ToString( ));
-            writer.WriteElementString("Player", c.Player); //Player
-            //Height
+            writer.WriteElementString("Player", c.Player);
+            writer.WriteElementString("Height", c.Height);
             //Weight
             //Gender
             //Age
             //Alignment
-            //Company
+            writer.WriteElementString("Company", c.Company);
             //Portrait //This one always irritated me - Even on the silverlight version it refers to a local file path.
             writer.WriteElementString("Experience", c.workspace.GetStat("XP Earned").Value.ToString());
             //CarriedMoney
@@ -575,7 +348,252 @@ namespace ParagonLib
         }
 
         #endregion
+        #region D20Campaign
+        private void WriteD20CampaignSetting()
+        {
 
+            writer.WriteStartElement("D20CampaignSetting");
+            if (c.workspace.Setting == null)
+            {
+                writer.WriteAttributeString("name", "");
+                WriteComment("\n         Character Builder campaign save file.\n      ");
+            }
+            else
+            {
+                writer.WriteAttributeString("name", c.workspace.Setting.Name);
+                WriteComment("\n         Character Builder campaign save file.\n      ");
+                writer.WriteStartElement("Houserules");
+                writer.WriteStartElement("RulesElement");
+                writer.WriteAttributeString("name", "UpdateURL");
+                writer.WriteAttributeString("type", "Internal");
+                writer.WriteAttributeString("internal-id", "ID_INTERNAL_INTERNAL_UPDATEURL");
+                writer.WriteString(c.workspace.Setting.UpdateUrl);
+                writer.WriteEndElement( );
+                writer.WriteEndElement( );
+                //TODO: Write URL.
+                /*
+               <Houserules>
+                <RulesElement name="UpdateURL" type="Internal" internal-id="ID_INTERNAL_INTERNAL_UPDATEURL" >
+                 https://dl.dropboxusercontent.com/u/4187827/CharBuilder/Eberron/eberron.setting
+                </RulesElement>
+               </Houserules>
+             */
+            }
+            writer.WriteEndElement();
+        }
+        private void ReadD20CampaignSetting(XElement node)
+        {
+            // Ideally, we match these to a Campaign Setting file.
+            // If we fail, load it from in here.
+            // Note that DDI will crash if we insert anything other than the 
+            // individual <Restricted> entries, so most of this data is useless.
+            var setting = node.Attribute("name").Value;
+
+            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
+            if (c.workspace.Setting == null)
+            {
+                // We can cheat though:
+                var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
+                // We define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
+                if (updateurl == null)
+                    return;
+                // And store a URL inside it.
+                var url = updateurl.Value;
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    url = url.Trim();
+                    // TODO:  Download and Apply.
+                    var wc = new System.Net.WebClient();
+                    var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
+                    Directory.CreateDirectory(RuleFactory.SettingsFolder);
+                    wc.DownloadFileCompleted += (o, e) => 
+                        {
+                            if (e.Error != null)
+                                return;
+                            RuleFactory.LoadFile(file);
+                            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System);
+                        };
+                    wc.DownloadFileAsync(new Uri(url), file);
+                }
+            }
+        }
+        #endregion
+        #region Levels
+        private void WriteLevels()
+        {
+            foreach (var level in c.workspace.Levelset.Children)
+            {
+                if (level.Children.Count==0)
+                    continue;
+                writer.WriteStartElement("Level");
+                WriteRulesElementNested(level);
+                writer.WriteEndElement();
+            }
+            //TODO: if (0.07)
+            // select adv from AdventureLog where adv.LevelAtEnd == level
+        }
+        private void ReadLevel(XElement node)
+        {
+            //This is the Level Node.  It's a terrifying thing.
+            // On the plus side, due to the (slightly nasty) way Grant works, 
+            // we can actually infer inheritance when we call Recalculate().
+            // Selections, on the other hand...
+            foreach (var element in node.Elements("RulesElement"))
+            {
+                ReadRulesElement(element, c.workspace.Levelset);
+            }
+            //c.workspace.Recalculate();
+        }
+        #endregion
+        #region TextStrings!
+
+        private void WriteTextStrings()
+        {
+            WriteComment("\n      Textstrings are builder variables and contain entered text data, such\n      as character names, as well as internal data\n   ");
+            if (SaveFileVersion < SFVersion.v008a)
+            {
+                SerializeTextString("Name", c.Name);
+                SerializeTextString("Experience Points", c.workspace.GetStat("XP Earned").Value.ToString( ));
+                SerializeTextString("Player", c.Player);
+                SerializeTextString("Height", c.Height);
+                SerializeTextString("Company", c.Company);
+            }
+            foreach (var adv in c.workspace.AdventureLog)
+            {
+                SerializeAdventure(adv);
+            }
+            foreach (var item in c.TextStrings) // The ones that we didn't care about.
+            {
+                SerializeTextString(item.Key, item.Value);
+            }
+        }
+
+        private void ReadTextString(XElement node)
+        {
+            var name = node.Attribute("name").Value;
+            var value = node.Value.Trim();
+            // TODO: Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
+            // These are unfortunately important.  We're also going to abuse them even further:
+            // Extra info for the AdventureLog needs to survive a round trip, 
+            // so we'll use name=EXT_{GUID}
+            if (name.StartsWith("NOTE_") || name.StartsWith("EXT_"))
+                DeserializeAdventure(node);
+            else
+                switch (name)
+            {
+                case "Name":
+                case "name":
+                    //c.Name = value;
+                    break;
+                case "Experience Points":  //We'll deal with this later.
+                    c.TextStrings[name] = value;
+                    break;
+                default:
+                    c.TextStrings[name] = value;
+                    break;
+            }
+        }
+
+        private void DeserializeAdventure(XElement node)
+        {
+            var name = node.Attribute("name").Value;
+            var gs = name.Substring(4).Trim('_'); // This works for both NOTE_ and EXT_, leaving just the guid.
+            Guid guid = Guid.Parse(gs);
+            var adv = c.workspace.AdventureLog.FirstOrDefault(n => n.guid == guid);
+            if (adv == null)
+                c.workspace.AdventureLog.Add(adv = new Adventure(guid));
+            var value = node.Value.Trim();
+            if (value.StartsWith("ENTRY:"))
+                value = value.Substring(6);
+            var xml = XDocument.Parse(value);
+            foreach (var item in xml.Root.Elements())
+            {
+                var prop = typeof(Adventure).GetProperty(item.Name.LocalName);
+                if (prop == null)
+                    continue;
+                if (string.IsNullOrEmpty(item.Value))
+                    continue;
+                if (prop.PropertyType == typeof(DateTime))
+                    prop.SetValue(adv, DateTime.Parse(item.Value));
+                else if (prop.PropertyType == typeof(int))
+                    prop.SetValue(adv, int.Parse(item.Value));
+                else
+                    prop.SetValue(adv, item.Value);
+            }
+        }
+
+        private void SerializeAdventure(Adventure adv)
+        {
+            var sb = new StringBuilder();
+            sb.Append("ENTRY:");
+            var writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
+            bool ImageEntry = !string.IsNullOrEmpty(adv.Uri) && adv.XPGain == 0;
+            string[] std = new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes", "Uri" };
+            writer.WriteStartDocument();
+            writer.WriteStartElement("JournalEntry");
+            //writer.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
+
+            if (ImageEntry)
+                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
+            else
+                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
+            foreach (var p in typeof(Adventure).GetProperties())
+            {
+                var v = p.GetValue(adv);
+                writer.WriteStartElement(p.Name);
+                if (v != null)
+                {
+                    if (p.PropertyType == typeof(DateTime))
+                        writer.WriteValue(((DateTime)v).ToString("o"));
+                    else
+                        writer.WriteValue(v.ToString());
+                }
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Close();
+            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
+            if (SaveFileVersion > SFVersion.v007b)
+                return;
+            sb = new StringBuilder();
+            writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
+            writer.WriteStartDocument();
+            writer.WriteStartElement("JournalEntry");
+            foreach (var p in typeof(Adventure).GetProperties())
+            {
+                if (std.Contains(p.Name))
+                    continue;
+                var v = p.GetValue(adv);
+                writer.WriteStartElement(p.Name);
+                if (v != null)
+                {
+                    if (p.PropertyType == typeof(DateTime))
+                        writer.WriteValue(((DateTime)v).ToString("o"));
+                    else
+                        writer.WriteValue(v.ToString());
+                }
+                writer.WriteEndElement();
+            }
+
+            writer.Close();
+            SerializeTextString("EXT_" + adv.guid.ToString(), sb.ToString());
+
+        }
+
+        /// <summary>
+        /// This one does the brunt work of Serializing TextStrings.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        private void SerializeTextString(string name, string value)
+        {
+            writer.WriteStartElement("textstring");
+            writer.WriteAttributeString("name", name);
+            writer.WriteValue(string.Format("\n      {0}\n   ", value));
+            writer.WriteEndElement();
+        }
+        #endregion
         private void WriteComment(string p)
         {
             writer.WriteComment(string.Format("{0}", p));

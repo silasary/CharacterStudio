@@ -23,6 +23,12 @@ namespace ParagonLib
 
         public string Name { get; set; }
 
+        public string Player { get; set; }
+
+        public string Height { get; set; }
+
+        public string Company { get; set; }
+
         //public int StartingXp { get; set; }
 
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
@@ -53,6 +59,5 @@ namespace ParagonLib
 
         public Dictionary<string, int> AbilityScores = new Dictionary<string, int>();
 
-        public string Player { get; set; }
     }
 }
