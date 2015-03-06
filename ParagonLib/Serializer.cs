@@ -171,7 +171,19 @@ namespace ParagonLib
             var xdetails = node.Element("Details");
             c.TextStrings["Experience Points"] = xdetails.Element("Experience").Value;
             c.Name = xdetails.Element("name").Value.Trim();
-            c.Player = xdetails.Element("Player").Value.Trim();
+            var props = new string[]
+            { 
+                /* "name", "Level", */ "Player", "Height", "Weight", "Gender", /* "Alignment", */ "Company", "Portrait",
+                /* "Experience", */ "CarriedMoney", "StoredMoney", "Traits", "Appearance", "Companions", "Notes"
+            };
+            foreach (var p in props)
+            {
+                var prop = typeof(Character).GetProperty(p);
+                if (prop == null)
+                    c.TextStrings[p] = xdetails.Element(p).Value.Trim( );
+                else
+                    prop.SetValue(c, xdetails.Element(p).Value.Trim( ));
+            }
 
             var xscores = node.Element("AbilityScores");
             foreach (var score in D20AbilityScores)
@@ -304,24 +316,36 @@ namespace ParagonLib
         {
             // 0.07[ab] both agree on the format here.
             writer.WriteStartElement("Details");
-            writer.WriteElementString("name", c.Name); // This one is lowercase, whilst everything else is uppercase.  It confuses me. 
-            writer.WriteElementString("Level", c.workspace.Level.ToString( ));
-            writer.WriteElementString("Player", c.Player);
-            writer.WriteElementString("Height", c.Height);
-            //Weight
-            //Gender
-            //Age
-            //Alignment
-            writer.WriteElementString("Company", c.Company);
-            //Portrait //This one always irritated me - Even on the silverlight version it refers to a local file path.
-            writer.WriteElementString("Experience", c.workspace.GetStat("XP Earned").Value.ToString());
-            //CarriedMoney
-            //StoredMoney
-            //Traits
-            //Appearance
-            //Companions
-            //Notes
 
+            var props = new string[]
+                { 
+                    "name", "Level", "Player", "Height", "Weight", "Gender", "Alignment", "Company", "Portrait",
+                    "Experience", "CarriedMoney", "StoredMoney", "Traits", "Appearance", "Companions", "Notes"
+                };
+            foreach (var p in props)
+            {
+                switch (p)
+                {
+                    case"name":
+                        writer.WriteElementString("name", c.Name); // This one is lowercase, whilst everything else is uppercase.  It confuses me.              
+                        break;
+                    case "Level":
+                        writer.WriteElementString("Level", c.workspace.Level.ToString( ));
+                        break;
+//                    case "Alignment":
+//                        break;
+                    case "Experience":
+                        writer.WriteElementString("Experience", c.workspace.GetStat("XP Earned").Value.ToString( ));
+                        break;
+                    default:
+                        var prop = typeof(Character).GetProperty(p);
+                        if (prop == null)
+                            writer.WriteElementString(p, c.TextStrings[p]);
+                        else
+                            writer.WriteElementString(p, (string)prop.GetValue(c));
+                        break;
+                }
+            }
             writer.WriteEndElement( );
         }
 
