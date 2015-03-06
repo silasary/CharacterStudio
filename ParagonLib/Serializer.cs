@@ -340,7 +340,12 @@ namespace ParagonLib
                     default:
                         var prop = typeof(Character).GetProperty(p);
                         if (prop == null)
-                            writer.WriteElementString(p, c.TextStrings[p]);
+                        {
+                            if (c.TextStrings.ContainsKey(p))
+                                writer.WriteElementString(p, c.TextStrings[p]);
+                            else
+                                writer.WriteElementString(p, "  ");
+                        }
                         else
                             writer.WriteElementString(p, (string)prop.GetValue(c));
                         break;
