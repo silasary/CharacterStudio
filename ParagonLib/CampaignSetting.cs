@@ -13,8 +13,9 @@ namespace ParagonLib
         public string Name { get; set; }
         public string System { get; set; }
         public string UpdateUrl { get; set; }
+        public bool Loaded { get; set; }
 
-        List<FilterType> Filters = new List<FilterType>();
+        Dictionary<string, FilterType> Filters = new Dictionary<string, FilterType>();
 
         public CampaignSetting(string name, string system)
         {
@@ -32,15 +33,25 @@ namespace ParagonLib
                 var wc = new System.Net.WebClient();
                 Directory.CreateDirectory(RuleFactory.SettingsFolder);
                 var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
-                wc.DownloadDataCompleted += (o, e) => 
-                    {
-                        if (e.Error != null)
-                            return;
-                        //File.WriteAllText(
-                        RuleFactory.LoadFile(file);
+                if (File.Exists(file))
+                {
+                    ImportSetting(global::System.Xml.Linq.XDocument.Load(file));
+                    setting = Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
+                }
+                if (setting == null)
+                {
+                    wc.DownloadStringCompleted += (o, e) =>
+                        {
+                            if (e.Error != null)
+                                return;
+                            File.WriteAllText(file, e.Result);
+                            RuleFactory.LoadFile(file);
 
-                    };
-                wc.DownloadDataAsync(new Uri(url), file);
+                        };
+                    wc.DownloadStringAsync(new Uri(url), file);
+                    setting = new CampaignSetting(Setting, System) { Loaded = false };
+                    setting.UpdateUrl = url;
+                }
             }
             return setting;
         }
@@ -57,6 +68,7 @@ namespace ParagonLib
                 {
                     setting.Set(type: type.Attribute("type").Value, mode: type.Attribute("mode").Value, sources: type.Elements("Source").Select(n => n.Attribute("name").Value), elements: type.Elements("Element").Select(n => n.Attribute("name").Value));
                 }
+                setting.Loaded = true;
                 // TODO:  <Load> elements.  We need to mark a way to enable optional elements.
                 Settings.Add(setting);
             }
@@ -65,18 +77,50 @@ namespace ParagonLib
         private void Set(string type, string mode, IEnumerable<string> sources, IEnumerable<string> elements)
         {
             bool blacklist = string.Equals(mode, "Blacklist", StringComparison.InvariantCultureIgnoreCase);
+            List<FilterEntry> filters = new List<FilterEntry>();
             foreach (var item in sources)
-                Filters.Add(new FilterType() {IsBlacklist = blacklist, IsSource = true, Name = item });
+                filters.Add(new FilterEntry() {IsSource = true, Name = item });
             foreach (var item in elements)
-                Filters.Add(new FilterType() {IsBlacklist = blacklist, IsSource = false, Name = item });
+                filters.Add(new FilterEntry() {IsSource = false, Name = item });
+            Filters[type] = new FilterType() { IsBlacklist = blacklist, Items = filters.ToArray() };
         }
 
+        public bool IsRuleLegal(RulesElement ele)
+        {
+            if (!Loaded)
+            {
+                var setting = Settings.FirstOrDefault(n => n.Name == Name && n.System == System);
+                if (setting != null)
+                {
+                    Filters = setting.Filters;
+                    Loaded = true;
+                }
+            }
+            if (!Filters.ContainsKey(ele.Type)) // No fillters for this element - It's legal.
+                return true;
 
+            var filter = Filters[ele.Type];
+            foreach (var item in filter.Items)
+            {
+                bool match = 
+                    (item.IsSource && ele.Source == item.Name) 
+                    || 
+                    (!item.IsSource && ele.InternalId == item.Name);
+                if (match)
+                    return !filter.IsBlacklist; // true if whitelist, false if blacklist.
+            }
+            return filter.IsBlacklist; // false if whitelist, true if blacklist.
+        }
 
         struct FilterType
         {
             public bool IsBlacklist;
 
+            public FilterEntry[] Items;
+        }
+
+        struct FilterEntry
+        {
             public bool IsSource ;
 
             public string Name ;

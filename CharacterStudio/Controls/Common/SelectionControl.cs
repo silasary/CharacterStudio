@@ -9,7 +9,7 @@ namespace CharacterStudio.Controls.Common
     {
         private Search search;
 
-        public SelectionControl(string Label, Search search)
+        public SelectionControl(string Label, Search search) // Maybe just pass a ParagonLib.Selection?
         {
             InitializeComponent();
             this.search = search;
@@ -20,6 +20,9 @@ namespace CharacterStudio.Controls.Common
         protected override void OnLoad(EventArgs e)
         {
             var res = search.Results();
+            var setting = (this.ParentForm as PrimaryForm).CurrentWorkspace.Setting;
+            if (setting != null)
+                res = res.Where(n => setting.IsRuleLegal(n));
             if (res.Count() == 1)
             {
                 this.Selection = res.FirstOrDefault().InternalId;
