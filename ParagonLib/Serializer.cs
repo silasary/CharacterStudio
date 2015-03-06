@@ -344,7 +344,13 @@ namespace ParagonLib
                             if (c.TextStrings.ContainsKey(p))
                                 writer.WriteElementString(p, c.TextStrings[p]);
                             else
-                                writer.WriteElementString(p, "  ");
+                            {
+                                //writer.WriteElementString(p, "  ");
+                                //writer.WriteRaw(string.Format("<{0}>  </{0}>\n", p));
+                                writer.WriteStartElement(p);
+                                writer.WriteWhitespace("  ");
+                                writer.WriteEndElement( );
+                            }
                         }
                         else
                             writer.WriteElementString(p, (string)prop.GetValue(c));
