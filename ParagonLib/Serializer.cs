@@ -32,9 +32,10 @@ namespace ParagonLib
             SaveFileVersion = PreferedSaveFileVersion;
             if (Path.GetExtension(savefile) == ".dnd4e")
                 SaveFileVersion = SFVersion.v007a;
-            writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true });
+            writer = XmlWriter.Create(savefile, new XmlWriterSettings() { Indent = true, OmitXmlDeclaration=true });
             writer.WriteStartDocument( );
             writer.WriteStartElement("D20Character");
+            writer.WriteAttributeString("xml", "space", null, "preserve");
             writer.WriteAttributeString("game-system", c.workspace.System);
             writer.WriteAttributeString("Version", SaveFileVersion.ToString().Replace("v0","0.").Replace("0.07b","0.07a")); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
             if (SaveFileVersion < SFVersion.v008a)
@@ -180,7 +181,7 @@ namespace ParagonLib
             {
                 var prop = typeof(Character).GetProperty(p);
                 if (prop == null)
-                    c.TextStrings[p] = xdetails.Element(p).Value.Trim( );
+                    c.TextStrings[p] = xdetails.Element(p).Value;
                 else
                     prop.SetValue(c, xdetails.Element(p).Value.Trim( ));
             }
@@ -220,6 +221,7 @@ namespace ParagonLib
         private void WriteCompanions()
         {
             writer.WriteStartElement("Companions");
+            writer.WriteRaw("\n    ");
             writer.WriteEndElement();
         }
 
@@ -246,7 +248,7 @@ namespace ParagonLib
             WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
             //TODO: Power Blocks!  VERY IMPORTANT.
             writer.WriteStartElement("PowerStats");
-
+            writer.WriteRaw("\n    ");
             writer.WriteEndElement();
         }
 
@@ -342,14 +344,20 @@ namespace ParagonLib
                         if (prop == null)
                         {
                             if (c.TextStrings.ContainsKey(p))
-                                writer.WriteElementString(p, c.TextStrings[p]);
+                            {
+                                writer.WriteStartElement(p);
+                                writer.WriteString(c.TextStrings[p]);
+                                writer.WriteFullEndElement();
+                                
+                            }
                             else
                             {
-                                //writer.WriteElementString(p, "  ");
-                                //writer.WriteRaw(string.Format("<{0}>  </{0}>\n", p));
+                                //writer.WriteElementString(p, @"  ");
+                                //writer.WriteRaw(string.Format("\n<{0}>  </{0}>\n", p));
                                 writer.WriteStartElement(p);
                                 writer.WriteWhitespace("  ");
-                                writer.WriteEndElement( );
+                                writer.WriteFullEndElement();
+
                             }
                         }
                         else
