@@ -450,7 +450,7 @@ namespace ParagonLib
                     continue;
                 writer.WriteStartElement("Level");
                 WriteRulesElementNested(level);
-                writer.WriteEndElement();
+                writer.WriteFullEndElement();
             }
             //TODO: if (0.07)
             // select adv from AdventureLog where adv.LevelAtEnd == level
