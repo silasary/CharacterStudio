@@ -246,9 +246,11 @@ namespace ParagonLib
                  Expression.IfThen(RuleIsNull, returnError),
                  Expression.Label(returnTarget,Expression.Constant(null, typeof(string)))
                  );
-                // if (RuleFactory.GetRule(id))
-                //   return string.Format("blah blah {0}", id);
-                // return null;
+                /* The above code compiles to:
+                 if (RuleFactory.FindRulesElement(id))
+                   return string.Format("blah blah {0}", id);
+                 return null;
+                 */
             }
 
             private static Expression StringFormat(ConstantExpression Format,  ConstantExpression arg0)
