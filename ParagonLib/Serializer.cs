@@ -465,7 +465,32 @@ namespace ParagonLib
             {
                 ReadRulesElement(element, c.workspace.Levelset);
             }
+            foreach (var lootnode in node.Elements("loot"))
+            {
+                 var loot = DeserializeLoot(lootnode);
+
+            }
             //c.workspace.Recalculate();
+        }
+
+        private Loot DeserializeLoot(XElement node)
+        {
+            var parts = node.Elements();
+            var ids = parts.Select(p => p.Attribute("internal-id").Value).ToArray();
+            var id = string.Join("_", ids);
+            Item item;
+            if (c.Loot.ContainsKey(id))
+                item = c.Loot[id];
+            else
+                item = c.Loot[id] = new Item(ids, c.workspace.System);
+            var loot = new Loot(); // We use += below so we don't need explicit casts.
+            loot.Count += int.Parse(node.Attribute("count").Value);
+            loot.Equipped += int.Parse(node.Attribute("equip-count").Value);
+            loot.ShowPowerCard += int.Parse(node.Attribute("ShowPowerCard").Value);
+            //TODO: Augments :/
+            // Silver
+            // Overrides.
+            return loot;
         }
         #endregion
         #region TextStrings!

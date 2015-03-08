@@ -29,6 +29,8 @@ namespace ParagonLib
 
         public string Company { get; set; }
 
+        public Dictionary<string, Item> Loot { get; protected set; }
+
         //public int StartingXp { get; set; }
 
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
@@ -36,6 +38,7 @@ namespace ParagonLib
         public Character(string System)
         {
             workspace = new Workspace(System, this);
+            Loot = new Dictionary<string, Item>();
             foreach (var abil in Workspace.D20AbilityScores)
             {
                 AbilityScores[abil] = 10;
