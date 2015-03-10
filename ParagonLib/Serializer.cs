@@ -461,6 +461,7 @@ namespace ParagonLib
             // On the plus side, due to the (slightly nasty) way Grant works, 
             // we can actually infer inheritance when we call Recalculate().
             // Selections, on the other hand...
+            int Level = int.Parse(node.Elements("RulesElement").FirstOrDefault().Attribute("name").Value);
             foreach (var element in node.Elements("RulesElement"))
             {
                 ReadRulesElement(element, c.workspace.Levelset);
@@ -468,7 +469,7 @@ namespace ParagonLib
             foreach (var lootnode in node.Elements("loot"))
             {
                  var loot = DeserializeLoot(lootnode);
-
+                 loot.levelAquired = Level;
             }
             //c.workspace.Recalculate();
         }
@@ -477,7 +478,7 @@ namespace ParagonLib
         {
             var parts = node.Elements();
             var ids = parts.Select(p => p.Attribute("internal-id").Value).ToArray();
-            var id = string.Join("_", ids);
+            var id = string.Join("__", ids);
             Item item;
             if (c.Loot.ContainsKey(id))
                 item = c.Loot[id];
@@ -487,8 +488,9 @@ namespace ParagonLib
             loot.Count += int.Parse(node.Attribute("count").Value);
             loot.Equipped += int.Parse(node.Attribute("equip-count").Value);
             loot.ShowPowerCard += int.Parse(node.Attribute("ShowPowerCard").Value);
+            if (node.Attribute("Silver") != null)
+                loot.Silvered += int.Parse(node.Attribute("Silver").Value);
             //TODO: Augments :/
-            // Silver
             // Overrides.
             return loot;
         }

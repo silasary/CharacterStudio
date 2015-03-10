@@ -18,8 +18,14 @@ namespace ParagonLib
 
         public AddRemove Equipped { get; set; }
 
+        public AddRemove Silvered { get; set; }
+
         public Item ItemRef { get; set; }
 
         public AddRemove ShowPowerCard { get; set; }
+
+        internal int levelAquired;
+
+        public int CharElemId { get; internal set; }
     }
 }
