@@ -25,6 +25,8 @@ namespace ParagonLib
         XmlWriter writer;
         Character c;
 
+        List<Loot> AllLoot = new List<Loot>();
+
         public bool Save(Character c, string savefile)
         {
             this.c = c;
@@ -332,7 +334,10 @@ namespace ParagonLib
                     case "Level":
                         writer.WriteElementString("Level", c.workspace.Level.ToString( ));
                         break;
-//                    case "Alignment":
+                        // It's worth noting that I have never seen these two nodes filled in.
+//                    case "Alignment": 
+//                        break;
+//                    case "Gender":
 //                        break;
                     case "Experience":
                         writer.WriteElementString("Experience", c.workspace.GetStat("XP Earned").Value.ToString( ));
