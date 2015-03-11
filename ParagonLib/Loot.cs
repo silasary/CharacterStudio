@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ParagonLib
 {
-    public class Loot
+    public class Loot : IEqualityComparer<Loot>
     {
         public enum AddRemove {Add= 1, Remove = -1, Neutral = 0}
 
@@ -27,5 +27,23 @@ namespace ParagonLib
         internal int levelAquired;
 
         public int CharElemId { get; internal set; }
+
+        #region IEqualityComparer implementation
+
+
+        public bool Equals(Loot x, Loot y)
+        {
+            return x.Count == y.Count && x.Equipped == y.Equipped && x.ItemRef == y.ItemRef && x.levelAquired == y.levelAquired && x.Silvered == y.Silvered;
+        }
+
+
+        public int GetHashCode(Loot obj)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #endregion
+
     }
 }

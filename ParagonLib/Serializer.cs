@@ -108,41 +108,13 @@ namespace ParagonLib
             // Done reading everything.  Time to do housekeeping:
             c.workspace.Recalculate(true);
             ValidateExperiencePoints();
-                    
+            AssignLostLootToAdventures( );                    
             c.Save("Temp");
             c.Save("Temp.dnd4e");
             return c;
 
         }
-
-        private void ValidateExperiencePoints()
-        {
-            int val = int.Parse(c.TextStrings["Experience Points"]);
-            if (val != c.workspace.GetStat("XP Earned").Value)
-            {
-                if (c.workspace.AdventureLog.Count==0)
-                c.workspace.AdventureLog.Add(new Adventure()
-                {
-                    Title = "Early Adventures",
-                    XPGain = val,
-                    Notes = "This is a generic entry explaining the XP that was earned before I got my Journal."
-                });
-                else
-                    c.workspace.AdventureLog.Add(new Adventure()
-                    {
-                        Title = "Missing Adventures",
-                        XPGain = val,
-                        Notes = "This is a generic entry explaining the XP that I forgot to write in my Journal."
-                    });
-            }
-            c.TextStrings.Remove("Experience Points");
-        }
-            
-
-
-
-
-
+           
         int GenericNegativeNumber = -1;
         private void ReadRulesElement(XElement element, CharElement parent)
         {
@@ -176,7 +148,7 @@ namespace ParagonLib
             c.Name = xdetails.Element("name").Value.Trim();
             var props = new string[]
             { 
-                /* "name", "Level", */ "Player", "Height", "Weight", "Gender", /* "Alignment", */ "Company", "Portrait",
+                /* "name", "Level", */ "Player", "Height", "Weight", /* "Gender", "Alignment", */ "Company", "Portrait",
                 /* "Experience", */ "CarriedMoney", "StoredMoney", "Traits", "Appearance", "Companions", "Notes"
             };
             foreach (var p in props)
@@ -456,6 +428,13 @@ namespace ParagonLib
                 writer.WriteStartElement("Level");
                 WriteRulesElementNested(level);
                 writer.WriteFullEndElement();
+                if (SaveFileVersion < SFVersion.v008a)
+                {
+                    foreach (var loot in c.workspace.AdventureLog.SelectMany(a => a.LootDiff).Where(l => l.levelAquired.ToString() == level.Name))
+                    {
+                        SerializeLoot(loot);
+                    }
+                }
             }
             //TODO: if (0.07)
             // select adv from AdventureLog where adv.LevelAtEnd == level
@@ -475,6 +454,7 @@ namespace ParagonLib
             {
                  var loot = DeserializeLoot(lootnode);
                  loot.levelAquired = Level;
+                 AllLoot.Add(loot);
             }
             //c.workspace.Recalculate();
         }
@@ -498,6 +478,21 @@ namespace ParagonLib
             //TODO: Augments :/
             // Overrides.
             return loot;
+        }
+        private void SerializeLoot(Loot loot, XmlWriter writer = null)
+        {
+            if (writer == null)  // We can blame the serialized XML journal Entries for this.
+                writer = this.writer;
+            writer.WriteStartElement("loot");
+            writer.WriteAttributeString("count", loot.Count.ToString());
+            writer.WriteAttributeString("equip-count",  loot.Equipped.ToString());
+            writer.WriteAttributeString("ShowPowerCard",  loot.ShowPowerCard.ToString());
+
+            writer.WriteAttributeString("Silver", loot.Silvered.ToString());
+            //TODO: Elements!!!
+            //TODO: Augments :/
+            // Overrides.
+            writer.WriteEndElement();
         }
         #endregion
         #region TextStrings!
@@ -572,67 +567,84 @@ namespace ParagonLib
                     prop.SetValue(adv, DateTime.Parse(item.Value));
                 else if (prop.PropertyType == typeof(int))
                     prop.SetValue(adv, int.Parse(item.Value));
+                else if (prop.Name == "LootDiff")
+                    LoadLootFromAdventure(item, adv);
                 else
                     prop.SetValue(adv, item.Value);
             }
+        }
+
+        private void LoadLootFromAdventure(XElement LootTally, Adventure adv)
+        {
+//             DeserializeLoot, Compare against AllLoot, Assign to Adventure.
         }
 
         private void SerializeAdventure(Adventure adv)
         {
             var sb = new StringBuilder();
             sb.Append("ENTRY:");
-            var writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
+            var mainwriter = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
+            XmlWriter writer = mainwriter;
             bool ImageEntry = !string.IsNullOrEmpty(adv.Uri) && adv.XPGain == 0;
-            string[] std = new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes", "Uri" };
-            writer.WriteStartDocument();
-            writer.WriteStartElement("JournalEntry");
-            //writer.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
-
+            string[] std;
+            mainwriter.WriteStartDocument();
+            mainwriter.WriteStartElement("JournalEntry");
+            //mainwriter.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
             if (ImageEntry)
-                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
-            else
-                writer.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
-            foreach (var p in typeof(Adventure).GetProperties())
             {
-                var v = p.GetValue(adv);
-                writer.WriteStartElement(p.Name);
-                if (v != null)
-                {
-                    if (p.PropertyType == typeof(DateTime))
-                        writer.WriteValue(((DateTime)v).ToString("o"));
-                    else
-                        writer.WriteValue(v.ToString());
-                }
-                writer.WriteEndElement();
+                mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
+                std = new string[] { "TimeStamp", "Title", "Uri" };
             }
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Close();
-            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
-            if (SaveFileVersion > SFVersion.v007b)
-                return;
-            sb = new StringBuilder();
-            writer = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
-            writer.WriteStartDocument();
-            writer.WriteStartElement("JournalEntry");
+            else
+            {
+                mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
+                std = new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes" };
+            }
+
+            StringBuilder sb2=null;
+            XmlWriter extrawriter = null;
+            if (SaveFileVersion < SFVersion.v008a)
+            {
+                sb2 = new StringBuilder();
+                extrawriter = XmlWriter.Create(sb2, new XmlWriterSettings() { Indent = true });
+                extrawriter.WriteStartDocument( );
+                extrawriter.WriteStartElement("JournalEntry");
+            }
+            else
+                std = typeof(Adventure).GetProperties( ).Select(n => n.Name).ToArray(); // v8+ just includes everything in one.
+            
             foreach (var p in typeof(Adventure).GetProperties())
             {
                 if (std.Contains(p.Name))
-                    continue;
+                    writer = mainwriter;
+                else
+                    writer = extrawriter;
                 var v = p.GetValue(adv);
                 writer.WriteStartElement(p.Name);
                 if (v != null)
                 {
                     if (p.PropertyType == typeof(DateTime))
                         writer.WriteValue(((DateTime)v).ToString("o"));
+                    else if (p.PropertyType == typeof(Loot[]))
+                    {
+                        writer.WriteStartElement(p.Name);
+                        foreach (var loot in (Loot[])v) SerializeLoot(loot, writer);
+                        writer.WriteEndElement( );
+                    }
                     else
                         writer.WriteValue(v.ToString());
                 }
                 writer.WriteEndElement();
             }
-
-            writer.Close();
-            SerializeTextString("EXT_" + adv.guid.ToString(), sb.ToString());
+//            mainwriter.WriteEndElement();
+//            mainwriter.WriteEndDocument();
+            mainwriter.Close();
+            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
+            if (SaveFileVersion < SFVersion.v008a)
+            {
+                extrawriter.Close( );
+                SerializeTextString("EXT_" + adv.guid.ToString( ), sb2.ToString( ));
+            }
 
         }
 
@@ -649,6 +661,57 @@ namespace ParagonLib
             writer.WriteEndElement();
         }
         #endregion
+
+        #region Validation
+
+        private void ValidateExperiencePoints()
+        {
+            int val = int.Parse(c.TextStrings["Experience Points"]);
+            if (val != c.workspace.GetStat("XP Earned").Value)
+            {
+                if (c.workspace.AdventureLog.Count==0)
+                    c.workspace.AdventureLog.Add(new Adventure()
+                        {
+                            Title = "Early Adventures",
+                            XPGain = val,
+                            Notes = "This is a generic entry explaining the XP that was earned before I got my Journal."
+                        });
+                else
+                    c.workspace.AdventureLog.Add(new Adventure()
+                        {
+                            Title = "Missing Adventures",
+                            XPGain = val,
+                            Notes = "This is a generic entry explaining the XP that I forgot to write in my Journal."
+                        });
+            }
+            c.TextStrings.Remove("Experience Points");
+        }
+        private void AssignLostLootToAdventures()
+        {
+            var AssignedLoot = c.workspace.AdventureLog.SelectMany(a => a.LootDiff).ToArray();
+            var LostLoot = AllLoot.Where(l => !AssignedLoot.Contains(l));
+            var ShoppingTrips = c.workspace.AdventureLog.Where(a => a.XPGain == 0 && string.IsNullOrEmpty(a.Uri)).ToList();
+            foreach (var loot in LostLoot)
+            {
+                var trip = ShoppingTrips.FirstOrDefault(a => a.LevelAtEnd == loot.levelAquired);
+                if (trip == null)
+                {
+                    trip = new Adventure() { Title = "Shopping Trip", LevelAtEnd = loot.levelAquired };
+                    ShoppingTrips.Add(trip);
+                    var next = c.workspace.AdventureLog.FirstOrDefault(a => a.LevelAtEnd > loot.levelAquired);
+                    if (next == null)
+                        c.workspace.AdventureLog.Add(trip);
+                    else
+                        c.workspace.AdventureLog.Insert(c.workspace.AdventureLog.IndexOf(next), trip);
+                }
+                var total = trip.LootDiff.ToList( );
+                total.Add(loot);
+                trip.LootDiff = total.ToArray( );
+            }
+        }
+
+        #endregion
+
         private void WriteComment(string p)
         {
             writer.WriteComment(string.Format("{0}", p));

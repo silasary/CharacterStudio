@@ -14,6 +14,7 @@ namespace ParagonLib
         public Adventure(Guid guid)
         {
             this.guid = guid;
+            this.LootDiff = new Loot[0];
         }
 
         public Guid guid { get; set; }
