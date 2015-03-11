@@ -53,10 +53,10 @@ namespace ParagonLib
         public string Type { get { return Base.Type; } }
 
         private D20Currency _cost = null;
-        private string augmentId;
-        private string baseId;
-        private string curseId;
-        private string enchantmentId;
+        internal string augmentId;
+        internal string baseId;
+        internal string curseId;
+        internal string enchantmentId;
      
         public Item(string[] ids, string gameSystem)
         {

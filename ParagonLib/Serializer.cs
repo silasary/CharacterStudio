@@ -208,7 +208,8 @@ namespace ParagonLib
             var ser = new DataContractSerializer(typeof(Adventure));
             foreach (var entry in c.workspace.AdventureLog)
             {
-                ser.WriteObject(writer, entry);
+                //ser.WriteObject(writer, entry);
+                SerializeAdventure(entry, false);
             }
             if (c.workspace.AdventureLog.Count==0)             writer.WriteRaw("\n    ");
 
@@ -287,10 +288,41 @@ namespace ParagonLib
             }
         }
 
+        /// <summary>
+        /// Attaches RulesElements to the inside of a <loot> tag.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="IncludeDetails"></param>
+        private void SerializeItem(Item item, bool IncludeDetails, XmlWriter writer = null)
+        {
+            if (writer == null)  // We can blame the serialized XML journal Entries for this.
+                writer = this.writer;
+            if (item == null) return;
+            Dictionary<string,RulesElement> rules = new Dictionary<string,RulesElement>();
+            rules[item.baseId]=item.Base;
+            if (!string.IsNullOrEmpty(item.enchantmentId))
+                rules[item.enchantmentId]=item.Enchantment;
+            if (!string.IsNullOrEmpty(item.curseId))
+                rules[item.curseId] = item.Curse;
+            
+            foreach (var rule in rules)
+            {
+                writer.WriteStartElement("RulesElement");
+                if (rule.Value != null)
+                {
+                    writer.WriteAttributeString("name", rule.Value.Name);
+                    writer.WriteAttributeString("type", rule.Value.Type);
+                }
+                writer.WriteAttributeString("internal-id", rule.Key);
+                //writer.WriteAttributeString("charelem", ele.SelfId.ToString());            
+                writer.WriteEndElement();
+            }
+         }
 
         private void WriteDetails()
         {
             // 0.07[ab] both agree on the format here.
+            // The difference is that 7b cares about this, while 7a uses TextStrings.
             writer.WriteStartElement("Details");
 
             var props = new string[]
@@ -329,8 +361,6 @@ namespace ParagonLib
                             }
                             else
                             {
-                                //writer.WriteElementString(p, @"  ");
-                                //writer.WriteRaw(string.Format("\n<{0}>  </{0}>\n", p));
                                 writer.WriteStartElement(p);
                                 writer.WriteWhitespace("  ");
                                 writer.WriteFullEndElement();
@@ -475,6 +505,7 @@ namespace ParagonLib
             loot.ShowPowerCard += int.Parse(node.Attribute("ShowPowerCard").Value);
             if (node.Attribute("Silver") != null)
                 loot.Silvered += int.Parse(node.Attribute("Silver").Value);
+            loot.ItemRef = item;
             //TODO: Augments :/
             // Overrides.
             return loot;
@@ -489,11 +520,13 @@ namespace ParagonLib
             writer.WriteAttributeString("ShowPowerCard",  loot.ShowPowerCard.ToString());
 
             writer.WriteAttributeString("Silver", loot.Silvered.ToString());
+            SerializeItem(loot.ItemRef, false, writer);
             //TODO: Elements!!!
             //TODO: Augments :/
             // Overrides.
             writer.WriteEndElement();
         }
+
         #endregion
         #region TextStrings!
 
@@ -510,7 +543,7 @@ namespace ParagonLib
             }
             foreach (var adv in c.workspace.AdventureLog)
             {
-                SerializeAdventure(adv);
+                SerializeAdventure(adv, true);
             }
             foreach (var item in c.TextStrings) // The ones that we didn't care about.
             {
@@ -579,40 +612,51 @@ namespace ParagonLib
 //             DeserializeLoot, Compare against AllLoot, Assign to Adventure.
         }
 
-        private void SerializeAdventure(Adventure adv)
+        private void SerializeAdventure(Adventure adv, bool asTextstring)
         {
-            var sb = new StringBuilder();
-            sb.Append("ENTRY:");
-            var mainwriter = XmlWriter.Create(sb, new XmlWriterSettings() { Indent=true });
-            XmlWriter writer = mainwriter;
+            XmlWriter mainwriter;
             bool ImageEntry = !string.IsNullOrEmpty(adv.Uri) && adv.XPGain == 0;
             string[] std;
-            mainwriter.WriteStartDocument();
+            StringBuilder sb=null;
+
+            if (asTextstring)
+            {
+                sb = new StringBuilder();
+                sb.Append("ENTRY:");
+                mainwriter = XmlWriter.Create(sb, new XmlWriterSettings() { Indent = true });
+                mainwriter.WriteStartDocument();
+            }
+            else
+                mainwriter = this.writer;
+            XmlWriter writer = mainwriter;
+
             mainwriter.WriteStartElement("JournalEntry");
             //mainwriter.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
             if (ImageEntry)
             {
-                mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
+                if (asTextstring)
+                    mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "ImageEntry");
                 std = new string[] { "TimeStamp", "Title", "Uri" };
             }
             else
             {
-                mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
+                if (asTextstring)
+                    mainwriter.WriteAttributeString("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance", "AdventureLogEntry");
                 std = new string[] { "TimeStamp", "Title", "LevelAtEnd", "GPTotal", "GPDelta", "GPStart", "XPTotal", "XPGain", "XPStart", "Treasure", "Region", "Notes" };
             }
 
-            StringBuilder sb2=null;
+            StringBuilder sb2 = null;
             XmlWriter extrawriter = null;
-            if (SaveFileVersion < SFVersion.v008a)
+            if (SaveFileVersion < SFVersion.v008a && asTextstring)
             {
                 sb2 = new StringBuilder();
                 extrawriter = XmlWriter.Create(sb2, new XmlWriterSettings() { Indent = true });
-                extrawriter.WriteStartDocument( );
+                extrawriter.WriteStartDocument();
                 extrawriter.WriteStartElement("JournalEntry");
             }
             else
-                std = typeof(Adventure).GetProperties( ).Select(n => n.Name).ToArray(); // v8+ just includes everything in one.
-            
+                std = typeof(Adventure).GetProperties().Select(n => n.Name).ToArray(); // v8+ just includes everything in one.
+
             foreach (var p in typeof(Adventure).GetProperties())
             {
                 if (std.Contains(p.Name))
@@ -629,23 +673,24 @@ namespace ParagonLib
                     {
                         writer.WriteStartElement(p.Name);
                         foreach (var loot in (Loot[])v) SerializeLoot(loot, writer);
-                        writer.WriteEndElement( );
+                        writer.WriteEndElement();
                     }
                     else
                         writer.WriteValue(v.ToString());
                 }
                 writer.WriteEndElement();
             }
-//            mainwriter.WriteEndElement();
-//            mainwriter.WriteEndDocument();
-            mainwriter.Close();
-            SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
-            if (SaveFileVersion < SFVersion.v008a)
+            writer.WriteEndElement();
+            if (asTextstring)
             {
-                extrawriter.Close( );
-                SerializeTextString("EXT_" + adv.guid.ToString( ), sb2.ToString( ));
+                mainwriter.Close();
+                SerializeTextString("NOTE_" + adv.guid.ToString(), sb.ToString());
+                if (SaveFileVersion < SFVersion.v008a)
+                {
+                    extrawriter.Close();
+                    SerializeTextString("EXT_" + adv.guid.ToString(), sb2.ToString());
+                }
             }
-
         }
 
         /// <summary>
