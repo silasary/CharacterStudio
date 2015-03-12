@@ -515,11 +515,11 @@ namespace ParagonLib
             if (writer == null)  // We can blame the serialized XML journal Entries for this.
                 writer = this.writer;
             writer.WriteStartElement("loot");
-            writer.WriteAttributeString("count", loot.Count.ToString());
-            writer.WriteAttributeString("equip-count",  loot.Equipped.ToString());
-            writer.WriteAttributeString("ShowPowerCard",  loot.ShowPowerCard.ToString());
+            writer.WriteAttributeString("count", ((int)loot.Count).ToString());
+            writer.WriteAttributeString("equip-count",  ((int)loot.Equipped).ToString());
+            writer.WriteAttributeString("ShowPowerCard", ((int)loot.ShowPowerCard).ToString());
 
-            writer.WriteAttributeString("Silver", loot.Silvered.ToString());
+            writer.WriteAttributeString("Silver", ((int)loot.Silvered).ToString());
             SerializeItem(loot.ItemRef, false, writer);
             //TODO: Elements!!!
             //TODO: Augments :/
@@ -671,9 +671,7 @@ namespace ParagonLib
                         writer.WriteValue(((DateTime)v).ToString("o"));
                     else if (p.PropertyType == typeof(Loot[]))
                     {
-                        writer.WriteStartElement(p.Name);
                         foreach (var loot in (Loot[])v) SerializeLoot(loot, writer);
-                        writer.WriteEndElement();
                     }
                     else
                         writer.WriteValue(v.ToString());
