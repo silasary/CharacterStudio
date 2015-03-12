@@ -205,13 +205,14 @@ namespace ParagonLib
             // This makes sense considering that they put it in the <CharacterSheet> tag.  
             // DDI's builder keeps the 'real' Entries as escaped XML in a Textstring. [For the record, that's really gross]
             writer.WriteStartElement("Journal");
-            var ser = new DataContractSerializer(typeof(Adventure));
+            //var ser = new DataContractSerializer(typeof(Adventure));
             foreach (var entry in c.workspace.AdventureLog)
             {
                 //ser.WriteObject(writer, entry);
                 SerializeAdventure(entry, false);
             }
-            if (c.workspace.AdventureLog.Count==0)             writer.WriteRaw("\n    ");
+            if (c.workspace.AdventureLog.Count==0)
+                writer.WriteRaw("\n    ");
 
             writer.WriteEndElement();
         }
@@ -518,8 +519,8 @@ namespace ParagonLib
             writer.WriteAttributeString("count", ((int)loot.Count).ToString());
             writer.WriteAttributeString("equip-count",  ((int)loot.Equipped).ToString());
             writer.WriteAttributeString("ShowPowerCard", ((int)loot.ShowPowerCard).ToString());
-
-            writer.WriteAttributeString("Silver", ((int)loot.Silvered).ToString());
+            if (loot.Silvered != 0)
+                writer.WriteAttributeString("Silver", ((int)loot.Silvered).ToString());
             SerializeItem(loot.ItemRef, false, writer);
             //TODO: Elements!!!
             //TODO: Augments :/

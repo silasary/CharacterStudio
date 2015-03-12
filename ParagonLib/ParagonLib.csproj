@@ -49,7 +49,6 @@
     <Compile Include="CategoryComparer.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharElement.cs" />
-    <Compile Include="ContractResolver.cs" />
     <Compile Include="D20Currency.cs" />
     <Compile Include="DefaultDictionary.cs" />
     <Compile Include="Instruction.cs" />
