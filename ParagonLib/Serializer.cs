@@ -314,6 +314,15 @@ namespace ParagonLib
                     writer.WriteAttributeString("name", rule.Value.Name);
                     writer.WriteAttributeString("type", rule.Value.Type);
                 }
+                else
+                {
+                    writer.WriteAttributeString("name", "Unknown");
+                    var inferredtype = rule.Key.Split('_')[2];
+                    inferredtype = char.ToUpper(inferredtype[0]) + inferredtype.Substring(1).ToLower();
+                    if (inferredtype == "Magic")
+                        inferredtype = "Magic Item";
+                    writer.WriteAttributeString("type", inferredtype);                 
+                }
                 writer.WriteAttributeString("internal-id", rule.Key);
                 //writer.WriteAttributeString("charelem", ele.SelfId.ToString());            
                 writer.WriteEndElement();
@@ -458,7 +467,6 @@ namespace ParagonLib
                     continue;
                 writer.WriteStartElement("Level");
                 WriteRulesElementNested(level);
-                writer.WriteFullEndElement();
                 if (SaveFileVersion < SFVersion.v008a)
                 {
                     foreach (var loot in c.workspace.AdventureLog.SelectMany(a => a.LootDiff).Where(l => l.levelAquired.ToString() == level.Name))
@@ -466,9 +474,8 @@ namespace ParagonLib
                         SerializeLoot(loot);
                     }
                 }
+                writer.WriteFullEndElement();
             }
-            //TODO: if (0.07)
-            // select adv from AdventureLog where adv.LevelAtEnd == level
         }
         private void ReadLevel(XElement node)
         {
