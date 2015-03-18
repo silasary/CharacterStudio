@@ -70,7 +70,7 @@ namespace ParagonLib
             return el;
         }
 
-        internal static RulesElement FindRulesElement(string id, string System)
+        internal static RulesElement FindRulesElement(string id, string System, CampaignSetting setting = null)
         {
             if (id == "_LEVELSET_")
                 return GenerateLevelset(System);
@@ -81,7 +81,7 @@ namespace ParagonLib
             else if (Rules.ContainsKey(id))
                 re = Rules[id];
             else
-                re = GetRule(id);
+                re = GetRule(id, setting);
             return re;
         }
 
@@ -126,8 +126,12 @@ namespace ParagonLib
             }
         }
 
-        private static RulesElement GetRule(string id)
+        private static RulesElement GetRule(string id, CampaignSetting setting)
         {
+            if (setting != null)
+            {
+                //setting.CustomRules
+            }
             while (Loading)
             {
                 WaitFileLoaded.WaitOne(50);
@@ -315,6 +319,8 @@ namespace ParagonLib
                         }
                     }
                 }
+                catch (XmlException v)
+                { Logging.Log("Updater", TraceEventType.Warning, "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
                 catch (WebException v)
                 { Logging.Log("Updater", TraceEventType.Warning, "Error updating {0}: {1}", Path.GetFileName(file), v.ToString()); }
             }
