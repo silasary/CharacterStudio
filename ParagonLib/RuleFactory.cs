@@ -211,6 +211,28 @@ namespace ParagonLib
             {
                 Logging.Log("Xml Loader", TraceEventType.Error, "Failed to load {0}. {1}", file, v.Message);
                 System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", file, v.Message);
+                XmlReader reader = XmlReader.Create(file);
+                try{
+                    Logging.Log("Xml Loader", TraceEventType.Information, "Attempting to Recover.");
+                    string name;
+                    do
+                    {
+                        reader.Read( );
+                        name = reader.LocalName;
+                    } while(name != "PartAddress");
+                    reader.Read( );
+                    string value = reader.Value;
+                    reader.Close( );
+                    new WebClient().DownloadFile(value, file);
+                }
+                catch (XmlException)
+                {
+                    reader.Close( );
+                    Logging.Log("Xml Loader", TraceEventType.Warning, "Cannot recover. Deleting file.");
+                    if (File.Exists(file + ".borked"))
+                        File.Delete(file + ".borked");
+                    File.Move(file, file + ".borked");
+                }
             }
         }
 

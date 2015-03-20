@@ -48,7 +48,7 @@ namespace CharacterStudio.Controls.Panes
             else
             {
                 var folder = (Folder)checkedListBox1.SelectedItem;
-                var chars = Directory.GetFiles(folder.path);
+                var chars = Directory.GetFiles(folder.path, "*.dnd4e").Union(Directory.GetFiles(folder.path, "*.D20Character"));
                 listView1.Items.Clear();
                 listView1.Items.AddRange(chars.Select(c => new ListViewItem(c)).ToArray());
             }
