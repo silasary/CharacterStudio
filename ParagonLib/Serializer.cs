@@ -97,7 +97,7 @@ namespace ParagonLib
                         ReadLevel(node);
                         break;
                     case "textstring":
-                        // TODO: These things have so many different meanings :/
+                        // These things have so many different meanings :/
                         ReadTextString(node);
                         break;
                     default:
@@ -109,10 +109,9 @@ namespace ParagonLib
             c.workspace.Recalculate(true);
             ValidateExperiencePoints();
             AssignLostLootToAdventures( );                    
-            c.Save("Temp");
-            c.Save("Temp.dnd4e");
+            c.Save("Temp"); // Latest version of interpreted save file.
+            c.Save("Temp.dnd4e"); // DDI-compatible version of interpreted save file.
             return c;
-
         }
            
         int GenericNegativeNumber = -1;
@@ -222,7 +221,7 @@ namespace ParagonLib
             //0.07a includes basic stat calculations - Attack, Damage, and defences.
             //0.07b Includes more detailed data. 
             WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
-            //TODO: Power Blocks!  VERY IMPORTANT.
+            //TODO: Power Blocks!  VERY IMPORTANT. (for iPlay4e)
             writer.WriteStartElement("PowerStats");
             writer.WriteRaw("\n    ");
             writer.WriteEndElement();
@@ -290,7 +289,7 @@ namespace ParagonLib
         }
 
         /// <summary>
-        /// Attaches RulesElements to the inside of a <loot> tag.
+        /// Attaches RulesElements to the inside of a <loot/> tag.
         /// </summary>
         /// <param name="item"></param>
         /// <param name="IncludeDetails"></param>
@@ -422,24 +421,17 @@ namespace ParagonLib
             }
             else
             {
+                // We embed the URL for the Campaign Setting into a setting-specific Rules Element.
                 writer.WriteAttributeString("name", c.workspace.Setting.Name);
                 WriteComment("\n         Character Builder campaign save file.\n      ");
                 writer.WriteStartElement("Houserules");
                 writer.WriteStartElement("RulesElement");
                 writer.WriteAttributeString("name", "UpdateURL");
-                writer.WriteAttributeString("type", "Internal");
+                writer.WriteAttributeString("type", "Internal"); // It's an Internal, so it doesn't mess with anything.
                 writer.WriteAttributeString("internal-id", "ID_INTERNAL_INTERNAL_UPDATEURL");
                 writer.WriteString(c.workspace.Setting.UpdateUrl);
                 writer.WriteEndElement( );
                 writer.WriteEndElement( );
-                //TODO: Write URL.
-                /*
-               <Houserules>
-                <RulesElement name="UpdateURL" type="Internal" internal-id="ID_INTERNAL_INTERNAL_UPDATEURL" >
-                 https://dl.dropboxusercontent.com/u/4187827/CharBuilder/Eberron/eberron.setting
-                </RulesElement>
-               </Houserules>
-             */
             }
             writer.WriteEndElement();
         }
@@ -529,7 +521,6 @@ namespace ParagonLib
             if (loot.Silvered != 0)
                 writer.WriteAttributeString("Silver", ((int)loot.Silvered).ToString());
             SerializeItem(loot.ItemRef, false, writer);
-            //TODO: Elements!!!
             //TODO: Augments :/
             // Overrides.
             writer.WriteEndElement();
@@ -563,7 +554,7 @@ namespace ParagonLib
         {
             var name = node.Attribute("name").Value;
             var value = node.Value.Trim();
-            // TODO: Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
+            // Journal Entries are stored here.  name=NOTE_6d0d6a19-7756-4702-9e62-34daaec6b161
             // These are unfortunately important.  We're also going to abuse them even further:
             // Extra info for the AdventureLog needs to survive a round trip, 
             // so we'll use name=EXT_{GUID}
@@ -617,7 +608,7 @@ namespace ParagonLib
 
         private void LoadLootFromAdventure(XElement LootTally, Adventure adv)
         {
-//             DeserializeLoot, Compare against AllLoot, Assign to Adventure.
+//TODO:             DeserializeLoot, Compare against AllLoot, Assign to Adventure.
         }
 
         private void SerializeAdventure(Adventure adv, bool asTextstring)
@@ -639,7 +630,6 @@ namespace ParagonLib
             XmlWriter writer = mainwriter;
 
             mainwriter.WriteStartElement("JournalEntry");
-            //mainwriter.WriteAttributeString("xsd", "x", "http://www.w3.org/2001/XMLSchema",""); //TODO: Specify prefix???
             if (ImageEntry)
             {
                 if (asTextstring)
