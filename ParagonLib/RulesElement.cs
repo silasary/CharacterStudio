@@ -22,12 +22,7 @@ namespace ParagonLib
                 this.Source = item.Attribute("source").Value;
             this.InternalId = item.Attribute("internal-id").Value;
             this.System = item.Document.Root.Attribute("game-system").Value;
-            
-            // This value should be contaigous.
-            bool SettingSpecific = false;
-            if (item.Document.Root.Attribute("SettingSpecific") != null)
-                Boolean.TryParse(item.Document.Root.Attribute("SettingSpecific").Value, out SettingSpecific);
-            this.SettingSpecific = SettingSpecific;
+
             if (item.Element("Category") == null)
                 this.Category = new string[0];
             else
@@ -74,6 +69,5 @@ namespace ParagonLib
 
         public string[] Category { get; set; }
 
-        public bool SettingSpecific { get; set; }
     }
 }

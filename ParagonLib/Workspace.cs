@@ -302,7 +302,6 @@ namespace ParagonLib
             public string[] StringAt(int Level)
             {
                 List<string> val = new List<string>();
-                DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
                 foreach (var bit in bits)
                 {
                     if (bit.Level > Level)

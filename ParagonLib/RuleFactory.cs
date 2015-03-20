@@ -141,6 +141,16 @@ namespace ParagonLib
             return null;
         }
 
+        internal static void LoadFile(string file, string fallback)
+        {
+            if (!File.Exists(file))
+            {
+                var xml = new WebClient().DownloadString(Uri(fallback, file));
+                File.WriteAllText(file, xml);
+            }
+            LoadFile(file);
+        }
+
         internal static void LoadFile(string file)
         {
             string ext = Path.GetExtension(file);
@@ -172,9 +182,6 @@ namespace ParagonLib
                 }
                 if (ext == ".index")
                 {
-                    bool SettingSpecific = false;
-                    if (doc.Root.Attribute("SettingSpecific") != null)
-                        Boolean.TryParse(doc.Root.Attribute("SettingSpecific").Value, out SettingSpecific);
                     foreach (var n in doc.Root.Elements("Obsolete"))
                     {
                         File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
@@ -186,15 +193,6 @@ namespace ParagonLib
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
                             var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
-                            if (SettingSpecific)
-                            {
-                                var nd = XDocument.Parse(xml);
-                                if (nd.Root.Attribute("SettingSpecific") == null)
-                                    nd.Root.Add(new XAttribute("SettingSpecific", "true"));
-                                else
-                                    nd.Root.Attribute("SettingSpecific").Value = "true";
-                                xml = nd.ToString(SaveOptions.None);
-                            }    
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
                         }
@@ -255,9 +253,6 @@ namespace ParagonLib
             {
                 var UpdateInfo = UpdateQueue.Dequeue();
                 var file = UpdateInfo.Attribute("filename").Value;
-                bool SettingSpecific = false;
-                if (UpdateInfo.Document.Root.Attribute("SettingSpecific") != null)
-                    Boolean.TryParse(UpdateInfo.Document.Root.Attribute("SettingSpecific").Value, out SettingSpecific);
                 try
                 {
                     string filename = UpdateInfo.Element("Filename") != null ? UpdateInfo.Element("Filename").Value : Path.GetFileName(file);
@@ -275,14 +270,6 @@ namespace ParagonLib
                             if (verUpdated != verRemote) // Someone screwed up.  Probably Adam again.
                             {
                                 upd.Root.Element("UpdateInfo").Element("Version").Value = verRemote.ToString();
-                                xml = upd.ToString(SaveOptions.None);
-                            }
-                            if (SettingSpecific)
-                            {
-                                if (upd.Root.Attribute("SettingSpecific") == null)
-                                    upd.Root.Add(new XAttribute("SettingSpecific", "true"));
-                                else
-                                    upd.Root.Attribute("SettingSpecific").Value = "true";
                                 xml = upd.ToString(SaveOptions.None);
                             }
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);
@@ -304,14 +291,6 @@ namespace ParagonLib
                             if (verUpdated != verRemote) // Someone screwed up.  Probably Adam again.
                             {
                                 upd.Root.Element("UpdateInfo").Element("Version").Value = verRemote;
-                                xml = upd.ToString(SaveOptions.None);
-                            }
-                            if (SettingSpecific)
-                            {
-                                if (upd.Root.Attribute("SettingSpecific") == null)
-                                    upd.Root.Add(new XAttribute("SettingSpecific", "true"));
-                                else
-                                    upd.Root.Attribute("SettingSpecific").Value = "true";
                                 xml = upd.ToString(SaveOptions.None);
                             }
                             File.WriteAllText(newfile = Path.Combine(Path.GetDirectoryName(file), filename), xml);

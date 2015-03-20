@@ -71,17 +71,22 @@ namespace ParagonLib
                 }
                 setting.Loaded = true;
                 // TODO:  <Load> elements.  We need to mark a way to enable optional elements.
-                setting.CustomRules = new Lazy<Dictionary<string, RulesElement>>(_createCustomRules(system.Elements("Load").Select(n => n.Attribute("file").Value).ToArray(), Path.GetDirectoryName(url)), LazyThreadSafetyMode.PublicationOnly);
+                setting.CustomRules = new Lazy<Dictionary<string, RulesElement>>(_createCustomRules(system.Elements("Load").Select(n => n.Attribute("file").Value).ToArray(), Path.GetDirectoryName(url), setting), LazyThreadSafetyMode.PublicationOnly);
                 Settings.Add(setting);
             }
         }
 
-        private static Func<Dictionary<string, RulesElement>> _createCustomRules(string[] files, string baseurl)
+        private static Func<Dictionary<string, RulesElement>> _createCustomRules(string[] files, string baseurl, CampaignSetting setting)
         {
             return () =>
             {
                 var dict = new Dictionary<string, RulesElement>();
                 //TODO: Populate.
+                Directory.CreateDirectory(Path.Combine( RuleFactory.SettingsFolder, setting.Name));
+                foreach (var file in files) {
+                    var path= Path.Combine(RuleFactory.SettingsFolder, setting.Name, file);
+                    RuleFactory.LoadFile(path, baseurl + "/"+file);
+                }
                 return dict;
             };
         }
