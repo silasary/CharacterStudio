@@ -110,14 +110,19 @@ namespace ParagonLib
             return num++;
         }
 
-        private static void Load(XElement item)
+        private static void Load(XElement item, Dictionary<string, RulesElement> setting = null)
         {
             try
             {
                 var re = new RulesElement(item);
-                Rules[re.InternalId] = re;
-                if (!String.IsNullOrEmpty(re.System))
-                    RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+                if (setting != null)
+                    setting[re.InternalId] = re;
+                else
+                {
+                    Rules[re.InternalId] = re;
+                    if (!String.IsNullOrEmpty(re.System))
+                        RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
+                }
             }
             catch (XmlException c)
             {
@@ -141,17 +146,17 @@ namespace ParagonLib
             return null;
         }
 
-        internal static void LoadFile(string file, string fallback)
+        internal static void LoadFile(string file, string fallback, Dictionary<string, RulesElement> setting = null)
         {
             if (!File.Exists(file))
             {
                 var xml = new WebClient().DownloadString(Uri(fallback, file));
                 File.WriteAllText(file, xml);
             }
-            LoadFile(file);
+            LoadFile(file, setting);
         }
 
-        internal static void LoadFile(string file)
+        internal static void LoadFile(string file, Dictionary<string, RulesElement> setting = null)
         {
             string ext = Path.GetExtension(file);
             if (!new string[] { ".part", ".index", ".setting" }.Contains(ext))
@@ -172,7 +177,7 @@ namespace ParagonLib
                 if (ext == ".part")
                     foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
                     {
-                        Load(item);
+                        Load(item, setting);
                     }
                 var UpdateInfo = doc.Root.Element("UpdateInfo");
                 if (UpdateInfo != null)
