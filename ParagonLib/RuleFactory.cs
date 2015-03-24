@@ -135,13 +135,16 @@ namespace ParagonLib
         {
             if (setting != null)
             {
-                //setting.CustomRules
+                if (setting.CustomRules.Value.ContainsKey(id))
+                    return setting.CustomRules.Value[id];
             }
             while (Loading)
             {
                 WaitFileLoaded.WaitOne(50);
                 if (Rules.ContainsKey(id))
                     return Rules[id];
+                if (setting.CustomRules.Value.ContainsKey(id))
+                    return setting.CustomRules.Value[id];
             }
             return null;
         }
