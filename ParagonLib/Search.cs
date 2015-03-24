@@ -12,12 +12,13 @@ namespace ParagonLib
         public string Category { get; set; }
         public string Default { get; set; }
 
-        public Search(string System, string Type, string Category, string Default)
+        public Search(string System, string Type, string Category, string Default, Workspace ws)
         {
             this.System = System;
             this.Type = Type;
             this.Category = Category;
             this.Default = Default;
+            this.Workspace = ws;
         }
 
         public IEnumerable<RulesElement> Results()
@@ -41,5 +42,7 @@ namespace ParagonLib
             }
             yield break;
         }
+
+        public Workspace Workspace { get; set; }
     }
 }

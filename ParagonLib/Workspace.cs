@@ -344,5 +344,10 @@ namespace ParagonLib
                 return success;
 
         }
+
+        internal Search Search(string Type, string Category, string Default)
+        {
+            return new Search(System, Type, Category, Default, this);
+        }
     }
 }

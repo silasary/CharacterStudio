@@ -85,9 +85,9 @@ namespace ParagonLib
             return re;
         }
 
-        internal static Search Search(string System, string Type, string Category, string Default)
+        private static Search Search(string System, string Type, string Category, string Default)
         {
-            return new Search(System, Type, Category, Default);
+            return new Search(System, Type, Category, Default, null);
         }
 
         private static RulesElement GenerateLevelset(string System)
