@@ -39,8 +39,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xwt">
-      <HintPath>..\..\_Libraries\xwt\Xwt\bin\Debug\Xwt.dll</HintPath>
+    <Reference Include="Xwt, Version=0.1.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xwt.0.0.0\lib\net40\Xwt.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
