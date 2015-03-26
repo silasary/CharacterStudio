@@ -107,11 +107,13 @@ namespace ParagonLib
                 var setting = Settings.FirstOrDefault(n => n.Name == Name && n.System == System);
                 if (setting != null)
                 {
-                    Filters = setting.Filters;
+                    this.Filters = setting.Filters;
+                    this.CustomRules = setting.CustomRules;
+                    this.UpdateUrl = setting.UpdateUrl;
                     Loaded = true;
                 }
             }
-            if (!Filters.ContainsKey(ele.Type)) // No fillters for this element - It's legal.
+            if (!Filters.ContainsKey(ele.Type)) // No filters for this kind of element - It's legal.
                 return true;
 
             var filter = Filters[ele.Type];

@@ -29,16 +29,15 @@ namespace ParagonLib
             var Comparer = new CategoryComparer();
             foreach (var item in RuleFactory.Rules.Values)
             {
-                if (String.IsNullOrEmpty(Type) || item.Type == Type)
-                {
-                    if (String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System)
-                    {
-                        if (Categories.Intersect(item.Category, Comparer).Count() == catCount)
-                        {
-                            yield return item;
-                        }
-                    }
-                }
+                if (!(String.IsNullOrEmpty(Type) || item.Type == Type))
+                    continue;
+                if (!(String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System))
+                    continue;
+                if (Categories.Intersect(item.Category, Comparer).Count() != catCount)
+                    continue;
+                if (!Workspace.Setting.IsRuleLegal(item))
+                    continue;
+                yield return item;
             }
             yield break;
         }
