@@ -143,7 +143,7 @@ namespace ParagonLib
                 WaitFileLoaded.WaitOne(50);
                 if (Rules.ContainsKey(id))
                     return Rules[id];
-                if (setting.CustomRules.Value.ContainsKey(id))
+                if (setting != null && setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
             }
             return null;

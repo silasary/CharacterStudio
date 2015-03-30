@@ -85,11 +85,23 @@
     <Compile Include="Controls\Common\SelectionControl.Designer.cs">
       <DependentUpon>SelectionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Common\SimpleCharacterVis.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Common\SimpleCharacterVis.Designer.cs">
+      <DependentUpon>SimpleCharacterVis.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Panes\DetailsPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Panes\DetailsPane.Designer.cs">
       <DependentUpon>DetailsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Panes\HomePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Panes\HomePane.Designer.cs">
+      <DependentUpon>HomePane.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Panes\LoadCharacterPane.cs">
       <SubType>UserControl</SubType>
@@ -128,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Common\SelectionControl.resx">
       <DependentUpon>SelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Common\SimpleCharacterVis.resx">
+      <DependentUpon>SimpleCharacterVis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panes\DetailsPane.resx">
       <DependentUpon>DetailsPane.cs</DependentUpon>

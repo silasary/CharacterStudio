@@ -35,7 +35,7 @@ namespace ParagonLib
                     continue;
                 if (Categories.Intersect(item.Category, Comparer).Count() != catCount)
                     continue;
-                if (Workspace.Setting != null && !Workspace.Setting.IsRuleLegal(item))
+                if (Workspace != null && Workspace.Setting != null && !Workspace.Setting.IsRuleLegal(item))
                     continue;
                 yield return item;
             }

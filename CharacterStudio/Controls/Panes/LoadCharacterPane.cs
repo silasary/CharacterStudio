@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using CharacterStudio.Controls.Common;
 
 namespace CharacterStudio.Controls.Panes
 {
@@ -41,26 +42,24 @@ namespace CharacterStudio.Controls.Panes
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (checkedListBox1.SelectedItem == null)
-            {
-                listView1.Items.Clear();
-            }
-            else
+            flowLayoutPanel1.Controls.Clear();
+            if (checkedListBox1.SelectedItem != null)
             {
                 var folder = (Folder)checkedListBox1.SelectedItem;
                 var chars = Directory.GetFiles(folder.path, "*.dnd4e").Union(Directory.GetFiles(folder.path, "*.D20Character"));
-                listView1.Items.Clear();
-                listView1.Items.AddRange(chars.Select(c => new ListViewItem(c)).ToArray());
+
+                //listView1.Items.AddRange(chars.Select(c => new ListViewItem(c)).ToArray());
+                flowLayoutPanel1.Controls.AddRange(chars.Select(c => new SimpleCharacterVis(c)).ToArray());
             }
         }
 
-        private void listView1_DoubleClick(object sender, EventArgs e)
-        {
-            if (listView1.SelectedItems.Count > 0)
-            {
-                new ParagonLib.Serializer().Load(listView1.SelectedItems[0].Text); 
+        //private void listView1_DoubleClick(object sender, EventArgs e)
+        //{
+        //    if (listView1.SelectedItems.Count > 0)
+        //    {
+        //        new ParagonLib.Serializer().Load(listView1.SelectedItems[0].Text); 
 
-            }
-        }
+        //    }
+        //}
     }
 }
