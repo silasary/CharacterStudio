@@ -147,6 +147,9 @@
     <EmbeddedResource Include="Controls\Panes\DetailsPane.resx">
       <DependentUpon>DetailsPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Panes\HomePane.resx">
+      <DependentUpon>HomePane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panes\LoadCharacterPane.resx">
       <DependentUpon>LoadCharacterPane.cs</DependentUpon>
     </EmbeddedResource>
