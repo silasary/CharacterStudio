@@ -446,8 +446,11 @@ namespace ParagonLib
             // But we cheat and define a 'Houseruled Element' of type 'Internal' [Thereby not affecting anything]
             // And store a URL inside it.
             var updateurl = node.Descendants("RulesElement").FirstOrDefault(re => re.Attribute("internal-id").Value == "ID_INTERNAL_INTERNAL_UPDATEURL");
-            var url = updateurl.Value.Trim();
-            c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System, url);
+            if (updateurl != null)
+            {
+                var url = updateurl.Value.Trim();
+                c.workspace.Setting = CampaignSetting.Load(setting, c.workspace.System, url);
+            }
         }
         #endregion
         #region Levels
