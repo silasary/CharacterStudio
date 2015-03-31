@@ -37,10 +37,10 @@
             // 
             this.label1.Location = new System.Drawing.Point(3, 164);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(178, 37);
+            this.label1.Size = new System.Drawing.Size(178, 52);
             this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Text = "Name,\r\nHuman Warrior 1";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // pictureBox1
             // 
@@ -57,7 +57,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Name = "SimpleCharacterVis";
-            this.Size = new System.Drawing.Size(184, 201);
+            this.Size = new System.Drawing.Size(184, 216);
             this.DoubleClick += new System.EventHandler(this.SimpleCharacterVis_DoubleClick);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

@@ -25,6 +25,7 @@ namespace CharacterStudio.Controls.Common
         {
             this.location = c;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Name = "";
 
             var tt = new ToolTip();
             tt.AutoPopDelay = 5000;
@@ -47,6 +48,8 @@ namespace CharacterStudio.Controls.Common
                     {
                         case "name":
                         case "Name":
+                            if (!string.IsNullOrEmpty(Name))
+                                break;
                             reader.MoveToContent();
                             reader.Read();
                             this.Name = reader.Value;
@@ -70,6 +73,13 @@ namespace CharacterStudio.Controls.Common
                         case "StatBlock":
                             //complete = true;
                             break;
+                        case "RulesElement":
+                            if (reader.GetAttribute("type") == "Class")
+                                this.Class = reader.GetAttribute("name").Trim();
+                            if (reader.GetAttribute("type") == "Race")
+                                this.Race = reader.GetAttribute("name").Trim();
+
+                            break;
                     }
             }
             // TODO: Race/Class
@@ -79,7 +89,7 @@ namespace CharacterStudio.Controls.Common
                 this.pictureBox1.ImageLocation = Image;
                 //this.pictureBox1.ErrorImage = // Fallack to default for Race/Class/Etc?
             }
-            this.label1.Text = this.Name;
+            this.label1.Text = string.Format("{0}\n Level {1} {2} {3}", Name, Level, Race, Class);
         }
 
         private void SimpleCharacterVis_DoubleClick(object sender, System.EventArgs e)
@@ -87,5 +97,9 @@ namespace CharacterStudio.Controls.Common
             LoadCharacter(new ParagonLib.Serializer().Load(this.location));
             DisplayPanel<DetailsPane>();
         }
+
+        public string Class { get; set; }
+
+        public string Race { get; set; }
     }
 }

@@ -30,18 +30,25 @@ namespace ParagonLib
             RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
             Directory.CreateDirectory(RulesFolder);
             FileLoaded += (e) => WaitFileLoaded.Set();
-            var DefRules = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "DefaultRules");
-            if (Directory.Exists(DefRules))
+            try
             {
-                foreach (var item in Directory.EnumerateFiles(DefRules, "*.index", SearchOption.AllDirectories))
+                var DefRules = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultRules");
+                if (Directory.Exists(DefRules))
                 {
-                    var dest = RulesFolder + item.Substring(DefRules.Length);
-                    if (!File.Exists(dest))
+                    foreach (var item in Directory.EnumerateFiles(DefRules, "*.index", SearchOption.AllDirectories))
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(dest));
-                        File.Copy(item, dest);
+                        var dest = RulesFolder + item.Substring(DefRules.Length);
+                        if (!File.Exists(dest))
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(dest));
+                            File.Copy(item, dest);
+                        }
                     }
                 }
+            }
+            catch (Exception c)
+            {
+                Logging.Log("Crashlog", "Loading Default Rules", c);
             }
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, SettingsFolder);
