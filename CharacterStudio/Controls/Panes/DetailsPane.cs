@@ -17,16 +17,24 @@ namespace CharacterStudio.Controls.Panes
             InitializeComponent();
             Enabled = false;
         }
-
+        public override void OnCharacterUpdated()
+        {
+            UpdateData();
+            base.OnCharacterUpdated();
+        }
         public override void OnCharacterLoad()
         {
-            //charNameField.Text = CurrentWorkspace.Character.Name;
-            XPLabel.Text = string.Format("Level {0} ({1} XP)", CurrentWorkspace.Level, CurrentWorkspace.GetStat("XP Earned").Value);
-            this.charNameField.Text = CurrentWorkspace.CharacterRef.Name;
-            this.playerNameField.Text = CurrentWorkspace.CharacterRef.Player;
+            UpdateData();
 
             base.OnCharacterLoad();
             this.Enabled = true;
+        }
+
+        private void UpdateData()
+        {
+            XPLabel.Text = string.Format("Level {0} ({1} XP)", CurrentWorkspace.Level, CurrentWorkspace.GetStat("XP Earned").Value);
+            this.charNameField.Text = CurrentWorkspace.CharacterRef.Name;
+            this.playerNameField.Text = CurrentWorkspace.CharacterRef.Player;
         }
 
         private void LevelUpButton_Click(object sender, EventArgs e)

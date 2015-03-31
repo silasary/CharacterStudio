@@ -31,7 +31,7 @@ namespace ParagonLib
         [DataMember(Order = 5)]
         public int LevelAtEnd { get; set; }
         [DataMember(Order = 6)]
-        public int GPDelta { get; set; }
+        public double GPDelta { get; set; }
 
         [DataMember(Order = 7)]
         public string Treasure { get; set; }
