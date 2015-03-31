@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace CharacterStudio.Controls.Common
 {
-    public partial class SelectionControl : UserControl
+    public partial class SelectionControl : ContentControl
     {
         private Search search;
 
@@ -20,7 +20,7 @@ namespace CharacterStudio.Controls.Common
         protected override void OnLoad(EventArgs e)
         {
             var res = search.Results();
-            var setting = (this.ParentForm as PrimaryForm).CurrentWorkspace.Setting;
+            var setting = CurrentWorkspace.Setting;
             if (setting != null)
                 res = res.Where(n => setting.IsRuleLegal(n));
             if (res.Count() == 1)

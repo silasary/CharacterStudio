@@ -36,12 +36,12 @@ namespace CharacterStudio
             this.PerformLayout();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Load_Click(object sender, EventArgs e)
         {
             DisplayPanel<LoadCharacterPane>();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void New_Click(object sender, EventArgs e)
         {
             DisplayPanel<NewCharacterPane>();
         }
@@ -56,7 +56,7 @@ namespace CharacterStudio
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Save_Click(object sender, EventArgs e)
         {
             if (CurrentWorkspace.CharacterRef == null)
                 MessageBox.Show("No character Loaded!");

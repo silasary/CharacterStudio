@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace CharacterStudio.Controls.Common
 {
-    public partial class SimpleCharacterVis : UserControl
+    public partial class SimpleCharacterVis : ContentControl
     {
         public string Image { get; set; }
 
@@ -84,9 +84,8 @@ namespace CharacterStudio.Controls.Common
 
         private void SimpleCharacterVis_DoubleClick(object sender, System.EventArgs e)
         {
-            var parent = (this.ParentForm as PrimaryForm);
-            parent.LoadCharacter(new ParagonLib.Serializer().Load(this.location));
-            parent.DisplayPanel<HomePane>();
+            LoadCharacter(new ParagonLib.Serializer().Load(this.location));
+            DisplayPanel<DetailsPane>();
         }
     }
 }
