@@ -9,7 +9,7 @@ namespace ParagonLib
 {
     public partial class Workspace
     {
-        internal Dictionary<string, Stat> Stats = new Dictionary<string, Stat>();
+        internal Dictionary<string, Stat> Stats = new Dictionary<string, Stat>(StringComparer.CurrentCultureIgnoreCase);
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
 
