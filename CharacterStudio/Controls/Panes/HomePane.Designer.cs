@@ -28,18 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.NewCharButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 125);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(965, 626);
+            this.flowLayoutPanel1.TabIndex = 2;
+            // 
+            // button3
+            // 
+            this.button3.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.button3.Enabled = false;
+            this.button3.Location = new System.Drawing.Point(586, 26);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(338, 71);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Load Cloud";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.button2.Location = new System.Drawing.Point(35, 26);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(338, 71);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Load Local";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // NewCharButton
+            // 
+            this.NewCharButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.NewCharButton.Location = new System.Drawing.Point(379, 3);
+            this.NewCharButton.Name = "NewCharButton";
+            this.NewCharButton.Size = new System.Drawing.Size(201, 116);
+            this.NewCharButton.TabIndex = 0;
+            this.NewCharButton.Text = "New";
+            this.NewCharButton.UseVisualStyleBackColor = true;
+            this.NewCharButton.Click += new System.EventHandler(this.NewCharButton_Click);
             // 
             // HomePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.NewCharButton);
             this.Name = "HomePane";
             this.Size = new System.Drawing.Size(965, 751);
+            this.Load += new System.EventHandler(this.HomePane_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button NewCharButton;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

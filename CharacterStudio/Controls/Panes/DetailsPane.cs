@@ -22,6 +22,9 @@ namespace CharacterStudio.Controls.Panes
         {
             //charNameField.Text = CurrentWorkspace.Character.Name;
             XPLabel.Text = string.Format("Level {0} ({1} XP)", CurrentWorkspace.Level, CurrentWorkspace.GetStat("XP Earned").Value);
+            this.charNameField.Text = CurrentWorkspace.CharacterRef.Name;
+            this.playerNameField.Text = CurrentWorkspace.CharacterRef.Player;
+
             base.OnCharacterLoad();
             this.Enabled = true;
         }

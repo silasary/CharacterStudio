@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace CharacterStudio.Controls.Panes
 {
@@ -15,6 +16,33 @@ namespace CharacterStudio.Controls.Panes
         public HomePane()
         {
             InitializeComponent();
+        }
+
+        private void NewCharButton_Click(object sender, EventArgs e)
+        {
+            DisplayPanel<NewCharacterPane>();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DisplayPanel<LoadCharacterPane>();
+        }
+
+        private void HomePane_Load(object sender, EventArgs e)
+        {
+            var knownfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
+            List<string> added = new List<string>();
+            if (File.Exists(knownfiles))
+            {
+                foreach (var sf in File.ReadAllLines(knownfiles))
+                {
+                    if (File.Exists(sf)&& !added.Contains(sf))
+                    {
+                        added.Add(sf);
+                        flowLayoutPanel1.Controls.Add(new Controls.Common.SimpleCharacterVis(sf));
+                    }
+                }
+            }
         }
     }
 }

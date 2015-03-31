@@ -18,7 +18,7 @@ namespace CharacterStudio
         {
             InitializeComponent();
             CurrentWorkspace = new Workspace(null,null);
-            DisplayPanel<DetailsPane>();
+            DisplayPanel<HomePane>();
             this.HelpButton = true;
         }
 
