@@ -187,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParagonLib\ParagonLib.csproj">
-      <Project>{dfd75940-3d1b-42ce-9abb-03f84635f9a7}</Project>
+      <Project>{DFD75940-3D1B-42CE-9ABB-03F84635F9A7}</Project>
       <Name>ParagonLib</Name>
     </ProjectReference>
   </ItemGroup>

@@ -30,19 +30,9 @@ namespace CharacterStudio.Controls.Panes
 
         private void HomePane_Load(object sender, EventArgs e)
         {
-            var knownfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
-            List<string> added = new List<string>();
-            if (File.Exists(knownfiles))
-            {
-                foreach (var sf in File.ReadAllLines(knownfiles))
-                {
-                    if (File.Exists(sf)&& !added.Contains(sf))
-                    {
-                        added.Add(sf);
-                        flowLayoutPanel1.Controls.Add(new Controls.Common.SimpleCharacterVis(sf));
-                    }
-                }
-            }
+            var knownfiles = LoadCharacterPane.KnownFiles;
+            flowLayoutPanel1.Controls.AddRange(knownfiles.Select(c => new Controls.Common.SimpleCharacterVis(c)).ToArray());
+
         }
     }
 }
