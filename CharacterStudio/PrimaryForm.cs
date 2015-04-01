@@ -61,7 +61,7 @@ namespace CharacterStudio
             if (CurrentWorkspace.CharacterRef == null)
                 MessageBox.Show("No character Loaded!");
             else
-                CurrentWorkspace.CharacterRef.Save("test.D20Character");
+                CurrentWorkspace.CharacterRef.Save(CurrentWorkspace.CharacterRef.Name + ".D20Character");
         }
     }
 }

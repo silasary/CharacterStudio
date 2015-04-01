@@ -40,8 +40,10 @@
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.Help = new System.Windows.Forms.HelpProvider();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.buildTab = new System.Windows.Forms.TabPage();
+            this.shopTab = new System.Windows.Forms.TabPage();
+            this.adventureTab = new System.Windows.Forms.TabPage();
+
             this.HeaderPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SidebarPanel.SuspendLayout();
@@ -143,8 +145,9 @@
             // tabControl1
             // 
             this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.buildTab);
+            this.tabControl1.Controls.Add(this.shopTab);
+            this.tabControl1.Controls.Add(this.adventureTab);
             this.tabControl1.Location = new System.Drawing.Point(13, 36);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -154,26 +157,34 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 32);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(529, 37);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.buildTab.Location = new System.Drawing.Point(4, 32);
+            this.buildTab.Name = "buildTab";
+            this.buildTab.Padding = new System.Windows.Forms.Padding(3);
+            this.buildTab.Size = new System.Drawing.Size(529, 37);
+            this.buildTab.TabIndex = 0;
+            this.buildTab.Text = "Build Character";
+            this.buildTab.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 32);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(529, 0);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // PrimaryForm
-            // 
+            this.shopTab.Location = new System.Drawing.Point(4, 32);
+            this.shopTab.Name = "shopTab";
+            this.shopTab.Padding = new System.Windows.Forms.Padding(3);
+            this.shopTab.Size = new System.Drawing.Size(529, 0);
+            this.shopTab.TabIndex = 1;
+            this.shopTab.Text = "Shopping";
+            this.shopTab.UseVisualStyleBackColor = true;
+            //
+            // tabPage3
+            //
+            this.adventureTab.Location = new System.Drawing.Point(4, 32);
+            this.adventureTab.Name = "adventureTab";
+            this.adventureTab.Padding = new System.Windows.Forms.Padding(3);
+            this.adventureTab.Size = new System.Drawing.Size(529, 0);
+            this.adventureTab.TabIndex = 1;
+            this.adventureTab.Text = "Adventure";
+            this.adventureTab.UseVisualStyleBackColor = true;
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1256, 1028);
@@ -209,8 +220,9 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage buildTab;
+        private System.Windows.Forms.TabPage shopTab;
+        private System.Windows.Forms.TabPage adventureTab;
     }
 }
 
