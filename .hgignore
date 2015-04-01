@@ -5,3 +5,4 @@ syntax: glob
 TestResult.xml
 publish/
 *.csproj.user
+packages
