@@ -12,7 +12,7 @@ namespace CharacterStudio_XP
         {
             this.Content = this.TopPanel = new HPaned();
             this.TopPanel.Panel1.Content = this.Header = new Xwt.Notebook();
-            this.Header.Add(
+//            this.Header.Add(
         }
             
         protected override void OnShown()
