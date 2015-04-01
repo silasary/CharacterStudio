@@ -10,10 +10,16 @@ namespace CharacterStudio_XP
     {
         public MainWindow()
         {
-            this.Size = new Size(this.ScreenBounds.Width, this.ScreenBounds.Height);
             this.Content = this.TopPanel = new HPaned();
-            this.TopPanel.HeightRequest = this.ScreenBounds.Height;
             this.TopPanel.Panel1.Content = this.Header = new Xwt.Notebook();
+//            this.Header.Add(
+        }
+            
+        protected override void OnShown()
+        {
+            base.OnShown();
+            this.Size = new Size(this.Screen.Bounds.Width, this.Screen.Bounds.Height);
+            this.TopPanel.HeightRequest = this.ScreenBounds.Height;
         }
 
         public HPaned TopPanel { get; set; }
