@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.buildTab = new System.Windows.Forms.TabPage();
+            this.shopTab = new System.Windows.Forms.TabPage();
+            this.adventureTab = new System.Windows.Forms.TabPage();
+            this.newCharTab = new System.Windows.Forms.TabPage();
+            this.loadCharTab = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,16 +45,12 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.Help = new System.Windows.Forms.HelpProvider();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.buildTab = new System.Windows.Forms.TabPage();
-            this.shopTab = new System.Windows.Forms.TabPage();
-            this.adventureTab = new System.Windows.Forms.TabPage();
-
+            this.homeTab = new System.Windows.Forms.TabPage();
             this.HeaderPanel.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SidebarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // HeaderPanel
@@ -62,6 +64,73 @@
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Size = new System.Drawing.Size(1256, 109);
             this.HeaderPanel.TabIndex = 0;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControl1.Controls.Add(this.buildTab);
+            this.tabControl1.Controls.Add(this.shopTab);
+            this.tabControl1.Controls.Add(this.adventureTab);
+            this.tabControl1.Controls.Add(this.homeTab);
+            this.tabControl1.Controls.Add(this.newCharTab);
+            this.tabControl1.Controls.Add(this.loadCharTab);
+            this.tabControl1.Location = new System.Drawing.Point(13, 36);
+            this.tabControl1.Multiline = true;
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(537, 73);
+            this.tabControl1.TabIndex = 0;
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
+            // 
+            // buildTab
+            // 
+            this.buildTab.Location = new System.Drawing.Point(4, 63);
+            this.buildTab.Name = "buildTab";
+            this.buildTab.Padding = new System.Windows.Forms.Padding(3);
+            this.buildTab.Size = new System.Drawing.Size(529, 6);
+            this.buildTab.TabIndex = 0;
+            this.buildTab.Text = "Build Character";
+            this.buildTab.UseVisualStyleBackColor = true;
+            // 
+            // shopTab
+            // 
+            this.shopTab.Location = new System.Drawing.Point(4, 32);
+            this.shopTab.Name = "shopTab";
+            this.shopTab.Padding = new System.Windows.Forms.Padding(3);
+            this.shopTab.Size = new System.Drawing.Size(529, 37);
+            this.shopTab.TabIndex = 1;
+            this.shopTab.Text = "Shopping";
+            this.shopTab.UseVisualStyleBackColor = true;
+            // 
+            // adventureTab
+            // 
+            this.adventureTab.Location = new System.Drawing.Point(4, 32);
+            this.adventureTab.Name = "adventureTab";
+            this.adventureTab.Padding = new System.Windows.Forms.Padding(3);
+            this.adventureTab.Size = new System.Drawing.Size(529, 37);
+            this.adventureTab.TabIndex = 1;
+            this.adventureTab.Text = "Adventure";
+            this.adventureTab.UseVisualStyleBackColor = true;
+            // 
+            // newCharTab
+            // 
+            this.newCharTab.Location = new System.Drawing.Point(4, 32);
+            this.newCharTab.Name = "newCharTab";
+            this.newCharTab.Padding = new System.Windows.Forms.Padding(3);
+            this.newCharTab.Size = new System.Drawing.Size(529, 37);
+            this.newCharTab.TabIndex = 2;
+            this.newCharTab.Text = "New Character";
+            this.newCharTab.UseVisualStyleBackColor = true;
+            // 
+            // loadCharTab
+            // 
+            this.loadCharTab.Location = new System.Drawing.Point(4, 63);
+            this.loadCharTab.Name = "loadCharTab";
+            this.loadCharTab.Padding = new System.Windows.Forms.Padding(3);
+            this.loadCharTab.Size = new System.Drawing.Size(529, 6);
+            this.loadCharTab.TabIndex = 3;
+            this.loadCharTab.Text = "Load Character";
+            this.loadCharTab.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -97,21 +166,21 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 30);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.New_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(123, 30);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.Load_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 30);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.Save_Click);
             // 
@@ -142,49 +211,18 @@
             this.ContentPanel.Size = new System.Drawing.Size(1022, 919);
             this.ContentPanel.TabIndex = 2;
             // 
-            // tabControl1
+            // homeTab
             // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl1.Controls.Add(this.buildTab);
-            this.tabControl1.Controls.Add(this.shopTab);
-            this.tabControl1.Controls.Add(this.adventureTab);
-            this.tabControl1.Location = new System.Drawing.Point(13, 36);
-            this.tabControl1.Multiline = true;
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(537, 73);
-            this.tabControl1.TabIndex = 0;
+            this.homeTab.Location = new System.Drawing.Point(4, 32);
+            this.homeTab.Name = "homeTab";
+            this.homeTab.Padding = new System.Windows.Forms.Padding(3);
+            this.homeTab.Size = new System.Drawing.Size(529, 37);
+            this.homeTab.TabIndex = 4;
+            this.homeTab.Text = "Home";
+            this.homeTab.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // PrimaryForm
             // 
-            this.buildTab.Location = new System.Drawing.Point(4, 32);
-            this.buildTab.Name = "buildTab";
-            this.buildTab.Padding = new System.Windows.Forms.Padding(3);
-            this.buildTab.Size = new System.Drawing.Size(529, 37);
-            this.buildTab.TabIndex = 0;
-            this.buildTab.Text = "Build Character";
-            this.buildTab.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.shopTab.Location = new System.Drawing.Point(4, 32);
-            this.shopTab.Name = "shopTab";
-            this.shopTab.Padding = new System.Windows.Forms.Padding(3);
-            this.shopTab.Size = new System.Drawing.Size(529, 0);
-            this.shopTab.TabIndex = 1;
-            this.shopTab.Text = "Shopping";
-            this.shopTab.UseVisualStyleBackColor = true;
-            //
-            // tabPage3
-            //
-            this.adventureTab.Location = new System.Drawing.Point(4, 32);
-            this.adventureTab.Name = "adventureTab";
-            this.adventureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.adventureTab.Size = new System.Drawing.Size(529, 0);
-            this.adventureTab.TabIndex = 1;
-            this.adventureTab.Text = "Adventure";
-            this.adventureTab.UseVisualStyleBackColor = true;
-
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1256, 1028);
@@ -197,11 +235,11 @@
             this.Text = "Form1";
             this.HeaderPanel.ResumeLayout(false);
             this.HeaderPanel.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.SidebarPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -223,6 +261,9 @@
         private System.Windows.Forms.TabPage buildTab;
         private System.Windows.Forms.TabPage shopTab;
         private System.Windows.Forms.TabPage adventureTab;
+        private System.Windows.Forms.TabPage newCharTab;
+        private System.Windows.Forms.TabPage loadCharTab;
+        private System.Windows.Forms.TabPage homeTab;
     }
 }
 

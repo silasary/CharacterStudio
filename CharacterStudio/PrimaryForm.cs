@@ -20,6 +20,10 @@ namespace CharacterStudio
             CurrentWorkspace = new Workspace(null,null);
             DisplayPanel<HomePane>();
             this.HelpButton = true;
+            this.tabControl1.Controls.Clear();
+            this.tabControl1.Controls.Add(this.homeTab);
+            this.tabControl1.Controls.Add(this.newCharTab);
+            this.tabControl1.Controls.Add(this.loadCharTab);
         }
 
         public ParagonLib.Workspace CurrentWorkspace { get; set; }
@@ -54,6 +58,10 @@ namespace CharacterStudio
             {
                 item.OnCharacterLoad();
             }
+            tabControl1.Controls.Clear();
+            tabControl1.Controls.Add(buildTab);
+            tabControl1.Controls.Add(shopTab);
+            tabControl1.Controls.Add(adventureTab);
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -62,6 +70,24 @@ namespace CharacterStudio
                 MessageBox.Show("No character Loaded!");
             else
                 CurrentWorkspace.CharacterRef.Save(CurrentWorkspace.CharacterRef.Name + ".D20Character");
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            switch (e.TabPage.Name)
+            {
+                case "homeTab":
+                    DisplayPanel<HomePane>();
+                    break;
+                case "newCharTab":
+                    DisplayPanel<NewCharacterPane>();
+                    break;
+                case "loadCharTab":
+                    DisplayPanel<LoadCharacterPane>();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
