@@ -91,6 +91,8 @@ namespace CharacterStudio.Controls.Common
             reader.Close();
             if (string.IsNullOrWhiteSpace(Image))
                 Image = DefaultPortrait(Class,Race, Gender);
+            //else
+            //    this.pictureBox1.ErrorImage = DefaultPortrait(Class, Race, Gender);
             if (!string.IsNullOrWhiteSpace(Image))
             {
                 this.pictureBox1.ImageLocation = Image;

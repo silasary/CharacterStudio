@@ -23,6 +23,7 @@ namespace ParagonLib
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
         public static readonly string RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
         public static readonly string SettingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Settings");
+        public static readonly string PicturesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Character Portraits");
 
         static RuleFactory()
         {
@@ -52,6 +53,8 @@ namespace ParagonLib
             }
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, SettingsFolder);
+            ThreadPool.QueueUserWorkItem(LoadRulesFolder, PicturesFolder);
+
             Validate = true;
         }
 
