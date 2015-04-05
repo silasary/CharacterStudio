@@ -121,6 +121,7 @@ namespace CharacterStudio.Controls.Common
 
         private void SimpleCharacterVis_DoubleClick(object sender, System.EventArgs e)
         {
+            this.PrimaryForm.Text = "Character Studio - Loading...";
             LoadCharacter(new ParagonLib.Serializer().Load(this.location));
             DisplayPanel<DetailsPane>();
         }
