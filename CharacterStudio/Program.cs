@@ -24,7 +24,7 @@ namespace CharacterStudio
 
         static void HandleUnhandledException (object sender, UnhandledExceptionEventArgs e)
         {
-            ParagonLib.Logging.Log("Crashlog", System.Diagnostics.TraceEventType.Critical, e.ToString( ));
+            ParagonLib.Logging.Log("Crashlog", System.Diagnostics.TraceEventType.Critical, e.ExceptionObject.ToString( ));
         }
     }
 }

@@ -46,6 +46,19 @@ namespace ParagonLib
                         }
                     }
                 }
+                DefRules = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultPortraits");
+                if (Directory.Exists(DefRules))
+                {
+                    foreach (var item in Directory.EnumerateFiles(DefRules, "*.index", SearchOption.AllDirectories))
+                    {
+                        var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Character Portraits")+ item.Substring(DefRules.Length);
+                        if (!File.Exists(dest))
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(dest));
+                            File.Copy(item, dest);
+                        }
+                    }
+                }
             }
             catch (Exception c)
             {
@@ -223,7 +236,7 @@ namespace ParagonLib
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
-                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
+                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, Path.GetFileNameWithoutExtension(newfile)));
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
                         }
