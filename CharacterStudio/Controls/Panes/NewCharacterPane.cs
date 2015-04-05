@@ -31,7 +31,10 @@ namespace CharacterStudio.Controls.Panes
             foreach (var system in RuleFactory.KnownSystems)
             {
                 if (!listBox1.Items.Contains(system))
-                    listBox1.Items.Add(system);
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => { listBox1.Items.Add(system); }));
+                    else
+                        listBox1.Items.Add(system);
             }
         }
 

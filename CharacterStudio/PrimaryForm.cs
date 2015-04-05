@@ -37,7 +37,24 @@ namespace CharacterStudio
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(LoadedPanels[typeof(PanelType)]);
             LoadedPanels[typeof(PanelType)].Dock = DockStyle.Fill;
+            this.SetTab(typeof(PanelType));
             this.PerformLayout();
+        }
+
+        private void SetTab(Type type)
+        {
+            foreach (var c in this.tabControl1.Controls)
+            {
+                if ((Type)(c as Control).Tag == type)
+                    tabControl1.SelectedTab = c as TabPage;
+            }
+        }
+
+        private void DisplayPanel(Type t) // This must be private for it to work.
+        {
+            var method = typeof(PrimaryForm).GetMethod("DisplayPanel");
+            var genericMethod = method.MakeGenericMethod(t);
+            genericMethod.Invoke(this, null);
         }
 
         private void Load_Click(object sender, EventArgs e)
@@ -74,17 +91,15 @@ namespace CharacterStudio
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
+            if (e.TabPage == null)
+                return;
+            if (e.TabPage.Tag is Type && (e.TabPage.Tag as Type).IsSubclassOf(typeof(ContentPane)))
+            {
+                DisplayPanel(e.TabPage.Tag as Type);
+                return;
+            }
             switch (e.TabPage.Name)
             {
-                case "homeTab":
-                    DisplayPanel<HomePane>();
-                    break;
-                case "newCharTab":
-                    DisplayPanel<NewCharacterPane>();
-                    break;
-                case "loadCharTab":
-                    DisplayPanel<LoadCharacterPane>();
-                    break;
                 default:
                     break;
             }

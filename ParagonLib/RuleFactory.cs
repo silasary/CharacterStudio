@@ -62,7 +62,7 @@ namespace ParagonLib
             }
             catch (Exception c)
             {
-                Logging.Log("Crashlog", "Loading Default Rules", c);
+                Logging.Log("Crashlog", TraceEventType.Error, "Loading Default Rules", c);
             }
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
             ThreadPool.QueueUserWorkItem(LoadRulesFolder, SettingsFolder);

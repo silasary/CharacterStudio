@@ -1,4 +1,5 @@
-﻿namespace CharacterStudio
+﻿using CharacterStudio.Controls.Panes;
+namespace CharacterStudio
 {
     partial class PrimaryForm
     {
@@ -121,6 +122,7 @@
             this.newCharTab.TabIndex = 2;
             this.newCharTab.Text = "New Character";
             this.newCharTab.UseVisualStyleBackColor = true;
+            this.newCharTab.Tag = typeof(NewCharacterPane);
             // 
             // loadCharTab
             // 
@@ -131,6 +133,7 @@
             this.loadCharTab.TabIndex = 3;
             this.loadCharTab.Text = "Load Character";
             this.loadCharTab.UseVisualStyleBackColor = true;
+            this.loadCharTab.Tag = typeof(LoadCharacterPane);
             // 
             // label1
             // 
@@ -220,6 +223,7 @@
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
+            this.homeTab.Tag = typeof(HomePane);
             // 
             // PrimaryForm
             // 
