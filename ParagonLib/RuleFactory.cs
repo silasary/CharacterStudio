@@ -108,8 +108,6 @@ namespace ParagonLib
 
         internal static RulesElement FindRulesElement(string id, string System, CampaignSetting setting = null)
         {
-            if (id == "_LEVELSET_")
-                return GenerateLevelset(System);
             var sysid = String.Format("{0}+{1}", System, id);
             RulesElement re;
             if (RulesBySystem.ContainsKey(sysid))
@@ -117,7 +115,7 @@ namespace ParagonLib
             else if (Rules.ContainsKey(id))
                 re = Rules[id];
             else
-                re = GetRule(id, setting);
+                re = GetRule(id, System, setting);
             return re;
         }
 
@@ -167,7 +165,7 @@ namespace ParagonLib
             }
         }
 
-        private static RulesElement GetRule(string id, CampaignSetting setting)
+        private static RulesElement GetRule(string id, string System, CampaignSetting setting)
         {
             if (setting != null)
             {
@@ -182,6 +180,8 @@ namespace ParagonLib
                 if (setting != null && setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
             }
+            if (id == "_LEVELSET_")
+                return GenerateLevelset(System);
             return null;
         }
 
@@ -236,7 +236,7 @@ namespace ParagonLib
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
-                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, Path.GetFileNameWithoutExtension(newfile)));
+                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
                             File.WriteAllText(newfile, xml);
                             LoadFile(newfile);
                         }
@@ -373,7 +373,7 @@ namespace ParagonLib
 
         private static Uri Uri(string p, string filename)
         {
-            return new Uri(p.Replace("^", filename));
+            return new Uri(p.Replace("^", Path.GetFileNameWithoutExtension(filename)));
         }
 
         private static void ValidateRules(object state)

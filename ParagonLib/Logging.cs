@@ -17,23 +17,31 @@ namespace ParagonLib
         {
             lock (OpenLogs)
             {
-#if Multifile_logging
-            Message = String.Format(Message, args);
-            string logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", Log + ".log");
-#else
-                Message = String.Format("{0}: \t{1}: {2}",Log,level.ToString(), String.Format(Message, args));
-                string logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "debug" + ".log");
-#endif
+                Message = String.Format(Message, args);
+                string logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", Log + ".log");
                 if (!OpenLogs.Contains(logfile))
                 {
                     File.WriteAllText(logfile, "");
                     OpenLogs.Add(logfile);
                 }
                 File.AppendAllLines(logfile, new string[] { Message });
+
+                if (Log == "Xml Validation")
+                    return;
+
+                Message = String.Format("{0}: \t{1}: {2}", Log, level.ToString(), String.Format(Message, args));
+                logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "debug" + ".log");
+                if (!OpenLogs.Contains(logfile))
+                {
+                    File.WriteAllText(logfile, "");
+                    OpenLogs.Add(logfile);
+                }
+                File.AppendAllLines(logfile, new string[] { Message });
+                
             }
 
         }
-        [Obsolete("Set a logging level")]
+        [Obsolete("Set a logging level",true)]
         internal static void Log(string Log, string Message, params object[] args)
         {
             Logging.Log(Log, TraceEventType.Information, Message, args);

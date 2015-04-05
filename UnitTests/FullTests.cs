@@ -19,6 +19,7 @@ namespace UnitTests
                 var serializer = new Serializer();
                 Character c = serializer.Load(file);
                 //Assert.IsEmpty(serializer.Errors);
+                c.Save(c.Name);
             }
         }
     }
