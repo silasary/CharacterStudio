@@ -235,10 +235,18 @@ namespace ParagonLib
                         string newfile;
                         if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
                         {
-                            Logging.Log("Updater", TraceEventType.Information, "Getting {0} from {1}", n.Element("Filename").Value, Path.GetFileName(file));
-                            var xml = new WebClient().DownloadString(Uri(n.Element("PartAddress").Value, newfile));
-                            File.WriteAllText(newfile, xml);
-                            LoadFile(newfile);
+                            try
+                            {
+                                var uri = Uri(n.Element("PartAddress").Value, newfile);
+                                Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                                var xml = new WebClient().DownloadString(uri);
+                                File.WriteAllText(newfile, xml);
+                                LoadFile(newfile);
+                            }
+                            catch (WebException c)
+                            {
+                                Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}",Path.GetFileName(file), newfile, c);
+                            }
                         }
                     }
                 }
@@ -276,6 +284,10 @@ namespace ParagonLib
                     if (File.Exists(file + ".borked"))
                         File.Delete(file + ".borked");
                     File.Move(file, file + ".borked");
+                }
+                catch (WebException c)
+                {
+                    Logging.Log("Xml Loader", TraceEventType.Warning, "Failed Recovery: {0}", c);
                 }
             }
         }

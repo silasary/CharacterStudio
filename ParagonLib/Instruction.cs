@@ -70,7 +70,7 @@ namespace ParagonLib
                     break;
 
                 case "suggest":
-                    Logging.Log("Xml Loader", TraceEventType.Information, "Suggest is not supported yet.");
+                    //Logging.Log("Xml Loader", TraceEventType.Information, "Suggest is not supported yet.");
                     func = Builders.Lambda();
                     break;
 
