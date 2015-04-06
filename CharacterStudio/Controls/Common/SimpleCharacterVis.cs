@@ -55,13 +55,13 @@ namespace CharacterStudio.Controls.Common
                                 break;
                             reader.MoveToContent();
                             reader.Read();
-                            this.Name = reader.Value;
+                            this.Name = reader.Value.Trim();
                             break;
 
                         case "Portrait":
                             reader.MoveToContent();
                             reader.Read();
-                            this.Image = reader.Value;
+                            this.Image = reader.Value.Trim();
                             break;
 
                         case "Level":
@@ -99,7 +99,9 @@ namespace CharacterStudio.Controls.Common
                 //this.pictureBox1.ErrorImage = // Fallack to default for Race/Class/Etc?
             }
 
-            this.label1.Text = string.Format("{0}\n Level {1} {2} {3}", Name, Level, Race, Class);
+            //this.label1.Text = string.Format("{0}\n Level {1} {2} {3}", Name, Level, Race, Class);
+            this.label1.Text = string.Format("{0}, Level {1}\n {2} {3}", Name, Level, Race, Class);
+
         }
 
         // TODO: Move this method somewhere better.
