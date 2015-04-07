@@ -249,6 +249,23 @@ namespace ParagonLib
                             }
                         }
                     }
+                    foreach (var n in doc.Root.Elements("File"))
+                    {
+                        string newfile;
+                        if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
+                        {
+                            try
+                            {
+                                var uri = Uri(n.Element("PartAddress").Value, newfile);
+                                Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                                new WebClient().DownloadFile(uri, newfile);
+                            }
+                            catch (WebException c)
+                            {
+                                Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
+                            }
+                        }
+                    }
                 }
                 if (ext == ".setting")
                 {
