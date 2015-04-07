@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -212,61 +213,19 @@ namespace ParagonLib
                 }
                 else
                     Logging.LogIf(ext == ".part", TraceEventType.Critical, "Xml Validation", "{0} does not have a defined system.", file);
-
-                if (ext == ".part")
-                    foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
-                    {
-                        Load(item, setting);
-                    }
+                
                 var UpdateInfo = doc.Root.Element("UpdateInfo");
                 if (UpdateInfo != null)
                 {
                     UpdateInfo.Add(new XAttribute("filename", file));
                     QueueUpdate(UpdateInfo);
                 }
+                
+                if (ext == ".part")
+                    LoadPart(setting, doc);
                 if (ext == ".index")
-                {
-                    foreach (var n in doc.Root.Elements("Obsolete"))
-                    {
-                        File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
-                    }
-                    foreach (var n in doc.Root.Elements("Part"))
-                    {
-                        string newfile;
-                        if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
-                        {
-                            try
-                            {
-                                var uri = Uri(n.Element("PartAddress").Value, newfile);
-                                Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
-                                var xml = new WebClient().DownloadString(uri);
-                                File.WriteAllText(newfile, xml);
-                                LoadFile(newfile);
-                            }
-                            catch (WebException c)
-                            {
-                                Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}",Path.GetFileName(file), newfile, c);
-                            }
-                        }
-                    }
-                    foreach (var n in doc.Root.Elements("File"))
-                    {
-                        string newfile;
-                        if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
-                        {
-                            try
-                            {
-                                var uri = Uri(n.Element("PartAddress").Value, newfile);
-                                Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
-                                new WebClient().DownloadFile(uri, newfile);
-                            }
-                            catch (WebException c)
-                            {
-                                Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
-                            }
-                        }
-                    }
-                }
+                    LoadIndex(file, doc);
+                
                 if (ext == ".setting")
                 {
                     if (doc.Root.Attribute("name") == null)
@@ -305,6 +264,60 @@ namespace ParagonLib
                 catch (WebException c)
                 {
                     Logging.Log("Xml Loader", TraceEventType.Warning, "Failed Recovery: {0}", c);
+                }
+            }
+        }
+
+        private static void LoadPart(Dictionary<string, RulesElement> setting, XDocument doc)
+        {
+            List<Task> tasks = new List<Task>();
+            foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
+            {
+                tasks.Add(Task.Factory.StartNew(() => Load(item, setting)));
+            }
+            Task.WaitAll(tasks.ToArray());
+        }
+
+        private static void LoadIndex(string file, XDocument doc)
+        {
+            foreach (var n in doc.Root.Elements("Obsolete"))
+            {
+                File.Delete(Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value));
+            }
+            foreach (var n in doc.Root.Elements("Part"))
+            {
+                string newfile;
+                if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
+                {
+                    try
+                    {
+                        var uri = Uri(n.Element("PartAddress").Value, newfile);
+                        Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                        var xml = new WebClient().DownloadString(uri);
+                        File.WriteAllText(newfile, xml);
+                        LoadFile(newfile);
+                    }
+                    catch (WebException c)
+                    {
+                        Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
+                    }
+                }
+            }
+            foreach (var n in doc.Root.Elements("File"))
+            {
+                string newfile;
+                if (!File.Exists(newfile = Path.Combine(Path.GetDirectoryName(file), n.Element("Filename").Value)))
+                {
+                    try
+                    {
+                        var uri = Uri(n.Element("FileAddress").Value, newfile);
+                        Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                        new WebClient().DownloadFile(uri, newfile);
+                    }
+                    catch (WebException c)
+                    {
+                        Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
+                    }
                 }
             }
         }
