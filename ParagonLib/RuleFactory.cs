@@ -22,9 +22,10 @@ namespace ParagonLib
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
-        public static readonly string RulesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Rules");
-        public static readonly string SettingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Settings");
-        public static readonly string PicturesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Character Portraits");
+        public static readonly string BaseFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio");
+        public static readonly string RulesFolder = Path.Combine(BaseFolder, "Rules");
+        public static readonly string SettingsFolder = Path.Combine(BaseFolder, "Settings");
+        public static readonly string PicturesFolder = Path.Combine(BaseFolder, "Character Portraits");
 
         static RuleFactory()
         {
