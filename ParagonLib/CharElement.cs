@@ -131,9 +131,17 @@ namespace ParagonLib
                 Logging.Log("PartLoader", TraceEventType.Error, "{0} could not be loaded.", RulesElementId);
                 return;
             }
-            foreach (var rule in this.RulesElement.Rules)
+            try
             {
-                rule.Calculate(this, this.workspace);
+                if (this.RulesElement.Calculate != null)
+                    this.RulesElement.Calculate(this, workspace);
+            }
+            catch (Exception c)
+            {
+                foreach (var rule in this.RulesElement.Rules)
+                {
+                    rule.Calculate(this, this.workspace);
+                }
             }
             foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
             {                                   //  Don't change this method, fix the cause.

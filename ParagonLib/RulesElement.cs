@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ParagonLib
@@ -22,6 +23,8 @@ namespace ParagonLib
                 this.Source = item.Attribute("source").Value;
             this.InternalId = item.Attribute("internal-id").Value;
             this.System = item.Document.Root.Attribute("game-system").Value;
+            if (item.Document.Root.Attribute("Filename")!=null)
+                this.SourcePart = item.Document.Root.Attribute("Filename").Value;
 
             if (item.Element("Category") == null)
                 this.Category = new string[0];
@@ -38,8 +41,10 @@ namespace ParagonLib
                     case "rules":
                         foreach (var rule in element.Elements())
                         {
-                            Rules.Add(new Instruction(rule.Name.LocalName, MakeDict(rule.Attributes())));
+                            Rules.Add(new Instruction(rule.Name.LocalName, MakeDict(rule.Attributes()), SourcePart, ((IXmlLineInfo)rule).LineNumber));
                         }
+                        Body = Instruction.Merge(Rules);
+                        Calculate = Body.Compile();
                         break;
                     default:
                         break;
@@ -69,5 +74,11 @@ namespace ParagonLib
 
         public string[] Category { get; set; }
 
+
+        public Instruction.Action<CharElement, Workspace> Calculate { get; set; }
+
+        public global::System.Linq.Expressions.Expression<Instruction.Action<CharElement, Workspace>> Body { get; set; }
+
+        public string SourcePart { get; set; }
     }
 }

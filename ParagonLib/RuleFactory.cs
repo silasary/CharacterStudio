@@ -145,7 +145,7 @@ namespace ParagonLib
             return num++;
         }
 
-        private static void Load(XElement item, Dictionary<string, RulesElement> setting = null)
+        private static RulesElement Load(XElement item, Dictionary<string, RulesElement> setting = null)
         {
             try
             {
@@ -158,11 +158,13 @@ namespace ParagonLib
                     if (!String.IsNullOrEmpty(re.System))
                         RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
                 }
+                return re;
             }
             catch (XmlException c)
             {
                 Logging.Log("Xml Loader", TraceEventType.Error, "Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
                 System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
+                return null;
             }
         }
 
@@ -203,7 +205,8 @@ namespace ParagonLib
                 return;
             try
             {
-                XDocument doc = XDocument.Load(file);
+                XDocument doc = XDocument.Load(file, LoadOptions.SetLineInfo);
+                doc.Root.Add(new XAttribute("Filename", file));
                 string system = null;
                 if (doc.Root.Attribute("game-system") != null)
                 {
@@ -271,10 +274,27 @@ namespace ParagonLib
         private static void LoadPart(Dictionary<string, RulesElement> setting, XDocument doc)
         {
             List<Task> tasks = new List<Task>();
+            ConcurrentBag<RulesElement> elements = new ConcurrentBag<RulesElement>();
             foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
             {
-                tasks.Add(Task.Factory.StartNew(() => Load(item, setting)));
+                tasks.Add(Task.Factory.StartNew(() => { 
+                    var re = Load(item, setting);
+                    if (re != null)
+                        elements.Add(re);
+                    else
+                        Logging.LogIf(false, TraceEventType.Verbose, null, null);
+                }));
             }
+            Task.Factory.ContinueWhenAll(tasks.ToArray(), (n) => {
+                var assembly = Instruction.CompileToDll(elements.ToArray());
+                foreach (var re in elements)
+                {
+                    var t = assembly.GetType(re.InternalId);
+                    if (t == null)
+                        continue;
+                    re.Calculate = (Instruction.Action<CharElement, Workspace>)t.GetMethod("Calculate").CreateDelegate(typeof(Instruction.Action<CharElement, Workspace>));
+                }
+            });
             Task.WaitAll(tasks.ToArray());
         }
 
