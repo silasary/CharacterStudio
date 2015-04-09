@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using ParagonLib.Compiler;
+
 
 namespace ParagonLib
 {
@@ -74,11 +76,11 @@ namespace ParagonLib
 
         public string[] Category { get; set; }
 
+        public string SourcePart { get; set; }
 
         public Instruction.Action<CharElement, Workspace> Calculate { get; set; }
 
         public global::System.Linq.Expressions.Expression<Instruction.Action<CharElement, Workspace>> Body { get; set; }
 
-        public string SourcePart { get; set; }
     }
 }

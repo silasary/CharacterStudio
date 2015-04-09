@@ -45,29 +45,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adventure.cs" />
-    <Compile Include="CategoryComparer.cs" />
-    <Compile Include="Character.cs" />
-    <Compile Include="CharElement.cs" />
-    <Compile Include="D20Currency.cs" />
     <Compile Include="DefaultDictionary.cs" />
-    <Compile Include="Instruction.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Logging.cs" />
-    <Compile Include="Loot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleFactory.cs" />
     <Compile Include="RulesElement.cs" />
-    <Compile Include="Search.cs" />
     <Compile Include="Selection.cs" />
-    <Compile Include="CampaignSetting.cs" />
-    <Compile Include="Singleton.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="Compiler\Instruction.cs" />
+    <Compile Include="Character\Adventure.cs" />
+    <Compile Include="Character\Loot.cs" />
+    <Compile Include="Character\Character.cs" />
+    <Compile Include="Character\CampaignSetting.cs" />
+    <Compile Include="CharElement.cs" />
+    <Compile Include="D20Currency.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Workspace.Serialization.cs">
       <DependentUpon>Workspace.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpecificsDict.cs" />
-    <Compile Include="Serializer.cs" />
+    <Compile Include="Utils\CategoryComparer.cs" />
+    <Compile Include="Utils\SpecificsDict.cs" />
+    <Compile Include="Utils\Logging.cs" />
+    <Compile Include="Utils\Search.cs" />
+    <Compile Include="Utils\Singleton.cs" />
+    <Compile Include="IRulesElement.cs" />
+    <Compile Include="Compiler\AssemblyGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -81,4 +83,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Compiler\" />
+    <Folder Include="Character\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
 </Project>

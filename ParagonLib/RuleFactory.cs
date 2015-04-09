@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using ParagonLib.Compiler;
 
 namespace ParagonLib
 {
@@ -287,7 +288,7 @@ namespace ParagonLib
                 }));
             }
             Task.Factory.ContinueWhenAll(tasks.ToArray(), (n) => {
-                var assembly = Instruction.CompileToDll(elements.ToArray());
+                var assembly = AssemblyGenerator.CompileToDll(elements.ToArray());
                 foreach (var re in elements)
                 {
                     var t = assembly.GetType(re.InternalId);
