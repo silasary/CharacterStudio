@@ -292,7 +292,7 @@ namespace ParagonLib
                 foreach (var re in elements)
                 {
                     var t = assembly.GetType(re.InternalId);
-                    if (t == null)
+                    if (t == null || t.GetMethod("Calculate") == null)
                         continue;
                     re.Calculate = (Instruction.Action<CharElement, Workspace>)t.GetMethod("Calculate").CreateDelegate(typeof(Instruction.Action<CharElement, Workspace>));
                 }
