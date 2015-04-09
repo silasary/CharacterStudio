@@ -78,9 +78,9 @@ namespace ParagonLib
 
         public string SourcePart { get; set; }
 
-        public Instruction.Action<CharElement, Workspace> Calculate { get; set; }
+        public Action<CharElement, Workspace> Calculate { get; set; }
 
-        public global::System.Linq.Expressions.Expression<Instruction.Action<CharElement, Workspace>> Body { get; set; }
+        public global::System.Linq.Expressions.Expression<Action<CharElement, Workspace>> Body { get; set; }
 
     }
 }

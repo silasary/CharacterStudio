@@ -294,7 +294,7 @@ namespace ParagonLib
                     var t = assembly.GetType(re.InternalId);
                     if (t == null || t.GetMethod("Calculate") == null)
                         continue;
-                    re.Calculate = (Instruction.Action<CharElement, Workspace>)t.GetMethod("Calculate").CreateDelegate(typeof(Instruction.Action<CharElement, Workspace>));
+                    re.Calculate = (Action<CharElement, Workspace>)t.GetMethod("Calculate").CreateDelegate(typeof(Action<CharElement, Workspace>));
                 }
             });
             Task.WaitAll(tasks.ToArray());

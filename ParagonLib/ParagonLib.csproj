@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\Builders.cs" />
     <Compile Include="DefaultDictionary.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,9 +84,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Compiler\" />
-    <Folder Include="Character\" />
-    <Folder Include="Utils\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

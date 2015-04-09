@@ -4,6 +4,7 @@ using ParagonLib;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace ParagonLib.Compiler
 {
@@ -23,11 +24,12 @@ namespace ParagonLib.Compiler
                 {
                     TypeBuilder typeBuilder = module.DefineType(re.InternalId, TypeAttributes.Public | TypeAttributes.Class);
                     //typeBuilder.AddInterfaceImplementation(typeof(IRulesElement));
-//                    PropertyBuilder propBuilder = typeBuilder.DefineProperty("Name", PropertyAttributes.HasDefault, typeof(string), new Type[0]);
-//                    propBuilder.SetConstant(re.Name);
+                    var pname = "Name";
+                    CreatePropGetter(pname, re.Name, typeBuilder);
                     if (re != null && re.Body != null)
                     {
-                        MethodBuilder methodbuilder = typeBuilder.DefineMethod("Calculate", MethodAttributes.HideBySig | MethodAttributes.Static | MethodAttributes.Public, typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
+                        MethodBuilder methodbuilder = 
+                            typeBuilder.DefineMethod("Calculate", MethodAttributes.HideBySig | MethodAttributes.Static | MethodAttributes.Public, typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
                         re.Body.CompileToMethod(methodbuilder, generator);
                     }
                     typeBuilder.CreateType( );
@@ -39,6 +41,28 @@ namespace ParagonLib.Compiler
             }
             assemblyBuilder.Save(name + ".dll");
             return assemblyBuilder;
+        }
+
+        private static void CreatePropGetter(string pname, string value, TypeBuilder typeBuilder)
+        {
+            PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.HasDefault, typeof(string), new Type[0]);
+            propBuilder.SetConstant(value);
+            MethodBuilder getBuilder = typeBuilder.DefineMethod("get" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, CallingConventions.Any, typeof(string), Type.EmptyTypes);
+            var func = FuncRetConst(value);
+            var com = func.Compile();
+            func.CompileToMethod(getBuilder);
+            propBuilder.SetGetMethod(getBuilder);
+        }
+
+        private static Expression<Func<string>> FuncRetConst(string p)
+        {
+            LabelTarget returnTarget = Expression.Label(typeof(string));
+            GotoExpression returnExpression = 
+                Expression.Return(returnTarget, Expression.Constant(p, typeof(string)));
+            return Expression.Lambda<Func<string>>(Expression.Block(
+                returnExpression,
+                Expression.Label(returnTarget, Expression.Constant(p, typeof(string)))
+                ));
         }
     }
 }
