@@ -5,6 +5,8 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Linq;
+using System.Collections;
 
 namespace ParagonLib.Compiler
 {
@@ -28,6 +30,7 @@ namespace ParagonLib.Compiler
                     CreatePropGetter("Type", re.Type, typeBuilder);
                     CreatePropGetter("Source", re.Source, typeBuilder);
                     CreatePropGetter("InternalId", re.InternalId, typeBuilder); // Redundant?
+                    CreatePropGetter("Category", re.Category, typeBuilder);
                     if (re != null && re.Body != null)
                     {
                         MethodBuilder methodbuilder = 
@@ -45,23 +48,39 @@ namespace ParagonLib.Compiler
             return assemblyBuilder;
         }
 
-        private static void CreatePropGetter(string pname, string value, TypeBuilder typeBuilder)
+        private static void CreatePropGetter<T>(string pname, T value, TypeBuilder typeBuilder)
         {
-            PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.HasDefault, typeof(string), new Type[0]);
+            PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.None, typeof(string), new Type[0]);
             //propBuilder.SetConstant(value);
-            MethodBuilder getBuilder = typeBuilder.DefineMethod("get" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, typeof(string), Type.EmptyTypes);
-            var func = FuncRetConst(value);
+            MethodBuilder getBuilder = typeBuilder.DefineMethod("get_" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.SpecialName, typeof(T), Type.EmptyTypes);
+            Expression<Func<T>> func;
+            if (typeof(T) == typeof(string))
+                func = FuncRetConst(value);
+            else if (typeof(T).IsArray)
+                func = FuncRetArray(value);
+            else
+                throw new NotImplementedException();
             var com = func.Compile();
             func.CompileToMethod(getBuilder);
             propBuilder.SetGetMethod(getBuilder);
         }
 
-        private static Expression<Func<string>> FuncRetConst(string p)
+        private static Expression<Func<T>> FuncRetArray<T>(T value)
         {
-            LabelTarget returnTarget = Expression.Label(typeof(string));
-            return Expression.Lambda<Func<string>>(Expression.Block(
+            LabelTarget returnTarget = Expression.Label(typeof(T));
+            var v = (value as Array).OfType<object>().Select(e => Expression.Constant(e));
+            return Expression.Lambda<Func<T>>(Expression.Block(
                 // PDB debug info might want to go here.
-                Expression.Label(returnTarget, Expression.Constant(p, typeof(string)))
+                Expression.Label(returnTarget, Expression.NewArrayInit(typeof(T).GetElementType(), v))
+                ));
+        }
+
+        private static Expression<Func<T>> FuncRetConst<T>(T p)
+        {
+            LabelTarget returnTarget = Expression.Label(typeof(T));
+            return Expression.Lambda<Func<T>>(Expression.Block(
+                // PDB debug info might want to go here.
+                Expression.Label(returnTarget, Expression.Constant(p, typeof(T)))
                 ));
         }
     }
