@@ -24,8 +24,10 @@ namespace ParagonLib.Compiler
                 {
                     TypeBuilder typeBuilder = module.DefineType(re.InternalId, TypeAttributes.Public | TypeAttributes.Class);
                     //typeBuilder.AddInterfaceImplementation(typeof(IRulesElement));
-                    var pname = "Name";
-                    CreatePropGetter(pname, re.Name, typeBuilder);
+                    CreatePropGetter("Name", re.Name, typeBuilder);
+                    CreatePropGetter("Type", re.Type, typeBuilder);
+                    CreatePropGetter("Source", re.Source, typeBuilder);
+                    CreatePropGetter("InternalId", re.InternalId, typeBuilder); // Redundant?
                     if (re != null && re.Body != null)
                     {
                         MethodBuilder methodbuilder = 
@@ -46,8 +48,8 @@ namespace ParagonLib.Compiler
         private static void CreatePropGetter(string pname, string value, TypeBuilder typeBuilder)
         {
             PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.HasDefault, typeof(string), new Type[0]);
-            propBuilder.SetConstant(value);
-            MethodBuilder getBuilder = typeBuilder.DefineMethod("get" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, CallingConventions.Any, typeof(string), Type.EmptyTypes);
+            //propBuilder.SetConstant(value);
+            MethodBuilder getBuilder = typeBuilder.DefineMethod("get" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, typeof(string), Type.EmptyTypes);
             var func = FuncRetConst(value);
             var com = func.Compile();
             func.CompileToMethod(getBuilder);
@@ -57,10 +59,8 @@ namespace ParagonLib.Compiler
         private static Expression<Func<string>> FuncRetConst(string p)
         {
             LabelTarget returnTarget = Expression.Label(typeof(string));
-            GotoExpression returnExpression = 
-                Expression.Return(returnTarget, Expression.Constant(p, typeof(string)));
             return Expression.Lambda<Func<string>>(Expression.Block(
-                returnExpression,
+                // PDB debug info might want to go here.
                 Expression.Label(returnTarget, Expression.Constant(p, typeof(string)))
                 ));
         }
