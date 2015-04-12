@@ -43,7 +43,7 @@ namespace ParagonLib
                     case "rules":
                         foreach (var rule in element.Elements())
                         {
-                            Rules.Add(new Instruction(rule.Name.LocalName, MakeDict(rule.Attributes()), SourcePart, ((IXmlLineInfo)rule).LineNumber));
+                            Rules.Add(new Instruction(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), SourcePart, ((IXmlLineInfo)rule).LineNumber));
                         }
                         Body = Instruction.Merge(Rules);
                         Calculate = Body.Compile();
@@ -52,16 +52,6 @@ namespace ParagonLib
                         break;
                 }
             }
-        }
-
-        private Dictionary<string, string> MakeDict(IEnumerable<XAttribute> enumerable)
-        {
-            Dictionary<string, string> d = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-            foreach (var item in enumerable)
-            {
-                d.Add(item.Name.LocalName, item.Value);
-            }
-            return d;
         }
 
         public string Name { get; set; }

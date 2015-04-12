@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D20Rules game-system="D&amp;D4E">
+	<UpdateInfo>
+		<Version>1</Version>
+		<Filename>PA_Classes.part</Filename>
+		<PartAddress>https://dl.dropboxusercontent.com/u/170229770/CharacterBuilder/PA_Classes.part</PartAddress>
+		<VersionAddress>https://dl.dropboxusercontent.com/u/170229770/CharacterBuilder/PA_Classes.part.txt</VersionAddress>
+	</UpdateInfo>
+	<Changelog>
+Initial Version
+	</Changelog>
+
+<!-- ====================== ARCANE CLASS ====================== -->
+	
+	<RulesElement name="Arcane Class" type="Background" internal-id="ID_SKF_PA_ARCANE" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<specific name="Common Knowledge">An Arcane class that is charisma based have a tendency to explode, simply their power manifests in a chaotic manor and often covers most of the body. Warlock classes are slightly different in that their magic looks sick with a green glow but is much more controlled.
+
+However a Arcane class that is intelligence based will instead manifest objects that they will then throw or use on their target. For example a fireball spell could be a grenade while a lightning spell could be a tazer. What is created will be at the players discretion, but the DM has the final say.
+
+For example a level 1 Encounter power will look no where near as good as a level 9 Daily power.
+
+You also gain the Item Crafting (Arcane) power.
+		</specific>
+		<rules>
+			<grant name="ID_SKF_PA_ARCANEITEM" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Item Crafting (Arcane)" type="Power" internal-id="ID_SKF_PA_ARCANEITEM" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_AT-WILL,ID_INTERNAL_CATEGORY_AT-WILL_USAGE </Category>
+		<Flavor> You draw forth your mastery of the arcane to forge what you wish. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> At-Will </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Arcane </specific>
+		<specific name="Effect">During a short rest you can spend a period of time to create an item or a magical item. This process will usually take an hour.
+
+As an arcane character you can make arcane items (fire weapon, lightning weapon, ect) in addition to common items.
+
+You cannot make beast type, living, necrotic (or bloodied) or divine items.
+		</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+
+<!-- ====================== PSIONIC CLASS ====================== -->
+	
+	<RulesElement name="Psionic Class" type="Background" internal-id="ID_SKF_PA_PSIONIC" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">A Psionic class will actually manifest ethereal creatures to attack their foes. A monk for example will create exactly what the power suggests, a psion on the other hand will create a creature and then inject it into their opponents mind to create the desired effect. Exactly how this looks is at the discretion of the player, but the DM has final say.
+
+For example a level 1 Encounter power will look no where near as good as a level 9 Daily power.
+
+You also gain the Item Crafting (Psionic) power.
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<rules>
+			<grant name="ID_SKF_PA_PSIONICITEM" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Item Crafting (Psionic)" type="Power" internal-id="ID_SKF_PA_PSIONICITEM" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_AT-WILL,ID_INTERNAL_CATEGORY_AT-WILL_USAGE </Category>
+		<Flavor> You pull a creature out of your imagination and manifest it into a solid object. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> At-Will </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Psionic </specific>
+		<specific name="Effect">During a short rest you can spend a period of time to create an item or a magical item. This process will usually take an hour.
+
+As a Psionic character you can make living items (riding horse, gryphon, ect) in addition to common items.
+
+You cannot make beast type, arcane, necrotic (or bloodied) or divine items.
+		</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+	
+<!-- ====================== DIVINE CLASS ====================== -->
+	
+	<RulesElement name="Divine Class" type="Background" internal-id="ID_SKF_PA_DIVINE" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">As a Divine class your power is actually a manifestation of what is in in your heart and soul. The better your characters alignment the more brilliant your power will look. For example a Lawful Good characters power would be a sparkling mesh of blue and gold intertwined, a neutral characters power would be dull and smokey, while an evil character will have flecks of black and purple in their power.
+
+An addendum: The way the power looks is dependant on how your character sees themselves, this means that you can have a lawful evil character with magic that's a sparkling mesh of blue and gold intertwined if they believe they are actually doing the right thing.
+
+You also gain the Item Crafting (Divine) power.
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<rules>
+			<grant name="ID_SKF_PA_DIVINEITEM" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Item Crafting (Divine)" type="Power" internal-id="ID_SKF_PA_DIVINEITEM" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_AT-WILL,ID_INTERNAL_CATEGORY_AT-WILL_USAGE </Category>
+		<Flavor> You push your heart and soul into an item, it glows with a glorious light. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> At-Will </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Divine </specific>
+		<specific name="Effect">During a short rest you can spend a period of time to create an item or a magical item. This process will usually take an hour.
+
+As a Divine character you can make divine items (healing item, divine items, ect) in addition to common items.
+
+You cannot make beast type, arcane, necrotic (or bloodied) or living items.
+		</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+	
+<!-- ====================== SHADOW CLASS ====================== -->
+	
+	<RulesElement name="Shadow Class" type="Background" internal-id="ID_SKF_PA_SHADOW" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">As a Shadow class your power is actually a manifestation of what is in in your heart and soul. The worse your characters alignment the darker your power will look. For example a Chaotic Evil characters power would be a crackling black and purple lightning smashing together, a neutral characters power would be dull and smokey, while a good character will have sparks of gold and blue in their power.
+
+An addendum: The way the power looks is dependant on how your character sees themselves, this means that you can have a chaotic good character with magic that's a crackling black and purple lightning smashing together if they believe that they are actually evil.
+
+You also gain the Item Crafting (Shadow) power.
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<rules>
+			<grant name="ID_SKF_PA_SHADOWITEM" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Item Crafting (Shadow)" type="Power" internal-id="ID_SKF_PA_SHADOWITEM" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_AT-WILL,ID_INTERNAL_CATEGORY_AT-WILL_USAGE </Category>
+		<Flavor> You push your heart and soul into an item, it glows with a glorious light. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> At-Will </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Divine </specific>
+		<specific name="Effect">During a short rest you can spend a period of time to create an item or a magical item. This process will usually take an hour.
+
+As a Shadow character you can make necrotic and bloodied items (necrotic damage, bloodied gauntlets, ect) in addition to common items.
+
+You cannot make beast type, arcane, divine or living items.
+		</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+
+<!-- ====================== PRIMAL CLASS ====================== -->
+	
+	<RulesElement name="Primal Class" type="Background" internal-id="ID_SKF_PA_PRIMAL" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">As a Primal class your power your body will actually change when you use your powers into a bestial state. A hunter for example could have their eyes change into an eagles, a barbarian could grow teeth, claws or fur and in the case of a wardens guardian form, they will literally transform into that aspect completely. Exactly how this looks is at the discretion of the player, but the DM has final say.
+
+For example a level 1 Encounter power will look no where near as good as a level 9 Daily power.
+
+You also gain the Item Crafting (Primal) power.
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<rules>
+			<grant name="ID_SKF_PA_PRIMALITEM" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Item Crafting (Primal)" type="Power" internal-id="ID_SKF_PA_PRIMALITEM" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_AT-WILL,ID_INTERNAL_CATEGORY_AT-WILL_USAGE </Category>
+		<Flavor> You push your heart and soul into an item, it glows with a glorious light. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> At-Will </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Divine </specific>
+		<specific name="Effect">During a short rest you can spend a period of time to create an item or a magical item. This process will usually take an hour.
+
+As a Primal character you can make primal and beast items (totems, beast armour, ect) in addition to common items.
+
+You cannot make beast type, arcane, divine or living items.
+		</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+
+<!-- ====================== RITUAL CASTER FEAT ====================== -->
+	
+	<RulesElement name="Ritual Caster" type="Background" internal-id="ID_SKF_PA_RITUALCASTER" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">Rituals are different in this world and are not usually in the form of a tomb or scroll. Instead a tomb is an item that can be used multiple times while a scroll is a single use item. For example a Tomb of Create Teleportation Circle could actually be a funky looking spray can, while a scroll would be a ball with nossels all over it  that hovers over the target, sprays the circle down and then falls apart. This principle fits within normal dnd rules.
+		
+A ritual caster can actually create these ritual items (tombs and scrolls) themselves BUT they must be creating a ritual that they have knowledge of (or at least a catalyst for the idea) and is assigned with their particular class type. For example the Create Teleportation Circle ritual would be Arcane, the Animal Messenger ritual would be Primal and Comrades' Succour would be Divine. But once you have the ritual item (for example you bought it from a shop) you can then cast it as long as you meet the other prerequisites (skill check, rads, focuses, ect).
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+	</RulesElement>
+	
+<!-- ====================== FAMILIAR FEAT ====================== -->
+	
+	<RulesElement name="Familiar" type="Background" internal-id="ID_SKF_PA_FAMILIAR" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">Familiars are different in this world in that the owner of the familiar has always created that familiars form. At a familiars heart is an object referred to as a spark (which can be created by any psionic class), the owner will fashion the familiar around this spark and it will come to life. Familiars will often take on a mentality that is similar to that of it's creator, for example if your character is mischievous your familiar would be as well.
+
+You also gain the Change Familiar Power
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+		<rules>
+			<grant name="ID_SKF_PA_CHGFAMILIAR" type="Power" />
+		</rules>
+	</RulesElement>
+	
+	<RulesElement name="Change Familiar" type="Power" internal-id="ID_SKF_PA_CHGFAMILIAR" source="Post Apocolyptia">
+		<Category> ID_INTERNAL_CATEGORY_ENCOUNTER,ID_INTERNAL_CATEGORY_ENCOUNTER_USAGE,ID_INTERNAL_CATEGORY_STANDARD_ACTION </Category>
+		<Flavor> You mold your familiar into something new entirely. </Flavor>
+		<specific name="Power Type"> Utility </specific>
+		<specific name="Power Usage"> Encounter </specific>
+		<specific name="Display"> Item Utility 1 </specific>
+		<specific name="Keywords"> Familiar </specific>
+		<specific name="Action Type"> Standard Action </specific>
+		<specific name="Effect">You change your familiars form into a different one. This does not affect your familiars parsonality.</specific>
+		<specific name="Level"> 1 </specific>
+	</RulesElement>
+	
+<!-- ====================== ALCHEMIST FEAT ====================== -->
+	
+	<RulesElement name="Alchemist" type="Background" internal-id="ID_SKF_PA_ALCHEMIST" source="Post Apocolyptia">
+		<specific name="type"> Class </specific>
+		<specific name="Common Knowledge">Alchemy is different in this world in that an alchemist can make the ingredients as they need them as long as the particular potion is associated to their class. For example Alchemist's Frost would be Arcane or Shadow while anti-venom would be Divine or Primal. Of course if you have the necessary ingredients you can make the potion as long as you meet the other prerequisites.
+		</specific>
+		<specific name="Campaign"> Post Apocolyptia </specific>
+	</RulesElement>
+	
+</D20Rules>

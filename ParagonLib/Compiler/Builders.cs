@@ -13,6 +13,7 @@ namespace ParagonLib.Compiler
         private static ParameterExpression pCharElement = Expression.Parameter(typeof(CharElement), "e");
         private static ParameterExpression pWorkspace = Expression.Parameter(typeof(Workspace), "ws");
         private static ParameterExpression[] pa = new ParameterExpression[] { pCharElement, pWorkspace };
+
         public static Expression GetStat(string name)
         {
             return Expression.Call(pWorkspace, typeof(Workspace).GetMethod("GetStat"), Expression.Constant(name));
@@ -29,32 +30,34 @@ namespace ParagonLib.Compiler
                 return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(Body), pa);
         }
 
-        public static Expression<Func<string>> ValidationLambda(params Expression[] Body)
+        public static FieldInfo RefGetField(Type t, string f)
         {
-            var pa = new ParameterExpression[] { pCharElement, pWorkspace };
-            if (Body.Count() == 1)
-                return Expression<Func<string>>.Lambda<Func<string>>(Body.First());
-            else
-                return Expression<Func<string>>.Lambda<Func<string>>(Expression.Block(pa, Body)); //Not sure if this works.
+            var field = t.GetField(f) ?? t.GetField(f, BindingFlags.NonPublic) ?? t.GetField(f, BindingFlags.Instance) ?? t.GetField(f, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field == null)
+                throw new MissingMethodException(String.Format("{0}.{1} not found.", t, f));
+            return field;
         }
+
         public static MethodInfo RefGetMethod(Type t, string m)
         {
-            var method = t.GetMethod(m) ?? t.GetMethod(m, BindingFlags.NonPublic) ?? t.GetMethod(m, BindingFlags.Static) ?? t.GetMethod(m, BindingFlags.Static | BindingFlags.NonPublic);
+            var method = t.GetMethod(m) ??
+                t.GetMethod(m, BindingFlags.NonPublic) ?? 
+                t.GetMethod(m, BindingFlags.Static)    ?? 
+                t.GetMethod(m, BindingFlags.Static   | BindingFlags.NonPublic) ??
+                t.GetMethod(m, BindingFlags.Instance | BindingFlags.NonPublic);
             if (method == null)
                 throw new MissingMethodException(String.Format("{0}.{1}() not found.", t, m));
             return method;
         }
 
-        private static IEnumerable<Expression> Args(string[] args)
+        internal static Dictionary<string, string> MakeDict(IEnumerable<System.Xml.Linq.XAttribute> enumerable)
         {
-            foreach (var a in args)
+            Dictionary<string, string> d = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+            foreach (var item in enumerable)
             {
-                if (a == "charelem")
-                    yield return pCharElement;
-                else
-                    yield return Expression.Constant(a, typeof(String));
+                d.Add(item.Name.LocalName, item.Value);
             }
-            yield break;
+            return d;
         }
 
         public static Expression StatAdd(string name, string[] args)
@@ -73,12 +76,25 @@ namespace ParagonLib.Compiler
                 );
         }
 
+        public static Expression<Func<string>> ValidationLambda(params Expression[] Body)
+        {
+            var pa = new ParameterExpression[] { pCharElement, pWorkspace };
+            if (Body.Count() == 1)
+                return Expression<Func<string>>.Lambda<Func<string>>(Body.First());
+            else
+                return Expression<Func<string>>.Lambda<Func<string>>(Expression.Block(pa, Body)); //Not sure if this works.
+        }
         internal static Expression Grant(string[] args)
         {
             return Expression.Call(
                 pCharElement, Builders.RefGetMethod(typeof(CharElement), "Grant"),
                     args.Select(e => Expression.Constant(e, typeof(String)))
                 );
+        }
+
+        internal static Expression<Action<CharElement, Workspace>> Merge(IEnumerable<Expression> rules)
+        {
+            return Lambda(rules.ToArray());
         }
 
         internal static Expression Modify(string[] args)
@@ -88,7 +104,6 @@ namespace ParagonLib.Compiler
                 args.Select(e => Expression.Constant(e, typeof(String)))
             );
         }
-
         internal static Expression Replace(string[] args)
         {
             return Expression.Call(
@@ -133,14 +148,20 @@ namespace ParagonLib.Compiler
              */
         }
 
+        private static IEnumerable<Expression> Args(string[] args)
+        {
+            foreach (var a in args)
+            {
+                if (a == "charelem")
+                    yield return pCharElement;
+                else
+                    yield return Expression.Constant(a, typeof(String));
+            }
+            yield break;
+        }
         private static Expression StringFormat(ConstantExpression Format, ConstantExpression arg0)
         {
             return Expression.Call(typeof(string).GetMethod("Format", new Type[] { typeof(string), typeof(object) }), Format, arg0);
-        }
-
-        internal static Expression<Action<CharElement, Workspace>> Merge(IEnumerable<Expression> rules)
-        {
-            return Lambda(rules.ToArray());
         }
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace UnitTests
 {
@@ -22,5 +23,15 @@ namespace UnitTests
                 c.Save(c.Name);
             }
         }
+
+        [Test]
+        public void CompilePart()
+        {
+            var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load("PA_Classes.part", LoadOptions.SetLineInfo), "PA_Classes.part");
+            var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElementBase;
+            Assert.IsNotNullOrEmpty(t.Name);
+            Assert.IsNotNull(t.Calculate);
+        }
+
     }
 }

@@ -24,11 +24,23 @@ namespace ParagonLib.Compiler
 
         public Instruction(string Operation, Dictionary<string, string> Parameters, string filename=null, int linenum = -1)
         {
+            Body = Generate(Operation, Parameters, filename, linenum);
+            
+            Expression<Action<CharElement, Workspace>> func = Builders.Lambda(Body);
+            Calculate = func.Compile();
+            //if (validation != null)
+            //    Validate = validation.Compile();
+        }
+
+        public static Expression Generate(string Operation, Dictionary<string, string> Parameters, string filename, int linenum)
+        {
             //Expression<Func<int, bool>> tree = s => s < 5;
 
             //Expression<Action<CharElement, Workspace>> func = Expression<Action<CharElement, Workspace>>.Block(
             //    new ParameterExpression[] { Expression.Parameter(typeof(CharElement), "Element"), Expression.Parameter(typeof(Workspace), "Workspace")},
             //    Expression.
+
+            Expression Body;
 
             Expression operation;
             // This here is extreme optimization.  We're taking the instruction set and compiling it to refer to constant values,
@@ -80,22 +92,17 @@ namespace ParagonLib.Compiler
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
-            Expression<Action<CharElement, Workspace>> func;
             if (filename != null && linenum != -1)
             {
                 var symboldoc = Expression.SymbolDocument(filename);
                 var debuginfo = Expression.DebugInfo(symboldoc, linenum, 1, linenum, 1);
-                func = Builders.Lambda(debuginfo, operation);
                 Body = Expression.Block(debuginfo, operation);
             }
             else
             {
-                func = Builders.Lambda(operation);
                 Body = Expression.Block(operation);
             }
-            Calculate = func.Compile();
-            if (validation != null)
-                Validate = validation.Compile();
+            return Body;
         }
 
         [Obsolete("", true)]
@@ -116,7 +123,7 @@ namespace ParagonLib.Compiler
             return vals;
         }
 
-        private string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
+        private static string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
         {
             var keys = method.GetParameters().Select(p => p.Name.Replace('_','-')).ToArray();
             Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
@@ -147,7 +154,5 @@ namespace ParagonLib.Compiler
         {
             return Builders.Merge(Rules.Select(s => s.Body));
         }
-
-
     }
 }

@@ -69,7 +69,7 @@
     <Compile Include="Utils\Logging.cs" />
     <Compile Include="Utils\Search.cs" />
     <Compile Include="Utils\Singleton.cs" />
-    <Compile Include="IRulesElement.cs" />
+    <Compile Include="RulesElementBase.cs" />
     <Compile Include="Compiler\AssemblyGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
