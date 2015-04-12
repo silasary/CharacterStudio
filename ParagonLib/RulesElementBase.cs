@@ -18,13 +18,31 @@ namespace ParagonLib
             get { return name; }
         }
 
-        public string type;
+        protected string type;
 
-        public string source;
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+        protected string source;
+
+        public string Source
+        {
+            get { return source; }
+            set { source = value; }
+        }
 
         public string system;
 
-        public string internalId;
+        protected string internalId;
+
+        public string InternalId
+        {
+            get { return internalId; }
+            set { internalId = value; }
+        }
 
         protected string[] category;
 

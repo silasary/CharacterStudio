@@ -38,9 +38,14 @@ namespace ParagonLib.Compiler
                 var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis | CallingConventions.Standard, Type.EmptyTypes);
 
                 var ctorgen = ctor.GetILGenerator();
+                // base..ctor()
+                ctorgen.Emit(OpCodes.Ldarg_0);
+                ctorgen.Emit(OpCodes.Call, Parent.GetConstructor(Type.EmptyTypes));
 
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase),"name"), re.Attribute("name").Value.Trim());
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "internalId"), InternalId);
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "type"), re.Attribute("type").Value.Trim());
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "source"), re.Attribute("source").Value.Trim());
                 var pthis = Expression.Parameter(typeBuilder, "this");
 
 
@@ -62,9 +67,7 @@ namespace ParagonLib.Compiler
                             break;
                     }
                 }
-                // base..ctor()
-                ctorgen.Emit(OpCodes.Ldarg_0);
-                ctorgen.Emit(OpCodes.Call, Parent.GetConstructor(Type.EmptyTypes));
+            
                 // And done.
                 ctorgen.Emit(OpCodes.Ret);
 
