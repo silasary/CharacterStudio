@@ -92,7 +92,7 @@ namespace ParagonLib.Compiler
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
-            if (filename != null && linenum != -1)
+            if (filename != null && linenum > 0)
             {
                 var symboldoc = Expression.SymbolDocument(filename);
                 var debuginfo = Expression.DebugInfo(symboldoc, linenum, 1, linenum, 1);

@@ -57,7 +57,7 @@ namespace ParagonLib.RuleBases
         }
 
 
-        public readonly Action<CharElement, Workspace> Calculate;
+        public Action<CharElement, Workspace> Calculate { get; protected set; }
         protected string[] category;
         protected string flavor;
         protected string internalId;

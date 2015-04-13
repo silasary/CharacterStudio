@@ -123,17 +123,7 @@ namespace ParagonLib
 
         private static RulesElement GenerateLevelset(string System)
         {
-            throw new NotImplementedException();
-            //var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
-            //foreach (var level in Search(System, "Level", null, null).Results().OrderBy(n => int.Parse(n.Name)))
-            //{
-            //    var Parameters = new Dictionary<string, string>();
-            //    Parameters.Add("name", level.InternalId);
-            //    Parameters.Add("Level", level.Name);
-            //    Parameters.Add("type", "Level");
-            //    levelset.Rules.Add(new Instruction("grant", Parameters));
-            //}
-            //return levelset;
+            return new GeneratedLevelset(System);
         }
 
         private static RulesElement GetRule(string id, string System, CampaignSetting setting)
@@ -147,7 +137,12 @@ namespace ParagonLib
             {
                 WaitFileLoaded.WaitOne(50);
                 if (Rules.ContainsKey(id))
+                {
+                    if (id == "_LEVELSET_" && Rules[id].GameSystem != System)
+                        goto no;
                     return Rules[id];
+                }
+                no:
                 if (setting != null && setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
             }

@@ -26,8 +26,12 @@ namespace ParagonLib.Compiler
         public static Assembly CompileToDll(XDocument doc, string filename = null)
         {
             if (filename == null)
-                filename = doc.Root.Attribute("Filename").Value;
-
+            {
+                if (doc.Root.Attribute("Filename") == null)
+                    filename = "Unknown";
+                else
+                    filename = doc.Root.Attribute("Filename").Value;
+            }
             var system = doc.Root.Attribute("game-system").Value.Trim();
 
             AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
@@ -38,7 +42,7 @@ namespace ParagonLib.Compiler
                     Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim()+".0", out ver);
             }
             name.Version = ver;
-            if (File.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll")))
+            if (File.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll")) && filename != "Unknown")
             {
                 return Assembly.LoadFile(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll"));
             }
