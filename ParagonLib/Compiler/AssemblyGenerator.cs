@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Xml;
+using ParagonLib.RuleBases;
 
 namespace ParagonLib.Compiler
 {
@@ -20,6 +21,8 @@ namespace ParagonLib.Compiler
         {
             if (filename == null)
                 filename = doc.Root.Attribute("Filename").Value;
+
+            var system = doc.Root.Attribute("game-system").Value.Trim();
 
             AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave);
@@ -33,19 +36,32 @@ namespace ParagonLib.Compiler
                 
 
                 var InternalId = re.Attribute("internal-id").Value.Trim();
-                var Parent = typeof(RulesElementBase);
+                var ElementType = re.Attribute("type").Value.Trim();
+                Type Parent;
+                switch (ElementType)
+                {
+                    case "Background":
+                        Parent = typeof(BackgroundBase);
+                        break;
+                    default:
+                        Parent = typeof(RulesElementBase);
+                        break;
+                }
+                
                 TypeBuilder typeBuilder = module.DefineType("Rules." + InternalId, TypeAttributes.Public | TypeAttributes.Class, Parent);
                 var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis | CallingConventions.Standard, Type.EmptyTypes);
 
                 var ctorgen = ctor.GetILGenerator();
                 // base..ctor()
                 ctorgen.Emit(OpCodes.Ldarg_0);
-                ctorgen.Emit(OpCodes.Call, Parent.GetConstructor(Type.EmptyTypes));
+                // I should probably check the parent for Constructors, because right now we bypass them.
+                ctorgen.Emit(OpCodes.Call, typeof(RulesElementBase).GetConstructor(Type.EmptyTypes));
 
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase),"name"), re.Attribute("name").Value.Trim());
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "internalId"), InternalId);
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "type"), re.Attribute("type").Value.Trim());
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "type"), ElementType);
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "source"), re.Attribute("source").Value.Trim());
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "system"), system);
                 var pthis = Expression.Parameter(typeBuilder, "this");
 
 
@@ -55,6 +71,7 @@ namespace ParagonLib.Compiler
                     {
                         case "Category":
                             var cats = item.Value.Split(',').Select(n => n.Trim()).ToArray();
+                            Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "category"), cats);
                             break;
                         case "rules":
                             foreach (var rule in item.Elements())
@@ -63,27 +80,18 @@ namespace ParagonLib.Compiler
                             }
 
                             break;
+                        case "specific":
+                            Specific(typeBuilder, Parent, ctorgen, item);
+                            break;
                         default:
+                            var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { false, item.Name.LocalName, item.Value});
+                            typeBuilder.SetCustomAttribute(warning);
                             break;
                     }
                 }
             
                 // And done.
                 ctorgen.Emit(OpCodes.Ret);
-
-
-/*                // Expression.Lambda<Action<RulesElementBase>>
-                var init = typeBuilder.DefineMethod("Init", MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask | MethodAttributes.Family,
-                    CallingConventions.Standard | CallingConventions.HasThis,typeof(void),Type.EmptyTypes);
-
-                var action = typeof(Action<>).MakeGenericType(typeBuilder.CreateTypeInfo());
-                LambdaExpression ctorFunc = Expression.Lambda(action, Expression.Block(ctorCode), pthis);
-
-                var c = ctorFunc.Compile();
-                ctorFunc.CompileToMethod(init);
-                typeBuilder.DefineMethodOverride(init,Builders.RefGetMethod(typeof(RulesElementBase), "Init"));
-                //ctorFunc.CompileToMethod(ctor);
- */
                 MethodBuilder methodbuilder = 
                     typeBuilder.DefineMethod("Calculate", 
                     MethodAttributes.HideBySig | MethodAttributes.Static | 
@@ -97,6 +105,34 @@ namespace ParagonLib.Compiler
             assemblyBuilder.Save(name + ".dll");
 
             return assemblyBuilder;
+        }
+
+        private static void Specific(TypeBuilder typeBuilder, Type Parent, ILGenerator ctorgen, XElement item)
+        {
+            var name = item.Attribute("name").Value.Trim();
+            var value = item.Value.Trim();
+            var fname = name.Replace(" ", "");
+            fname = char.ToLower(fname[0]) + fname.Substring(1);
+            if (fname == "type")
+                fname = "_type";
+            FieldInfo field = null;
+            var floc = Parent;
+            do
+            {
+                field = Builders.RefGetField(floc, fname);
+                floc = floc.BaseType;
+
+            } while (field == null && floc != typeof(Object));
+
+            if (field == null)
+            {
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { true, name, value });
+                typeBuilder.SetCustomAttribute(warning);
+            }
+            else
+            {
+                Assign(ctorgen, field, value);
+            }
         }
 
         internal static Assembly CompileToDll(RulesElement[] elements)
@@ -177,14 +213,24 @@ namespace ParagonLib.Compiler
             gen.Emit(OpCodes.Ldstr, value);
             gen.Emit(OpCodes.Stfld, field);
         }
-
-        //private static Expression CreateAssignment<T>(string field, T value)
-        //{
-        //    if (value.GetType().IsArray)
-        //        return Expression.Assign(Expression.Field(Expression.Variable(typeof(RulesElementBase), "this"), Builders.RefGetField(typeof(RulesElementBase), field)), FuncRetArray(value).Body);
-        //    else
-        //        return Expression.Assign(Expression.Field(Expression.Variable(typeof(RulesElementBase), "this"), Builders.RefGetField(typeof(RulesElementBase), field)), FuncRetConst(value).Body);
-        //}
+        private static void Assign(ILGenerator gen, FieldInfo field, string[] value)
+        {
+            gen.Emit(OpCodes.Ldarg_0); // Assign the variable on 'this'.
+            gen.Emit(OpCodes.Ldc_I4, value.Length); // Push Length of Array.
+            gen.Emit(OpCodes.Newarr, typeof(string)); // Define Array
+            
+            gen.Emit(OpCodes.Stfld, field); // Store the array to field.
+            // We could, in theory use a local varable, and keep the array in memory.
+            // But that can get messy, and would be very hard to keep track of.
+            for (int i = 0; i < value.Length; i++)
+            {  // this.field[i] = s;
+                gen.Emit(OpCodes.Ldarg_0);  
+                gen.Emit(OpCodes.Ldfld, field); 
+                gen.Emit(OpCodes.Ldc_I4, i);    
+                gen.Emit(OpCodes.Ldstr, value[i]); 
+                gen.Emit(OpCodes.Stelem_Ref);      
+            }
+        }
     }
 }
 

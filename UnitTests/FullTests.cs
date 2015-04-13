@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ParagonLib;
+using ParagonLib.RuleBases;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,6 +33,5 @@ namespace UnitTests
             Assert.IsNotNullOrEmpty(t.Name);
             Assert.IsNotNull(t.Calculate);
         }
-
     }
 }

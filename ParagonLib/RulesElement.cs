@@ -8,6 +8,7 @@ using ParagonLib.Compiler;
 
 namespace ParagonLib
 {
+    //TODO: [Obsolete]
     public class RulesElement
     {
         public List<Instruction> Rules = new List<Instruction>();

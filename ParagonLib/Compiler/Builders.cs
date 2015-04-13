@@ -33,8 +33,8 @@ namespace ParagonLib.Compiler
         public static FieldInfo RefGetField(Type t, string f)
         {
             var field = t.GetField(f) ?? t.GetField(f, BindingFlags.NonPublic) ?? t.GetField(f, BindingFlags.Instance) ?? t.GetField(f, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field == null)
-                throw new MissingMethodException(String.Format("{0}.{1} not found.", t, f));
+            //if (field == null)
+            //    throw new MissingMethodException(String.Format("{0}.{1} not found.", t, f));
             return field;
         }
 
