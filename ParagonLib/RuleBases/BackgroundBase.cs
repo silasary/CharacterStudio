@@ -15,16 +15,16 @@ namespace ParagonLib.RuleBases
             get { return _type; }
         }
 
-        protected string campaign;
+        public string campaign;
 
-        protected string commonKnowledge;
+        public string commonKnowledge;
 
-        protected string benefit;
+        public string benefit;
 
-        protected string shortDescription;
+        public string shortDescription;
 
-        protected string associatedSkills;
+        public string associatedSkills;
 
-        protected string associatedLanguages;
+        public string associatedLanguages;
     }
 }

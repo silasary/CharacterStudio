@@ -80,12 +80,8 @@ namespace ParagonLib.Compiler
                             }
 
                             break;
-                        case "specific":
-                            Specific(typeBuilder, Parent, ctorgen, item);
-                            break;
                         default:
-                            var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { false, item.Name.LocalName, item.Value});
-                            typeBuilder.SetCustomAttribute(warning);
+                            Specific(typeBuilder, Parent, ctorgen, item);
                             break;
                     }
                 }
@@ -109,8 +105,14 @@ namespace ParagonLib.Compiler
 
         private static void Specific(TypeBuilder typeBuilder, Type Parent, ILGenerator ctorgen, XElement item)
         {
-            var name = item.Attribute("name").Value.Trim();
+            bool specific = false;
+            var name = item.Name.LocalName;
             var value = item.Value.Trim();
+            if (name == "specific")
+            {
+                name = item.Attribute("name").Value.Trim();
+                specific = true;
+            }
             var fname = name.Replace(" ", "");
             fname = char.ToLower(fname[0]) + fname.Substring(1);
             if (fname == "type")
@@ -121,12 +123,11 @@ namespace ParagonLib.Compiler
             {
                 field = Builders.RefGetField(floc, fname);
                 floc = floc.BaseType;
-
             } while (field == null && floc != typeof(Object));
 
             if (field == null)
             {
-                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { true, name, value });
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value });
                 typeBuilder.SetCustomAttribute(warning);
             }
             else

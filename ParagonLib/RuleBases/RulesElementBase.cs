@@ -4,27 +4,14 @@ namespace ParagonLib.RuleBases
 {
     public abstract class RulesElementBase
     {
-        protected string prereqs;
-
-        private string printPrereqs;
-
-        public string PrintPrereqs
-        {
-            get { return printPrereqs; }
-            set { printPrereqs = value; }
-        }
-
-
-        public string Prereqs
-        {
-            get { return prereqs; }
-            set { prereqs = value; }
-        }
-
-
         public string[] Category
         {
             get { return category; }
+        }
+
+        public string Flavor
+        {
+            get { return flavor; }
         }
 
         public string GameSystem
@@ -42,6 +29,16 @@ namespace ParagonLib.RuleBases
             get { return name; }
         }
 
+        public string Prereqs
+        {
+            get { return prereqs; }
+        }
+
+        public string PrintPrereqs
+        {
+            get { return printPrereqs; }
+        }
+
         public string Source
         {
             get { return source; }
@@ -53,18 +50,15 @@ namespace ParagonLib.RuleBases
         }
 
         public readonly Action<CharElement, Workspace> Calculate;
-
         protected string[] category;
-
+        protected string flavor;
         protected string internalId;
-
         protected string name;
-
+        protected string prereqs;
         protected string source;
-
         protected string system;
-
         protected string type;
+        protected string printPrereqs;
 
         public RulesElementBase()
         {
