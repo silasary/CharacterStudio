@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParagonLib.RuleBases;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -138,10 +139,7 @@ namespace ParagonLib
             }
             catch (Exception c)
             {
-                foreach (var rule in this.RulesElement.Rules)
-                {
-                    rule.Calculate(this, this.workspace);
-                }
+                Logging.Log("Crashlog", TraceEventType.Critical, c.ToString());
             }
             foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
             {                                   //  Don't change this method, fix the cause.

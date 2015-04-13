@@ -8,13 +8,13 @@ using ParagonLib.Compiler;
 
 namespace ParagonLib
 {
-    //TODO: [Obsolete]
-    public class RulesElement
+    [Obsolete]
+    public class OldRulesElement
     {
         public List<Instruction> Rules = new List<Instruction>();
         public SpecificsDict Specifics = new SpecificsDict();
 
-        public RulesElement(XElement item)
+        public OldRulesElement(XElement item)
         {
             if (item == null)
                 return;

@@ -1,3 +1,4 @@
+using ParagonLib.RuleBases;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -278,11 +279,11 @@ namespace ParagonLib
 
                 // TODO: URL
                 // Legality
-                if (IncludeDetails && ele.RulesElement.Specifics.ContainsKey("Short Description"))
+                if (IncludeDetails && !String.IsNullOrEmpty(ele.RulesElement.ShortDescription))
                 {
                     writer.WriteStartElement("specific");
                     writer.WriteAttributeString("name", "Short Description");
-                    writer.WriteString(ele.RulesElement.Specifics["Short Description"].LastOrDefault());
+                    writer.WriteString(ele.RulesElement.ShortDescription);
                     writer.WriteEndElement();
                 }
             }

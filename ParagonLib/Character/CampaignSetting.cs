@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
+using ParagonLib.RuleBases;
 
 namespace ParagonLib
 {

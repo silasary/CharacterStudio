@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParagonLib.RuleBases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ParagonLib
             {
                 if (!(String.IsNullOrEmpty(Type) || item.Type == Type))
                     continue;
-                if (!(String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.System) || item.System == System))
+                if (!(String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.GameSystem) || item.GameSystem == System))
                     continue;
                 if (Categories.Intersect(item.Category, Comparer).Count() != catCount)
                     continue;

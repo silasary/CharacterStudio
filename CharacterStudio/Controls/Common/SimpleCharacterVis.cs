@@ -87,7 +87,6 @@ namespace CharacterStudio.Controls.Common
                             break;
                     }
             }
-            // TODO: Race/Class
             reader.Close();
             if (string.IsNullOrWhiteSpace(Image))
                 Image = DefaultPortrait(Class,Race, Gender);

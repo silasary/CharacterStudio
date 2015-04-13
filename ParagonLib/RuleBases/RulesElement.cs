@@ -2,7 +2,7 @@
 
 namespace ParagonLib.RuleBases
 {
-    public abstract class RulesElementBase
+    public abstract class RulesElement
     {
         public string[] Category
         {
@@ -49,6 +49,14 @@ namespace ParagonLib.RuleBases
             get { return type; }
         }
 
+        protected string shortDescription;
+
+        public string ShortDescription
+        {
+            get { return shortDescription; }
+        }
+
+
         public readonly Action<CharElement, Workspace> Calculate;
         protected string[] category;
         protected string flavor;
@@ -60,7 +68,7 @@ namespace ParagonLib.RuleBases
         protected string type;
         protected string printPrereqs;
 
-        public RulesElementBase()
+        public RulesElement()
         {
             // This is a nasty hack.  But considering that Expression Trees can't compile non-static methods into a TypeBuilder, we have no alternative.
             var m = this.GetType().GetMethod("Calculate", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);

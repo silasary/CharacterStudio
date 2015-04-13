@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParagonLib.RuleBases
 {
-    public abstract class BackgroundBase : RulesElementBase
+    public abstract class BackgroundBase : RulesElement
     {
         protected string _type;
 
@@ -20,8 +20,6 @@ namespace ParagonLib.RuleBases
         public string commonKnowledge;
 
         public string benefit;
-
-        public string shortDescription;
 
         public string associatedSkills;
 

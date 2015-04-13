@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParagonLib.RuleBases;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -34,13 +35,14 @@ namespace ParagonLib
 
         public D20Currency(RulesElement Rule)
         {
-            if (Rule.Specifics.ContainsKey("Copper"))
-                this.cp = int.Parse(Rule.Specifics["Copper"].FirstOrDefault());
-            if (Rule.Specifics.ContainsKey("Copper"))
-                this.sp = int.Parse(Rule.Specifics["Silver"].FirstOrDefault());
-            if (Rule.Specifics.ContainsKey("Copper"))
-                this.gp = int.Parse(Rule.Specifics["Gold"].FirstOrDefault());
-            this.Normalize();
+            //if (Rule.Specifics.ContainsKey("Copper"))
+            //    this.cp = int.Parse(Rule.Specifics["Copper"].FirstOrDefault());
+            //if (Rule.Specifics.ContainsKey("Copper"))
+            //    this.sp = int.Parse(Rule.Specifics["Silver"].FirstOrDefault());
+            //if (Rule.Specifics.ContainsKey("Copper"))
+            //    this.gp = int.Parse(Rule.Specifics["Gold"].FirstOrDefault());
+            //this.Normalize();
+            throw new NotImplementedException();
         }
 
         public double Astral

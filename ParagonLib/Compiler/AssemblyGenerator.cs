@@ -12,11 +12,17 @@ using System.IO;
 using System.Collections.Generic;
 using System.Xml;
 using ParagonLib.RuleBases;
+using System.Threading.Tasks;
 
 namespace ParagonLib.Compiler
 {
     public static class AssemblyGenerator
     {
+        static AssemblyGenerator()
+        {
+            Directory.CreateDirectory(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
+        }
+
         public static Assembly CompileToDll(XDocument doc, string filename = null)
         {
             if (filename == null)
@@ -25,15 +31,29 @@ namespace ParagonLib.Compiler
             var system = doc.Root.Attribute("game-system").Value.Trim();
 
             AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave);
-
+            Version ver = new Version();
+            if (doc.Root.Element("UpdateInfo") != null && doc.Root.Element("UpdateInfo").Element("Version") != null)
+            {
+                if (!Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim(), out ver))
+                    Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim()+".0", out ver);
+            }
+            name.Version = ver;
+            if (File.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll")))
+            {
+                return Assembly.LoadFile(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll"));
+            }
+            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
+            List<Task> tasks = new List<Task>();
 
             foreach (var re in doc.Root.Descendants(XName.Get("RulesElement")))
             {
-                List<Expression> calcCode = new List<Expression>(); 
-                
+#if ASYNC
+                tasks.Add(Task.Factory.StartNew(() => { 
+#endif
+                List<Expression> calcCode = new List<Expression>();
+
 
                 var InternalId = re.Attribute("internal-id").Value.Trim();
                 var ElementType = re.Attribute("type").Value.Trim();
@@ -44,24 +64,33 @@ namespace ParagonLib.Compiler
                         Parent = typeof(BackgroundBase);
                         break;
                     default:
-                        Parent = typeof(RulesElementBase);
+                        Parent = typeof(RulesElement);
                         break;
                 }
-                
-                TypeBuilder typeBuilder = module.DefineType("Rules." + InternalId, TypeAttributes.Public | TypeAttributes.Class, Parent);
+                TypeBuilder typeBuilder;
+                try
+                {
+                    typeBuilder = module.DefineType("Rules." + InternalId, TypeAttributes.Public | TypeAttributes.Class, Parent);
+                }
+                catch (ArgumentException)
+                {
+                    Logging.Log("Xml Loader", TraceEventType.Error, "{0}: {1} defined twice in one part. (Line {2})", filename, InternalId, ((IXmlLineInfo)re).LineNumber);
+                    continue;
+                }
                 var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis | CallingConventions.Standard, Type.EmptyTypes);
 
                 var ctorgen = ctor.GetILGenerator();
                 // base..ctor()
                 ctorgen.Emit(OpCodes.Ldarg_0);
                 // I should probably check the parent for Constructors, because right now we bypass them.
-                ctorgen.Emit(OpCodes.Call, typeof(RulesElementBase).GetConstructor(Type.EmptyTypes));
+                ctorgen.Emit(OpCodes.Call, typeof(RulesElement).GetConstructor(Type.EmptyTypes));
 
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase),"name"), re.Attribute("name").Value.Trim());
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "internalId"), InternalId);
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "type"), ElementType);
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "source"), re.Attribute("source").Value.Trim());
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "system"), system);
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "name"), re.Attribute("name").Value.Trim());
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "internalId"), InternalId);
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "type"), ElementType);
+                if (re.Attribute("source") != null)
+                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "source"), re.Attribute("source").Value.Trim());
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), system);
                 var pthis = Expression.Parameter(typeBuilder, "this");
 
 
@@ -71,7 +100,7 @@ namespace ParagonLib.Compiler
                     {
                         case "Category":
                             var cats = item.Value.Split(',').Select(n => n.Trim()).ToArray();
-                            Assign(ctorgen, Builders.RefGetField(typeof(RulesElementBase), "category"), cats);
+                            Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "category"), cats);
                             break;
                         case "rules":
                             foreach (var rule in item.Elements())
@@ -85,19 +114,25 @@ namespace ParagonLib.Compiler
                             break;
                     }
                 }
-            
+
                 // And done.
                 ctorgen.Emit(OpCodes.Ret);
-                MethodBuilder methodbuilder = 
-                    typeBuilder.DefineMethod("Calculate", 
-                    MethodAttributes.HideBySig | MethodAttributes.Static | 
+                MethodBuilder methodbuilder =
+                    typeBuilder.DefineMethod("Calculate",
+                    MethodAttributes.HideBySig | MethodAttributes.Static |
                     MethodAttributes.Public |
-                    MethodAttributes.VtableLayoutMask, 
+                    MethodAttributes.VtableLayoutMask,
                     typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
                 Builders.Merge(calcCode).CompileToMethod(methodbuilder, generator);
                 //typeBuilder.DefineMethodOverride(methodbuilder, Builders.RefGetMethod(typeof(RulesElementBase), "Calculate"));
                 typeBuilder.CreateType();
-            };
+#if ASYNC
+            }));
+            }
+            Task.WaitAll(tasks.ToArray());
+#else
+            }
+#endif
             assemblyBuilder.Save(name + ".dll");
 
             return assemblyBuilder;
@@ -134,42 +169,6 @@ namespace ParagonLib.Compiler
             {
                 Assign(ctorgen, field, value);
             }
-        }
-
-        internal static Assembly CompileToDll(RulesElement[] elements)
-        {
-            AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(elements[0].SourcePart));
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave);
-
-            ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
-            var generator = DebugInfoGenerator.CreatePdbGenerator( );
-
-            foreach (var re in elements)
-            {
-                try
-                {
-                    TypeBuilder typeBuilder = module.DefineType("Rules." + re.InternalId, TypeAttributes.Public | TypeAttributes.Class);
-                    //typeBuilder.AddInterfaceImplementation(typeof(IRulesElement));
-                    CreatePropGetter("Name", re.Name, typeBuilder);
-                    CreatePropGetter("Type", re.Type, typeBuilder);
-                    CreatePropGetter("Source", re.Source, typeBuilder);
-                    CreatePropGetter("InternalId", re.InternalId, typeBuilder); // Redundant?
-                    CreatePropGetter("Category", re.Category, typeBuilder);
-                    if (re != null && re.Body != null)
-                    {
-                        MethodBuilder methodbuilder = 
-                            typeBuilder.DefineMethod("Calculate", MethodAttributes.HideBySig | MethodAttributes.Static | MethodAttributes.Public, typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
-                        re.Body.CompileToMethod(methodbuilder, generator);
-                    }
-                    typeBuilder.CreateType( );
-                }
-                catch (ArgumentException c)
-                {
-                    Logging.Log("Xml Loader", TraceEventType.Error, "{0}: {1} is defined twice within the same .part file.", name + ".part", re.InternalId);
-                }
-            }
-            assemblyBuilder.Save(name + ".dll");
-            return assemblyBuilder;
         }
 
         private static void CreatePropGetter<T>(string pname, T value, TypeBuilder typeBuilder)

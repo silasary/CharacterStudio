@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using ParagonLib.Compiler;
+using ParagonLib.RuleBases;
 
 namespace ParagonLib
 {
@@ -18,7 +19,6 @@ namespace ParagonLib
     {
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
-        private static int num = 0;
         private static ConcurrentDictionary<string, RulesElement> RulesBySystem;
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
@@ -89,17 +89,10 @@ namespace ParagonLib
         public static bool Loading { get; set; }
 
         public static bool Validate { get; set; }
-
+        [Obsolete]
         public static void Load(XDocument doc)
         {
-            //TODO: Replace.
-            foreach (var item in doc.Root.Elements())
-            {
-                Load(item);
-            }
-            var system = doc.Root.Attribute("game-system").Value;
-            if (!knownSystems.Contains(system))
-                knownSystems.Add(system);
+            LoadPart(doc, null);
         }
 
         public static CharElement New(string id, Workspace workspace, string type = null)
@@ -130,45 +123,17 @@ namespace ParagonLib
 
         private static RulesElement GenerateLevelset(string System)
         {
-            var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
-            foreach (var level in Search(System, "Level", null, null).Results().OrderBy(n => int.Parse(n.Name)))
-            {
-                var Parameters = new Dictionary<string, string>();
-                Parameters.Add("name", level.InternalId);
-                Parameters.Add("Level", level.Name);
-                Parameters.Add("type", "Level");
-                levelset.Rules.Add(new Instruction("grant", Parameters));
-            }
-            return levelset;
-        }
-
-        [Obsolete]
-        private static int GenerateUID()
-        {
-            return num++;
-        }
-
-        private static RulesElement Load(XElement item, Dictionary<string, RulesElement> setting = null)
-        {
-            try
-            {
-                var re = new RulesElement(item);
-                if (setting != null)
-                    setting[re.InternalId] = re;
-                else
-                {
-                    Rules[re.InternalId] = re;
-                    if (!String.IsNullOrEmpty(re.System))
-                        RulesBySystem[String.Format("{0}+{1}", re.System, re.InternalId)] = re;
-                }
-                return re;
-            }
-            catch (XmlException c)
-            {
-                Logging.Log("Xml Loader", TraceEventType.Error, "Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
-                System.Diagnostics.Debug.WriteLine("Failed to load {0}. {1}", item.Attribute("internal-id").Value, c.Message);
-                return null;
-            }
+            throw new NotImplementedException();
+            //var levelset = new RulesElement(null) { Type = "Levelset", System = System, Name = "LEVELSET", InternalId = "_LEVELSET_", Source = "Internal" };
+            //foreach (var level in Search(System, "Level", null, null).Results().OrderBy(n => int.Parse(n.Name)))
+            //{
+            //    var Parameters = new Dictionary<string, string>();
+            //    Parameters.Add("name", level.InternalId);
+            //    Parameters.Add("Level", level.Name);
+            //    Parameters.Add("type", "Level");
+            //    levelset.Rules.Add(new Instruction("grant", Parameters));
+            //}
+            //return levelset;
         }
 
         private static RulesElement GetRule(string id, string System, CampaignSetting setting)
@@ -228,7 +193,7 @@ namespace ParagonLib
                 }
                 
                 if (ext == ".part")
-                    LoadPart(setting, doc);
+                    LoadPart(doc, setting);
                 if (ext == ".index")
                     LoadIndex(file, doc);
                 
@@ -274,31 +239,26 @@ namespace ParagonLib
             }
         }
 
-        private static void LoadPart(Dictionary<string, RulesElement> setting, XDocument doc)
+        private static void LoadPart(XDocument doc, Dictionary<string, RulesElement> setting)
         {
-            List<Task> tasks = new List<Task>();
-            ConcurrentBag<RulesElement> elements = new ConcurrentBag<RulesElement>();
-            foreach (var item in doc.Root.Descendants(XName.Get("RulesElement")))
+            var code = AssemblyGenerator.CompileToDll(doc);
+
+            foreach (var t in code.GetTypes())
             {
-                tasks.Add(Task.Factory.StartNew(() => { 
-                    var re = Load(item, setting);
-                    if (re != null)
-                        elements.Add(re);
-                    else
-                        Logging.LogIf(false, TraceEventType.Verbose, null, null);
-                }));
-            }
-            Task.Factory.ContinueWhenAll(tasks.ToArray(), (n) => {
-                var assembly = AssemblyGenerator.CompileToDll(elements.ToArray());
-                foreach (var re in elements)
+                var rule = (RulesElement)Activator.CreateInstance(t);
+                if (setting != null)
+                    setting[rule.InternalId] = rule;
+                else
                 {
-                    var t = assembly.GetType(re.InternalId);
-                    if (t == null || t.GetMethod("Calculate") == null)
-                        continue;
-                    re.Calculate = (Action<CharElement, Workspace>)t.GetMethod("Calculate").CreateDelegate(typeof(Action<CharElement, Workspace>));
+
+                    Rules[rule.InternalId] = rule;
+                    if (!String.IsNullOrEmpty(rule.GameSystem))
+                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
                 }
-            });
-            Task.WaitAll(tasks.ToArray());
+            }
+            var system = doc.Root.Attribute("game-system").Value;
+            if (!knownSystems.Contains(system))
+                knownSystems.Add(system); 
         }
 
         private static void LoadIndex(string file, XDocument doc)
@@ -315,14 +275,14 @@ namespace ParagonLib
                     try
                     {
                         var uri = Uri(n.Element("PartAddress").Value, newfile);
-                        Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                        Logging.Log("Index Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
                         var xml = new WebClient().DownloadString(uri);
                         File.WriteAllText(newfile, xml);
                         LoadFile(newfile);
                     }
                     catch (WebException c)
                     {
-                        Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
+                        Logging.Log("Index Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
                     }
                 }
             }
@@ -334,12 +294,12 @@ namespace ParagonLib
                     try
                     {
                         var uri = Uri(n.Element("FileAddress").Value, newfile);
-                        Logging.Log("Xml Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
+                        Logging.Log("Index Loader", TraceEventType.Information, "{0}: Getting {1} from {2}", Path.GetFileName(file), n.Element("Filename").Value, uri);
                         new WebClient().DownloadFile(uri, newfile);
                     }
                     catch (WebException c)
                     {
-                        Logging.Log("Xml Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
+                        Logging.Log("Index Loader", TraceEventType.Warning, "{0}: Failed getting {1} from index. {2}", Path.GetFileName(file), newfile, c);
                     }
                 }
             }
@@ -450,29 +410,20 @@ namespace ParagonLib
 
                 item = Rules.ElementAt(n);
                 var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
-                foreach (var spec in CSV_Specifics)
-                {
-                    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
-                    {
-                        var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
-                        foreach (var e in errors)
-                        {
-                            if (e.Value == null)
-                                Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
-                            else
-                                Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
-                        }
-                    }
-                }
-                foreach (var rule in item.Value.Rules)
-                {
-                    if (rule.Validate == null)
-                        continue;
-                    var error = rule.Validate();
-                    if (error != null)
-                        Logging.Log("Xml Validation", TraceEventType.Error, error);
-
-                }
+                //foreach (var spec in CSV_Specifics)
+                //{
+                //    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
+                //    {
+                //        var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
+                //        foreach (var e in errors)
+                //        {
+                //            if (e.Value == null)
+                //                Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
+                //            else
+                //                Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
+                //        }
+                //    }
+                //}
             }
         }
     }

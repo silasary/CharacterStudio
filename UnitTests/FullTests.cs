@@ -28,8 +28,12 @@ namespace UnitTests
         [Test]
         public void CompilePart()
         {
+            foreach (var file in Directory.EnumerateFiles(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"), "PA_*.dll"))
+            {
+                File.Delete(file);
+            }
             var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load("PA_Classes.part", LoadOptions.SetLineInfo), "PA_Classes.part");
-            var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElementBase;
+            var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElement;
             Assert.IsNotNullOrEmpty(t.Name);
             Assert.IsNotNull(t.Calculate);
         }

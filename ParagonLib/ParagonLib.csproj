@@ -71,7 +71,7 @@
     <Compile Include="Utils\Logging.cs" />
     <Compile Include="Utils\Search.cs" />
     <Compile Include="Utils\Singleton.cs" />
-    <Compile Include="RuleBases\RulesElementBase.cs" />
+    <Compile Include="RuleBases\RulesElement.cs" />
     <Compile Include="Compiler\AssemblyGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
