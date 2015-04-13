@@ -34,6 +34,8 @@ namespace ParagonLib
                     continue;
                 if (!(String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.GameSystem) || item.GameSystem == System))
                     continue;
+                if (catCount > 0 && item.Category == null)
+                    continue;
                 if (catCount > 0 && Categories.Intersect(item.Category, Comparer).Count() != catCount)
                     continue;
                 if (Workspace != null && Workspace.Setting != null && !Workspace.Setting.IsRuleLegal(item))
