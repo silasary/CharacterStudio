@@ -149,9 +149,9 @@ namespace ParagonLib
                 if (setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
             }
-            while (Loading)
+            if (Loading)
             {
-                WaitFileLoaded.WaitOne(50);
+                WaitFileLoaded.WaitOne(1000);
                 if (Rules.ContainsKey(id))
                 {
                     return Rules[id];

@@ -32,7 +32,7 @@ namespace ParagonLib.RuleBases
             var earned = ws.GetStat("XP Earned");
             //var needed = ws.GetStat("XP Needed");
             Level lastlevel = null;
-            var AllLevels = ws.Search("Level", null, null).Results();
+            var AllLevels = ws.Search("Level", null, null).Results().ToArray();
             if (AllLevels.Count() == 0)
                 return;
             while (true) //earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
