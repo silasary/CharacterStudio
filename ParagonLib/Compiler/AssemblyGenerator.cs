@@ -43,10 +43,21 @@ namespace ParagonLib.Compiler
             }
             name.Version = ver;
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
+            bool dontsave = false;
             if (File.Exists(savepath) && filename != "Unknown")
             {
                 if (File.Exists(savepath + ".regen"))
-                    File.Delete(savepath + ".regen");
+                {
+                    try
+                    {
+                        File.Delete(savepath);
+                        File.Delete(savepath + ".regen");
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        dontsave = true;
+                    }
+                }
                 else if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
                     return Assembly.LoadFile(savepath);
 
@@ -149,7 +160,8 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            assemblyBuilder.Save(name + ".dll");
+            if (!dontsave)
+                assemblyBuilder.Save(name + ".dll");
 
             return assemblyBuilder;
         }
