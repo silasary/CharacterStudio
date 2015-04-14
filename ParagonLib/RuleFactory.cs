@@ -235,19 +235,26 @@ namespace ParagonLib
         private static void LoadPart(XDocument doc, Dictionary<string, RulesElement> setting)
         {
             var code = AssemblyGenerator.CompileToDll(doc);
-
-            foreach (var t in code.GetTypes())
+            try
             {
-                var rule = (RulesElement)Activator.CreateInstance(t);
-                if (setting != null)
-                    setting[rule.InternalId] = rule;
-                else
+                foreach (var t in code.GetTypes())
                 {
+                    var rule = (RulesElement)Activator.CreateInstance(t);
+                    if (setting != null)
+                        setting[rule.InternalId] = rule;
+                    else
+                    {
 
-                    Rules[rule.InternalId] = rule;
-                    if (!String.IsNullOrEmpty(rule.GameSystem))
-                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                        Rules[rule.InternalId] = rule;
+                        if (!String.IsNullOrEmpty(rule.GameSystem))
+                            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                    }
                 }
+            }
+            catch (System.Reflection.ReflectionTypeLoadException c)
+            {
+                File.WriteAllText(c.Types[0].Assembly.Location + ".regen", c.LoaderExceptions[0].Message);
+                LoadPart(doc, setting);
             }
             var system = doc.Root.Attribute("game-system").Value;
             if (!knownSystems.Contains(system))

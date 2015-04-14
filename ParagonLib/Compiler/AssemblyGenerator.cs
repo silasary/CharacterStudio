@@ -45,9 +45,13 @@ namespace ParagonLib.Compiler
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
             if (File.Exists(savepath) && filename != "Unknown")
             {
-                if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
+                if (File.Exists(savepath + ".regen"))
+                    File.Delete(savepath + ".regen");
+                else if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
                     return Assembly.LoadFile(savepath);
+
             }
+
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
