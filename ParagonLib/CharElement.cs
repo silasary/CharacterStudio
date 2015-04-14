@@ -67,8 +67,8 @@ namespace ParagonLib
             int level;
             int.TryParse(Level, out level);
             bool disabled = false;
-            if (!workspace.MeetsRequirement(requires) || workspace.Level < level)
-                disabled = true;
+            //if (!workspace.MeetsRequirement(requires) || workspace.Level < level)
+            //    disabled = true; // TODO: Do these somewhere else.
             CharElement child;
             if ((child = this.Children.Find(e => e.RulesElementId == name)) != null)
             {

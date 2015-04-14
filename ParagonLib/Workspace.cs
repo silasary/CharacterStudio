@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParagonLib.RuleBases;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -201,7 +202,7 @@ namespace ParagonLib
             {
                 get
                 {
-                    return ValueAt(workspace.Level);
+                    return ValueAt((workspace.Levelset.RulesElement as GeneratedLevelset).CurrentLevel);
                 }
             }
 

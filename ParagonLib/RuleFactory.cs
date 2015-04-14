@@ -19,7 +19,7 @@ namespace ParagonLib
     {
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
-        private static ConcurrentDictionary<string, RulesElement> RulesBySystem;
+        internal static ConcurrentDictionary<string, RulesElement> RulesBySystem;
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);

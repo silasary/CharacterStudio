@@ -28,7 +28,7 @@ namespace ParagonLib
             var Categories = Category == null ? new string[0] : Category.Split(',');
             var catCount = Categories.Count();
             var Comparer = new CategoryComparer();
-            foreach (var item in RuleFactory.Rules.Values)
+            foreach (var item in RuleFactory.RulesBySystem.Values)
             {
                 if (!(String.IsNullOrEmpty(Type) || item.Type == Type))
                     continue;
