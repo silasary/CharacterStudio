@@ -91,6 +91,13 @@ namespace ParagonLib
         {
             get
             {
+                lock (LoadingThreads)
+                {
+                    Task peek;
+                    LoadingThreads.TryTake(out peek);
+                    if (!peek.IsCompleted && !peek.IsFaulted)
+                        LoadingThreads.Add(peek); // Put it back again.
+                }
                 return LoadingThreads.ToArray().All(n => n.IsCompleted);
             }
         }
