@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParagonLib.RuleBases
 {
-    public abstract class BackgroundBase : RulesElement
+    public abstract class Background : RulesElement
     {
         protected string _type;
 

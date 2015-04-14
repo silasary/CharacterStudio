@@ -42,9 +42,11 @@ namespace ParagonLib.Compiler
                     Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim()+".0", out ver);
             }
             name.Version = ver;
-            if (File.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll")) && filename != "Unknown")
+            var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
+            if (File.Exists(savepath) && filename != "Unknown")
             {
-                return Assembly.LoadFile(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll"));
+                if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
+                    return Assembly.LoadFile(savepath);
             }
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
@@ -65,7 +67,7 @@ namespace ParagonLib.Compiler
                 switch (ElementType)
                 {
                     case "Background":
-                        Parent = typeof(BackgroundBase);
+                        Parent = typeof(Background);
                         break;
                     case "Level":
                         Parent = typeof(Level);
@@ -77,7 +79,10 @@ namespace ParagonLib.Compiler
                 TypeBuilder typeBuilder;
                 try
                 {
-                    typeBuilder = module.DefineType("Rules." + InternalId, TypeAttributes.Public | TypeAttributes.Class, Parent);
+                    var t = "Rules." + InternalId;
+                    if (Parent != typeof(RulesElement))
+                        t = "Rules." + Parent.Name + "." + InternalId;
+                    typeBuilder = module.DefineType(t, TypeAttributes.Public | TypeAttributes.Class, Parent);
                 }
                 catch (ArgumentException)
                 {
