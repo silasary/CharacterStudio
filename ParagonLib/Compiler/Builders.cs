@@ -104,6 +104,13 @@ namespace ParagonLib.Compiler
                 args.Select(e => Expression.Constant(e, typeof(String)))
             );
         }
+        internal static Expression CallOnCharElem(MethodInfo method, string[] args)
+        {
+            return Expression.Call(
+                pCharElement, method,
+                args.Select(e => Expression.Constant(e, typeof(String)))
+            );
+        }
         internal static Expression Replace(string[] args)
         {
             return Expression.Call(

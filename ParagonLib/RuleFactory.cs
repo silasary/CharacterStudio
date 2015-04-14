@@ -17,6 +17,7 @@ namespace ParagonLib
 {
     public static class RuleFactory
     {
+        private static ConcurrentBag<Task> LoadingThreads = new ConcurrentBag<Task>();
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
         internal static ConcurrentDictionary<string, RulesElement> RulesBySystem;
@@ -86,7 +87,13 @@ namespace ParagonLib
             }
         }
 
-        public static bool Loading { get; set; }
+        public static bool Loading
+        {
+            get
+            {
+                return LoadingThreads.ToArray().All(n => n.IsCompleted);
+            }
+        }
 
         public static bool Validate { get; set; }
         [Obsolete]
@@ -186,7 +193,7 @@ namespace ParagonLib
                 }
                 
                 if (ext == ".part")
-                    LoadPart(doc, setting);
+                   LoadingThreads.Add(Task.Factory.StartNew(() => LoadPart(doc, setting)));
                 if (ext == ".index")
                     LoadIndex(file, doc);
                 
@@ -237,6 +244,7 @@ namespace ParagonLib
             var code = AssemblyGenerator.CompileToDll(doc);
             try
             {
+                
                 foreach (var t in code.GetTypes())
                 {
                     var rule = (RulesElement)Activator.CreateInstance(t);
@@ -314,15 +322,13 @@ namespace ParagonLib
         {
             if (!Directory.Exists(RulesFolder))
                 return;
-            while (Loading)
-                Thread.Sleep(0);
-            Loading = true;
+            //while (Loading)
+            //    Thread.Sleep(0);
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
                 LoadFile(file);
                 FileLoaded(file);
             }
-            Loading = false;
             if (Validate)
                 ThreadPool.QueueUserWorkItem(ValidateRules);
         }

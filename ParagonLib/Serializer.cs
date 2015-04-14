@@ -713,7 +713,9 @@ namespace ParagonLib
 
         private void ValidateExperiencePoints()
         {
-            int val = int.Parse(c.TextStrings["Experience Points"]);
+
+            int val;
+            int.TryParse(c.TextStrings["Experience Points"], out val);
             if (val != c.workspace.GetStat("XP Earned").Value)
             {
                 if (c.workspace.AdventureLog.Count==0)

@@ -119,6 +119,10 @@ namespace ParagonLib
             //TODO: Fill me in!
         }
 
+        public void Drop()
+        {
+            //TODO: Drop()
+        }
         internal void Recalculate()
         {
             if (this.SelfId == -1)

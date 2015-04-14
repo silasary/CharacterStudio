@@ -88,7 +88,9 @@ namespace ParagonLib.Compiler
                     //Logging.Log("Xml Loader", TraceEventType.Information, "Suggest is not supported yet.");
                     operation = Builders.Lambda();
                     break;
-
+                case "drop":
+                    operation = Builders.CallOnCharElem(DropInfo, Params(Parameters, DropInfo));
+                    break;
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
             }
@@ -147,6 +149,8 @@ namespace ParagonLib.Compiler
         private static MethodInfo SelectInfo = typeof(CharElement).GetMethod("Select");
         private static MethodInfo ReplaceInfo = typeof(CharElement).GetMethod("Replace");
         private static MethodInfo ModifyInfo = typeof(CharElement).GetMethod("Modify");
+        private static MethodInfo DropInfo = typeof(CharElement).GetMethod("Drop");
+
         internal Expression Body;
         internal DebugInfoGenerator PdbGenerator = DebugInfoGenerator.CreatePdbGenerator();
 
