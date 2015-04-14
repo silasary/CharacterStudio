@@ -95,7 +95,7 @@ namespace ParagonLib
                 {
                     Task peek;
                     LoadingThreads.TryTake(out peek);
-                    if (!peek.IsCompleted && !peek.IsFaulted)
+                    if (peek != null && !peek.IsCompleted)
                         LoadingThreads.Add(peek); // Put it back again.
                 }
                 return LoadingThreads.ToArray().All(n => n.IsCompleted);
