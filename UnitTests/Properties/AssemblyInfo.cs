@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 // Tests should time out.
-[assembly: Timeout(300000)] // 5 Minutes is just excessive.
+[assembly: Timeout(600000)] // We need to give up at some point.
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
