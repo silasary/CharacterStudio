@@ -105,6 +105,8 @@ namespace ParagonLib
 
         internal static RulesElement FindRulesElement(string id, string System, CampaignSetting setting = null)
         {
+            if (id == "_LEVELSET_")
+                return GenerateLevelset(System);
             var sysid = String.Format("{0}+{1}", System, id);
             RulesElement re;
             if (RulesBySystem.ContainsKey(sysid))
@@ -138,16 +140,12 @@ namespace ParagonLib
                 WaitFileLoaded.WaitOne(50);
                 if (Rules.ContainsKey(id))
                 {
-                    if (id == "_LEVELSET_" && Rules[id].GameSystem != System)
-                        goto no;
                     return Rules[id];
                 }
-                no:
                 if (setting != null && setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
             }
-            if (id == "_LEVELSET_")
-                return GenerateLevelset(System);
+
             return null;
         }
 

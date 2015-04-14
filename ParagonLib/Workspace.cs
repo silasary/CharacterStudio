@@ -54,20 +54,25 @@ namespace ParagonLib
         public Dictionary<string, WeakReference> AllElements { get; set; }
         public Dictionary<string, Loot> AllLoot { get; set; }
 
-        protected int level;
-
-        public int Level
+        public int Level //{get;set;}
         {
             get
             {
-                level = 1;
-                var earned = GetStat("XP Earned");
-                var needed = GetStat("XP Needed");
-                while (earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
-                    level++;
-                return level;
+                Levelset.RulesElement.Calculate(Levelset, this);
+                return (Levelset.RulesElement as RuleBases.GeneratedLevelset).CurrentLevel;
             }
         }
+        //{
+        //    get
+        //    {
+        //        level = 1;
+        //        var earned = GetStat("XP Earned");
+        //        var needed = GetStat("XP Needed");
+        //        while (earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
+        //            level++;
+        //        return level;
+        //    }
+        //}
 
         public string System { get; private set; }
 
@@ -196,7 +201,7 @@ namespace ParagonLib
             {
                 get
                 {
-                    return ValueAt(workspace.level);
+                    return ValueAt(workspace.Level);
                 }
             }
 
@@ -257,7 +262,7 @@ namespace ParagonLib
             }
             private struct bit
             {
-                public string condition;
+                public string conditional;
                 public int Level;
                 public string requires;
                 public string type;
@@ -268,7 +273,7 @@ namespace ParagonLib
                 public bit(string value, string condition, string requires, string type, int Level, CharElement source)
                 {
                     this.value = value;
-                    this.condition = condition;
+                    this.conditional = condition;
                     this.requires = requires;
                     this.type = type;
                     this.Level = Level;
@@ -282,7 +287,7 @@ namespace ParagonLib
                 public bit(string text, string condition, string requires, int Level, CharElement source)
                 {
                     this.String = text;
-                    this.condition = condition;
+                    this.conditional = condition;
                     this.requires = requires;
                     this.type = "";
                     this.Level = Level;

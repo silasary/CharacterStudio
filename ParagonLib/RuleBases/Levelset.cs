@@ -23,6 +23,42 @@ namespace ParagonLib.RuleBases
                 grants.Add(Instruction.Generate("grant", Parameters, null, 0));
             }
             Calculate = Builders.Lambda(grants.ToArray()).Compile();
+            Calculate = Calc;
         }
+
+        private void Calc(CharElement element, Workspace ws)
+        {
+            int level = 1;
+            var earned = ws.GetStat("XP Earned");
+            //var needed = ws.GetStat("XP Needed");
+            Level lastlevel = null;
+            var AllLevels = ws.Search("Level", null, null).Results();
+            if (AllLevels.Count() == 0)
+                return;
+            while (true) //earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
+            {
+                this.CurrentLevel = level;
+                var l = AllLevels.FirstOrDefault(n => n.Name == level.ToString());
+                if (l == null)
+                    break;
+                element.Grant(l.InternalId, "Level",null,level.ToString());
+                var levelele = element.Children.FirstOrDefault(n => n.Name == level.ToString());
+                var Level = (Level)levelele.RulesElement;
+                if (Level == null)
+                    break;
+                Level.PreviousLevel = lastlevel;
+                lastlevel = Level;
+                var needed = Level.TotalXpNeeded;
+
+                var levelup = earned.Value >= needed;
+
+                if (levelup)
+                    level++;
+                else
+                    break;
+            }
+        }
+
+        public int CurrentLevel { get; private set; }
     }
 }

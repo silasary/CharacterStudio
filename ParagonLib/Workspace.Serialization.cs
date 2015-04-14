@@ -31,7 +31,7 @@ namespace ParagonLib
                         if (field.GetValue(bit) is int && (int)field.GetValue(bit) != 0) // Level and charelem
                             writer.WriteAttributeString(field.Name, field.GetValue(bit).ToString());
                     }
-                    var realval = calc(bit, workspace.level);
+                    var realval = calc(bit, workspace.Level);
                     if (SaveFileVersion > Serializer.SFVersion.v007b && realval.ToString() != bit.value)
                         writer.WriteAttributeString("calcvalue", realval.ToString());
                     writer.WriteEndElement( );

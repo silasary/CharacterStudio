@@ -27,6 +27,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("name", "1"),
         new XAttribute("type", "Level"),
         new XAttribute("internal-id", "TEST_LEVEL_1"),
+        new XElement("specific", new XAttribute("name", "XP Needed"), 50),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
@@ -35,6 +36,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("name", "2"),
         new XAttribute("type", "Level"),
         new XAttribute("internal-id", "TEST_LEVEL_2"),
+        new XElement("specific", new XAttribute("name", "XP Needed"), 50),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
@@ -43,6 +45,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("name", "3"),
         new XAttribute("type", "Level"),
         new XAttribute("internal-id", "TEST_LEVEL_3"),
+        new XElement("specific", new XAttribute("name", "XP Needed"), 50),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
@@ -51,6 +54,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("name", "4"),
         new XAttribute("type", "Level"),
         new XAttribute("internal-id", "TEST_LEVEL_4"),
+        new XElement("specific", new XAttribute("name", "XP Needed"), 50),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
@@ -59,6 +63,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("name", "5"),
         new XAttribute("type", "Level"),
         new XAttribute("internal-id", "TEST_LEVEL_5"),
+        new XElement("specific", new XAttribute("name", "XP Needed"), 50),
         new XElement(XName.Get("rules"),
             new XElement(XName.Get("statadd"), new XAttribute("name", "XP Needed"), new XAttribute("value", "50"))
             )
@@ -68,6 +73,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             var c = new Character("Test");
             var ws = c.workspace;
             //var ruleset = RuleFactory.New("TEST_RULESET", ws); // This should be implicit at some point.
+            ws.Recalculate();            
             Debug.Assert(ws.Level == 1); // Start at level 1.
             c.workspace.AdventureLog.Add(new Adventure() { XPGain = 70 });
             ws.Recalculate();

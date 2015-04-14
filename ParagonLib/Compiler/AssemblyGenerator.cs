@@ -67,6 +67,9 @@ namespace ParagonLib.Compiler
                     case "Background":
                         Parent = typeof(BackgroundBase);
                         break;
+                    case "Level":
+                        Parent = typeof(Level);
+                        break;
                     default:
                         Parent = typeof(RulesElement);
                         break;
@@ -169,9 +172,18 @@ namespace ParagonLib.Compiler
                 var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value });
                 typeBuilder.SetCustomAttribute(warning);
             }
-            else
+            else if (field.FieldType == typeof(string))
             {
                 Assign(ctorgen, field, value);
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                Assign(ctorgen, field, Int32.Parse(value));
+            }
+            else
+            {
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value });
+                typeBuilder.SetCustomAttribute(warning);
             }
         }
 
@@ -215,6 +227,12 @@ namespace ParagonLib.Compiler
         {
             gen.Emit(OpCodes.Ldarg_0); // Assign the variable on 'this'.
             gen.Emit(OpCodes.Ldstr, value);
+            gen.Emit(OpCodes.Stfld, field);
+        }
+        private static void Assign(ILGenerator gen, FieldInfo field, int value)
+        {
+            gen.Emit(OpCodes.Ldarg_0); // Assign the variable on 'this'.
+            gen.Emit(OpCodes.Ldc_I4, value);
             gen.Emit(OpCodes.Stfld, field);
         }
         private static void Assign(ILGenerator gen, FieldInfo field, string[] value)

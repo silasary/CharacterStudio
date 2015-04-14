@@ -69,7 +69,9 @@ namespace CharacterStudio.Controls.Common
                                 break;
                             reader.MoveToContent();
                             reader.Read();
-                            this.Level = int.Parse(reader.Value);
+                            int l;
+                            if (int.TryParse(reader.Value, out l))
+                                this.Level = l;
                             break;
 
                         case "AbilityScores":
