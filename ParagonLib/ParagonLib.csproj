@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Compiler\Builders.cs" />
     <Compile Include="Compiler\MissingElementAtribute.cs" />
+    <Compile Include="Compiler\MissingInstructionAttribute.cs" />
     <Compile Include="DefaultDictionary.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
