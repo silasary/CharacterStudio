@@ -71,6 +71,7 @@ namespace CharacterStudio
                     continue;
                 (ctrl as ContentControl).OnCharacterLoad();
             }
+            //this.OnCharacterUpdated();
         }
 
         public override void OnCharacterUpdated()

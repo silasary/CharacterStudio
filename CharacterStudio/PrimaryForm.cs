@@ -18,6 +18,7 @@ namespace CharacterStudio
         {
             InitializeComponent();
             CurrentWorkspace = new Workspace(null,null);
+            this.LoadedPanels.Add(typeof(LeftSidebar), this.leftSidebar1);
             DisplayPanel<HomePane>();
             this.HelpButton = true;
             this.tabControl1.Controls.Clear();

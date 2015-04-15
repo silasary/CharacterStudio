@@ -31,7 +31,7 @@ namespace ParagonLib
 
         public Dictionary<string, Item> Loot { get; protected set; }
 
-        //public int StartingXp { get; set; }
+        public string Portrait { get; set; }
 
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
 
@@ -61,6 +61,23 @@ namespace ParagonLib
         }
 
         public Dictionary<string, int> AbilityScores = new Dictionary<string, int>();
+
+        // TODO: Still not the best place.
+        public static string DefaultPortrait(string Class, string Race, string Gender)
+        {
+            var ClassPort = String.Format("ClassPort{0}", Class).ToLower();
+            var RaceGendered = string.Format("{0}_{1}", (Gender ?? "").FirstOrDefault(), Race).ToLower();
+            var RacePort = string.Format("RacePort{0}", Race).ToLower();
+            var Generic = "Generic".ToLower();
+            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Character Portraits");
+            Directory.CreateDirectory(folder);
+            var files = Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Select(n => n.ToLower());
+            var port = files.Where(n => n.Contains(ClassPort)).FirstOrDefault()
+                ?? files.Where(n => n.Contains(RaceGendered)).FirstOrDefault()
+                ?? files.Where(n => n.Contains(RacePort)).FirstOrDefault()
+                ?? files.Where(n => n.Contains(Generic)).FirstOrDefault();
+            return port;
+        }
 
     }
 }

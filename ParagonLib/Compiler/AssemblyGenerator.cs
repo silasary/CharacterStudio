@@ -87,6 +87,9 @@ namespace ParagonLib.Compiler
                     case "Level":
                         Parent = typeof(Level);
                         break;
+                    case "Race":
+                        Parent = typeof(Race);
+                        break;
                     default:
                         Parent = typeof(RulesElement);
                         break;

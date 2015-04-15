@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Linq;
+using ParagonLib;
 
 namespace CharacterStudio.Controls.Common
 {
@@ -91,7 +92,7 @@ namespace CharacterStudio.Controls.Common
             }
             reader.Close();
             if (string.IsNullOrWhiteSpace(Image))
-                Image = DefaultPortrait(Class,Race, Gender);
+                Image = Character.DefaultPortrait(Class,Race, Gender);
             //else
             //    this.pictureBox1.ErrorImage = DefaultPortrait(Class, Race, Gender);
             if (!string.IsNullOrWhiteSpace(Image))
@@ -103,23 +104,6 @@ namespace CharacterStudio.Controls.Common
             //this.label1.Text = string.Format("{0}\n Level {1} {2} {3}", Name, Level, Race, Class);
             this.label1.Text = string.Format("{0}, Level {1}\n {2} {3}", Name, Level, Race, Class);
 
-        }
-
-        // TODO: Move this method somewhere better.
-        public static string DefaultPortrait(string Class, string Race, string Gender)
-        {
-            var ClassPort = String.Format("ClassPort{0}", Class).ToLower();
-            var RaceGendered = string.Format("{0}_{1}",(Gender ?? "").FirstOrDefault(), Race).ToLower();
-            var RacePort = string.Format("RacePort{0}", Race).ToLower();
-            var Generic = "Generic".ToLower();
-            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "Character Portraits");
-            Directory.CreateDirectory(folder);
-            var files = Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Select(n => n.ToLower());
-            var port = files.Where(n => n.Contains(ClassPort)).FirstOrDefault()
-                ?? files.Where(n => n.Contains(RaceGendered)).FirstOrDefault()
-                ?? files.Where(n => n.Contains(RacePort)).FirstOrDefault()
-                ?? files.Where(n => n.Contains(Generic)).FirstOrDefault();
-            return port;
         }
 
         private void SimpleCharacterVis_DoubleClick(object sender, System.EventArgs e)

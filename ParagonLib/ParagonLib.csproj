@@ -54,6 +54,7 @@
     <Compile Include="RuleBases\Background.cs" />
     <Compile Include="RuleBases\Level.cs" />
     <Compile Include="RuleBases\Levelset.cs" />
+    <Compile Include="RuleBases\Race.cs" />
     <Compile Include="RuleFactory.cs" />
     <Compile Include="RulesElement.cs" />
     <Compile Include="Selection.cs" />
