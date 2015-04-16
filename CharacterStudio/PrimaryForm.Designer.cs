@@ -43,10 +43,11 @@ namespace CharacterStudio
             this.SidebarPanel = new System.Windows.Forms.Panel();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.Help = new System.Windows.Forms.HelpProvider();
+            this.leftSidebar1 = new CharacterStudio.Controls.Panes.LeftSidebar();
             this.homeTab = new System.Windows.Forms.TabPage();
             this.newCharTab = new System.Windows.Forms.TabPage();
             this.loadCharTab = new System.Windows.Forms.TabPage();
-            this.leftSidebar1 = new CharacterStudio.Controls.Panes.LeftSidebar();
+            this.charDetailsTab = new System.Windows.Forms.TabPage();
             this.HeaderPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -74,6 +75,7 @@ namespace CharacterStudio
             this.tabControl1.Controls.Add(this.homeTab);
             this.tabControl1.Controls.Add(this.newCharTab);
             this.tabControl1.Controls.Add(this.loadCharTab);
+            this.tabControl1.Controls.Add(this.charDetailsTab);
             this.tabControl1.Location = new System.Drawing.Point(13, 36);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -94,20 +96,20 @@ namespace CharacterStudio
             // 
             // shopTab
             // 
-            this.shopTab.Location = new System.Drawing.Point(4, 63);
+            this.shopTab.Location = new System.Drawing.Point(4, 32);
             this.shopTab.Name = "shopTab";
             this.shopTab.Padding = new System.Windows.Forms.Padding(3);
-            this.shopTab.Size = new System.Drawing.Size(529, 6);
+            this.shopTab.Size = new System.Drawing.Size(529, 37);
             this.shopTab.TabIndex = 1;
             this.shopTab.Text = "Shopping";
             this.shopTab.UseVisualStyleBackColor = true;
             // 
             // adventureTab
             // 
-            this.adventureTab.Location = new System.Drawing.Point(4, 63);
+            this.adventureTab.Location = new System.Drawing.Point(4, 32);
             this.adventureTab.Name = "adventureTab";
             this.adventureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.adventureTab.Size = new System.Drawing.Size(529, 6);
+            this.adventureTab.Size = new System.Drawing.Size(529, 37);
             this.adventureTab.TabIndex = 1;
             this.adventureTab.Text = "Adventure";
             this.adventureTab.UseVisualStyleBackColor = true;
@@ -183,12 +185,21 @@ namespace CharacterStudio
             this.ContentPanel.Size = new System.Drawing.Size(1022, 919);
             this.ContentPanel.TabIndex = 2;
             // 
+            // leftSidebar1
+            // 
+            this.leftSidebar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.leftSidebar1.Location = new System.Drawing.Point(0, 0);
+            this.leftSidebar1.Name = "leftSidebar1";
+            this.leftSidebar1.PrimaryForm = null;
+            this.leftSidebar1.Size = new System.Drawing.Size(234, 919);
+            this.leftSidebar1.TabIndex = 0;
+            // 
             // homeTab
             // 
-            this.homeTab.Location = new System.Drawing.Point(4, 63);
+            this.homeTab.Location = new System.Drawing.Point(4, 32);
             this.homeTab.Name = "homeTab";
             this.homeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.homeTab.Size = new System.Drawing.Size(529, 6);
+            this.homeTab.Size = new System.Drawing.Size(529, 37);
             this.homeTab.TabIndex = 4;
             this.homeTab.Tag = typeof(CharacterStudio.Controls.Panes.HomePane);
             this.homeTab.Text = "Home";
@@ -196,10 +207,10 @@ namespace CharacterStudio
             // 
             // newCharTab
             // 
-            this.newCharTab.Location = new System.Drawing.Point(4, 63);
+            this.newCharTab.Location = new System.Drawing.Point(4, 32);
             this.newCharTab.Name = "newCharTab";
             this.newCharTab.Padding = new System.Windows.Forms.Padding(3);
-            this.newCharTab.Size = new System.Drawing.Size(529, 6);
+            this.newCharTab.Size = new System.Drawing.Size(529, 37);
             this.newCharTab.TabIndex = 2;
             this.newCharTab.Tag = typeof(CharacterStudio.Controls.Panes.NewCharacterPane);
             this.newCharTab.Text = "New Character";
@@ -216,13 +227,16 @@ namespace CharacterStudio
             this.loadCharTab.Text = "Load Character";
             this.loadCharTab.UseVisualStyleBackColor = true;
             // 
-            // leftSidebar1
+            // charDetailsTab
             // 
-            this.leftSidebar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.leftSidebar1.Location = new System.Drawing.Point(0, 0);
-            this.leftSidebar1.Name = "leftSidebar1";
-            this.leftSidebar1.Size = new System.Drawing.Size(234, 919);
-            this.leftSidebar1.TabIndex = 0;
+            this.charDetailsTab.Location = new System.Drawing.Point(4, 63);
+            this.charDetailsTab.Name = "charDetailsTab";
+            this.charDetailsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.charDetailsTab.Size = new System.Drawing.Size(529, 6);
+            this.charDetailsTab.TabIndex = 5;
+            this.charDetailsTab.Tag = typeof(DetailsPane);
+            this.charDetailsTab.Text = "Character";
+            this.charDetailsTab.UseVisualStyleBackColor = true;
             // 
             // PrimaryForm
             // 
@@ -266,6 +280,7 @@ namespace CharacterStudio
         private System.Windows.Forms.TabPage loadCharTab;
         private System.Windows.Forms.TabPage homeTab;
         private LeftSidebar leftSidebar1;
+        private System.Windows.Forms.TabPage charDetailsTab;
     }
 }
 

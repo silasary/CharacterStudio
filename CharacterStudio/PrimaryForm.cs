@@ -14,6 +14,7 @@ namespace CharacterStudio
 {
     public partial class PrimaryForm : Form
     {
+        Control[] MenuTabs, HomeTabs, BuildTabs, AdventureTabs, ShoppingTabs;
         public PrimaryForm()
         {
             InitializeComponent();
@@ -21,10 +22,11 @@ namespace CharacterStudio
             this.LoadedPanels.Add(typeof(LeftSidebar), this.leftSidebar1);
             DisplayPanel<HomePane>();
             this.HelpButton = true;
+            MenuTabs = new Control[] { this.homeTab, this.newCharTab, this.loadCharTab };
+            HomeTabs = new Control[] { this.charDetailsTab, this.buildTab, this.shopTab, this.adventureTab };
+
             this.tabControl1.Controls.Clear();
-            this.tabControl1.Controls.Add(this.homeTab);
-            this.tabControl1.Controls.Add(this.newCharTab);
-            this.tabControl1.Controls.Add(this.loadCharTab);
+            this.tabControl1.Controls.AddRange(MenuTabs);
         }
 
         public ParagonLib.Workspace CurrentWorkspace { get; set; }
@@ -48,6 +50,11 @@ namespace CharacterStudio
             {
                 if ((Type)(c as Control).Tag == type)
                     tabControl1.SelectedTab = c as TabPage;
+            }
+            if (type == typeof(DetailsPane))
+            {
+                tabControl1.Controls.Clear();
+                tabControl1.Controls.AddRange(HomeTabs);
             }
         }
 
@@ -76,10 +83,6 @@ namespace CharacterStudio
             {
                 item.OnCharacterLoad();
             }
-            tabControl1.Controls.Clear();
-            tabControl1.Controls.Add(buildTab);
-            tabControl1.Controls.Add(shopTab);
-            tabControl1.Controls.Add(adventureTab);
         }
 
         private void Save_Click(object sender, EventArgs e)

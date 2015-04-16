@@ -47,7 +47,7 @@ namespace ParagonLib
             if (!String.IsNullOrEmpty(System))
                 Levelset = RuleFactory.New("_LEVELSET_", this);
             CharacterRef = character;
-            
+      
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -55,7 +55,7 @@ namespace ParagonLib
         public Dictionary<string, WeakReference> AllElements { get; set; }
         public Dictionary<string, Loot> AllLoot { get; set; }
 
-        public int Level //{get;set;}
+        public int Level
         {
             get
             {
@@ -63,17 +63,6 @@ namespace ParagonLib
                 return (Levelset.RulesElement as RuleBases.GeneratedLevelset).CurrentLevel;
             }
         }
-        //{
-        //    get
-        //    {
-        //        level = 1;
-        //        var earned = GetStat("XP Earned");
-        //        var needed = GetStat("XP Needed");
-        //        while (earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))
-        //            level++;
-        //        return level;
-        //    }
-        //}
 
         public string System { get; private set; }
 
@@ -125,7 +114,6 @@ namespace ParagonLib
                     break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
                 GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "0", null);
             }
-            //GetStat("XP Earned").Add(CharacterRef.StartingXp.ToString(), "", "", "", "0", null);
             foreach (var adventure in AdventureLog)
             {
                 adventure.XPStart = GetStat("XP Earned").Value;
