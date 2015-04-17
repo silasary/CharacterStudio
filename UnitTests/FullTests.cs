@@ -39,7 +39,7 @@ namespace UnitTests
             {
                 File.Delete(file);
             }
-            var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load("PA_Classes.part", LoadOptions.SetLineInfo), "PA_Classes.part");
+            var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load("PA_Classes.part", LoadOptions.SetLineInfo),true, "PA_Classes.part");
             var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElement;
             Assert.IsNotNullOrEmpty(t.Name);
             Assert.IsNotNull(t.Calculate);

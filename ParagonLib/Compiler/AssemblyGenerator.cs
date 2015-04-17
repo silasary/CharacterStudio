@@ -18,6 +18,7 @@ namespace ParagonLib.Compiler
 {
     public static class AssemblyGenerator
     {
+        static bool IsRunningOnMono = (Type.GetType("Mono.Runtime") != null);
         static AssemblyGenerator()
         {
             Directory.CreateDirectory(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
@@ -42,6 +43,17 @@ namespace ParagonLib.Compiler
             name.Version = ver;
 
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
+            if (File.Exists(name + ".dll"))
+            {
+                var pdb = Path.ChangeExtension(savepath, IsRunningOnMono ? "mdb" : "pdb");
+                if (File.Exists(savepath))
+                    File.Delete(savepath);
+                if (File.Exists(pdb))
+                    File.Delete(pdb);
+                File.Move(name + ".dll", savepath);
+                if (File.Exists(name + (IsRunningOnMono ? ".mdb" : ".pdb")))
+                    File.Move(name + (IsRunningOnMono ? ".mdb" : ".pdb"), pdb);
+            }
             if (File.Exists(savepath) && filename != "Unknown")
             {
                 if (File.Exists(savepath + ".regen"))
@@ -61,7 +73,11 @@ namespace ParagonLib.Compiler
                 {
                     var a = Assembly.LoadFile(savepath);
                     var refs = a.GetReferencedAssemblies( );
+                    var ParagonLib = typeof(AssemblyGenerator).Assembly.GetName();
+                    var ParagonLibRef = refs.FirstOrDefault(n => n.Name == ParagonLib.Name);
                     dll = a;
+                    if (ParagonLib.Version != ParagonLibRef.Version)
+                        return false;
                     return true;
                 }
 
@@ -90,14 +106,9 @@ namespace ParagonLib.Compiler
             }
             name.Version = ver;
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
-            if (File.Exists(name + ".dll"))
-            {
-                if (File.Exists(savepath))
-                    File.Delete(savepath);
-                File.Move(name + ".dll", savepath);
-
-            }
-            if (File.Exists(savepath) && filename != "Unknown")
+            if (background)
+            { }
+            else if (File.Exists(savepath) && filename != "Unknown")
             {
                 if (File.Exists(savepath + ".regen"))
                 {
@@ -120,7 +131,7 @@ namespace ParagonLib.Compiler
 
             }
 
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, background ? "" : Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
+            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, background ? Environment.CurrentDirectory : Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
 #if ASYNC
@@ -221,8 +232,15 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            assemblyBuilder.Save(name + ".dll");
-
+            try
+            {
+                assemblyBuilder.Save(name + ".dll");
+            }
+            catch(Exception)
+            {
+                if (!background)
+                    throw;
+            }
             return assemblyBuilder;
         }
 
