@@ -72,7 +72,15 @@ namespace ParagonLib
             }
         }
 
-        public string Value { get; set; }
+        private string value;
+        public string Value
+        {
+            get { return value; }
+            set
+            {
+                this.value = value;
+            }
+        }
         public CharElement Child { get; set; }
 
         public IEnumerable<RulesElement> Options { get; set; }

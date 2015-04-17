@@ -24,7 +24,7 @@ namespace CharacterStudio
             this.HelpButton = true;
             MenuTabs = new Control[] { this.homeTab, this.newCharTab, this.loadCharTab };
             HomeTabs = new Control[] { this.charDetailsTab, this.buildTab, this.shopTab, this.adventureTab };
-
+            BuildTabs = new Control[] { this.homeTab, this.buildTab};
             this.tabControl1.Controls.Clear();
             this.tabControl1.Controls.AddRange(MenuTabs);
         }
@@ -51,10 +51,12 @@ namespace CharacterStudio
                 if ((Type)(c as Control).Tag == type)
                     tabControl1.SelectedTab = c as TabPage;
             }
-            if (type == typeof(DetailsPane))
+            switch (type.Name)
             {
-                tabControl1.Controls.Clear();
-                tabControl1.Controls.AddRange(HomeTabs);
+                case "DetailsPane":
+                    tabControl1.Controls.Clear();
+                    tabControl1.Controls.AddRange(HomeTabs);
+                    break;
             }
         }
 

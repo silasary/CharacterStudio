@@ -8,52 +8,41 @@ namespace ParagonLib.RuleBases
 {
     public class Race : RulesElement
     {
-        protected string speed;
-
-        protected string characteristics;
-
-        protected string physicalQualities;
-
-        protected string playing;
-
-        protected string vision;
-
-        protected string size;
-
-        public string Size
+        public string Characteristics
         {
-            get { return size; }
+            get { return characteristics; }
         }
-
-
-        public string Vision
-        {
-            get { return vision; }
-        }
-
-
-        public string Playing
-        {
-            get { return playing; }
-        }
-
 
         public string PhysicalQualities
         {
             get { return physicalQualities; }
         }
 
-
-        public string Characteristics
+        public string Playing
         {
-            get { return characteristics; }
+            get { return playing; }
         }
 
+        public string Size
+        {
+            get { return size; }
+        }
 
         public string Speed
         {
             get { return speed; }
         }
 
+        public string Vision
+        {
+            get { return vision; }
+        }
+
+        protected string characteristics;
+        protected string physicalQualities;
+        protected string playing;
+        protected string size;
+        protected string speed;
+        protected string vision;
     }
 }

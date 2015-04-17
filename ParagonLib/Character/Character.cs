@@ -28,6 +28,8 @@ namespace ParagonLib
 
         public string Portrait { get { return portrait; } set { SetField(ref portrait, value); } }
 
+        public string Class { get { return _class; } set { SetField(ref _class, value); } }
+
         public Dictionary<string, int> AbilityScores = new Dictionary<string, int>();
         /// <summary>
         /// These things are nasty, and for internal storage.  Try not to use them where possible.
@@ -80,6 +82,7 @@ namespace ParagonLib
         private string name;
         private string player;
         private string portrait;
+        private string _class;
 
         void SetField<T>(ref T field, T value, [CallerMemberName] string name="")
         {

@@ -35,13 +35,6 @@ namespace CharacterStudio.Controls.Panes
             XPLabel.Text = string.Format("Level {0} ({1} XP)", CurrentWorkspace.Level, CurrentWorkspace.GetStat("XP Earned").Value);
             this.charNameField.Text = CurrentWorkspace.CharacterRef.Name;
             this.playerNameField.Text = CurrentWorkspace.CharacterRef.Player;
-        }
-
-        private void LevelUpButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
+        }        
     }
 }

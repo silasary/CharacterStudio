@@ -93,6 +93,7 @@ namespace CharacterStudio
             this.buildTab.TabIndex = 0;
             this.buildTab.Text = "Build Character";
             this.buildTab.UseVisualStyleBackColor = true;
+            this.buildTab.Tag = typeof(Controls.Panes.SelectionPanes.SelectRace);
             // 
             // shopTab
             // 
