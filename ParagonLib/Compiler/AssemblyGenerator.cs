@@ -23,7 +23,54 @@ namespace ParagonLib.Compiler
             Directory.CreateDirectory(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
         }
 
-        public static Assembly CompileToDll(XDocument doc, string filename = null)
+        public static bool TryLoadDll(out Assembly dll, XDocument doc, string filename = null)
+        {
+            if (filename == null)
+            {
+                if (doc.Root.Attribute("Filename") == null)
+                    filename = "Unknown";
+                else
+                    filename = doc.Root.Attribute("Filename").Value;
+            }
+            AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
+            Version ver = new Version();
+            if (doc.Root.Element("UpdateInfo") != null && doc.Root.Element("UpdateInfo").Element("Version") != null)
+            {
+                if (!Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim(), out ver))
+                    Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim()+".0", out ver);
+            }
+            name.Version = ver;
+
+            var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
+            if (File.Exists(savepath) && filename != "Unknown")
+            {
+                if (File.Exists(savepath + ".regen"))
+                {
+                    try
+                    {
+                        File.Delete(savepath);
+                        File.Delete(savepath + ".regen");
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        dll = null;
+                        return false;
+                    }
+                }
+                else if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
+                {
+                    var a = Assembly.LoadFile(savepath);
+                    var refs = a.GetReferencedAssemblies( );
+                    dll = a;
+                    return true;
+                }
+
+            }
+            dll = null;
+            return false;
+        }
+
+        public static Assembly CompileToDll(XDocument doc, bool background, string filename = null)
         {
             if (filename == null)
             {
@@ -43,7 +90,13 @@ namespace ParagonLib.Compiler
             }
             name.Version = ver;
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
-            bool dontsave = false;
+            if (File.Exists(name + ".dll"))
+            {
+                if (File.Exists(savepath))
+                    File.Delete(savepath);
+                File.Move(name + ".dll", savepath);
+
+            }
             if (File.Exists(savepath) && filename != "Unknown")
             {
                 if (File.Exists(savepath + ".regen"))
@@ -55,19 +108,24 @@ namespace ParagonLib.Compiler
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        dontsave = true;
+                        background = true;
                     }
                 }
                 else if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
-                    return Assembly.LoadFile(savepath);
+                {
+                    var a = Assembly.LoadFile(savepath);
+                    var refs = a.GetReferencedAssemblies( );
+                    return a;
+                }
 
             }
 
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
+            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, background ? "" : Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
+#if ASYNC
             List<Task> tasks = new List<Task>();
-
+#endif
             foreach (var re in doc.Root.Descendants(XName.Get("RulesElement")))
             {
 #if ASYNC
@@ -163,8 +221,7 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            if (!dontsave)
-                assemblyBuilder.Save(name + ".dll");
+            assemblyBuilder.Save(name + ".dll");
 
             return assemblyBuilder;
         }

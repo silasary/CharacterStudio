@@ -248,7 +248,12 @@ namespace ParagonLib
 
         private static void LoadPart(XDocument doc, Dictionary<string, RulesElement> setting)
         {
-            var code = AssemblyGenerator.CompileToDll(doc);
+            System.Reflection.Assembly code;
+            var success = AssemblyGenerator.TryLoadDll(out code, doc);
+            if (!success && code == null) // We completely failed
+               code = AssemblyGenerator.CompileToDll(doc, false);
+            else if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLi updated.
+                Task.Factory.StartNew(() => AssemblyGenerator.CompileToDll(doc,true));
             try
             {
                 
