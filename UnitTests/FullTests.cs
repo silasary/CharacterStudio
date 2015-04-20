@@ -14,22 +14,27 @@ namespace UnitTests
 {
     class FullTests
     {
-        [Test]
-        public void LoadChar()
+        [TestFixtureSetUp]
+        public void setup()
         {
             // Load 4E ruleset.
-            Directory.CreateDirectory(Path.Combine("DefaultRules","4E Core"));
+            Directory.CreateDirectory(Path.Combine("DefaultRules", "4E Core"));
             if (!File.Exists(Path.Combine("DefaultRules", "4E Core", "WotC.index")))
                 new WebClient().DownloadFile("https://dl.dropboxusercontent.com/u/4187827/CharBuilder/4E/WotC.index", Path.Combine("DefaultRules", "4E Core", "WotC.index"));
-            
-            //Load characters.
-            foreach (var file in Directory.EnumerateFiles(".", "*.dnd4e"))
-            {
-                var serializer = new Serializer();
-                Character c = serializer.Load(file);
-                //Assert.IsEmpty(serializer.Errors);
-                c.Save(c.Name);
-            }
+        }
+
+        [TestCaseSource("Chars")]
+        public void LoadChar(string file)
+        {
+            var serializer = new Serializer();
+            Character c = serializer.Load(file);
+            //Assert.IsEmpty(serializer.Errors);
+            c.Save(c.Name);
+        }
+
+        public IEnumerable<string> Chars()
+        {
+            return Directory.EnumerateFiles(".", "*.dnd4e");
         }
 
         [Test]
