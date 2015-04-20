@@ -20,7 +20,7 @@ namespace ParagonLib.RuleBases
                 Parameters.Add("name", level.InternalId);
                 Parameters.Add("Level", level.Name);
                 Parameters.Add("type", "Level");
-                grants.Add(Instruction.Generate("grant", Parameters, null, 0,));
+                grants.Add(Instruction.Generate("grant", Parameters, null, 0,int.Parse(level.Name)));
             }
             Calculate = Builders.Lambda(grants.ToArray()).Compile();
             Calculate = Calc;
