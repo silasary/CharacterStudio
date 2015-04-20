@@ -27,7 +27,7 @@ namespace ParagonLib
         public Selection(CharElement parent)
         {
             // TODO: Complete member initialization
-            this.Parent = parent;
+            this.parent = new WeakReference<CharElement>(parent);
         }
         public string Category { get; set; }
 

@@ -115,8 +115,8 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             var ws = new Workspace("Test", null); 
             var charElement = RuleFactory.New("TEST_SELECT_SELECTOR", ws);
             ws.Recalculate(true);
-            Debug.Assert(charElement.Choices.Count == 1);
-            var options = charElement.Choices.Values.First().Options;
+            Debug.Assert(ws.Choices.Count == 1);
+            var options = ws.Choices.Values.First().Options;
             Debug.Assert(options.Count() == 3);
             GC.KeepAlive(charElement);
 
