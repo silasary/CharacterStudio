@@ -49,7 +49,13 @@ namespace ParagonLib
             writer.Flush();
             WriteD20CampaignSetting();
 
-            WriteLevels();
+            if (SaveFileVersion >= SFVersion.v008a)
+            {
+                WriteChoices();
+                
+            }
+            //else
+                WriteLevels();
 
             c.TextStrings["Character Save File"] = savefile; 
             WriteTextStrings();
@@ -58,6 +64,13 @@ namespace ParagonLib
             writer.WriteEndDocument( );
             writer.Close( );
             return true;
+        }
+
+        private void WriteChoices()
+        {
+            writer.WriteStartAttribute("Choices");
+            
+            writer.WriteEndElement();
         }
 
 
@@ -766,5 +779,4 @@ namespace ParagonLib
             writer.WriteComment(string.Format("{0}", p));
         }
     }
-
 }

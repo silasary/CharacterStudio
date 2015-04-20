@@ -21,10 +21,10 @@ namespace ParagonLib.Compiler
         /// public string Validate();
         /// </summary>
         public Func<string> Validate;
-
+        [Obsolete]
         public Instruction(string Operation, Dictionary<string, string> Parameters, string filename=null, int linenum = -1)
         {
-            Body = Generate(Operation, Parameters, filename, linenum);
+            Body = Generate(Operation, Parameters, filename, linenum, 0);
             
             Expression<Action<CharElement, Workspace>> func = Builders.Lambda(Body);
             Calculate = func.Compile();
@@ -32,7 +32,7 @@ namespace ParagonLib.Compiler
             //    Validate = validation.Compile();
         }
 
-        public static Expression Generate(string Operation, Dictionary<string, string> Parameters, string filename, int linenum)
+        public static Expression Generate(string Operation, Dictionary<string, string> Parameters, string filename, int linenum, int rulenum)
         {
             //Expression<Func<int, bool>> tree = s => s < 5;
 

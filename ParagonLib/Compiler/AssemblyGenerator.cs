@@ -202,9 +202,10 @@ namespace ParagonLib.Compiler
                             Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "category"), cats);
                             break;
                         case "rules":
+                            int rulenum = 0;
                             foreach (var rule in item.Elements())
                             {
-                                calcCode.Add(Instruction.Generate(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), filename, ((IXmlLineInfo)rule).LineNumber));
+                                calcCode.Add(Instruction.Generate(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), filename, ((IXmlLineInfo)rule).LineNumber, rulenum));
                             }
 
                             break;
