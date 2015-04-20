@@ -13,6 +13,7 @@ namespace ParagonLib
         internal Dictionary<string, Stat> Stats = new Dictionary<string, Stat>(StringComparer.CurrentCultureIgnoreCase);
         Regex funcregex = new Regex(@"(?<Func>[A-Z]+)\((?<Arg>[a-z A-Z0-9]*)\)");
         private Dictionary<string, Func<string,string, int>> ParserFunctions;
+        public Dictionary<string, Selection> Choices = new Dictionary<string, Selection>();
 
         public static readonly string[] D20AbilityScores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
 
@@ -20,14 +21,10 @@ namespace ParagonLib
 
         public IEnumerable<Selection> Selections(params string[] Types)
         {
-            foreach (var item in AllElements)
+            foreach (var c in Choices)
             {
-                var choices = (item.Value.Target as CharElement).Choices;
-                foreach (var c in choices)
-                {
-                    if (Types.Length == 0 || Types.Contains(c.Value.Type,StringComparer.CurrentCultureIgnoreCase))
-                        yield return c.Value;
-                }
+                if (Types.Length == 0 || Types.Contains(c.Value.Type,StringComparer.CurrentCultureIgnoreCase))
+                    yield return c.Value;
             }
             yield break;
         }

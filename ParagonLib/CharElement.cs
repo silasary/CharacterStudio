@@ -9,7 +9,6 @@ namespace ParagonLib
     {
         public enum AquistitionMethod { Unknown, Granted, Selected}
         public List<CharElement> Children = new List<CharElement>();
-        public Dictionary<string, Selection> Choices = new Dictionary<string, Selection>();
 
         public AquistitionMethod Method;
 
@@ -95,10 +94,10 @@ namespace ParagonLib
             {
                 var hash = String.Format("{0}_Select_{1}:{2}", RulesElementId, type, number);
                 Selection sel;
-                if (!Choices.ContainsKey(hash))
-                    sel = this.Choices[hash] = new Selection(parent: this);
+                if (!workspace.Choices.ContainsKey(hash))
+                    sel = workspace.Choices[hash] = new Selection(parent: this);
                 else
-                    sel = this.Choices[hash];
+                    sel = workspace.Choices[hash];
                 sel.workspace = workspace;
                 sel.Category = category;
                 sel.Type = type;

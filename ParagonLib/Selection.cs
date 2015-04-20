@@ -8,7 +8,21 @@ namespace ParagonLib
 {
     public class Selection
     {
-        private CharElement Parent;
+        private WeakReference<CharElement> parent;
+
+        public CharElement Parent
+        {
+            get
+            {
+                CharElement o; 
+                parent.TryGetTarget(out o);
+                return o;
+            }
+            set
+            {
+                parent.SetTarget(value);
+            }
+        }
 
         public Selection(CharElement parent)
         {

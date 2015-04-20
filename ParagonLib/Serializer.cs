@@ -68,8 +68,18 @@ namespace ParagonLib
 
         private void WriteChoices()
         {
-            writer.WriteStartAttribute("Choices");
-            
+            writer.WriteStartElement("Choices");
+            foreach (var item in c.workspace.Choices)
+            {
+                var parent = item.Value.Parent;
+                if (parent == null)
+                    continue;
+                writer.WriteStartElement("Choice");
+                writer.WriteAttributeString("hash", item.Key);
+                writer.WriteAttributeString("Type", item.Value.Type);
+                writer.WriteAttributeString("Parent", parent.RulesElementId);
+                writer.WriteEndElement( );
+            }
             writer.WriteEndElement();
         }
 
