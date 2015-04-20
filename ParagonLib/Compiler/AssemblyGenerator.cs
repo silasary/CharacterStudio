@@ -239,6 +239,7 @@ namespace ParagonLib.Compiler
             try
             {
                 assemblyBuilder.Save(name + ".dll");
+                Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);
             }
             catch(Exception)
             {
