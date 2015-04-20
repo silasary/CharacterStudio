@@ -159,6 +159,9 @@ namespace ParagonLib.Compiler
                     case "Race":
                         Parent = typeof(Race);
                         break;
+                    case "Power":
+                        Parent = typeof(Power);
+                        break;
                     default:
                         Parent = typeof(RulesElement);
                         break;

@@ -42,7 +42,7 @@ namespace ParagonLib
             writer.WriteAttributeString("game-system", c.workspace.System);
             writer.WriteAttributeString("Version", SaveFileVersion.ToString().Replace("v0","0.").Replace("0.07b","0.07a")); // Both the OCB and NCB report 0.07a.  [Why do people even bother versioning things if they're not going to bump the version?] 
             if (SaveFileVersion < SFVersion.v008a)
-                WriteComment("Character Studio character save file.  Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
+                WriteComment("Character Studio character save file.  \n Schema compatibile with the Dungeons and Dragons Insider: Character Builder");
             else
                 WriteComment("Character Studio character save file.  \n *** Incompatibile with the Dungeons and Dragons Insider: Character Builder ***");
             WriteCharacterSheet();
@@ -247,8 +247,8 @@ namespace ParagonLib
             WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
             //TODO: Power Blocks!  VERY IMPORTANT. (for iPlay4e)
             writer.WriteStartElement("PowerStats");
-            writer.WriteRaw("\n    ");
-            writer.WriteEndElement();
+            //Foreach power
+            writer.WriteFullEndElement();
         }
 
         private void WriteLootTally()

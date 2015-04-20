@@ -77,6 +77,7 @@
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="RuleBases\RulesElement.cs" />
     <Compile Include="Compiler\AssemblyGenerator.cs" />
+    <Compile Include="RuleBases\Power.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
