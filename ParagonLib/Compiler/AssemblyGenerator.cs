@@ -71,14 +71,21 @@ namespace ParagonLib.Compiler
                 }
                 else if (File.GetLastWriteTime(savepath) > File.GetLastWriteTime(filename))
                 {
-                    var a = Assembly.LoadFile(savepath);
-                    var refs = a.GetReferencedAssemblies( );
-                    var ParagonLib = typeof(AssemblyGenerator).Assembly.GetName();
-                    var ParagonLibRef = refs.FirstOrDefault(n => n.Name == ParagonLib.Name);
-                    dll = a;
-                    if (ParagonLib.Version != ParagonLibRef.Version)
-                        return false;
-                    return true;
+                    try
+                    {
+                        var a = Assembly.LoadFile(savepath);
+                        var refs = a.GetReferencedAssemblies();
+                        var ParagonLib = typeof(AssemblyGenerator).Assembly.GetName();
+                        var ParagonLibRef = refs.FirstOrDefault(n => n.Name == ParagonLib.Name);
+                        dll = a;
+                        if (ParagonLib.Version != ParagonLibRef.Version)
+                            return false;
+                        return true;
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        File.Delete(savepath);
+                    }
                 }
 
             }

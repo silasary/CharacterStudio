@@ -630,6 +630,8 @@ namespace ParagonLib
                     prop.SetValue(adv, double.Parse(item.Value));
                 else if (prop.Name == "LootDiff")
                     LoadLootFromAdventure(item, adv);
+                else if (prop.PropertyType == typeof(Guid))
+                    prop.SetValue(adv, Guid.Parse(item.Value));
                 else
                     prop.SetValue(adv, item.Value);
             }
