@@ -159,6 +159,9 @@ namespace ParagonLib.Compiler
                     case "Race":
                         Parent = typeof(Race);
                         break;
+                    case "Power":
+                        Parent = typeof(Power);
+                        break;
                     default:
                         Parent = typeof(RulesElement);
                         break;
@@ -236,6 +239,7 @@ namespace ParagonLib.Compiler
             try
             {
                 assemblyBuilder.Save(name + ".dll");
+                Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);
             }
             catch(Exception c)
             {
