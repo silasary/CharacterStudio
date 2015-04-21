@@ -23,7 +23,7 @@ namespace UnitTests
                 new WebClient().DownloadFile("https://dl.dropboxusercontent.com/u/4187827/CharBuilder/4E/WotC.index", Path.Combine("DefaultRules", "4E Core", "WotC.index"));
         }
 
-        [TestCaseSource("Chars")]
+        [TestCaseSource("Chars",Category="LoadCharacters")]
         public void LoadChar(string file)
         {
             var serializer = new Serializer();

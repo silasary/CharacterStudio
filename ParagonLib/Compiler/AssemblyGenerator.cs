@@ -285,13 +285,11 @@ namespace ParagonLib.Compiler
                 typeBuilder.SetCustomAttribute(warning);
             }
             else if (field.FieldType == typeof(string))
-            {
                 Assign(ctorgen, field, value);
-            }
             else if (field.FieldType == typeof(int))
-            {
                 Assign(ctorgen, field, Int32.Parse(value));
-            }
+            else if (field.FieldType == typeof(string[]))
+                Assign(ctorgen, field, value.Split(','));
             else
             {
                 var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value });

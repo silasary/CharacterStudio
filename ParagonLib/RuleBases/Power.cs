@@ -10,9 +10,23 @@ namespace ParagonLib.RuleBases
         protected string[] keywords;
         protected string actionType;
         protected string attackType;
+        protected string target;
 
-        //TODO: Look at powers.  Do we have any that do really weird things.
-        //I seem to recall at least one with two Effect: lines, but I don't remember where.
+        // List of edge cases:
+        // * Chain Lightning [ID_FMP_POWER_466] has Three attacks, 
+        //      Both extras are siblings
+        // * Storm of Raining Blades [ID_FMP_POWER_13285] has three attacks, 
+        //      Tertiary is child of Secondary
+        //
+        // Fortunately, Monk Full Discipline powers use _ChildPower.
+
+        public string Target
+        {
+            get
+            {
+                return target;
+            }
+        }
 
         public string AttackType
         {

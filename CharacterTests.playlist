@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="UnitTests.FullTests.LoadChar(&quot;.\\Celindara.dnd4e&quot;)" /><Add Test="UnitTests.FullTests.LoadChar(&quot;.\\Paela.dnd4e&quot;)" /></Playlist>

@@ -92,7 +92,7 @@ namespace ParagonLib
             var num = workspace.ParseInt(number);
             for (int i = 0; i < num; i++)
             {
-                var hash = String.Format("{0}_Select_{1}:{2}", RulesElementId, type, number);
+                var hash = String.Format("{0}_Select_{1}:{2},{3}", RulesElementId, type, number,i);
                 Selection sel;
                 if (!workspace.Choices.ContainsKey(hash))
                     sel = workspace.Choices[hash] = new Selection(parent: this);

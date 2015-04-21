@@ -83,8 +83,6 @@ namespace ParagonLib
             writer.WriteEndElement();
         }
 
-
-
         private void WriteRulesElementNested(CharElement ele)
         {
             if (ele.Disabled && ele.Type != "Level")

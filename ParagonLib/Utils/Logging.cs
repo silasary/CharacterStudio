@@ -29,7 +29,7 @@ namespace ParagonLib
                 if (Log == "Xml Validation")
                     return;
 
-                Message = String.Format("{0}: \t{1}: {2}", Log, level.ToString(), String.Format(Message, args));
+                Message = String.Format("{0}: \t{1}: {2}", Log, level.ToString(), Message);
                 logfile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "debug" + ".log");
                 if (!OpenLogs.Contains(logfile))
                 {
