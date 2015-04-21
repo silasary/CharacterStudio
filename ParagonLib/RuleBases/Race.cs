@@ -38,6 +38,10 @@ namespace ParagonLib.RuleBases
             get { return vision; }
         }
 
+        protected string averageWeight;
+        protected string abilityScores;
+        protected string languages;
+
         protected string characteristics;
         protected string physicalQualities;
         protected string playing;

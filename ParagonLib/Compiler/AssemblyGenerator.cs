@@ -237,8 +237,9 @@ namespace ParagonLib.Compiler
             {
                 assemblyBuilder.Save(name + ".dll");
             }
-            catch(Exception)
+            catch(Exception c)
             {
+                Logging.Log("Crashlog", TraceEventType.Error, "Compiler error: {0}",c);
                 if (!background)
                     throw;
             }
@@ -269,7 +270,7 @@ namespace ParagonLib.Compiler
 
             if (field == null)
             {
-                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value });
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value });
                 typeBuilder.SetCustomAttribute(warning);
             }
             else if (field.FieldType == typeof(string))
@@ -282,7 +283,7 @@ namespace ParagonLib.Compiler
             }
             else
             {
-                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value });
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value });
                 typeBuilder.SetCustomAttribute(warning);
             }
         }

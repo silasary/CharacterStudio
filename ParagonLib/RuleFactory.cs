@@ -198,9 +198,13 @@ namespace ParagonLib
                     UpdateInfo.Add(new XAttribute("filename", file));
                     QueueUpdate(UpdateInfo);
                 }
-                
+
                 if (ext == ".part")
-                   LoadingThreads.Add(Task.Factory.StartNew(() => LoadPart(doc, setting)));
+#if ASYNC
+                    LoadingThreads.Add(Task.Factory.StartNew(() => LoadPart(doc, setting)));
+#else
+                    LoadPart(doc, setting);
+#endif
                 if (ext == ".index")
                     LoadIndex(file, doc);
                 
