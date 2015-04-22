@@ -40,6 +40,7 @@ namespace UnitTests
         [Test]
         public void CompilePart()
         {
+            if (Directory.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules")))
             foreach (var file in Directory.EnumerateFiles(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"), "PA_*.dll"))
             {
                 File.Delete(file);
