@@ -192,7 +192,10 @@ namespace ParagonLib.Compiler
                 // base..ctor()
                 ctorgen.Emit(OpCodes.Ldarg_0);
                 // I should probably check the parent for Constructors, because right now we bypass them.
-                ctorgen.Emit(OpCodes.Call, typeof(RulesElement).GetConstructor(Type.EmptyTypes));
+                ConstructorInfo baseCtor = Parent.GetConstructor(Type.EmptyTypes);
+                if (baseCtor == null)
+                    baseCtor = typeof(RulesElement).GetConstructor(Type.EmptyTypes);
+                ctorgen.Emit(OpCodes.Call, baseCtor);
 
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "name"), re.Attribute("name").Value.Trim());
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "internalId"), InternalId);

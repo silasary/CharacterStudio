@@ -42,55 +42,60 @@ namespace CharacterStudio.Controls.Common
 
             var reader = XmlReader.Create(c);
             bool complete = false;
-            while (complete == false)
+            try
             {
-                reader.Read();
-                if (reader.EOF)
-                    break;
-                if (reader.NodeType == XmlNodeType.Element)
-                    switch (reader.Name)
-                    {
-                        case "name":
-                        case "Name":
-                            if (!string.IsNullOrEmpty(Name))
+                while (complete == false)
+                {
+                    reader.Read();
+                    if (reader.EOF)
+                        break;
+                    if (reader.NodeType == XmlNodeType.Element)
+                        switch (reader.Name)
+                        {
+                            case "name":
+                            case "Name":
+                                if (!string.IsNullOrEmpty(Name))
+                                    break;
+                                reader.MoveToContent();
+                                reader.Read();
+                                this.Name = reader.Value.Trim();
                                 break;
-                            reader.MoveToContent();
-                            reader.Read();
-                            this.Name = reader.Value.Trim();
-                            break;
 
-                        case "Portrait":
-                            reader.MoveToContent();
-                            reader.Read();
-                            this.Image = reader.Value.Trim();
-                            break;
-
-                        case "Level":
-                            if (Level != 0)
+                            case "Portrait":
+                                reader.MoveToContent();
+                                reader.Read();
+                                this.Image = reader.Value.Trim();
                                 break;
-                            reader.MoveToContent();
-                            reader.Read();
-                            int l;
-                            if (int.TryParse(reader.Value, out l))
-                                this.Level = l;
-                            break;
 
-                        case "AbilityScores":
-                        case "StatBlock":
-                            //complete = true;
-                            break;
-                        case "RulesElement":
-                            if (reader.GetAttribute("type") == "Class")
-                                this.Class = reader.GetAttribute("name").Trim();
-                            if (reader.GetAttribute("type") == "Race")
-                                this.Race = reader.GetAttribute("name").Trim();
-                            if (reader.GetAttribute("type") == "Gender")
-                                this.Gender = reader.GetAttribute("name").Trim();
+                            case "Level":
+                                if (Level != 0)
+                                    break;
+                                reader.MoveToContent();
+                                reader.Read();
+                                int l;
+                                if (int.TryParse(reader.Value, out l))
+                                    this.Level = l;
+                                break;
 
-                            break;
-                    }
+                            case "AbilityScores":
+                            case "StatBlock":
+                                //complete = true;
+                                break;
+                            case "RulesElement":
+                                if (reader.GetAttribute("type") == "Class")
+                                    this.Class = reader.GetAttribute("name").Trim();
+                                if (reader.GetAttribute("type") == "Race")
+                                    this.Race = reader.GetAttribute("name").Trim();
+                                if (reader.GetAttribute("type") == "Gender")
+                                    this.Gender = reader.GetAttribute("name").Trim();
+
+                                break;
+                        }
+                }
             }
-            reader.Close();
+            catch (XmlException) { this.Visible = false; }
+            finally { reader.Close(); }
+            
             if (string.IsNullOrWhiteSpace(Image))
                 Image = Character.DefaultPortrait(Class,Race, Gender);
             //else

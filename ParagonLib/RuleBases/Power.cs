@@ -4,7 +4,11 @@ namespace ParagonLib.RuleBases
 {
     public class Power : RulesElement
     {
-        
+        public Power()
+        {
+            var missing = this.GetType().CustomAttributes;
+            //TODO: Do useful stuff here.
+        }        
         protected string powerUsage;
         protected string display;
         protected string[] keywords;
