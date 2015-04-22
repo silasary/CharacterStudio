@@ -34,18 +34,22 @@ namespace UnitTests
 
         public IEnumerable<string> Chars()
         {
-            return Directory.EnumerateFiles(".", "*.dnd4e");
+            return Directory.EnumerateFiles(".", "*.dnd4e").Select(n => Path.GetFileName(n));
+        }
+        public IEnumerable<string> Parts()
+        {
+            return Directory.EnumerateFiles(".", "*.part").Select(n => Path.GetFileName(n));
         }
 
-        [Test]
-        public void CompilePart()
+        [TestCaseSource("Parts")]
+        public void CompilePart(string part)
         {
             if (Directory.Exists(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules")))
-            foreach (var file in Directory.EnumerateFiles(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"), "PA_*.dll"))
+            foreach (var file in Directory.EnumerateFiles(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"), Path.GetFileNameWithoutExtension(part)))
             {
                 File.Delete(file);
             }
-            var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load("PA_Classes.part", LoadOptions.SetLineInfo),true, "PA_Classes.part");
+            var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load(part, LoadOptions.SetLineInfo),true, part);
             var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElement;
             Assert.IsNotNullOrEmpty(t.Name);
             Assert.IsNotNull(t.Calculate);

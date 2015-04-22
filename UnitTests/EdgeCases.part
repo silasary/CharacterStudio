@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<D20Rules game-system="D&amp;D4E">
+  <!-- This element demonstrates the usage of <select existing="true"> -->
+  <RulesElement name="Signature Spell (Archspell)" type="Class Feature" internal-id="ID_FMP_CLASS_FEATURE_1460" source="Arcane Power">
+      <Category> 21 </Category>
+      <Prereqs> 21st level, any arcane class </Prereqs>
+      <specific name="Short Description"> Gain +2 attack with an arcane daily attack power. </specific>
+      <specific name="Level"> 21 </specific>
+      <rules>
+         <select type="Power" name="Signature Spell" number="1" Category="daily,arcane" existing="true" />
+         <statadd name="[Signature Spell]:attack" value="+2" />
+      </rules>
+Choose one of your arcane daily attack powers. You gain a +2 bonus to attack rolls with that power. If you retrain that power, you can choose a new arcane daily attack power as your Signature Spell.
+   </RulesElement>
+  <!-- Apparently if we drop the name, it can make assumptions. This seems messy. -->
+  <!-- This is also an example of <modify list-addition="">, whatever that means. -->
+  <RulesElement name="Fluid Form" type="Class Feature" internal-id="ID_FMP_CLASS_FEATURE_3507" source="Dragon Magazine 394" revision-date="6/2/2011 1:18:35 PM">
+    <Category> 16 </Category>
+    <specific name="Short Description"> One at-will power gains the Beast Form keyword </specific>
+    <specific name="Level"> 16 </specific>
+    <rules>
+      <select type="Power" number="1" category="at-will" existing="true" />
+      <modify Field="Keywords" list-addition="Beast Form" />
+    </rules>
+    Your ability to switch between chaotic forms allows you a unique balance between beast form and humanoid form. Choose a 1st-level at-will attack power that you know. That power gains the beast form keyword while you are in beast form.
+  </RulesElement>
+<RulesElement name="Chain Lightning" type="Power" internal-id="ID_FMP_POWER_466" source="Player's Handbook" revision-date="8/27/2010 11:22:33 AM">
+      <Category> ID_INTERNAL_CATEGORY_ATTACK,ID_INTERNAL_CATEGORY_ENCOUNTER,ID_INTERNAL_CATEGORY_ENCOUNTER_USAGE,ID_FMP_CLASS_9,ID_FMP_CATEGORY_31,ID_FMP_CATEGORY_69,ID_FMP_CATEGORY_25,ID_FMP_CATEGORY_11,ID_INTERNAL_CATEGORY_STANDARD_ACTION,ID_INTERNAL_CATEGORY_MISS,23 </Category>
+      <Flavor> From your fingertips springs a tremendous stroke of blinding purple-white lightning that leaps from one enemy to another. </Flavor>
+      <specific name="Power Usage"> Encounter </specific>
+      <specific name="_SkillPower" />
+      <specific name="Display"> Wizard Attack 23 </specific>
+      <specific name="Keywords"> Arcane, Evocation, Implement, Lightning </specific>
+      <specific name="Action Type"> Standard action </specific>
+      <specific name="Attack Type"> Ranged 20 </specific>
+      <specific name="Primary Target"> One creature </specific>
+      <specific name="Primary Attack"> Intelligence vs. Reflex </specific>
+      <specific name="Hit"> 4d6 + Intelligence modifier lightning damage. </specific>
+      <specific name="Miss"> Half damage. </specific>
+      <specific name="Effect"> Make the secondary attack. </specific>
+      <specific name=" Secondary Target"> One or two creatures within 5 squares of the primary target </specific>
+      <specific name=" Attack"> Intelligence vs. Reflex </specific>
+      <specific name=" Hit"> 2d6 + Intelligence modifier lightning damage. </specific>
+      <specific name=" Miss"> Half damage. </specific>
+      <specific name="Effect"> Make the tertiary attack. </specific>
+      <specific name=" Tertiary Target"> Each enemy within 20 squares of you that was not a primary or a secondary target </specific>
+      <specific name=" Attack"> Intelligence vs. Reflex </specific>
+      <specific name=" Hit"> 1d6 + Intelligence modifier lightning damage. </specific>
+      <specific name=" Miss"> Half damage. </specific>
+      <specific name="_Associated Feats" />
+      <specific name="Class"> ID_FMP_CLASS_9 </specific>
+      <specific name="Level"> 23 </specific>
+      <specific name="Power Type"> Attack </specific>
+Few spells can unleash as much destruction in a single casting as chain lightning. Used early in combat, this spell can deliver a decisive first blow against a powerful enemy leader while decimating the ranks of its minion allies. Kept in reserve until late in the battle, chain lightning can wipe out an entire wounded enemy force, lashing out unerringly at targets across the battlefield.
+   </RulesElement>
+    <RulesElement name="Storm of Raining Blades" type="Power" internal-id="ID_FMP_POWER_13285" source="Psionic Power" revision-date="9/21/2010 2:14:43 PM">
+      <Category> ID_INTERNAL_CATEGORY_ATTACK,ID_INTERNAL_CATEGORY_DAILY,ID_INTERNAL_CATEGORY_DAILY_USAGE,ID_FMP_PARAGON_PATH_751,ID_FMP_CATEGORY_25,ID_FMP_CATEGORY_35,ID_INTERNAL_CATEGORY_STANDARD_ACTION,20 </Category>
+      <Prereqs> Soaring Blade </Prereqs>
+      <Flavor> You are carried aloft by your psionic power, touching down three times to hack through and scatter your foes. </Flavor>
+      <specific name="Power Usage"> Daily </specific>
+      <specific name="_SkillPower" />
+      <specific name="Display"> Soaring Blade Attack 20 </specific>
+      <specific name="Keywords"> Implement, Psionic </specific>
+      <specific name="Action Type"> Standard action </specific>
+      <specific name="Attack Type"> Melee touch </specific>
+      <specific name="Requirement"> You must make this attack using a heavy blade. </specific>
+      <specific name="Effect"> Until the end of your turn, your movement does not provoke opportunity attacks. Before the attack, you fly 3 squares. If you don't land at the end of this movement, you fall. </specific>
+      <specific name="Primary Target"> One creature </specific>
+      <specific name="Primary Attack"> Dexterity vs. Reflex </specific>
+      <specific name="Hit"> 1d8 + Dexterity modifier damage. </specific>
+      <specific name="Effect"> You fly 3 squares. If you don't land at the end of this movement, you fall. You then make a secondary attack that is a melee touch attack. </specific>
+      <specific name=" Secondary Target"> One creature other than the primary target </specific>
+      <specific name=" Secondary Attack"> Dexterity vs. Reflex </specific>
+      <specific name=" Hit"> 2d8 + Dexterity modifier damage. </specific>
+      <specific name=" Effect"> You fly 3 squares. If you don't land at the end of this movement, you fall. You then make a tertiary attack that is a close burst 1. </specific>
+      <specific name="  Tertiary Target"> Each enemy you can see in burst </specific>
+      <specific name="  Tertiary Attack"> Dexterity vs. Reflex </specific>
+      <specific name="  Hit"> 15 + Dexterity modifier damage, and you slide the tertiary target 2 squares. </specific>
+      <specific name="  Miss"> Half damage, and you slide the target 1 square. </specific>
+      <specific name="_Associated Feats" />
+      <specific name="Class"> ID_FMP_PARAGON_PATH_751 </specific>
+      <specific name="Level"> 20 </specific>
+      <specific name="Power Type"> Attack </specific>
+    </RulesElement>
+</D20Rules>
