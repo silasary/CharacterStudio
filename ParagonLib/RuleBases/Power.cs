@@ -8,13 +8,17 @@ namespace ParagonLib.RuleBases
         {
             var missing = this.GetType().CustomAttributes;
             //TODO: Do useful stuff here.
-        }        
+
+        }
+
         protected string powerUsage;
         protected string display;
         protected string[] keywords;
         protected string actionType;
         protected string attackType;
         protected string target;
+        protected int level;
+
 
         // List of edge cases:
         // * Chain Lightning [ID_FMP_POWER_466] has Three attacks, 
@@ -23,6 +27,14 @@ namespace ParagonLib.RuleBases
         //      Tertiary is child of Secondary
         //
         // Fortunately, Monk Full Discipline powers use _ChildPower.
+        
+        public int Level
+        {
+            get
+            {
+                return level;
+            }
+        }
 
         public string Target
         {

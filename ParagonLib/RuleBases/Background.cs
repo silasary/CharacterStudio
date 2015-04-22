@@ -24,5 +24,18 @@ namespace ParagonLib.RuleBases
         public string associatedSkills;
 
         public string associatedLanguages;
+
+        private Action<CharElement, Workspace> calculate;
+
+        public Background()
+        {
+            calculate = Calculate;
+            Calculate = Calc;
+        }
+
+        private void Calc(CharElement e, Workspace ws)
+        {
+            calculate(e,ws);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace ParagonLib.RuleBases
         {
             this.system = system;
             List<Expression> grants = new List<Expression>();
-            foreach (var level in new Search(system, "Level", null, null, null).Results().OrderBy(n => int.Parse(n.Name)))
+            foreach (var level in new Search(system, "Level", null, null, null).Results.OrderBy(n => int.Parse(n.Name)))
             {
                 var Parameters = new Dictionary<string, string>();
                 Parameters.Add("name", level.InternalId);
@@ -32,7 +32,7 @@ namespace ParagonLib.RuleBases
             var earned = ws.GetStat("XP Earned");
             //var needed = ws.GetStat("XP Needed");
             Level lastlevel = null;
-            var AllLevels = ws.Search("Level", null, null).Results().ToArray();
+            var AllLevels = ws.Search("Level", null, null).Results;
             if (AllLevels.Count() == 0)
                 return;
             while (true) //earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))

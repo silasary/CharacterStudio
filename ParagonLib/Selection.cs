@@ -48,7 +48,7 @@ namespace ParagonLib
                 Value = "";
                 return;
             }
-            Options = workspace.Search(Type, Category, Default).Results();
+            Options = workspace.Search(Type, Category, Default).Results;
             if (workspace.Setting != null)
                 Options = Options.Where(n => workspace.Setting.IsRuleLegal(n));
             // TODO:  If Method = Grant, Set value ""

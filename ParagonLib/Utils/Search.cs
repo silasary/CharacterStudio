@@ -8,6 +8,7 @@ namespace ParagonLib
 {
     public class Search
     {
+        private RulesElement[] results;
         public string System { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
@@ -22,7 +23,17 @@ namespace ParagonLib
             this.Workspace = ws;
         }
 
-        public IEnumerable<RulesElement> Results()
+        public RulesElement[] Results
+        {
+            get
+            {
+                if (results == null)
+                    results = Find().ToArray();
+                return Results;
+            }
+        }
+
+        public IEnumerable<RulesElement> Find()
         {
             //TODO: We need to deal with the Campaign Setting at some point here. 
             var Categories = Category == null ? new string[0] : Category.Split(',');

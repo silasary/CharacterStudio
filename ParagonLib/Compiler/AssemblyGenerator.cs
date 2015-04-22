@@ -290,7 +290,11 @@ namespace ParagonLib.Compiler
             else if (field.FieldType == typeof(string))
                 Assign(ctorgen, field, value);
             else if (field.FieldType == typeof(int))
-                Assign(ctorgen, field, Int32.Parse(value));
+            {
+                int ival;
+                if (int.TryParse(value,out ival))
+                    Assign(ctorgen, field, ival);
+            }
             else if (field.FieldType == typeof(string[]))
                 Assign(ctorgen, field, value.Split(','));
             else
