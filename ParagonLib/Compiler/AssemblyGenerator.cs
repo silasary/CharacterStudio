@@ -19,6 +19,7 @@ namespace ParagonLib.Compiler
     public static class AssemblyGenerator
     {
         static bool IsRunningOnMono = (Type.GetType("Mono.Runtime") != null);
+        static FieldInfo _textField = Builders.RefGetField(typeof(RulesElement), "_text");
         static AssemblyGenerator()
         {
             Directory.CreateDirectory(Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
@@ -227,7 +228,9 @@ namespace ParagonLib.Compiler
                             break;
                     }
                 }
-
+                var value = re.Nodes().OfType<XText>().FirstOrDefault();
+                if (value != null)
+                    Assign(ctorgen, _textField, re.Nodes().OfType<XText>().FirstOrDefault().Value);
                 // And done.
                 ctorgen.Emit(OpCodes.Ret);
                 MethodBuilder methodbuilder =

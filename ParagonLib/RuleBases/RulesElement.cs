@@ -4,6 +4,13 @@ namespace ParagonLib.RuleBases
 {
     public abstract class RulesElement
     {
+        public string _Text
+        {
+            get { return _text; }
+        }
+
+        public Action<CharElement, Workspace> Calculate { get; protected set; }
+
         public string[] Category
         {
             get { return category; }
@@ -33,10 +40,14 @@ namespace ParagonLib.RuleBases
         {
             get { return prereqs; }
         }
-
         public string PrintPrereqs
         {
             get { return printPrereqs; }
+        }
+
+        public string ShortDescription
+        {
+            get { return shortDescription; }
         }
 
         public string Source
@@ -49,25 +60,17 @@ namespace ParagonLib.RuleBases
             get { return type; }
         }
 
-        protected string shortDescription;
-
-        public string ShortDescription
-        {
-            get { return shortDescription; }
-        }
-
-
-        public Action<CharElement, Workspace> Calculate { get; protected set; }
+        protected string _text;
         protected string[] category;
         protected string flavor;
         protected string internalId;
         protected string name;
         protected string prereqs;
+        protected string printPrereqs;
+        protected string shortDescription;
         protected string source;
         protected string system;
         protected string type;
-        protected string printPrereqs;
-
         public RulesElement()
         {
             // This is a nasty hack.  But considering that Expression Trees can't compile non-static methods into a TypeBuilder, we have no alternative.
