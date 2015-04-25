@@ -1,16 +1,59 @@
-﻿using System;
+﻿using ParagonLib.Compiler;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ParagonLib.RuleBases
 {
     public class Power : RulesElement
     {
-        public Power()
+        public struct PowerLine
         {
-            var missing = this.GetType().CustomAttributes;
-            //TODO: Do useful stuff here.
+            public readonly string Name;
+            public readonly string Value;
+            private string _str;
 
+            public PowerLine(string name, string value)
+            {
+                Name = name;
+                Value = value;
+                _str = String.Format("{0}: {1}", Name, Value);
+            }
+
+            public override string ToString()
+            {
+                return _str;
+            }
+
+            public static implicit operator PowerLine(MissingElementAttribute e)
+            {
+                return new PowerLine(e.Element, e.Value);
+            }
         }
 
+        public Power()
+        {
+            var missing = this.GetType().CustomAttributes.OfType<MissingElementAttribute>();
+            if (missing.Count() == 0)
+            {
+                //var t = this.GetType().CustomAttributes.First();
+                //var first = Activator.CreateInstance(t.AttributeType, t.ConstructorArguments.Select(a => a.Value).ToArray());
+                missing = this.GetType().CustomAttributes.Select(n => (MissingElementAttribute)Activator.CreateInstance(n.AttributeType, n.ConstructorArguments.Select(a => a.Value).ToArray()));
+            }
+            var ordered = missing.OrderBy(n => n.Order).ToArray();
+            //TODO: Do useful stuff here.
+            List<PowerLine> Lines = new List<PowerLine>();
+            foreach (var line in ordered)
+            {
+                Lines.Add(line);
+            }
+            lines = Lines.ToArray();
+        }
+
+        PowerLine[] lines;
+
+        protected string _class;
+        protected string trigger;
         protected string powerUsage;
         protected string display;
         protected string[] keywords;
@@ -18,7 +61,7 @@ namespace ParagonLib.RuleBases
         protected string attackType;
         protected string target;
         protected int level;
-
+        protected string powerType;
 
         // List of edge cases:
         // * Chain Lightning [ID_FMP_POWER_466] has Three attacks, 
@@ -33,6 +76,31 @@ namespace ParagonLib.RuleBases
             get
             {
                 return level;
+            }
+        }
+
+        // Attack or Utility?
+        public string PowerType
+        {
+            get
+            {
+                return powerType;
+            }
+        }
+
+        public string Trigger
+        {
+            get
+            {
+                return trigger;
+            }
+        }
+
+        public string Class
+        {
+            get
+            {
+                return _class;
             }
         }
 

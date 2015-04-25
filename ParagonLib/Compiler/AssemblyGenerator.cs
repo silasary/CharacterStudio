@@ -192,7 +192,7 @@ namespace ParagonLib.Compiler
                 var ctorgen = ctor.GetILGenerator();
                 // base..ctor()
                 ctorgen.Emit(OpCodes.Ldarg_0);
-                // I should probably check the parent for Constructors, because right now we bypass them.
+
                 ConstructorInfo baseCtor = Parent.GetConstructor(Type.EmptyTypes);
                 if (baseCtor == null)
                     baseCtor = typeof(RulesElement).GetConstructor(Type.EmptyTypes);
@@ -206,7 +206,7 @@ namespace ParagonLib.Compiler
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), system);
                 var pthis = Expression.Parameter(typeBuilder, "this");
 
-
+                int specnum = 0;
                 foreach (var item in re.Elements())
                 {
                     switch (item.Name.LocalName)
@@ -224,10 +224,11 @@ namespace ParagonLib.Compiler
 
                             break;
                         default:
-                            Specific(typeBuilder, Parent, ctorgen, item);
+                            Specific(typeBuilder, Parent, ctorgen, item, specnum++);
                             break;
                     }
                 }
+                // Fluff text.
                 var value = re.Nodes().OfType<XText>().FirstOrDefault();
                 if (value != null)
                     Assign(ctorgen, _textField, re.Nodes().OfType<XText>().FirstOrDefault().Value);
@@ -263,20 +264,22 @@ namespace ParagonLib.Compiler
             return assemblyBuilder;
         }
 
-        private static void Specific(TypeBuilder typeBuilder, Type Parent, ILGenerator ctorgen, XElement item)
+        private static void Specific(TypeBuilder typeBuilder, Type Parent, ILGenerator ctorgen, XElement item, int specnum)
         {
             bool specific = false;
             var name = item.Name.LocalName;
             var value = item.Value.Trim();
             if (name == "specific")
             {
-                name = item.Attribute("name").Value.Trim();
+                name = item.Attribute("name").Value; // DO NOT TRIM. Specifics exist so that they can have leading whitespace.
                 specific = true;
             }
             var fname = name.Replace(" ", "");
             fname = char.ToLower(fname[0]) + fname.Substring(1);
-            if (fname == "type")
-                fname = "_type";
+            string[] badnames = { "type", "class" };
+            if (badnames.Contains(fname))
+                fname = "_"+fname;
+
             FieldInfo field = null;
             var floc = Parent;
             do
@@ -287,7 +290,7 @@ namespace ParagonLib.Compiler
 
             if (field == null)
             {
-                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value });
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, name, value,  specnum});
                 typeBuilder.SetCustomAttribute(warning);
             }
             else if (field.FieldType == typeof(string))
@@ -302,7 +305,7 @@ namespace ParagonLib.Compiler
                 Assign(ctorgen, field, value.Split(','));
             else
             {
-                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value });
+                var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value, specnum});
                 typeBuilder.SetCustomAttribute(warning);
             }
         }

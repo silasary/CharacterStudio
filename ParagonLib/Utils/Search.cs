@@ -29,7 +29,7 @@ namespace ParagonLib
             {
                 if (results == null)
                     results = Find().ToArray();
-                return Results;
+                return results;
             }
         }
 

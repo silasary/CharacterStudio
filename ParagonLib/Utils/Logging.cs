@@ -53,5 +53,10 @@ namespace ParagonLib
                 Logging.Log(Log, level, Message, args);
             
         }
+
+        internal static void Crashlog(Exception c)
+        {
+            Log("Crashlog", TraceEventType.Critical,c.ToString());
+        }
     }
 }

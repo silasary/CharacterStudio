@@ -50,9 +50,12 @@ namespace UnitTests
                 File.Delete(file);
             }
             var ass = ParagonLib.Compiler.AssemblyGenerator.CompileToDll(XDocument.Load(part, LoadOptions.SetLineInfo),true, part);
-            var t = Activator.CreateInstance(ass.GetTypes().First()) as RulesElement;
-            Assert.IsNotNullOrEmpty(t.Name);
-            Assert.IsNotNull(t.Calculate);
+            foreach (var t in ass.GetTypes())
+            {
+                var i = Activator.CreateInstance(t) as RulesElement;
+                Assert.IsNotNullOrEmpty(i.Name);
+                Assert.IsNotNull(i.Calculate);
+            }
         }
     }
 }
