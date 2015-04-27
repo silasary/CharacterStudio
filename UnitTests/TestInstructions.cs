@@ -117,7 +117,7 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
             ws.Recalculate(true);
             Debug.Assert(ws.Choices.Count == 1);
             var options = ws.Choices.Values.First().Options;
-            Debug.Assert(options.Count() == 3);
+            Debug.Assert(options.Results.Count() == 3);
             GC.KeepAlive(charElement);
 
         }

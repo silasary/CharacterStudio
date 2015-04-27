@@ -355,8 +355,6 @@ namespace ParagonLib
         {
             if (!Directory.Exists(RulesFolder))
                 return;
-            //while (Loading)
-            //    Thread.Sleep(0);
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
                 LoadFile(file);

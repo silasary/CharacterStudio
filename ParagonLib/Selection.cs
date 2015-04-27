@@ -48,13 +48,11 @@ namespace ParagonLib
                 Value = "";
                 return;
             }
-            Options = workspace.Search(Type, Category, Default).Results;
-            if (workspace.Setting != null)
-                Options = Options.Where(n => workspace.Setting.IsRuleLegal(n));
+            Options = workspace.Search(Type, Category, Default);
             // TODO:  If Method = Grant, Set value ""
             if (string.IsNullOrEmpty(Value))
             {
-                var guess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).Select(n => n.RulesElementId).Intersect(Options.Select(r => r.InternalId)).FirstOrDefault( );
+                var guess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).Select(n => n.RulesElementId).Intersect(Options.Results.Select(r => r.InternalId)).FirstOrDefault( );
                 if (!string.IsNullOrEmpty(guess))
                 {
                     Value = guess;
@@ -67,7 +65,7 @@ namespace ParagonLib
                     return;
                 }
             }
-            var chosen = Options.Where(r => r.InternalId == Value);
+            var chosen = Options.Results.Where(r => r.InternalId == Value);
             if (chosen.Count() == 0)
                 Value = "";
             if (String.IsNullOrEmpty(Value))
@@ -97,6 +95,8 @@ namespace ParagonLib
         }
         public CharElement Child { get; set; }
 
-        public IEnumerable<RulesElement> Options { get; set; }
+        public Search Options { get; set; }
+
+        public string Name { get; set; }
     }
 }

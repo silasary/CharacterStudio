@@ -91,6 +91,7 @@
     <Compile Include="Controls\Common\SimpleCharacterVis.Designer.cs">
       <DependentUpon>SimpleCharacterVis.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChoiceConverter.cs" />
     <Compile Include="Controls\Panes\DetailsPane.cs">
       <SubType>UserControl</SubType>
     </Compile>

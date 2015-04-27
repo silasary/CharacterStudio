@@ -86,7 +86,7 @@ namespace ParagonLib
 
         }
 
-        public void Select(string category, string number, string type, string requires, string optional, string Level, string Default)
+        public void Select(string name, string category, string number, string type, string requires, string Level, string optional, string Default)
         {
             System.Diagnostics.Debug.Assert(!String.IsNullOrEmpty(number), "<select> requires a number.");
             var num = workspace.ParseInt(number);
@@ -104,6 +104,10 @@ namespace ParagonLib
                 sel.Requires = requires;
                 sel.Level = int.Parse(Level??"0"); //Let's not use Workspace here.
                 sel.Default = Default;
+                if (string.IsNullOrEmpty(name))
+                    sel.Name = hash;
+                else
+                    sel.Name = name;
                 sel.Recalculate();
             }
         }

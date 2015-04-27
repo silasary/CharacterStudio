@@ -13,16 +13,18 @@ namespace CharacterStudio.Controls.Panes
 {
     public partial class SelectionPane : ContentPane
     {
+        ChoiceConverter converter;
         public readonly string[] Selectables;
         public SelectionPane(string[] p)
         {
             InitializeComponent();
             Selectables = p;
+            converter = new ChoiceConverter(this);
         }
 
         public override void OnCharacterLoad()
         {
-            base.OnCharacterLoad();
+             base.OnCharacterLoad();
             OnCharacterUpdated();
         }
 
@@ -34,6 +36,11 @@ namespace CharacterStudio.Controls.Panes
                 this.Enabled = false;
             else
                 this.Enabled = true;
+            listView1.Items.Clear();
+            foreach (var choice in Options)
+            {
+                listView1.Items.Add(converter.ConvertTo(choice, typeof(ListViewItem)) as ListViewItem);
+            }
         }
 
         public IEnumerable<Selection> Options { get; private set; }
