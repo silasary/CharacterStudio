@@ -36,6 +36,7 @@ namespace UnitTests
         {
             return Directory.EnumerateFiles(".", "*.dnd4e").Select(n => Path.GetFileName(n));
         }
+
         public IEnumerable<string> Parts()
         {
             return Directory.EnumerateFiles(".", "*.part").Select(n => Path.GetFileName(n));

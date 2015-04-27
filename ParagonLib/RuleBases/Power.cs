@@ -11,18 +11,16 @@ namespace ParagonLib.RuleBases
         {
             public readonly string Name;
             public readonly string Value;
-            private string _str;
 
             public PowerLine(string name, string value)
             {
                 Name = name;
                 Value = value;
-                _str = String.Format("{0}: {1}", Name, Value);
             }
 
             public override string ToString()
             {
-                return _str;
+                return String.Format("{0}: {1}", Name, Value);
             }
 
             public static implicit operator PowerLine(MissingElementAttribute e)

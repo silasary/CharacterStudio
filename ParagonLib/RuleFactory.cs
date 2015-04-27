@@ -18,6 +18,7 @@ namespace ParagonLib
     public static class RuleFactory
     {
         private static ConcurrentBag<Task> LoadingThreads = new ConcurrentBag<Task>();
+        private static ConcurrentQueue<XDocument> FilesToRegen = new ConcurrentQueue<XDocument>();
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
         internal static ConcurrentDictionary<string, RulesElement> RulesBySystem;
@@ -78,6 +79,7 @@ namespace ParagonLib
         public delegate void FileLoadedEventHandler(string Filename);
 
         public static event FileLoadedEventHandler FileLoaded;
+        private static bool runningBackgroundRegen;
 
         public static IEnumerable<object> KnownSystems
         {
@@ -256,8 +258,15 @@ namespace ParagonLib
             var success = AssemblyGenerator.TryLoadDll(out code, doc);
             if (!success && code == null) // We completely failed
                code = AssemblyGenerator.CompileToDll(doc, false);
-            else if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLi updated.
-                Task.Factory.StartNew(() => AssemblyGenerator.CompileToDll(doc,true));
+            else if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLib updated.
+            {
+                FilesToRegen.Enqueue(doc);
+                if (!runningBackgroundRegen)
+                {
+                    runningBackgroundRegen = true;
+                    Task.Factory.StartNew(RegenLoop);
+                }
+            }
             try
             {
                 
@@ -283,6 +292,14 @@ namespace ParagonLib
             var system = doc.Root.Attribute("game-system").Value;
             if (!knownSystems.Contains(system))
                 knownSystems.Add(system); 
+        }
+
+        private static void RegenLoop()
+        {
+            XDocument doc;
+            while (FilesToRegen.TryDequeue(out doc))
+                AssemblyGenerator.CompileToDll(doc, true);
+            runningBackgroundRegen = false;
         }
 
         private static void LoadIndex(string file, XDocument doc)
@@ -345,6 +362,7 @@ namespace ParagonLib
                 LoadFile(file);
                 FileLoaded(file);
             }
+            GC.Collect(1, GCCollectionMode.Forced);
             if (Validate)
                 ThreadPool.QueueUserWorkItem(ValidateRules);
         }
