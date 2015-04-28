@@ -27,6 +27,21 @@ namespace CharacterStudio
             BuildTabs = new Control[] { this.homeTab, this.buildTab};
             this.tabControl1.Controls.Clear();
             this.tabControl1.Controls.AddRange(MenuTabs);
+            RuleFactory.WaitingForRule += RuleFactory_WaitingForRule;
+            RuleFactory.FileLoaded += RuleFactory_FileLoaded;
+        }
+
+        void RuleFactory_FileLoaded(string Filename)
+        {
+            if (InvokeRequired)
+                Invoke(new Action(OnCharacterUpdated));
+            else
+                OnCharacterUpdated();
+        }
+
+        void RuleFactory_WaitingForRule(string internalID)
+        {
+            this.Text = string.Format("Character Studio - Loading {0}", internalID);
         }
 
         public ParagonLib.Workspace CurrentWorkspace { get; set; }
@@ -81,9 +96,22 @@ namespace CharacterStudio
         {
             this.CurrentWorkspace = Char.workspace;
             this.Text = string.Format("Character Studio [{0}]", Char.workspace.System);
+            OnCharacterLoad();
+        }
+
+        private void OnCharacterLoad()
+        {
             foreach (var item in LoadedPanels.Values)
             {
                 item.OnCharacterLoad();
+            }
+        }
+
+        private void OnCharacterUpdated()
+        {
+            foreach (var item in LoadedPanels.Values)
+            {
+                item.OnCharacterUpdated();
             }
         }
 

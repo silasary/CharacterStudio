@@ -44,7 +44,12 @@ namespace ParagonLib
             if (!String.IsNullOrEmpty(System))
                 Levelset = RuleFactory.New("_LEVELSET_", this);
             CharacterRef = character;
-      
+            RuleFactory.FileLoaded += RuleFactory_FileLoaded;
+        }
+
+        void RuleFactory_FileLoaded(string Filename)
+        {
+            Recalculate();
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -333,7 +338,6 @@ namespace ParagonLib
                 return !success;
             else
                 return success;
-
         }
 
         internal Search Search(string Type, string Category, string Default)

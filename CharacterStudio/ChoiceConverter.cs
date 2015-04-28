@@ -41,6 +41,9 @@ namespace CharacterStudio
                 if (!cache.TryGetValue(choice, out item))
                     cache.Add(choice, item = new ListViewItem());
                 item.Text = choice.Name;
+                if (item.SubItems.Count == 1)
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem());
+                item.SubItems[1].Text = choice.Value;
                 return item;
             }
             return base.ConvertTo(context, culture, value, destinationType);

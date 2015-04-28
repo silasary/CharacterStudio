@@ -78,8 +78,12 @@ namespace ParagonLib
 
         public delegate void FileLoadedEventHandler(string Filename);
 
+        // TODO: Weak references!
         public static event FileLoadedEventHandler FileLoaded;
         private static bool runningBackgroundRegen;
+
+        public delegate void WaitingForRuleHandler(string internalID);
+        public static event WaitingForRuleHandler WaitingForRule;
 
         public static IEnumerable<object> KnownSystems
         {
@@ -153,7 +157,9 @@ namespace ParagonLib
             }
             if (Loading)
             {
-                WaitFileLoaded.WaitOne(1000);
+                if (WaitingForRule != null)
+                    WaitingForRule(id);
+                WaitFileLoaded.WaitOne(10); // Waiting here doesn't actually help, except in a race condition.
                 if (Rules.ContainsKey(id))
                 {
                     return Rules[id];
