@@ -48,7 +48,16 @@ namespace ParagonLib.Compiler
             {
                 var pdb = Path.ChangeExtension(savepath, IsRunningOnMono ? "mdb" : "pdb");
                 if (File.Exists(savepath))
-                    File.Delete(savepath);
+                    try
+                    {
+                        File.Delete(savepath);
+                    }
+                catch (UnauthorizedAccessException)
+                    {
+                        File.Move(savepath, savepath + ".old");
+                        if (File.Exists(pdb))
+                            File.Move(pdb, pdb + ".old");
+                    }
                 if (File.Exists(pdb))
                     File.Delete(pdb);
                 File.Move(name + ".dll", savepath);

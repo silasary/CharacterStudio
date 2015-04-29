@@ -128,6 +128,9 @@
     <Compile Include="Controls\Panes\SelectionPane.Designer.cs">
       <DependentUpon>SelectionPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Panes\SelectionPanes\SelectBackground.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Panes\SelectionPanes\SelectRace.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -29,9 +29,17 @@ namespace CharacterStudio
             this.tabControl1.Controls.AddRange(MenuTabs);
             RuleFactory.WaitingForRule += RuleFactory_WaitingForRule;
             RuleFactory.FileLoaded += RuleFactory_FileLoaded;
+            if (System.Diagnostics.Debugger.IsAttached)
+                this.fileMenu.DropDownItems.Add("Recalculate", null, Recalculate);
         }
 
-        void RuleFactory_FileLoaded(string Filename)
+        private void Recalculate(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debugger.Break();
+            CurrentWorkspace.Recalculate();
+        }
+
+        void RuleFactory_FileLoaded(string Filename, EventArgs e)
         {
             if (InvokeRequired)
                 Invoke(new Action(OnCharacterUpdated));
@@ -41,7 +49,10 @@ namespace CharacterStudio
 
         void RuleFactory_WaitingForRule(string internalID)
         {
-            this.Text = string.Format("Character Studio - Loading {0}", internalID);
+            if (InvokeRequired)
+                Invoke(new Action<string>(RuleFactory_WaitingForRule), internalID);
+            else
+                this.Text = string.Format("Character Studio - Loading {0}", internalID);
         }
 
         public ParagonLib.Workspace CurrentWorkspace { get; set; }

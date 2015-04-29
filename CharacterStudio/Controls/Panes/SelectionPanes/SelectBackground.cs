@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CharacterStudio.Controls.Panes.SelectionPanes
 {
-    class SelectRace : SelectionPane
+    class SelectBackground : SelectionPane
     {
-        public SelectRace() : base(new string[] { /* "Race", "Subrace", "Gender" */ }) { }
+        public SelectBackground() : base(new string[] { "Background", "Background Choice", "Theme" }) { }
     }
 }

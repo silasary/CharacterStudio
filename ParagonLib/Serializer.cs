@@ -78,6 +78,7 @@ namespace ParagonLib
                 writer.WriteAttributeString("hash", item.Key);
                 writer.WriteAttributeString("Type", item.Value.Type);
                 writer.WriteAttributeString("Parent", parent.RulesElementId);
+                writer.WriteAttributeString("Value", item.Value.Value);
                 writer.WriteEndElement( );
             }
             writer.WriteEndElement();

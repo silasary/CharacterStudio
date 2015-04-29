@@ -61,6 +61,7 @@ namespace ParagonLib
                 }
                 else
                 {
+                    UninformedGuess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).FirstOrDefault(n => n.Type == Type).RulesElementId;
                     Value = "";
                     return;
                 }
@@ -85,6 +86,9 @@ namespace ParagonLib
         }
 
         private string value;
+        
+        public string UninformedGuess;
+
         public string Value
         {
             get { return value; }

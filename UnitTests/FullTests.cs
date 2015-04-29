@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -21,6 +22,8 @@ namespace UnitTests
             Directory.CreateDirectory(Path.Combine("DefaultRules", "4E Core"));
             if (!File.Exists(Path.Combine("DefaultRules", "4E Core", "WotC.index")))
                 new WebClient().DownloadFile("https://dl.dropboxusercontent.com/u/4187827/CharBuilder/4E/WotC.index", Path.Combine("DefaultRules", "4E Core", "WotC.index"));
+            while (RuleFactory.Loading)
+                Thread.Sleep(500);
         }
 
         [TestCaseSource("Chars",Category="LoadCharacters")]
@@ -29,6 +32,8 @@ namespace UnitTests
             var serializer = new Serializer();
             Character c = serializer.Load(file);
             //Assert.IsEmpty(serializer.Errors);
+            while (RuleFactory.Loading)
+                Thread.Sleep(500);
             c.Save(c.Name);
         }
 

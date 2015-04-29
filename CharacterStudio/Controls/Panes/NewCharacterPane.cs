@@ -21,7 +21,7 @@ namespace CharacterStudio.Controls.Panes
             //PrimaryForm.Help.SetHelpString(this.listBox1, "Select a Roleplaying System for your character.");
         }
 
-        void RuleFactory_FileLoaded(string Filename)
+        void RuleFactory_FileLoaded(string Filename, EventArgs e)
         {
             AddAllSystems();
         }

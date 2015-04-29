@@ -21,7 +21,7 @@ namespace ParagonLib
 
         public IEnumerable<Selection> Selections(params string[] Types)
         {
-            foreach (var c in Choices)
+            foreach (var c in Choices.ToArray())
             {
                 if (Types.Length == 0 || Types.Contains(c.Value.Type,StringComparer.CurrentCultureIgnoreCase))
                     yield return c.Value;
@@ -47,8 +47,10 @@ namespace ParagonLib
             RuleFactory.FileLoaded += RuleFactory_FileLoaded;
         }
 
-        void RuleFactory_FileLoaded(string Filename)
+        void RuleFactory_FileLoaded(string Filename, EventArgs e)
         {
+            if (Levelset == null)
+                return;
             Recalculate();
         }
 

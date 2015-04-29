@@ -43,7 +43,7 @@ namespace CharacterStudio
                 item.Text = choice.Name;
                 if (item.SubItems.Count == 1)
                     item.SubItems.Add(new ListViewItem.ListViewSubItem());
-                item.SubItems[1].Text = choice.Value;
+                item.SubItems[1].Text = (choice.Child == null) ? string.IsNullOrEmpty(choice.Value) ? choice.UninformedGuess + "?" : choice.Value : choice.Child.Name;
                 return item;
             }
             return base.ConvertTo(context, culture, value, destinationType);

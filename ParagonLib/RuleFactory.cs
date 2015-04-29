@@ -12,12 +12,13 @@ using System.Xml;
 using System.Xml.Linq;
 using ParagonLib.Compiler;
 using ParagonLib.RuleBases;
+using SmartWeakEvent;
 
 namespace ParagonLib
 {
     public static class RuleFactory
     {
-        private static ConcurrentBag<Task> LoadingThreads = new ConcurrentBag<Task>();
+        private static ConcurrentQueue<Task> LoadingThreads = new ConcurrentQueue<Task>();
         private static ConcurrentQueue<XDocument> FilesToRegen = new ConcurrentQueue<XDocument>();
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
@@ -35,7 +36,7 @@ namespace ParagonLib
             Rules = new ConcurrentDictionary<string, RulesElement>();
             RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
             Directory.CreateDirectory(RulesFolder);
-            FileLoaded += (e) => WaitFileLoaded.Set();
+            FileLoaded += (f,e) => WaitFileLoaded.Set();
             try
             {
                 var DefRules = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultRules");
@@ -76,10 +77,15 @@ namespace ParagonLib
             Validate = true;
         }
 
-        public delegate void FileLoadedEventHandler(string Filename);
+        public delegate void FileLoadedEventHandler(string Filename, EventArgs e);
 
-        // TODO: Weak references!
-        public static event FileLoadedEventHandler FileLoaded;
+        private static FastSmartWeakEvent<FileLoadedEventHandler> fileLoader = new FastSmartWeakEvent<FileLoadedEventHandler>();
+        public static event FileLoadedEventHandler FileLoaded
+        {
+            add { fileLoader.Add(value); }
+            remove { fileLoader.Remove(value); }
+        }
+
         private static bool runningBackgroundRegen;
 
         public delegate void WaitingForRuleHandler(string internalID);
@@ -100,9 +106,9 @@ namespace ParagonLib
                 lock (LoadingThreads)
                 {
                     Task peek;
-                    LoadingThreads.TryTake(out peek);
-                    if (peek != null && !peek.IsCompleted)
-                        LoadingThreads.Add(peek); // Put it back again.
+                    LoadingThreads.TryPeek(out peek);
+                    if (peek != null && peek.IsCompleted)
+                        LoadingThreads.TryDequeue(out peek);
                 }
                 return LoadingThreads.ToArray().All(n => n.IsCompleted);
             }
@@ -266,6 +272,8 @@ namespace ParagonLib
                code = AssemblyGenerator.CompileToDll(doc, false);
             else if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLib updated.
             {
+                if (setting != null)
+                    doc.Root.Add(new XAttribute("SettingSpecific", "true"));
                 FilesToRegen.Enqueue(doc);
                 if (!runningBackgroundRegen)
                 {
@@ -275,20 +283,7 @@ namespace ParagonLib
             }
             try
             {
-                
-                foreach (var t in code.GetTypes())
-                {
-                    var rule = (RulesElement)Activator.CreateInstance(t);
-                    if (setting != null)
-                        setting[rule.InternalId] = rule;
-                    else
-                    {
-
-                        Rules[rule.InternalId] = rule;
-                        if (!String.IsNullOrEmpty(rule.GameSystem))
-                            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
-                    }
-                }
+                LoadRuleAssembly(setting, code);
             }
             catch (System.Reflection.ReflectionTypeLoadException c)
             {
@@ -300,11 +295,33 @@ namespace ParagonLib
                 knownSystems.Add(system); 
         }
 
+        private static void LoadRuleAssembly(Dictionary<string, RulesElement> setting, System.Reflection.Assembly code)
+        {
+            foreach (var t in code.GetTypes())
+            {
+                var rule = (RulesElement)Activator.CreateInstance(t);
+                if (setting != null)
+                    setting[rule.InternalId] = rule;
+                else
+                {
+
+                    Rules[rule.InternalId] = rule;
+                    if (!String.IsNullOrEmpty(rule.GameSystem))
+                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                }
+            }
+        }
+
         private static void RegenLoop()
         {
             XDocument doc;
             while (FilesToRegen.TryDequeue(out doc))
-                AssemblyGenerator.CompileToDll(doc, true);
+            {
+                if (doc.Root.Attribute("SettingSpecific") == null)
+                    LoadRuleAssembly(null, AssemblyGenerator.CompileToDll(doc, true));
+                else
+                    AssemblyGenerator.CompileToDll(doc, true); // We lost the dictionary reference, so just prepare it for next time.
+            }
             runningBackgroundRegen = false;
         }
 
@@ -364,7 +381,7 @@ namespace ParagonLib
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
                 LoadFile(file);
-                FileLoaded(file);
+                fileLoader.Raise(file, new EventArgs());
             }
             GC.Collect(1, GCCollectionMode.Forced);
             if (Validate)
