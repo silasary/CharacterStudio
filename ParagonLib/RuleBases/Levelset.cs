@@ -10,19 +10,21 @@ namespace ParagonLib.RuleBases
 {
     public class GeneratedLevelset : RulesElement
     {
+        private Search search;
+
         public GeneratedLevelset(string system)
         {
             this.system = system;
-            List<Expression> grants = new List<Expression>();
-            foreach (var level in new Search(system, "Level", null, null, null).Results.OrderBy(n => int.Parse(n.Name)))
-            {
-                var Parameters = new Dictionary<string, string>();
-                Parameters.Add("name", level.InternalId);
-                Parameters.Add("Level", level.Name);
-                Parameters.Add("type", "Level");
-                grants.Add(Instruction.Generate("grant", Parameters, null, 0,int.Parse(level.Name)));
-            }
-            Calculate = Builders.Lambda(grants.ToArray()).Compile();
+            //List<Expression> grants = new List<Expression>();
+            //foreach (var level in new Search(system, "Level", null, null, null).Results.OrderBy(n => int.Parse(n.Name)))
+            //{
+            //    var Parameters = new Dictionary<string, string>();
+            //    Parameters.Add("name", level.InternalId);
+            //    Parameters.Add("Level", level.Name);
+            //    Parameters.Add("type", "Level");
+            //    grants.Add(Instruction.Generate("grant", Parameters, null, 0,int.Parse(level.Name)));
+            //}
+            //Calculate = Builders.Lambda(grants.ToArray()).Compile();
             Calculate = Calc;
         }
 
@@ -32,7 +34,9 @@ namespace ParagonLib.RuleBases
             var earned = ws.GetStat("XP Earned");
             //var needed = ws.GetStat("XP Needed");
             Level lastlevel = null;
-            var AllLevels = ws.Search("Level", null, null).Results;
+            if (search == null)
+                search = ws.Search("Level", null, null);
+            var AllLevels = search.Results;
             if (AllLevels.Count() == 0)
                 return;
             while (true) //earned.ValueAt(level) >= needed.ValueAt(level) && (needed.ValueAt(level) != needed.ValueAt(level - 1)))

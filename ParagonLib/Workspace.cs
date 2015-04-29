@@ -18,6 +18,7 @@ namespace ParagonLib
         public static readonly string[] D20AbilityScores = new string[] { "Strength", "Constitution", "Dexterity", "Intelligence", "Wisdom", "Charisma" };
 
         internal CharElement Levelset;
+        private bool Recalculating;
 
         public IEnumerable<Selection> Selections(params string[] Types)
         {
@@ -50,6 +51,8 @@ namespace ParagonLib
         void RuleFactory_FileLoaded(string Filename, EventArgs e)
         {
             if (Levelset == null)
+                return;
+            if (Recalculating)
                 return;
             Recalculate();
         }
@@ -103,47 +106,53 @@ namespace ParagonLib
                 return new string[0];
             return Stats[name].String;
         }
-
+        private object _RecalcLock = new object();
         public void Recalculate(bool block = true) //TODO: Default should be false.
         {
-            if (!block)
-                throw new NotImplementedException(); //TODO: Do the below, but asyncronously.
-            foreach (var stat in Stats)
+            lock (_RecalcLock)
             {
-                stat.Value.Reset();
-            }
-            foreach (var abil in D20AbilityScores)
-            {
-                if (CharacterRef == null) //TODO: Fix the Unit Tests to use Characters.
-                    break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
-                GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "0", null);
-            }
-            foreach (var adventure in AdventureLog)
-            {
-                adventure.XPStart = GetStat("XP Earned").Value;
-                GetStat("XP Earned").Add(adventure.XPGain.ToString(), null, null, null, null,null);
-                adventure.LevelAtEnd = Level;
-                if (adventure.LootDiff != null)
+                Recalculating = true;
+                if (!block)
+                    throw new NotImplementedException(); //TODO: Do the below, but asyncronously.
+                foreach (var stat in Stats)
                 {
-                    foreach (var loot in adventure.LootDiff)
+                    stat.Value.Reset();
+                }
+                foreach (var abil in D20AbilityScores)
+                {
+                    if (CharacterRef == null) //TODO: Fix the Unit Tests to use Characters.
+                        break; // HACK: If this isn't from a Unit Test, something's horribly wrong.
+                    GetStat(abil).Add(CharacterRef.AbilityScores[abil].ToString(), "", "", "", "0", null);
+                }
+                foreach (var adventure in AdventureLog)
+                {
+                    adventure.XPStart = GetStat("XP Earned").Value;
+                    GetStat("XP Earned").Add(adventure.XPGain.ToString(), null, null, null, null, null);
+                    adventure.LevelAtEnd = Level;
+                    if (adventure.LootDiff != null)
                     {
-                        //TODO DO THINGS HERE!!!
+                        foreach (var loot in adventure.LootDiff)
+                        {
+                            //TODO DO THINGS HERE!!!
+                        }
                     }
                 }
-            }
 #if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
-            foreach (var item in AllElements.Values.ToArray())
-            {
-                CharElement el;
-                if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive) && el.RulesElement != null)
+                foreach (var item in AllElements.Values.ToArray())
                 {
-                    if (el.RulesElement.Type == "Test")
-                        el.Recalculate();
+                    CharElement el;
+                    if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive) && el.RulesElement != null)
+                    {
+                        if (el.RulesElement.Type == "Test")
+                            el.Recalculate();
+                    }
                 }
-            }
 #endif
-            Levelset.Recalculate();
-
+                // The levelset can be weird.  Run it twice.
+                (Levelset.RulesElement as GeneratedLevelset).Calculate(Levelset, this);
+                Levelset.Recalculate();
+                Recalculating = false;
+            }
         }
 
         internal int ParseInt(string p)

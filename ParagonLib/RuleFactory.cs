@@ -195,6 +195,8 @@ namespace ParagonLib
             try
             {
                 XDocument doc = XDocument.Load(file, LoadOptions.SetLineInfo);
+                if (doc.Root.Attribute("Filename") != null) 
+                    doc.Root.Attribute("Filename").Remove();
                 doc.Root.Add(new XAttribute("Filename", file));
                 string system = null;
                 if (doc.Root.Attribute("game-system") != null)
@@ -209,6 +211,8 @@ namespace ParagonLib
                 var UpdateInfo = doc.Root.Element("UpdateInfo");
                 if (UpdateInfo != null)
                 {
+                    if (UpdateInfo.Attribute("filename") != null)
+                        UpdateInfo.Attribute("filename").Remove();
                     UpdateInfo.Add(new XAttribute("filename", file));
                     QueueUpdate(UpdateInfo);
                 }
@@ -224,6 +228,20 @@ namespace ParagonLib
                 
                 if (ext == ".setting")
                 {
+                    if (doc.Root.Name == "PartIndex")
+                    {
+                        // This happens ASAP, because we already queued an update.
+                        UpdateInfo.Element("Filename").Value = Path.GetFileName(file);
+                        doc.Root.Name = "Setting";
+                        var sys = new XElement("System", new XAttribute("game-system", "D&D4E")); // Anyone passing off .indexes as .settings is a 4E user.
+                        doc.Root.Add(sys);
+                        foreach (var part in doc.Root.Elements("Part"))
+                        {
+                            sys.Add(new XElement("Load", new XAttribute("file", part.Element("Filename").Value), new XAttribute("url", part.Element("PartAddress").Value)));
+                            part.Remove();
+                        }
+                        doc.Save(file);
+                    }
                     if (doc.Root.Attribute("name") == null)
                     {
                         doc.Root.Add(new XAttribute("name", Path.GetFileNameWithoutExtension(file)));
@@ -269,8 +287,10 @@ namespace ParagonLib
             System.Reflection.Assembly code;
             var success = AssemblyGenerator.TryLoadDll(out code, doc);
             if (!success && code == null) // We completely failed
-               code = AssemblyGenerator.CompileToDll(doc, false);
-            else if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLib updated.
+            {
+                CreateLazyRules(doc, setting);
+            }
+            if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLib updated.
             {
                 if (setting != null)
                     doc.Root.Add(new XAttribute("SettingSpecific", "true"));
@@ -283,7 +303,8 @@ namespace ParagonLib
             }
             try
             {
-                LoadRuleAssembly(setting, code);
+                if (code!=null)
+                    LoadRuleAssembly(setting, code);
             }
             catch (System.Reflection.ReflectionTypeLoadException c)
             {
@@ -293,6 +314,23 @@ namespace ParagonLib
             var system = doc.Root.Attribute("game-system").Value;
             if (!knownSystems.Contains(system))
                 knownSystems.Add(system); 
+        }
+
+        private static void CreateLazyRules(XDocument doc, Dictionary<string, RulesElement> setting)
+        {
+            foreach (var re in doc.Descendants("RulesElement"))
+            {
+                var rule = new LazyRulesElement(re);
+                if (setting != null)
+                    setting[rule.InternalId] = rule;
+                else
+                {
+
+                    Rules[rule.InternalId] = rule;
+                    if (!String.IsNullOrEmpty(rule.GameSystem))
+                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                }
+            }
         }
 
         private static void LoadRuleAssembly(Dictionary<string, RulesElement> setting, System.Reflection.Assembly code)
@@ -381,16 +419,15 @@ namespace ParagonLib
             foreach (var file in Directory.EnumerateFiles(RulesFolder, "*", SearchOption.AllDirectories))
             {
                 LoadFile(file);
+                LastUpdated = new object(); // Searches and the like use this to choose to regen.
                 fileLoader.Raise(file, new EventArgs());
             }
-            GC.Collect(1, GCCollectionMode.Forced);
-            if (Validate)
-                ThreadPool.QueueUserWorkItem(ValidateRules);
         }
 
         private static void QueueUpdate(XElement UpdateInfo)
         {
             UpdateQueue.Enqueue(UpdateInfo);
+            lock (UpdateQueue)
             if (UpdateThread == null || !UpdateThread.IsAlive)
             {
                 UpdateThread = new Thread(UpdateLoop) { IsBackground = true, Name = "UpdateLoop" };
@@ -464,6 +501,7 @@ namespace ParagonLib
 
         private static void ValidateRules(object state)
         {
+            return;
             for (int n = 0; n < Rules.Count; n++)
             {
                 Thread.Sleep(0);
@@ -487,5 +525,7 @@ namespace ParagonLib
                 //}
             }
         }
+
+        public static object LastUpdated { get; private set; }
     }
 }

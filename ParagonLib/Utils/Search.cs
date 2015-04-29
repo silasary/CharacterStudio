@@ -8,6 +8,7 @@ namespace ParagonLib
 {
     public class Search
     {
+        object LastUpdated;
         private RulesElement[] results;
         public string System { get; set; }
         public string Type { get; set; }
@@ -27,8 +28,11 @@ namespace ParagonLib
         {
             get
             {
-                if (results == null)
+                if (results == null || RuleFactory.LastUpdated != this.LastUpdated)
+                {
+                    LastUpdated = RuleFactory.LastUpdated;
                     results = Find().ToArray();
+                }
                 return results;
             }
         }

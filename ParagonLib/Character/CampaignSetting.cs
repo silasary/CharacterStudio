@@ -34,13 +34,13 @@ namespace ParagonLib
                 setting = new CampaignSetting(Setting, System);
                 var wc = new System.Net.WebClient();
                 Directory.CreateDirectory(RuleFactory.SettingsFolder);
-                var file = Path.Combine(RuleFactory.SettingsFolder, setting + ".setting");
+                var file = Path.Combine(RuleFactory.SettingsFolder, Setting + ".setting");
                 if (File.Exists(file))
                 {
                     ImportSetting(global::System.Xml.Linq.XDocument.Load(file));
                     setting = Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
                 }
-                if (setting == null)
+                else
                 {
                     wc.DownloadStringCompleted += (o, e) =>
                         {
