@@ -67,7 +67,7 @@ namespace ParagonLib.Compiler
                 catch (IOException c)
                 {   // We're not having any luck here. Just use the existing one.
                     Logging.Crashlog(c);
-                    var a = Assembly.LoadFile(savepath);
+                    var a = Assembly.LoadFile(new FileInfo(savepath).FullName);
                     dll = a;
                     return true;
                 }

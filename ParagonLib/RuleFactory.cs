@@ -115,9 +115,9 @@ namespace ParagonLib
         }
 
         public static bool Validate { get; set; }
-        [Obsolete]
+        
         public static void Load(XDocument doc)
-        {
+        { // Unit Tests Only.
             LoadPart(doc, null);
         }
 

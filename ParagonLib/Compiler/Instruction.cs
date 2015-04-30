@@ -21,7 +21,7 @@ namespace ParagonLib.Compiler
         /// public string Validate();
         /// </summary>
         public Func<string> Validate;
-        [Obsolete]
+        
         public Instruction(string Operation, Dictionary<string, string> Parameters, string filename=null, int linenum = -1)
         {
             Body = Generate(Operation, Parameters, filename, linenum, 0);
