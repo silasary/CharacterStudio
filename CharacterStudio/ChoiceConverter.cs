@@ -44,6 +44,9 @@ namespace CharacterStudio
                 if (item.SubItems.Count == 1)
                     item.SubItems.Add(new ListViewItem.ListViewSubItem());
                 item.SubItems[1].Text = (choice.Child == null) ? string.IsNullOrEmpty(choice.Value) ? choice.UninformedGuess + "?" : choice.Value : choice.Child.Name;
+                if (item.SubItems.Count == 2)
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem());
+                item.SubItems[2].Text = choice.Child == null || choice.Child.RulesElement==null ? "" : choice.Child.RulesElement.Source;
                 return item;
             }
             return base.ConvertTo(context, culture, value, destinationType);

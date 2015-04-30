@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParagonLib.RuleBases
 {
-    public class Level : RulesElement
+    public class Level : RulesElement, ILevel
     {
         protected int xPNeeded; // Nasty looking Variable, isn't it?
 
@@ -15,7 +15,7 @@ namespace ParagonLib.RuleBases
             get { return xPNeeded; }
         }
 
-        public Level PreviousLevel { get; set; }
+        public ILevel PreviousLevel { get; set; }
 
         public int TotalXpNeeded
         {

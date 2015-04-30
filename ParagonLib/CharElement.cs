@@ -59,7 +59,7 @@ namespace ParagonLib
 
         public Workspace workspace { get; set; }
 
-        internal RulesElement RulesElement { get; set; }
+        public RulesElement RulesElement { get; set; }
 
         public void Grant(string name, string type, string requires, string Level)
         {
@@ -148,9 +148,9 @@ namespace ParagonLib
             {
                 Logging.Log("Crashlog", TraceEventType.Critical, c.ToString());
             }
-            foreach (var child in this.Children) // If this throws an error because the array changed, something is wrong.
+            foreach (var child in this.Children.ToArray()) // If this throws an error because the array changed, something is wrong.
             {                                   //  Don't change this method, fix the cause.
-                child.Recalculate();
+                child.Recalculate();            // Ignoring my own advice for now - If the Levelset finds new Levels (Just Loaded), everything breaks.
             }
         }
 

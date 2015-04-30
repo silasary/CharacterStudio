@@ -105,6 +105,8 @@ namespace ParagonLib.Compiler
 
         public static Assembly CompileToDll(XDocument doc, bool background, string filename = null)
         {
+            //TODO: Generate Factory Class. 
+            // Contains giant switch statement, that returns instances w/o Reflection.
             if (filename == null)
             {
                 if (doc.Root.Attribute("Filename") == null)
@@ -160,7 +162,6 @@ namespace ParagonLib.Compiler
                 tasks.Add(Task.Factory.StartNew(() => { 
 #endif
                 List<Expression> calcCode = new List<Expression>();
-
 
                 var InternalId = re.Attribute("internal-id").Value.Trim();
                 var ElementType = re.Attribute("type").Value.Trim();

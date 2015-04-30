@@ -33,7 +33,7 @@ namespace ParagonLib.RuleBases
             int level = 1;
             var earned = ws.GetStat("XP Earned");
             //var needed = ws.GetStat("XP Needed");
-            Level lastlevel = null;
+            ILevel lastlevel = null;
             if (search == null)
                 search = ws.Search("Level", null, null);
             var AllLevels = search.Results;
@@ -47,7 +47,7 @@ namespace ParagonLib.RuleBases
                     break;
                 element.Grant(l.InternalId, "Level",null,level.ToString());
                 var levelele = element.Children.FirstOrDefault(n => n.Name == level.ToString());
-                var Level = (Level)levelele.RulesElement;
+                var Level = (ILevel)levelele.RulesElement;
                 if (Level == null)
                     break;
                 Level.PreviousLevel = lastlevel;

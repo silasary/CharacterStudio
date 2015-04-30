@@ -31,13 +31,14 @@ namespace ParagonLib
 
             if (setting == null)
             {
-                setting = new CampaignSetting(Setting, System);
+                setting = new CampaignSetting(Setting, System) { Loaded = false };
                 var wc = new System.Net.WebClient();
                 Directory.CreateDirectory(RuleFactory.SettingsFolder);
                 var file = Path.Combine(RuleFactory.SettingsFolder, Setting + ".setting");
                 if (File.Exists(file))
                 {
-                    ImportSetting(global::System.Xml.Linq.XDocument.Load(file));
+                    //ImportSetting(global::System.Xml.Linq.XDocument.Load(file));
+                    RuleFactory.LoadFile(file);
                     setting = Settings.FirstOrDefault(n => n.Name == Setting && n.System == System);
                 }
                 else
@@ -71,7 +72,7 @@ namespace ParagonLib
                     setting.Set(type: type.Attribute("type").Value, mode: type.Attribute("mode").Value, sources: type.Elements("Source").Select(n => n.Attribute("name").Value), elements: type.Elements("Element").Select(n => n.Attribute("name").Value));
                 }
                 setting.Loaded = true;
-                setting.CustomRules = new Lazy<Dictionary<string, RulesElement>>(_createCustomRules(system.Elements("Load").Select(n => n.Attribute("file").Value).ToArray(), Path.GetDirectoryName(url), setting), LazyThreadSafetyMode.PublicationOnly);
+                setting.CustomRules = new Lazy<Dictionary<string, RulesElement>>(_createCustomRules(system.Elements("Load").Select(n => n.Attribute("file").Value).ToArray(), new Uri(new Uri(url),".").AbsoluteUri, setting), LazyThreadSafetyMode.PublicationOnly);
                 Settings.Add(setting);
             }
         }

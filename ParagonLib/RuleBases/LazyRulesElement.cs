@@ -10,10 +10,18 @@ namespace ParagonLib.RuleBases
 {
     public class LazyRulesElement : RulesElement
     {
+        public static RulesElement New(XElement item)
+        {
+            var type = item.Attribute("type").Value;
+            if (type == "Level")
+                return new LazyLevelElement(item);
+            return new LazyRulesElement(item);
+        }
+
         public List<Instruction> Rules = new List<Instruction>();
         public SpecificsDict Specifics = new SpecificsDict();
 
-        public LazyRulesElement(XElement item)
+        protected LazyRulesElement(XElement item)
         {
             if (item == null)
                 return;
@@ -59,5 +67,30 @@ namespace ParagonLib.RuleBases
         }
 
         public string SourcePart { get; private set; }
+
+        private class LazyLevelElement : LazyRulesElement, ILevel
+        {
+            public LazyLevelElement(XElement item) : base(item)
+            {
+                int xp;
+                if (int.TryParse(item.Element("specific").Value, out xp))
+                    XpNeeded = xp;
+            }
+            public ILevel PreviousLevel {get; set;}
+
+            public int TotalXpNeeded
+            {
+                get
+                {
+                    if (PreviousLevel != null)
+                        return XpNeeded + PreviousLevel.TotalXpNeeded;
+                    return XpNeeded;
+                }
+            }
+
+            public int XpNeeded { get; private set; }
+        }
     }
+
+    
 }

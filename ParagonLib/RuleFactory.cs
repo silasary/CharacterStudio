@@ -70,9 +70,9 @@ namespace ParagonLib
             {
                 Logging.Log("Crashlog", TraceEventType.Error, "Loading Default Rules", c);
             }
-            ThreadPool.QueueUserWorkItem(LoadRulesFolder, RulesFolder);
-            ThreadPool.QueueUserWorkItem(LoadRulesFolder, SettingsFolder);
-            ThreadPool.QueueUserWorkItem(LoadRulesFolder, PicturesFolder);
+            LoadingThreads.Enqueue(Task.Run(() => LoadRulesFolder(RulesFolder)));
+            //LoadingThreads.Enqueue(Task.Run(() => LoadRulesFolder(SettingsFolder)));
+            LoadingThreads.Enqueue(Task.Run(() => LoadRulesFolder(PicturesFolder)));
 
             Validate = true;
         }
@@ -110,7 +110,7 @@ namespace ParagonLib
                     if (peek != null && peek.IsCompleted)
                         LoadingThreads.TryDequeue(out peek);
                 }
-                return LoadingThreads.ToArray().All(n => n.IsCompleted);
+                return LoadingThreads.Count >0 && LoadingThreads.ToArray().Any(n => !n.IsCompleted);
             }
         }
 
@@ -237,7 +237,7 @@ namespace ParagonLib
                         doc.Root.Add(sys);
                         foreach (var part in doc.Root.Elements("Part"))
                         {
-                            sys.Add(new XElement("Load", new XAttribute("file", part.Element("Filename").Value), new XAttribute("url", part.Element("PartAddress").Value)));
+                            sys.Add(new XElement("Load", new XAttribute("file", part.Element("Filename").Value)));
                             part.Remove();
                         }
                         doc.Save(file);
@@ -298,7 +298,7 @@ namespace ParagonLib
                 if (!runningBackgroundRegen)
                 {
                     runningBackgroundRegen = true;
-                    Task.Factory.StartNew(RegenLoop);
+                    new Thread(RegenLoop) { Name = "RegenThread", IsBackground = true, Priority = ThreadPriority.Lowest }.Start();
                 }
             }
             try
@@ -320,7 +320,7 @@ namespace ParagonLib
         {
             foreach (var re in doc.Descendants("RulesElement"))
             {
-                var rule = new LazyRulesElement(re);
+                var rule = LazyRulesElement.New(re);
                 if (setting != null)
                     setting[rule.InternalId] = rule;
                 else
@@ -335,17 +335,28 @@ namespace ParagonLib
 
         private static void LoadRuleAssembly(Dictionary<string, RulesElement> setting, System.Reflection.Assembly code)
         {
-            foreach (var t in code.GetTypes())
+            
+            var FactoryType = code.GetType("Factory", false);
+            if (FactoryType != null)
             {
-                var rule = (RulesElement)Activator.CreateInstance(t);
-                if (setting != null)
-                    setting[rule.InternalId] = rule;
-                else
-                {
+                //TODO: Insert into list, then use it.
+                // usage: RE rule = factory.New(internalId);
 
-                    Rules[rule.InternalId] = rule;
-                    if (!String.IsNullOrEmpty(rule.GameSystem))
-                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+            }
+            else
+            {
+                foreach (var t in code.GetTypes())
+                {
+                    var rule = (RulesElement)Activator.CreateInstance(t);
+                    if (setting != null)
+                        setting[rule.InternalId] = rule;
+                    else
+                    {
+
+                        Rules[rule.InternalId] = rule;
+                        if (!String.IsNullOrEmpty(rule.GameSystem))
+                            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                    }
                 }
             }
         }
@@ -497,33 +508,6 @@ namespace ParagonLib
         private static Uri Uri(string p, string filename)
         {
             return new Uri(p.Replace("^", Path.GetFileNameWithoutExtension(filename)));
-        }
-
-        private static void ValidateRules(object state)
-        {
-            return;
-            for (int n = 0; n < Rules.Count; n++)
-            {
-                Thread.Sleep(0);
-                KeyValuePair<string, RulesElement> item;
-
-                item = Rules.ElementAt(n);
-                var CSV_Specifics = new string[] { "Racial Traits", "_SupportsID" };
-                //foreach (var spec in CSV_Specifics)
-                //{
-                //    if (item.Value.Specifics.ContainsKey(spec) && !String.IsNullOrWhiteSpace(item.Value.Specifics[spec].FirstOrDefault()))
-                //    {
-                //        var errors = item.Value.Specifics[spec].FirstOrDefault().Split(',').Select((v) => v.Trim()).Select((i) => new KeyValuePair<string, RulesElement>(i, FindRulesElement(i, item.Value.System))).Where(p => p.Value == null || p.Value.System != item.Value.System);
-                //        foreach (var e in errors)
-                //        {
-                //            if (e.Value == null)
-                //                Logging.Log("Xml Validation", TraceEventType.Error, "{0} not found.", e.Key);
-                //            else
-                //                Logging.Log("Xml Validation", TraceEventType.Warning, "{0} does not exist in {1}. Falling back to {2}", e.Key, item.Value.System, e.Value.System);
-                //        }
-                //    }
-                //}
-            }
         }
 
         public static object LastUpdated { get; private set; }
