@@ -54,9 +54,9 @@ namespace ParagonLib.Compiler
                     }
                 catch (UnauthorizedAccessException)
                     {
-                        File.Move(savepath, savepath + ".old");
+                        File.Move(savepath, savepath + ".old." + DateTime.Now.Ticks);
                         if (File.Exists(pdb))
-                            File.Move(pdb, pdb + ".old");
+                            File.Move(pdb, pdb + ".old." + DateTime.Now.Ticks);
                     }
                 if (File.Exists(pdb))
                     File.Delete(pdb);
