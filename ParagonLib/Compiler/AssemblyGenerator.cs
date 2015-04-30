@@ -60,7 +60,17 @@ namespace ParagonLib.Compiler
                     }
                 if (File.Exists(pdb))
                     File.Delete(pdb);
-                File.Move(name + ".dll", savepath);
+                try
+                {
+                    File.Move(name + ".dll", savepath);
+                }
+                catch (IOException c)
+                {   // We're not having any luck here. Just use the existing one.
+                    Logging.Crashlog(c);
+                    var a = Assembly.LoadFile(savepath);
+                    dll = a;
+                    return true;
+                }
                 if (File.Exists(name + (IsRunningOnMono ? ".mdb" : ".pdb")))
                     File.Move(name + (IsRunningOnMono ? ".mdb" : ".pdb"), pdb);
             }
