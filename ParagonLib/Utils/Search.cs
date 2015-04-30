@@ -57,7 +57,7 @@ namespace ParagonLib
                     continue;
                 yield return item;
             }
-            if (Workspace != null && Workspace.Setting != null)
+            if (Workspace != null && Workspace.Setting != null && Workspace.Setting.CustomRules != null)
                 foreach (var item in Workspace.Setting.CustomRules.Value.Values)
                 {
                     if (!(String.IsNullOrEmpty(Type) || item.Type == Type))
