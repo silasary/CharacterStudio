@@ -388,7 +388,7 @@ namespace ParagonLib.Compiler
                     Assign(ctorgen, field, ival);
             }
             else if (field.FieldType == typeof(string[]))
-                Assign(ctorgen, field, value.Split(','));
+                Assign(ctorgen, field, value.Split(',').Select(s => s.Trim()).ToArray());
             else
             {
                 var warning = new CustomAttributeBuilder(typeof(MissingElementAttribute).GetConstructors().FirstOrDefault(), new object[] { specific, fname, value, specnum});
@@ -450,17 +450,16 @@ namespace ParagonLib.Compiler
             gen.Emit(OpCodes.Ldc_I4, value.Length); // Push Length of Array.
             gen.Emit(OpCodes.Newarr, typeof(string)); // Define Array
             
-            gen.Emit(OpCodes.Stfld, field); // Store the array to field.
             // We could, in theory use a local varable, and keep the array in memory.
             // But that can get messy, and would be very hard to keep track of.
             for (int i = 0; i < value.Length; i++)
             {  // this.field[i] = s;
-                gen.Emit(OpCodes.Ldarg_0);  
-                gen.Emit(OpCodes.Ldfld, field); 
+                gen.Emit(OpCodes.Dup); 
                 gen.Emit(OpCodes.Ldc_I4, i);    
                 gen.Emit(OpCodes.Ldstr, value[i]); 
                 gen.Emit(OpCodes.Stelem_Ref);      
             }
+            gen.Emit(OpCodes.Stfld, field); // Store the array to field.
         }
     }
 }
