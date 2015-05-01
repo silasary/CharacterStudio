@@ -115,8 +115,6 @@ namespace ParagonLib.Compiler
 
         public static Assembly CompileToDll(XDocument doc, bool background, string filename = null)
         {
-            //TODO: Generate Factory Class. 
-            // Contains giant switch statement, that returns instances w/o Reflection.
             if (filename == null)
             {
                 if (doc.Root.Attribute("Filename") == null)
@@ -163,6 +161,7 @@ namespace ParagonLib.Compiler
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.RunAndSave, background ? Environment.CurrentDirectory : Path.Combine(RuleFactory.BaseFolder, "Compiled Rules"));
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
+            List<TypeBuilder> types = new List<TypeBuilder>();
 #if ASYNC
             List<Task> tasks = new List<Task>();
 #endif
@@ -263,6 +262,7 @@ namespace ParagonLib.Compiler
                 Builders.Merge(calcCode).CompileToMethod(methodbuilder, generator);
                 //typeBuilder.DefineMethodOverride(methodbuilder, Builders.RefGetMethod(typeof(RulesElementBase), "Calculate"));
                 typeBuilder.CreateType();
+                types.Add(typeBuilder);
 #if ASYNC
             }));
             }
@@ -270,6 +270,7 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
+            CreateFactory(module, types);
             try
             {
                 assemblyBuilder.Save(name + ".dll");
@@ -282,6 +283,71 @@ namespace ParagonLib.Compiler
                     throw;
             }
             return assemblyBuilder;
+        }
+
+        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types)
+        {
+            //TODO: This still isn't perfect. But we're getting there.
+            // Contains giant switch statement, that returns instances w/o Reflection.
+            var Factory = module.DefineType("Factory", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, null, new Type[] { typeof(IFactory) });
+            var factoryNew = Factory.DefineMethod("New", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(RulesElement), new Type[] { typeof(string) });
+
+            var switchclass = module.DefineType("<PrivateImplementationDetails>Factory");
+            var factoryNewCode = factoryNew.GetILGenerator();
+            var dict = switchclass.DefineField("$$method0x0000000-1", typeof(Dictionary<string, int>), FieldAttributes.Assembly | FieldAttributes.Static);
+            switchclass.SetCustomAttribute(new CustomAttributeBuilder(typeof(CompilerGeneratedAttribute).GetConstructor(Type.EmptyTypes),new object[0]));
+            switchclass.CreateType();
+            Factory.DefineMethodOverride(factoryNew, typeof(IFactory).GetMethod("New"));
+
+            var index = factoryNewCode.DeclareLocal(typeof(int)); // local0 is int.
+            var dictbuilt = factoryNewCode.DefineLabel();
+            var defaultvalue = factoryNewCode.DefineLabel();
+            // if dict is not null, go to jumptable.
+            factoryNewCode.Emit(OpCodes.Volatile);
+            factoryNewCode.Emit(OpCodes.Ldsfld, dict);
+            factoryNewCode.Emit(OpCodes.Brtrue, dictbuilt);
+            // ie: if (dict == null)
+            // {
+            factoryNewCode.Emit(OpCodes.Ldc_I4, types.Count);
+            factoryNewCode.Emit(OpCodes.Newobj, typeof(Dictionary<string, int>).GetConstructor(new Type[] { typeof(int) }));
+            int i = 0;
+            foreach (var type in types)
+            {
+                factoryNewCode.Emit(OpCodes.Dup); // Dictionary reference.
+                factoryNewCode.Emit(OpCodes.Ldstr, type.Name);
+                factoryNewCode.Emit(OpCodes.Ldc_I4, i++);
+                factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("Add"));
+            }
+            factoryNewCode.Emit(OpCodes.Volatile);
+            factoryNewCode.Emit(OpCodes.Stsfld, dict);
+            // }
+            factoryNewCode.MarkLabel(dictbuilt);
+            var jumptable = Enumerable.Range(1, types.Count).Select(n => factoryNewCode.DefineLabel()).ToArray(); // Argh!
+            factoryNewCode.Emit(OpCodes.Volatile);
+            factoryNewCode.Emit(OpCodes.Ldsfld, dict); 
+            factoryNewCode.Emit(OpCodes.Ldarg_1); // Arg1 (string internalId)
+            factoryNewCode.Emit(OpCodes.Ldloca,index); // local int
+            factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("TryGetValue"));
+            var endswitch = factoryNewCode.DefineLabel();
+            factoryNewCode.Emit(OpCodes.Brfalse, endswitch);
+
+            factoryNewCode.Emit(OpCodes.Ldloc_0); // load the index.
+            factoryNewCode.Emit(OpCodes.Switch, jumptable);
+            factoryNewCode.Emit(OpCodes.Br, defaultvalue);
+            i=0;
+            foreach (var type in types)
+            {
+                factoryNewCode.MarkLabel(jumptable[i++]);
+                factoryNewCode.Emit(OpCodes.Newobj, type.GetConstructor(Type.EmptyTypes));
+                factoryNewCode.Emit(OpCodes.Ret);
+            }
+
+            factoryNewCode.MarkLabel(defaultvalue);
+            //factoryNewCode.Emit
+            factoryNewCode.MarkLabel(endswitch);
+            factoryNewCode.Emit(OpCodes.Ldnull);
+            factoryNewCode.Emit(OpCodes.Ret);
+            Factory.CreateType();
         }
 
         private static void Specific(TypeBuilder typeBuilder, Type Parent, ILGenerator ctorgen, XElement item, int specnum)

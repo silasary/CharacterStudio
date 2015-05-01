@@ -341,7 +341,8 @@ namespace ParagonLib
             {
                 //TODO: Insert into list, then use it.
                 // usage: RE rule = factory.New(internalId);
-
+                var factory = Activator.CreateInstance(FactoryType) as IFactory;
+                
             }
             else
             {

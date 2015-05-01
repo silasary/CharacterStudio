@@ -59,8 +59,11 @@ namespace UnitTests
             foreach (var t in ass.GetTypes())
             {
                 var i = Activator.CreateInstance(t) as RulesElement;
-                Assert.IsNotNullOrEmpty(i.Name);
-                Assert.IsNotNull(i.Calculate);
+                if (i != null)
+                {
+                    Assert.IsNotNullOrEmpty(i.Name);
+                    Assert.IsNotNull(i.Calculate);
+                }
             }
         }
     }
