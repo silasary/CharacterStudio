@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,16 @@ namespace CharacterStudio_XP
         [STAThread]
         static void Main(string[] args)
         {
+            var exeLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string frameworkDir= Path.Combine(Path.GetDirectoryName(exeLocation),"Frameworks");
+            if (Directory.Exists(frameworkDir))
+            AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
+            {
+                var assembly = Path.Combine(frameworkDir, e.Name +".dll");
+                if (File.Exists(assembly)) // Note: Case sensitivity is maybe an issue?
+                    return System.Reflection.Assembly.Load(new FileInfo(assembly).FullName);
+                return null;
+            };
             var platform = GetPlatform ();
             if (platform.Platform == PlatformID.Win32NT)
                 Application.Initialize (ToolkitType.Wpf);
@@ -31,7 +42,7 @@ namespace CharacterStudio_XP
                         return new OperatingSystem (PlatformID.MacOSX, new Version (10,0)); // We should try to work that out.
                     else
                         return Environment.OSVersion;
-                    break;
+                   
 
                 case PlatformID.MacOSX: // Wow, they actually got it!
                 case PlatformID.Win32NT:

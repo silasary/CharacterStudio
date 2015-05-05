@@ -69,6 +69,7 @@
     <Compile Include="CharElement.cs" />
     <Compile Include="D20Currency.cs" />
     <Compile Include="Utils\FastSmartWeakEvent.cs" />
+    <Compile Include="Utils\VersionParser.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Workspace.Serialization.cs">
       <DependentUpon>Workspace.cs</DependentUpon>

@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using ParagonLib.Compiler;
 using ParagonLib.RuleBases;
 using SmartWeakEvent;
+using ParagonLib.Utils;
 
 namespace ParagonLib
 {
@@ -23,6 +24,7 @@ namespace ParagonLib
         internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
         internal static ConcurrentDictionary<string, RulesElement> RulesBySystem;
+        internal static ConcurrentDictionary<string, IFactory> RuleFactories;
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
@@ -35,6 +37,7 @@ namespace ParagonLib
         {
             Rules = new ConcurrentDictionary<string, RulesElement>();
             RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
+            RuleFactories = new ConcurrentDictionary<string, IFactory>();
             Directory.CreateDirectory(RulesFolder);
             FileLoaded += (f,e) => WaitFileLoaded.Set();
             try
@@ -337,18 +340,22 @@ namespace ParagonLib
         {
             
             var FactoryType = code.GetType("Factory", false);
-            if (FactoryType != null)
+            if (FactoryType != null && false)
             {
                 //TODO: Insert into list, then use it.
                 // usage: RE rule = factory.New(internalId);
                 var factory = Activator.CreateInstance(FactoryType) as IFactory;
-                
+                var name = code.GetName();
+                var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
+                RuleFactories[sname] = factory;
             }
             else
             {
                 foreach (var t in code.GetTypes())
                 {
-                    var rule = (RulesElement)Activator.CreateInstance(t);
+                    var rule = Activator.CreateInstance(t) as RulesElement;
+                    if (rule == null)
+                        continue;
                     if (setting != null)
                         setting[rule.InternalId] = rule;
                     else
@@ -459,8 +466,8 @@ namespace ParagonLib
                     string filename = UpdateInfo.Element("Filename") != null ? UpdateInfo.Element("Filename").Value : Path.GetFileName(file);
                     try
                     {
-                        Version verLocal = new Version(UpdateInfo.Element("Version").Value);
-                        Version verRemote = new Version(wc.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
+                        Version verLocal = VersionParser.Parse(UpdateInfo.Element("Version").Value);
+                        Version verRemote = VersionParser.Parse(wc.DownloadString(Uri(UpdateInfo.Element("VersionAddress").Value, filename)));
                         if (verRemote > verLocal)
                         {
                             Logging.Log("Updater", TraceEventType.Information, "Updating {0} to {1}", filename, verRemote);

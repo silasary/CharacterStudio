@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Xml;
 using ParagonLib.RuleBases;
 using System.Threading.Tasks;
+using ParagonLib.Utils;
 
 namespace ParagonLib.Compiler
 {
@@ -37,10 +38,7 @@ namespace ParagonLib.Compiler
             AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
             Version ver = new Version();
             if (doc.Root.Element("UpdateInfo") != null && doc.Root.Element("UpdateInfo").Element("Version") != null)
-            {
-                if (!Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim(), out ver))
-                    Version.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim()+".0", out ver);
-            }
+                VersionParser.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value.Trim(), out ver);
             name.Version = ver;
 
             var savepath = Path.Combine(RuleFactory.BaseFolder, "Compiled Rules", name + ".dll");
