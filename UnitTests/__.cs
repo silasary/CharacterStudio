@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+#if DEBUG
 namespace UnitTests
 {
-    [Conditional("DEBUG")]
     class __ // Exists as a place to decompile things into IL that I'm not sure how to emit.
     {       // Ignore me
         int sw(string c)
@@ -34,3 +33,4 @@ namespace UnitTests
         }
     }
 }
+#endif
