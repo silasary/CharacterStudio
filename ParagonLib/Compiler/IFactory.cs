@@ -10,5 +10,6 @@ namespace ParagonLib.Compiler
     public interface IFactory
     {
         RulesElement New(string internalId);
+        string GameSystem { get; }
     }
 }

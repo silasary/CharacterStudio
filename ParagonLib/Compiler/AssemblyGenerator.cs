@@ -120,7 +120,7 @@ namespace ParagonLib.Compiler
                 else
                     filename = doc.Root.Attribute("Filename").Value;
             }
-            var system = doc.Root.Attribute("game-system").Value.Trim();
+            var GameSystem = doc.Root.Attribute("game-system").Value.Trim();
 
             AssemblyName name = new AssemblyName(Path.GetFileNameWithoutExtension(filename));
             Version ver = new Version();
@@ -220,7 +220,7 @@ namespace ParagonLib.Compiler
                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "type"), ElementType);
                 if (re.Attribute("source") != null)
                     Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "source"), re.Attribute("source").Value.Trim());
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), system);
+                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), GameSystem);
                 var pthis = Expression.Parameter(typeBuilder, "this");
 
                 int specnum = 0;
@@ -268,11 +268,12 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            CreateFactory(module, types);
+            CreateFactory(module, types, GameSystem);
             try
             {
+                Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);                
                 assemblyBuilder.Save(name + ".dll");
-                Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);
+                Logging.Log("Compiler", TraceEventType.Information, "Saved {0}.dll", name);
             }
             catch(Exception c)
             {
@@ -283,68 +284,80 @@ namespace ParagonLib.Compiler
             return assemblyBuilder;
         }
 
-        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types)
+        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types, string GameSystem)
         {
             //TODO: This still isn't perfect. But we're getting there.
             // Contains giant switch statement, that returns instances w/o Reflection.
             var Factory = module.DefineType("Factory", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, null, new Type[] { typeof(IFactory) });
-            var factoryNew = Factory.DefineMethod("New", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(RulesElement), new Type[] { typeof(string) });
-
-            var switchclass = module.DefineType("<PrivateImplementationDetails>Factory");
-            var factoryNewCode = factoryNew.GetILGenerator();
-            var dict = switchclass.DefineField("$$method0x0000000-1", typeof(Dictionary<string, int>), FieldAttributes.Assembly | FieldAttributes.Static);
-            switchclass.SetCustomAttribute(new CustomAttributeBuilder(typeof(CompilerGeneratedAttribute).GetConstructor(Type.EmptyTypes),new object[0]));
-            switchclass.CreateType();
-            Factory.DefineMethodOverride(factoryNew, typeof(IFactory).GetMethod("New"));
-
-            var index = factoryNewCode.DeclareLocal(typeof(int)); // local0 is int.
-            var dictbuilt = factoryNewCode.DefineLabel();
-            var defaultvalue = factoryNewCode.DefineLabel();
-            // if dict is not null, go to jumptable.
-            factoryNewCode.Emit(OpCodes.Volatile);
-            factoryNewCode.Emit(OpCodes.Ldsfld, dict);
-            factoryNewCode.Emit(OpCodes.Brtrue, dictbuilt);
-            // ie: if (dict == null)
-            // {
-            factoryNewCode.Emit(OpCodes.Ldc_I4, types.Count);
-            factoryNewCode.Emit(OpCodes.Newobj, typeof(Dictionary<string, int>).GetConstructor(new Type[] { typeof(int) }));
-            int i = 0;
-            foreach (var type in types)
+            // New
             {
-                factoryNewCode.Emit(OpCodes.Dup); // Dictionary reference.
-                factoryNewCode.Emit(OpCodes.Ldstr, type.Name);
-                factoryNewCode.Emit(OpCodes.Ldc_I4, i++);
-                factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("Add"));
-            }
-            factoryNewCode.Emit(OpCodes.Volatile);
-            factoryNewCode.Emit(OpCodes.Stsfld, dict);
-            // }
-            factoryNewCode.MarkLabel(dictbuilt);
-            var jumptable = Enumerable.Range(1, types.Count).Select(n => factoryNewCode.DefineLabel()).ToArray(); // Argh!
-            factoryNewCode.Emit(OpCodes.Volatile);
-            factoryNewCode.Emit(OpCodes.Ldsfld, dict); 
-            factoryNewCode.Emit(OpCodes.Ldarg_1); // Arg1 (string internalId)
-            factoryNewCode.Emit(OpCodes.Ldloca,index); // local int
-            factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("TryGetValue"));
-            var endswitch = factoryNewCode.DefineLabel();
-            factoryNewCode.Emit(OpCodes.Brfalse, endswitch);
+                var factoryNew = Factory.DefineMethod("New", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(RulesElement), new Type[] { typeof(string) });
 
-            factoryNewCode.Emit(OpCodes.Ldloc_0); // load the index.
-            factoryNewCode.Emit(OpCodes.Switch, jumptable);
-            factoryNewCode.Emit(OpCodes.Br, defaultvalue);
-            i=0;
-            foreach (var type in types)
-            {
-                factoryNewCode.MarkLabel(jumptable[i++]);
-                factoryNewCode.Emit(OpCodes.Newobj, type.GetConstructor(Type.EmptyTypes));
+                var switchclass = module.DefineType("<PrivateImplementationDetails>Factory");
+                var factoryNewCode = factoryNew.GetILGenerator();
+                var dict = switchclass.DefineField("$$method0x0000000-1", typeof(Dictionary<string, int>), FieldAttributes.Assembly | FieldAttributes.Static);
+                switchclass.SetCustomAttribute(new CustomAttributeBuilder(typeof(CompilerGeneratedAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
+                switchclass.CreateType();
+                Factory.DefineMethodOverride(factoryNew, typeof(IFactory).GetMethod("New"));
+
+                var index = factoryNewCode.DeclareLocal(typeof(int)); // local0 is int.
+                var dictbuilt = factoryNewCode.DefineLabel();
+                var defaultvalue = factoryNewCode.DefineLabel();
+                // if dict is not null, go to jumptable.
+                factoryNewCode.Emit(OpCodes.Volatile);
+                factoryNewCode.Emit(OpCodes.Ldsfld, dict);
+                factoryNewCode.Emit(OpCodes.Brtrue, dictbuilt);
+                // ie: if (dict == null)
+                // {
+                factoryNewCode.Emit(OpCodes.Ldc_I4, types.Count);
+                factoryNewCode.Emit(OpCodes.Newobj, typeof(Dictionary<string, int>).GetConstructor(new Type[] { typeof(int) }));
+                int i = 0;
+                foreach (var type in types)
+                {
+                    factoryNewCode.Emit(OpCodes.Dup); // Dictionary reference.
+                    factoryNewCode.Emit(OpCodes.Ldstr, type.Name);
+                    factoryNewCode.Emit(OpCodes.Ldc_I4, i++);
+                    factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("Add"));
+                }
+                factoryNewCode.Emit(OpCodes.Volatile);
+                factoryNewCode.Emit(OpCodes.Stsfld, dict);
+                // }
+                factoryNewCode.MarkLabel(dictbuilt);
+                var jumptable = Enumerable.Range(1, types.Count).Select(n => factoryNewCode.DefineLabel()).ToArray(); // Argh!
+                factoryNewCode.Emit(OpCodes.Volatile);
+                factoryNewCode.Emit(OpCodes.Ldsfld, dict);
+                factoryNewCode.Emit(OpCodes.Ldarg_1); // Arg1 (string internalId)
+                factoryNewCode.Emit(OpCodes.Ldloca, index); // local int
+                factoryNewCode.Emit(OpCodes.Call, typeof(Dictionary<string, int>).GetMethod("TryGetValue"));
+                var endswitch = factoryNewCode.DefineLabel();
+                factoryNewCode.Emit(OpCodes.Brfalse, endswitch);
+
+                factoryNewCode.Emit(OpCodes.Ldloc_0); // load the index.
+                factoryNewCode.Emit(OpCodes.Switch, jumptable);
+                factoryNewCode.Emit(OpCodes.Br, defaultvalue);
+                i = 0;
+                foreach (var type in types)
+                {
+                    factoryNewCode.MarkLabel(jumptable[i++]);
+                    factoryNewCode.Emit(OpCodes.Newobj, type.GetConstructor(Type.EmptyTypes));
+                    factoryNewCode.Emit(OpCodes.Ret);
+                }
+
+                factoryNewCode.MarkLabel(defaultvalue);
+                //factoryNewCode.Emit
+                factoryNewCode.MarkLabel(endswitch);
+                factoryNewCode.Emit(OpCodes.Ldnull);
                 factoryNewCode.Emit(OpCodes.Ret);
             }
-
-            factoryNewCode.MarkLabel(defaultvalue);
-            //factoryNewCode.Emit
-            factoryNewCode.MarkLabel(endswitch);
-            factoryNewCode.Emit(OpCodes.Ldnull);
-            factoryNewCode.Emit(OpCodes.Ret);
+            // GameSystem
+            {
+                CreatePropGetter("GameSystem", GameSystem, Factory, false, typeof(IFactory).GetMethod("get_GameSystem"));
+                //var prop = Factory.DefineProperty("GameSystem", PropertyAttributes.None,CallingConventions.HasThis, typeof(string), Type.EmptyTypes);
+                //var GameSystem_get = Factory.DefineMethod("GameSystem_get", MethodAttributes.Public | MethodAttributes.SpecialName);
+                //var code = GameSystem_get.GetILGenerator();
+                //code.Emit(OpCodes.)
+                //prop.SetGetMethod(GameSystem_get);
+            }
             Factory.CreateType();
         }
 
@@ -394,40 +407,25 @@ namespace ParagonLib.Compiler
             }
         }
 
-        private static void CreatePropGetter<T>(string pname, T value, TypeBuilder typeBuilder)
+        private static void CreatePropGetter<T>(string pname, T value, TypeBuilder typeBuilder, bool IsStatic, MethodInfo Override = null)
         {
-            PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.None, typeof(string), new Type[0]);
-            //propBuilder.SetConstant(value);
-            MethodBuilder getBuilder = typeBuilder.DefineMethod("get_" + pname, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.SpecialName, typeof(T), Type.EmptyTypes);
-            Expression<Func<T>> func;
+            MethodBuilder getBuilder = typeBuilder.DefineMethod("get_" + pname, IsStatic ? MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.SpecialName : MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.Virtual, typeof(T), Type.EmptyTypes);
+            var code = getBuilder.GetILGenerator();
             if (typeof(T) == typeof(string))
-                func = FuncRetConst(value);
+                code.Emit(OpCodes.Ldstr, value as string);
             else if (typeof(T).IsArray)
-                func = FuncRetArray(value);
+                EmitNewArray(code, value as string[]);
             else
                 throw new NotImplementedException();
-            var com = func.Compile();
-            func.CompileToMethod(getBuilder);
-            propBuilder.SetGetMethod(getBuilder);
-        }
-
-        private static Expression<Func<T>> FuncRetArray<T>(T value)
-        {
-            LabelTarget returnTarget = Expression.Label(typeof(T));
-            var v = (value as Array).OfType<object>().Select(e => Expression.Constant(e));
-            return Expression.Lambda<Func<T>>(Expression.Block(
-                // PDB debug info might want to go here.
-                Expression.Label(returnTarget, Expression.NewArrayInit(typeof(T).GetElementType(), v))
-                ));
-        }
-
-        private static Expression<Func<T>> FuncRetConst<T>(T p)
-        {
-            LabelTarget returnTarget = Expression.Label(typeof(T));
-            return Expression.Lambda<Func<T>>(Expression.Block(
-                // PDB debug info might want to go here.
-                Expression.Label(returnTarget, Expression.Constant(p, typeof(T)))
-                ));
+            code.Emit(OpCodes.Ret);
+            if (Override == null)
+            {
+                PropertyBuilder propBuilder = typeBuilder.DefineProperty(pname, PropertyAttributes.None, typeof(string), new Type[0]);
+                propBuilder.SetGetMethod(getBuilder);
+            }
+            else
+                typeBuilder.DefineMethodOverride(getBuilder,Override);
+            
         }
 
         private static void Assign(ILGenerator gen, FieldInfo field, string value)
@@ -445,19 +443,24 @@ namespace ParagonLib.Compiler
         private static void Assign(ILGenerator gen, FieldInfo field, string[] value)
         {
             gen.Emit(OpCodes.Ldarg_0); // Assign the variable on 'this'.
+            EmitNewArray(gen, value);
+            gen.Emit(OpCodes.Stfld, field); // Store the array to field.
+        }
+
+        private static void EmitNewArray(ILGenerator gen, string[] value)
+        {
             gen.Emit(OpCodes.Ldc_I4, value.Length); // Push Length of Array.
             gen.Emit(OpCodes.Newarr, typeof(string)); // Define Array
-            
+
             // We could, in theory use a local varable, and keep the array in memory.
             // But that can get messy, and would be very hard to keep track of.
             for (int i = 0; i < value.Length; i++)
             {  // this.field[i] = s;
-                gen.Emit(OpCodes.Dup); 
-                gen.Emit(OpCodes.Ldc_I4, i);    
-                gen.Emit(OpCodes.Ldstr, value[i]); 
-                gen.Emit(OpCodes.Stelem_Ref);      
+                gen.Emit(OpCodes.Dup);
+                gen.Emit(OpCodes.Ldc_I4, i);
+                gen.Emit(OpCodes.Ldstr, value[i]);
+                gen.Emit(OpCodes.Stelem_Ref);
             }
-            gen.Emit(OpCodes.Stfld, field); // Store the array to field.
         }
     }
 }

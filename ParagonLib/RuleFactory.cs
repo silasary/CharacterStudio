@@ -157,12 +157,20 @@ namespace ParagonLib
             return new GeneratedLevelset(System);
         }
 
-        private static RulesElement GetRule(string id, string System, CampaignSetting setting)
+        private static RulesElement GetRule(string id, string GameSystem, CampaignSetting setting)
         {
             if (setting != null)
             {
                 if (setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
+            }
+            foreach (var factory in RuleFactories.Values.ToArray())
+            {
+                RulesElement rule = null;
+                if (factory.GameSystem == GameSystem)
+                rule = factory.New(id);
+                if (rule != null)
+                    return rule;
             }
             if (Loading)
             {
@@ -340,7 +348,7 @@ namespace ParagonLib
         {
             
             var FactoryType = code.GetType("Factory", false);
-            if (FactoryType != null && false)
+            if (FactoryType != null)
             {
                 //TODO: Insert into list, then use it.
                 // usage: RE rule = factory.New(internalId);
@@ -349,7 +357,8 @@ namespace ParagonLib
                 var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
                 RuleFactories[sname] = factory;
             }
-            else
+            //TODO:
+            //else 
             {
                 foreach (var t in code.GetTypes())
                 {
