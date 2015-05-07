@@ -14,20 +14,24 @@ using ParagonLib.Compiler;
 using ParagonLib.RuleBases;
 using SmartWeakEvent;
 using ParagonLib.Utils;
+using ParagonLib.Rules;
 
 namespace ParagonLib
 {
     public static class RuleFactory
     {
+        internal static ConcurrentDictionary<string, RulesElement> Rules = new ConcurrentDictionary<string, RulesElement>();
+        internal static ConcurrentDictionary<string, RulesElement> RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
+        internal static ConcurrentDictionary<string, IFactory> RuleFactories = new ConcurrentDictionary<string, IFactory>();
+        internal static Dictionary<string, Dictionary<string, CategoryInfo>> CategoriesBySystem = new Dictionary<string, Dictionary<string, CategoryInfo>>();
+
         private static ConcurrentQueue<Task> LoadingThreads = new ConcurrentQueue<Task>();
         private static ConcurrentQueue<XDocument> FilesToRegen = new ConcurrentQueue<XDocument>();
-        internal static ConcurrentDictionary<string, RulesElement> Rules;
         private static List<string> knownSystems = new List<string>();
-        internal static ConcurrentDictionary<string, RulesElement> RulesBySystem;
-        internal static ConcurrentDictionary<string, IFactory> RuleFactories;
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
         private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
+        
         public static readonly string BaseFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio");
         public static readonly string RulesFolder = Path.Combine(BaseFolder, "Rules");
         public static readonly string SettingsFolder = Path.Combine(BaseFolder, "Settings");
@@ -35,9 +39,6 @@ namespace ParagonLib
 
         static RuleFactory()
         {
-            Rules = new ConcurrentDictionary<string, RulesElement>();
-            RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
-            RuleFactories = new ConcurrentDictionary<string, IFactory>();
             Directory.CreateDirectory(RulesFolder);
             FileLoaded += (f,e) => WaitFileLoaded.Set();
             try
@@ -355,7 +356,11 @@ namespace ParagonLib
                 var factory = Activator.CreateInstance(FactoryType) as IFactory;
                 var name = code.GetName();
                 var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
+                if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
+                    CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
+                factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
                 RuleFactories[sname] = factory;
+
             }
             //TODO:
             //else 

@@ -53,6 +53,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleBases\Background.cs" />
+    <Compile Include="Rules\CategoryInfo.cs" />
     <Compile Include="Rules\ILevel.cs" />
     <Compile Include="RuleBases\Level.cs" />
     <Compile Include="RuleBases\Levelset.cs" />

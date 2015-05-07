@@ -14,6 +14,7 @@ using System.Xml;
 using ParagonLib.RuleBases;
 using System.Threading.Tasks;
 using ParagonLib.Utils;
+using ParagonLib.Rules;
 
 namespace ParagonLib.Compiler
 {
@@ -160,6 +161,7 @@ namespace ParagonLib.Compiler
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
             List<TypeBuilder> types = new List<TypeBuilder>();
+            Dictionary<string, List<string>> CategoryData = new Dictionary<string, List<string>>();
 #if ASYNC
             List<Task> tasks = new List<Task>();
 #endif
@@ -194,9 +196,11 @@ namespace ParagonLib.Compiler
                 TypeBuilder typeBuilder;
                 try
                 {
-                    var t = "Rules." + InternalId;
+                    string t;
                     if (Parent != typeof(RulesElement))
                         t = "Rules." + Parent.Name + "." + InternalId;
+                    else
+                        t = "Rules." + ElementType + "." + InternalId;
                     typeBuilder = module.DefineType(t, TypeAttributes.Public | TypeAttributes.Class, Parent);
                 }
                 catch (ArgumentException)
@@ -204,61 +208,71 @@ namespace ParagonLib.Compiler
                     Logging.Log("Xml Loader", TraceEventType.Error, "{0}: {1} defined twice in one part. (Line {2})", filename, InternalId, ((IXmlLineInfo)re).LineNumber);
                     continue;
                 }
-                var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis | CallingConventions.Standard, Type.EmptyTypes);
-
-                var ctorgen = ctor.GetILGenerator();
-                // base..ctor()
-                ctorgen.Emit(OpCodes.Ldarg_0);
-
-                ConstructorInfo baseCtor = Parent.GetConstructor(Type.EmptyTypes);
-                if (baseCtor == null)
-                    baseCtor = typeof(RulesElement).GetConstructor(Type.EmptyTypes);
-                ctorgen.Emit(OpCodes.Call, baseCtor);
-
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "name"), re.Attribute("name").Value.Trim());
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "internalId"), InternalId);
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "type"), ElementType);
-                if (re.Attribute("source") != null)
-                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "source"), re.Attribute("source").Value.Trim());
-                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), GameSystem);
-                var pthis = Expression.Parameter(typeBuilder, "this");
-
-                int specnum = 0;
-                foreach (var item in re.Elements())
+                //ctor
                 {
-                    switch (item.Name.LocalName)
-                    {
-                        case "Category":
-                            var cats = item.Value.Split(',').Select(n => n.Trim()).ToArray();
-                            Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "category"), cats);
-                            break;
-                        case "rules":
-                            int rulenum = 0;
-                            foreach (var rule in item.Elements())
-                            {
-                                calcCode.Add(Instruction.Generate(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), filename, ((IXmlLineInfo)rule).LineNumber, rulenum));
-                            }
+                    var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, CallingConventions.HasThis | CallingConventions.Standard, Type.EmptyTypes);
 
-                            break;
-                        default:
-                            Specific(typeBuilder, Parent, ctorgen, item, specnum++);
-                            break;
+                    var ctorgen = ctor.GetILGenerator();
+                    // base..ctor()
+                    ctorgen.Emit(OpCodes.Ldarg_0);
+
+                    ConstructorInfo baseCtor = Parent.GetConstructor(Type.EmptyTypes);
+                    if (baseCtor == null)
+                        baseCtor = typeof(RulesElement).GetConstructor(Type.EmptyTypes);
+                    ctorgen.Emit(OpCodes.Call, baseCtor);
+
+                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "name"), re.Attribute("name").Value.Trim());
+                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "internalId"), InternalId);
+                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "type"), ElementType);
+                    if (re.Attribute("source") != null)
+                        Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "source"), re.Attribute("source").Value.Trim());
+                    Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "system"), GameSystem);
+                
+                    var pthis = Expression.Parameter(typeBuilder, "this");
+
+                    int specnum = 0;
+                    foreach (var item in re.Elements())
+                    {
+                        switch (item.Name.LocalName)
+                        {
+                            case "Category":
+                                var cats = item.Value.Split(',').Select(n => n.Trim()).ToArray();
+                                Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "category"), cats);
+                                foreach (var c in cats)
+                                {
+                                    if (!CategoryData.ContainsKey(c))
+                                        CategoryData[c] = new List<string>();
+                                    CategoryData[c].Add(InternalId);
+                                }
+                                break;
+                            case "rules":
+                                int rulenum = 0;
+                                foreach (var rule in item.Elements())
+                                {
+                                    calcCode.Add(Instruction.Generate(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), filename, ((IXmlLineInfo)rule).LineNumber, rulenum));
+                                }
+
+                                break;
+                            default:
+                                Specific(typeBuilder, Parent, ctorgen, item, specnum++);
+                                break;
+                        }
                     }
+                    // Fluff text.
+                    var value = re.Nodes().OfType<XText>().FirstOrDefault();
+                    if (value != null)
+                        Assign(ctorgen, _textField, re.Nodes().OfType<XText>().FirstOrDefault().Value);
+                    // And done.
+                    ctorgen.Emit(OpCodes.Ret);
+                    MethodBuilder methodbuilder =
+                        typeBuilder.DefineMethod("Calculate",
+                        MethodAttributes.HideBySig | MethodAttributes.Static |
+                        MethodAttributes.Public |
+                        MethodAttributes.VtableLayoutMask,
+                        typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
+                    Builders.Merge(calcCode).CompileToMethod(methodbuilder, generator);
+                    //typeBuilder.DefineMethodOverride(methodbuilder, Builders.RefGetMethod(typeof(RulesElementBase), "Calculate"));
                 }
-                // Fluff text.
-                var value = re.Nodes().OfType<XText>().FirstOrDefault();
-                if (value != null)
-                    Assign(ctorgen, _textField, re.Nodes().OfType<XText>().FirstOrDefault().Value);
-                // And done.
-                ctorgen.Emit(OpCodes.Ret);
-                MethodBuilder methodbuilder =
-                    typeBuilder.DefineMethod("Calculate",
-                    MethodAttributes.HideBySig | MethodAttributes.Static |
-                    MethodAttributes.Public |
-                    MethodAttributes.VtableLayoutMask,
-                    typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
-                Builders.Merge(calcCode).CompileToMethod(methodbuilder, generator);
-                //typeBuilder.DefineMethodOverride(methodbuilder, Builders.RefGetMethod(typeof(RulesElementBase), "Calculate"));
                 typeBuilder.CreateType();
                 types.Add(typeBuilder);
 #if ASYNC
@@ -268,7 +282,7 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            CreateFactory(module, types, GameSystem);
+            CreateFactory(module, types, CategoryData, GameSystem);
             try
             {
                 Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);                
@@ -284,7 +298,7 @@ namespace ParagonLib.Compiler
             return assemblyBuilder;
         }
 
-        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types, string GameSystem)
+        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types, Dictionary<string,List<string>> CategoryData, string GameSystem)
         {
             //TODO: This still isn't perfect. But we're getting there.
             // Contains giant switch statement, that returns instances w/o Reflection.
@@ -357,6 +371,44 @@ namespace ParagonLib.Compiler
                 //var code = GameSystem_get.GetILGenerator();
                 //code.Emit(OpCodes.)
                 //prop.SetGetMethod(GameSystem_get);
+            }
+            // Categories
+            {
+                var DescribeMethod =  Factory.DefineMethod("DescribeCategories", MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), new Type[] { typeof(Dictionary<string, CategoryInfo>) });
+                var ilgen = DescribeMethod.GetILGenerator();
+                // DescribeCategories(Dictionary<string, CategoryInfo> dict);
+                MethodInfo DictContains = typeof(Dictionary<string, CategoryInfo>).GetMethod("ContainsKey");
+                ConstructorInfo NewCat = typeof(CategoryInfo).GetConstructor(Type.EmptyTypes);
+                MethodInfo DictSetIndexer = typeof(Dictionary<string, CategoryInfo>).GetMethod("set_Item");
+                MethodInfo DictGetIndexer = typeof(Dictionary<string, CategoryInfo>).GetMethod("get_Item");
+                MethodInfo CatInfoMembers = typeof(CategoryInfo).GetProperty("Members").GetMethod;
+                MethodInfo ListAddRange = typeof(List<string>).GetMethod("AddRange");
+                // Method Start.
+                
+                foreach (var cat in CategoryData)
+                {
+                    var KeyExists = ilgen.DefineLabel();
+                    ilgen.Emit(OpCodes.Ldarg_1);
+                    ilgen.Emit(OpCodes.Ldstr, cat.Key);
+                    ilgen.Emit(OpCodes.Callvirt, DictContains);
+                    ilgen.Emit(OpCodes.Brtrue, KeyExists);
+                    {
+                        ilgen.Emit(OpCodes.Ldarg_1);
+                        ilgen.Emit(OpCodes.Ldstr, cat.Key);
+                        ilgen.Emit(OpCodes.Newobj, NewCat);
+                        ilgen.Emit(OpCodes.Callvirt, DictSetIndexer);
+                    }
+                    ilgen.MarkLabel(KeyExists);
+                    ilgen.Emit(OpCodes.Ldarg_1);
+                    ilgen.Emit(OpCodes.Ldstr, cat.Key);
+                    ilgen.Emit(OpCodes.Callvirt, DictGetIndexer);
+                    ilgen.Emit(OpCodes.Callvirt, CatInfoMembers);
+                    EmitNewArray(ilgen, cat.Value.ToArray());
+                    ilgen.Emit(OpCodes.Callvirt, ListAddRange);
+                    //ilgen.Emit(OpCodes.Pop);
+                }
+                ilgen.Emit(OpCodes.Ret);
+                Factory.DefineMethodOverride(DescribeMethod, typeof(IFactory).GetMethod("DescribeCategories"));
             }
             Factory.CreateType();
         }
