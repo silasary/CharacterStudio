@@ -1,4 +1,5 @@
 ﻿using ParagonLib.Compiler;
+using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace ParagonLib.RuleBases
             {
                 this.CurrentLevel = level;
                 var l = AllLevels.FirstOrDefault(n => n.Name == level.ToString());
-                if (l == null)
+                if (string.IsNullOrEmpty(l.InternalId))
                     break;
                 element.Grant(l.InternalId, "Level",null,level.ToString());
                 var levelele = element.Children.FirstOrDefault(n => n.Name == level.ToString());

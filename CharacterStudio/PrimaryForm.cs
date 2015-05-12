@@ -1,5 +1,6 @@
 ﻿using CharacterStudio.Controls.Panes;
 using ParagonLib;
+using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Debugger = System.Diagnostics.Debugger;
 namespace CharacterStudio
 {
     public partial class PrimaryForm : Form
@@ -29,13 +30,13 @@ namespace CharacterStudio
             this.tabControl1.Controls.AddRange(MenuTabs);
             RuleFactory.WaitingForRule += RuleFactory_WaitingForRule;
             RuleFactory.FileLoaded += RuleFactory_FileLoaded;
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
                 this.fileMenu.DropDownItems.Add("Recalculate", null, Recalculate);
         }
 
         private void Recalculate(object sender, EventArgs e)
         {
-            System.Diagnostics.Debugger.Break();
+            Debugger.Break();
             CurrentWorkspace.Recalculate();
         }
 

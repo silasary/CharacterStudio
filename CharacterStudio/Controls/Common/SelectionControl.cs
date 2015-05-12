@@ -1,5 +1,6 @@
 ﻿using ParagonLib;
 using ParagonLib.RuleBases;
+using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace CharacterStudio.Controls.Common
 
         protected override void OnLoad(EventArgs e)
         {
-            IEnumerable<RulesElement> res = search.Results;
+            IEnumerable<RuleData> res = search.Results;
             var setting = CurrentWorkspace.Setting;
             if (setting != null)
                 res = res.Where(n => setting.IsRuleLegal(n));

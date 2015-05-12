@@ -16,14 +16,15 @@ using SmartWeakEvent;
 using ParagonLib.Utils;
 using ParagonLib.Rules;
 
-namespace ParagonLib
+namespace ParagonLib.RuleEngine
 {
     public static class RuleFactory
     {
         internal static ConcurrentDictionary<string, RulesElement> Rules = new ConcurrentDictionary<string, RulesElement>();
-        internal static ConcurrentDictionary<string, RulesElement> RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
+        internal static ConcurrentDictionary<string, RuleData> RulesBySystem = new ConcurrentDictionary<string, RuleData>();
         internal static ConcurrentDictionary<string, IFactory> RuleFactories = new ConcurrentDictionary<string, IFactory>();
         internal static Dictionary<string, Dictionary<string, CategoryInfo>> CategoriesBySystem = new Dictionary<string, Dictionary<string, CategoryInfo>>();
+        //internal static ConcurrentDictionary<string, RuleData> RulesBySystem = new ConcurrentDictionary<string, RulesElement>();
 
         private static ConcurrentQueue<Task> LoadingThreads = new ConcurrentQueue<Task>();
         private static ConcurrentQueue<XDocument> FilesToRegen = new ConcurrentQueue<XDocument>();
@@ -139,10 +140,13 @@ namespace ParagonLib
                 return GenerateLevelset(System);
             var sysid = String.Format("{0}+{1}", System, id);
             RulesElement re;
-            if (RulesBySystem.ContainsKey(sysid))
-                re = RulesBySystem[sysid];
-            else if (Rules.ContainsKey(id))
-                re = Rules[id];
+            //if (RulesBySystem.ContainsKey(sysid))
+            //    re = RulesBySystem[sysid];
+            //else if (Rules.ContainsKey(id))
+            //    re = Rules[id];
+            //else 
+            if (setting != null && setting.CustomRules.Value.ContainsKey(id))
+                return setting.CustomRules.Value[id];
             else
                 re = GetRule(id, System, setting);
             return re;
@@ -160,11 +164,6 @@ namespace ParagonLib
 
         private static RulesElement GetRule(string id, string GameSystem, CampaignSetting setting)
         {
-            if (setting != null)
-            {
-                if (setting.CustomRules.Value.ContainsKey(id))
-                    return setting.CustomRules.Value[id];
-            }
             foreach (var factory in RuleFactories.Values.ToArray())
             {
                 RulesElement rule = null;
@@ -330,19 +329,37 @@ namespace ParagonLib
 
         private static void CreateLazyRules(XDocument doc, Dictionary<string, RulesElement> setting)
         {
-            foreach (var re in doc.Descendants("RulesElement"))
+            //RuleFactories.TryAdd(doc)
+            var filename = Path.GetFileNameWithoutExtension(doc.Root.Attribute("Filename").Value);
+            Version version;
+            try
             {
-                var rule = LazyRulesElement.New(re);
-                if (setting != null)
-                    setting[rule.InternalId] = rule;
-                else
-                {
-
-                    Rules[rule.InternalId] = rule;
-                    if (!String.IsNullOrEmpty(rule.GameSystem))
-                        RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
-                }
+                VersionParser.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value, out version);
             }
+            catch (NullReferenceException)
+            {
+                version = new Version();
+            }
+            var sname = string.Format("{0}, Version={1}", filename, version);
+            var factory = new LazyRules.LazyFactory(doc);
+            if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
+                CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
+            factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
+            factory.InitMetadata();
+            RuleFactories[sname] = factory;
+            //foreach (var re in doc.Descendants("RulesElement"))
+            //{
+            //    var rule = LazyRulesElement.New(re);
+            //    if (setting != null)
+            //        setting[rule.InternalId] = rule;
+            //    else
+            //    {
+
+            //        Rules[rule.InternalId] = rule;
+            //        if (!String.IsNullOrEmpty(rule.GameSystem))
+            //            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+            //    }
+            //}
         }
 
         private static void LoadRuleAssembly(Dictionary<string, RulesElement> setting, System.Reflection.Assembly code)
@@ -359,27 +376,29 @@ namespace ParagonLib
                 if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
                     CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
                 factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
+                factory.InitMetadata();
                 RuleFactories[sname] = factory;
 
             }
             //TODO:
-            //else 
+            else 
             {
-                foreach (var t in code.GetTypes())
-                {
-                    var rule = Activator.CreateInstance(t) as RulesElement;
-                    if (rule == null)
-                        continue;
-                    if (setting != null)
-                        setting[rule.InternalId] = rule;
-                    else
-                    {
+                throw new InvalidDataException("No Factory class");
+                //foreach (var t in code.GetTypes())
+                //{
+                //    var rule = Activator.CreateInstance(t) as RulesElement;
+                //    if (rule == null)
+                //        continue;
+                //    if (setting != null)
+                //        setting[rule.InternalId] = rule;
+                //    else
+                //    {
 
-                        Rules[rule.InternalId] = rule;
-                        if (!String.IsNullOrEmpty(rule.GameSystem))
-                            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
-                    }
-                }
+                //        Rules[rule.InternalId] = rule;
+                //        if (!String.IsNullOrEmpty(rule.GameSystem))
+                //            RulesBySystem[String.Format("{0}+{1}", rule.GameSystem, rule.InternalId)] = rule;
+                //    }
+                //}
             }
         }
 
@@ -533,5 +552,11 @@ namespace ParagonLib
         }
 
         public static object LastUpdated { get; private set; }
+
+        public static void RegisterMetadata(RuleData metadata)
+        {
+            //Rules[metadata.InternalId] = metadata;
+            RulesBySystem[String.Format("{0}+{1}", metadata.GameSystem, metadata.InternalId)] = metadata;
+        }
     }
 }

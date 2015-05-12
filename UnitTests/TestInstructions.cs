@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using System.Linq;
 using NUnit.Framework;
+using ParagonLib.RuleEngine;
 
 namespace UnitTests
 {

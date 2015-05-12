@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParagonLib.RuleEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace CharacterStudio
             AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (ParagonLib.RuleFactory.Loading)
+            if (RuleFactory.Loading)
                 Console.WriteLine("Loading");
             Application.Run(new PrimaryForm());
         }

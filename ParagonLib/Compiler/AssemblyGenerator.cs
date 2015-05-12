@@ -15,6 +15,7 @@ using ParagonLib.RuleBases;
 using System.Threading.Tasks;
 using ParagonLib.Utils;
 using ParagonLib.Rules;
+using ParagonLib.RuleEngine;
 
 namespace ParagonLib.Compiler
 {
@@ -161,7 +162,7 @@ namespace ParagonLib.Compiler
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule(name + ".dll", true);
             var generator = DebugInfoGenerator.CreatePdbGenerator();
             List<TypeBuilder> types = new List<TypeBuilder>();
-            Dictionary<string, List<string>> CategoryData = new Dictionary<string, List<string>>();
+            List<RuleData> MetadataRules = new List<RuleData>();
 #if ASYNC
             List<Task> tasks = new List<Task>();
 #endif
@@ -174,6 +175,12 @@ namespace ParagonLib.Compiler
 
                 var InternalId = re.Attribute("internal-id").Value.Trim();
                 var ElementType = re.Attribute("type").Value.Trim();
+
+                var metadata = new RuleData() { 
+                    InternalId = InternalId, 
+                    Type = ElementType, 
+                    Name = re.Attribute("name").Value.Trim()
+                };
                 Type Parent;
                 switch (ElementType)
                 {
@@ -237,13 +244,8 @@ namespace ParagonLib.Compiler
                         {
                             case "Category":
                                 var cats = item.Value.Split(',').Select(n => n.Trim()).ToArray();
+                                metadata.Categories = cats;
                                 Assign(ctorgen, Builders.RefGetField(typeof(RulesElement), "category"), cats);
-                                foreach (var c in cats)
-                                {
-                                    if (!CategoryData.ContainsKey(c))
-                                        CategoryData[c] = new List<string>();
-                                    CategoryData[c].Add(InternalId);
-                                }
                                 break;
                             case "rules":
                                 int rulenum = 0;
@@ -275,6 +277,7 @@ namespace ParagonLib.Compiler
                 }
                 typeBuilder.CreateType();
                 types.Add(typeBuilder);
+                MetadataRules.Add(metadata);
 #if ASYNC
             }));
             }
@@ -282,7 +285,7 @@ namespace ParagonLib.Compiler
 #else
             }
 #endif
-            CreateFactory(module, types, CategoryData, GameSystem);
+            CreateFactory(module, types, MetadataRules, GameSystem);
             try
             {
                 Logging.Log("Compiler", TraceEventType.Information, "Generated {0}.dll", name);                
@@ -298,7 +301,7 @@ namespace ParagonLib.Compiler
             return assemblyBuilder;
         }
 
-        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types, Dictionary<string,List<string>> CategoryData, string GameSystem)
+        private static void CreateFactory(ModuleBuilder module, List<TypeBuilder> types, List<RuleData> Metadata, string GameSystem)
         {
             //TODO: This still isn't perfect. But we're getting there.
             // Contains giant switch statement, that returns instances w/o Reflection.
@@ -372,6 +375,57 @@ namespace ParagonLib.Compiler
                 //code.Emit(OpCodes.)
                 //prop.SetGetMethod(GameSystem_get);
             }
+            var CategoryData = new Dictionary<string, List<string>>();
+            // Metadata
+            {
+                var DescribeMethod = Factory.DefineMethod("InitMetadata", MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), Type.EmptyTypes);
+                Factory.DefineMethodOverride(DescribeMethod, typeof(IFactory).GetMethod("InitMetadata"));
+                var ilgen = DescribeMethod.GetILGenerator();
+                MethodInfo Register = Builders.RefGetMethod(typeof(RuleFactory),"RegisterMetadata");
+                var set_InternalId = typeof(RuleData).GetProperty("InternalId").GetSetMethod();
+                var set_Name = typeof(RuleData).GetProperty("Name").GetSetMethod();
+                var set_Type = typeof(RuleData).GetProperty("Type").GetSetMethod();
+                var set_Categories = typeof(RuleData).GetProperty("Categories").GetSetMethod();
+
+                var tempdata = ilgen.DeclareLocal(typeof(RuleData));
+                foreach (var re in Metadata)
+                {
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Initobj, typeof(RuleData));
+
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldstr, re.InternalId);
+                    ilgen.Emit(OpCodes.Call, set_InternalId);
+
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldstr, re.Name);
+                    ilgen.Emit(OpCodes.Call, set_Name);
+
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldstr, re.Type);
+                    ilgen.Emit(OpCodes.Call, set_Type);
+
+                    if (re.Categories != null)
+                    {
+                        ilgen.Emit(OpCodes.Ldloca, tempdata);
+                        EmitNewArray(ilgen, re.Categories);
+                        ilgen.Emit(OpCodes.Call, set_Categories);
+                    }
+
+                    ilgen.Emit(OpCodes.Ldloc_0);
+                    ilgen.Emit(OpCodes.Call, Register);
+
+                    if (re.Categories !=null)
+                    foreach (var c in re.Categories)
+                    {
+                        if (!CategoryData.ContainsKey(c))
+                            CategoryData[c] = new List<string>();
+                        CategoryData[c].Add(re.InternalId);
+                    }
+                }
+                ilgen.Emit(OpCodes.Ret);
+            }
+            
             // Categories
             {
                 var DescribeMethod =  Factory.DefineMethod("DescribeCategories", MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), new Type[] { typeof(Dictionary<string, CategoryInfo>) });

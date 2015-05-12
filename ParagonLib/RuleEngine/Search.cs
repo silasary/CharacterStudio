@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ParagonLib
+namespace ParagonLib.RuleEngine
 {
     public class Search
     {
         object LastUpdated;
-        private RulesElement[] results;
+        private RuleData[] results;
         public string System { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
@@ -24,7 +24,7 @@ namespace ParagonLib
             this.Workspace = ws;
         }
 
-        public RulesElement[] Results
+        public RuleData[] Results
         {
             get
             {
@@ -37,7 +37,7 @@ namespace ParagonLib
             }
         }
 
-        public IEnumerable<RulesElement> Find()
+        public IEnumerable<RuleData> Find()
         {
             //TODO: We need to deal with the Campaign Setting at some point here. 
             var Categories = Category == null ? new string[0] : Category.Split(',');
@@ -49,10 +49,11 @@ namespace ParagonLib
                     continue;
                 if (!(String.IsNullOrEmpty(System) || String.IsNullOrEmpty(item.GameSystem) || item.GameSystem == System))
                     continue;
-                if (catCount > 0 && item.Category == null)
-                    continue;
-                if (catCount > 0 && Categories.Intersect(item.Category, Comparer).Count() != catCount)
-                    continue;
+                //TODO:
+                //if (catCount > 0 && item.Category == null)
+                //    continue;
+                //if (catCount > 0 && Categories.Intersect(item.Category, Comparer).Count() != catCount)
+                //    continue;
                 if (Workspace != null && Workspace.Setting != null && !Workspace.Setting.IsRuleLegal(item))
                     continue;
                 yield return item;

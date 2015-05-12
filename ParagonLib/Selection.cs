@@ -1,4 +1,5 @@
 ﻿using ParagonLib.RuleBases;
+using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,9 @@ namespace ParagonLib
                 }
                 else
                 {
-                    UninformedGuess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).FirstOrDefault(n => n.Type == Type).RulesElementId;
+                    var _uguess = Parent.Children.Where(n => n.Method == CharElement.AquistitionMethod.Unknown).FirstOrDefault(n => n.Type == Type);
+                    if (_uguess != null)
+                    UninformedGuess = _uguess.RulesElementId;
                     Value = "";
                     return;
                 }

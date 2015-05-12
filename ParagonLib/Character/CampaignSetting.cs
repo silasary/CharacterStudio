@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 using ParagonLib.RuleBases;
+using ParagonLib.RuleEngine;
 
 namespace ParagonLib
 {
@@ -102,7 +103,7 @@ namespace ParagonLib
             Filters[type] = new FilterType() { IsBlacklist = blacklist, Items = filters.ToArray() };
         }
 
-        public bool IsRuleLegal(RulesElement ele)
+        public bool IsRuleLegal(RuleData ele)
         {
             if (!Loaded)
             {
@@ -121,9 +122,9 @@ namespace ParagonLib
             var filter = Filters[ele.Type];
             foreach (var item in filter.Items)
             {
-                bool match = 
-                    (item.IsSource && ele.Source == item.Name) 
-                    || 
+                bool match =  //TODO:
+                    //(item.IsSource && ele.Source == item.Name) 
+                    //|| 
                     (!item.IsSource && ele.InternalId == item.Name);
                 if (match)
                     return !filter.IsBlacklist; // true if whitelist, false if blacklist.

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ParagonLib;
 using ParagonLib.RuleBases;
+using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
