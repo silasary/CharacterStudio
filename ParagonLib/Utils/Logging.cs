@@ -24,6 +24,7 @@ namespace ParagonLib
                     File.WriteAllText(logfile, "");
                     OpenLogs.Add(logfile);
                 }
+
                 File.AppendAllLines(logfile, new string[] { Message });
 
                 if (Log == "Xml Validation")

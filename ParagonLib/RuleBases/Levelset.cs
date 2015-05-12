@@ -48,6 +48,8 @@ namespace ParagonLib.RuleBases
                     break;
                 element.Grant(l.InternalId, "Level",null,level.ToString());
                 var levelele = element.Children.FirstOrDefault(n => n.Name == level.ToString());
+                if (levelele == null)
+                    break; // What?
                 var Level = (ILevel)levelele.RulesElement;
                 if (Level == null)
                     break;

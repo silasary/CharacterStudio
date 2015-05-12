@@ -330,7 +330,7 @@ namespace ParagonLib.RuleEngine
         private static void CreateLazyRules(XDocument doc, Dictionary<string, RulesElement> setting)
         {
             //RuleFactories.TryAdd(doc)
-            var filename = Path.GetFileNameWithoutExtension(doc.Root.Attribute("Filename").Value);
+            var filename = Path.GetFileNameWithoutExtension(doc.Root.Attribute("Filename") == null ? "Unknown" : doc.Root.Attribute("Filename").Value);
             Version version;
             try
             {
