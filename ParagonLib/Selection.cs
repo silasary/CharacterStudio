@@ -105,5 +105,7 @@ namespace ParagonLib
         public Search Options { get; set; }
 
         public string Name { get; set; }
+
+        public bool Optional { get; set; }
     }
 }

@@ -105,6 +105,9 @@ namespace ParagonLib
                 sel.Requires = requires;
                 sel.Level = int.Parse(Level??"0"); //Let's not use Workspace here.
                 sel.Default = Default;
+                bool bOptional;
+                if (bool.TryParse(optional, out bOptional))
+                    sel.Optional = bOptional;
                 if (string.IsNullOrEmpty(name))
                     sel.Name = hash;
                 else

@@ -122,7 +122,7 @@ namespace ParagonLib
             var filter = Filters[ele.Type];
             foreach (var item in filter.Items)
             {
-                bool match =  //TODO:
+                bool match =  //TODO: RuleData.Source
                     //(item.IsSource && ele.Source == item.Name) 
                     //|| 
                     (!item.IsSource && ele.InternalId == item.Name);

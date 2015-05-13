@@ -386,6 +386,7 @@ namespace ParagonLib.Compiler
                 var set_Name = typeof(RuleData).GetProperty("Name").GetSetMethod();
                 var set_Type = typeof(RuleData).GetProperty("Type").GetSetMethod();
                 var set_Categories = typeof(RuleData).GetProperty("Categories").GetSetMethod();
+                var set_GameSystem = typeof(RuleData).GetProperty("GameSystem").GetSetMethod();
 
                 var tempdata = ilgen.DeclareLocal(typeof(RuleData));
                 foreach (var re in Metadata)
@@ -405,12 +406,18 @@ namespace ParagonLib.Compiler
                     ilgen.Emit(OpCodes.Ldstr, re.Type);
                     ilgen.Emit(OpCodes.Call, set_Type);
 
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldstr, GameSystem);
+                    ilgen.Emit(OpCodes.Call, set_GameSystem);
+
                     if (re.Categories != null)
                     {
                         ilgen.Emit(OpCodes.Ldloca, tempdata);
                         EmitNewArray(ilgen, re.Categories);
                         ilgen.Emit(OpCodes.Call, set_Categories);
                     }
+
+
 
                     ilgen.Emit(OpCodes.Ldloc_0);
                     ilgen.Emit(OpCodes.Call, Register);

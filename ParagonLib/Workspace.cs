@@ -55,7 +55,7 @@ namespace ParagonLib
                 return;
             if (Recalculating)
                 return;
-            Recalculate();
+            Recalculate(false);
         }
 
         public List<Adventure> AdventureLog { get; set; }
@@ -78,7 +78,7 @@ namespace ParagonLib
         {
             if (Stats.ContainsKey(Stat) && Stats.ContainsKey(Alias))
             {
-                if (Stats[Stat] == Stats[Alias]) // We've already done the Alias.  Let's not get into a massive headache.
+                if (Stats[Stat] == Stats[Alias])
                     return;
                 throw new InvalidOperationException("You can't Alias into an existing stat.");
             }
@@ -88,7 +88,7 @@ namespace ParagonLib
             Stats[Alias].AddAlias(Alias);
         }
 
-        //TODO: Make this better.
+        //xTODO: Make this better.
         public Workspace.Stat GetStat(string name)
         {
             if (!Stats.ContainsKey(name))
@@ -110,11 +110,14 @@ namespace ParagonLib
         private object _RecalcLock = new object();
         public void Recalculate(bool block = true) //TODO: Default should be false.
         {
+            if (!block)
+            {
+                Task.Run(() => Recalculate(true));
+                return;
+            }
             lock (_RecalcLock)
             {
                 Recalculating = true;
-                if (!block)
-                    throw new NotImplementedException(); //TODO: Do the below, but asyncronously.
                 foreach (var stat in Stats)
                 {
                     stat.Value.Reset();
