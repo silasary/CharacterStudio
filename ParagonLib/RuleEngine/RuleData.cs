@@ -16,6 +16,8 @@
 
         public string Type { get; set; }
 
+        public string Source { get; set; }
+
         public static implicit operator RuleData(RuleBases.RulesElement e){
             return new RuleData()
             {

@@ -179,8 +179,11 @@ namespace ParagonLib.Compiler
                 var metadata = new RuleData() { 
                     InternalId = InternalId, 
                     Type = ElementType, 
-                    Name = re.Attribute("name").Value.Trim()
+                    Name = re.Attribute("name").Value.Trim(),
                 };
+                if (re.Attribute("source") != null)
+                    metadata.Source = re.Attribute("source").Value.Trim();
+
                 Type Parent;
                 switch (ElementType)
                 {
@@ -387,6 +390,7 @@ namespace ParagonLib.Compiler
                 var set_Type = typeof(RuleData).GetProperty("Type").GetSetMethod();
                 var set_Categories = typeof(RuleData).GetProperty("Categories").GetSetMethod();
                 var set_GameSystem = typeof(RuleData).GetProperty("GameSystem").GetSetMethod();
+                var set_Source = typeof(RuleData).GetProperty("Source").GetSetMethod();
 
                 var tempdata = ilgen.DeclareLocal(typeof(RuleData));
                 foreach (var re in Metadata)
@@ -410,14 +414,19 @@ namespace ParagonLib.Compiler
                     ilgen.Emit(OpCodes.Ldstr, GameSystem);
                     ilgen.Emit(OpCodes.Call, set_GameSystem);
 
+                    if (!string.IsNullOrEmpty(re.Source))
+                    {
+                        ilgen.Emit(OpCodes.Ldloca, tempdata);
+                        ilgen.Emit(OpCodes.Ldstr, re.Source);
+                        ilgen.Emit(OpCodes.Call, set_Source);
+                    }
+
                     if (re.Categories != null)
                     {
                         ilgen.Emit(OpCodes.Ldloca, tempdata);
                         EmitNewArray(ilgen, re.Categories);
                         ilgen.Emit(OpCodes.Call, set_Categories);
                     }
-
-
 
                     ilgen.Emit(OpCodes.Ldloc_0);
                     ilgen.Emit(OpCodes.Call, Register);
@@ -434,6 +443,7 @@ namespace ParagonLib.Compiler
             }
             
             // Categories
+            if (typeof(IFactory).GetMethod("DescribeCategories") != null)
             {
                 var DescribeMethod =  Factory.DefineMethod("DescribeCategories", MethodAttributes.Public | MethodAttributes.Virtual, CallingConventions.HasThis, typeof(void), new Type[] { typeof(Dictionary<string, CategoryInfo>) });
                 var ilgen = DescribeMethod.GetILGenerator();

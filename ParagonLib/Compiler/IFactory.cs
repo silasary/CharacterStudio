@@ -12,7 +12,7 @@ namespace ParagonLib.Compiler
     {
         RulesElement New(string internalId);
         string GameSystem { get; }
-        void DescribeCategories(Dictionary<string,CategoryInfo> dict);
+        //void DescribeCategories(Dictionary<string,CategoryInfo> dict);
         void InitMetadata();
     }
 }

@@ -303,7 +303,12 @@ namespace ParagonLib.RuleEngine
             }
             if (!success) // It worked, but we want to regen anyway.  Probably because ParagonLib updated.
             {
-                if (setting != null)
+                var SeSpAtt = doc.Root.Attribute("SettingSpecific");
+                if (setting == null && SeSpAtt != null)
+                    SeSpAtt.Value = "false";
+                else if (setting != null && SeSpAtt != null)
+                    SeSpAtt.Value = "true";
+                else if (setting != null)
                     doc.Root.Add(new XAttribute("SettingSpecific", "true"));
                 FilesToRegen.Enqueue(doc);
                 if (!runningBackgroundRegen)
@@ -319,7 +324,12 @@ namespace ParagonLib.RuleEngine
             }
             catch (System.Reflection.ReflectionTypeLoadException c)
             {
-                File.WriteAllText(c.Types[0].Assembly.Location + ".regen", c.LoaderExceptions[0].Message);
+                File.WriteAllText(code.Location + ".regen", c.LoaderExceptions[0].Message);
+                LoadPart(doc, setting);
+            }
+            catch (MissingMethodException c)
+            {
+                File.WriteAllText(code.Location + ".regen", c.Message);
                 LoadPart(doc, setting);
             }
             var system = doc.Root.Attribute("game-system").Value;
@@ -375,7 +385,7 @@ namespace ParagonLib.RuleEngine
                 var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
                 if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
                     CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
-                factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
+                //factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
                 factory.InitMetadata();
                 RuleFactories[sname] = factory;
 

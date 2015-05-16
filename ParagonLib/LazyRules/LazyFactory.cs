@@ -98,8 +98,10 @@ namespace ParagonLib.LazyRules
                          InternalId = InternalId,
                          Name = ele.Attribute("name").Value,
                          GameSystem = GameSystem,
-                         Type = ele.Attribute("type").Value
+                         Type = ele.Attribute("type").Value,
                     };
+                if (ele.Attribute("source") != null)
+                    metadata.Source = ele.Attribute("source").Value;
                 if (ele.Element("Category") != null)
                     metadata.Categories = ele.Element("Category").Value.Split(',').Select(n => n.Trim()).ToArray();
                 RuleFactory.RegisterMetadata(metadata);
