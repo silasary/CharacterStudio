@@ -256,6 +256,16 @@ namespace ParagonLib
             WriteComment("\n         The tally of the character&apos;s loot\n      ");
             writer.WriteStartElement("LootTally");
             //TODO: Loot!
+            foreach (var item in c.Loot)
+            {
+                writer.WriteStartElement("loot");
+                writer.WriteAttributeString("count", item.Value.Count.ToString());
+                //writer.WriteAttributeString("equip-count", item.Value.EquipCount.ToString());
+                //writer.WriteAttributeString("ShowPowerCard", item.Value.ShowPowerCard);
+                
+                SerializeItem(item.Value,true);
+                writer.WriteEndElement();
+            }
             writer.WriteRaw("\n    ");
             writer.WriteEndElement();
         }

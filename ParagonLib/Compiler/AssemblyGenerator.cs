@@ -180,6 +180,8 @@ namespace ParagonLib.Compiler
                     InternalId = InternalId, 
                     Type = ElementType, 
                     Name = re.Attribute("name").Value.Trim(),
+                    PartFile = filename,
+                    LineNumber = ((IXmlLineInfo)re).LineNumber,
                 };
                 if (re.Attribute("source") != null)
                     metadata.Source = re.Attribute("source").Value.Trim();
@@ -334,6 +336,7 @@ namespace ParagonLib.Compiler
                 int i = 0;
                 foreach (var type in types)
                 {
+                    //factoryNewCode.MarkSequencePoint
                     factoryNewCode.Emit(OpCodes.Dup); // Dictionary reference.
                     factoryNewCode.Emit(OpCodes.Ldstr, type.Name);
                     factoryNewCode.Emit(OpCodes.Ldc_I4, i++);
@@ -391,6 +394,10 @@ namespace ParagonLib.Compiler
                 var set_Categories = typeof(RuleData).GetProperty("Categories").GetSetMethod();
                 var set_GameSystem = typeof(RuleData).GetProperty("GameSystem").GetSetMethod();
                 var set_Source = typeof(RuleData).GetProperty("Source").GetSetMethod();
+                var set_Prereqs = typeof(RuleData).GetProperty("Prereqs").GetSetMethod();
+                var set_PrintPrereqs = typeof(RuleData).GetProperty("PrintPrereqs").GetSetMethod();
+                var PartFile = typeof(RuleData).GetField("PartFile");
+                var LineNum = typeof(RuleData).GetField("LineNumber");
 
                 var tempdata = ilgen.DeclareLocal(typeof(RuleData));
                 foreach (var re in Metadata)
@@ -414,11 +421,18 @@ namespace ParagonLib.Compiler
                     ilgen.Emit(OpCodes.Ldstr, GameSystem);
                     ilgen.Emit(OpCodes.Call, set_GameSystem);
 
-                    if (!string.IsNullOrEmpty(re.Source))
+                    if (re.Source != null)
                     {
                         ilgen.Emit(OpCodes.Ldloca, tempdata);
                         ilgen.Emit(OpCodes.Ldstr, re.Source);
                         ilgen.Emit(OpCodes.Call, set_Source);
+                    }
+
+                    if (re.Prereqs != null)
+                    {
+                        ilgen.Emit(OpCodes.Ldloca, tempdata);
+                        ilgen.Emit(OpCodes.Ldstr, re.Prereqs);
+                        ilgen.Emit(OpCodes.Call, set_Prereqs);
                     }
 
                     if (re.Categories != null)
@@ -427,6 +441,9 @@ namespace ParagonLib.Compiler
                         EmitNewArray(ilgen, re.Categories);
                         ilgen.Emit(OpCodes.Call, set_Categories);
                     }
+
+                    Assign(ilgen, PartFile, re.PartFile);
+                    Assign(ilgen, PartFile, re.LineNumber);
 
                     ilgen.Emit(OpCodes.Ldloc_0);
                     ilgen.Emit(OpCodes.Call, Register);

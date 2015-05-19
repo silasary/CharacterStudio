@@ -20,7 +20,7 @@ namespace ParagonLib.RuleEngine
 {
     public static class RuleFactory
     {
-        internal static ConcurrentDictionary<string, RulesElement> Rules = new ConcurrentDictionary<string, RulesElement>();
+        internal static ConcurrentDictionary<string, RuleData> Rules = new ConcurrentDictionary<string, RuleData>();
         internal static ConcurrentDictionary<string, RuleData> RulesBySystem = new ConcurrentDictionary<string, RuleData>();
         internal static ConcurrentDictionary<string, IFactory> RuleFactories = new ConcurrentDictionary<string, IFactory>();
         internal static Dictionary<string, Dictionary<string, CategoryInfo>> CategoriesBySystem = new Dictionary<string, Dictionary<string, CategoryInfo>>();
@@ -179,7 +179,8 @@ namespace ParagonLib.RuleEngine
                 WaitFileLoaded.WaitOne(10); // Waiting here doesn't actually help, except in a race condition.
                 if (Rules.ContainsKey(id))
                 {
-                    return Rules[id];
+                    
+                    //return Rules[id];
                 }
                 if (setting != null && setting.CustomRules.Value.ContainsKey(id))
                     return setting.CustomRules.Value[id];
@@ -378,14 +379,11 @@ namespace ParagonLib.RuleEngine
             var FactoryType = code.GetType("Factory", false);
             if (FactoryType != null)
             {
-                //TODO: Insert into list, then use it.
-                // usage: RE rule = factory.New(internalId);
                 var factory = Activator.CreateInstance(FactoryType) as IFactory;
                 var name = code.GetName();
                 var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
                 if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
                     CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
-                //factory.DescribeCategories(CategoriesBySystem[factory.GameSystem]);
                 factory.InitMetadata();
                 RuleFactories[sname] = factory;
 
@@ -565,8 +563,19 @@ namespace ParagonLib.RuleEngine
 
         public static void RegisterMetadata(RuleData metadata)
         {
-            //Rules[metadata.InternalId] = metadata;
+            Rules[metadata.InternalId] = metadata;
             RulesBySystem[String.Format("{0}+{1}", metadata.GameSystem, metadata.InternalId)] = metadata;
+            var cats = CategoriesBySystem[metadata.GameSystem];
+            if (cats == null)
+                CategoriesBySystem[metadata.GameSystem] = cats = new Dictionary<string, CategoryInfo>();
+            if (metadata.Categories != null)
+            foreach (var c in metadata.Categories)
+            {
+                if (!cats.ContainsKey(c))
+                    cats[c] = new CategoryInfo();
+                if (!cats[c].Members.Contains(metadata.InternalId))
+                    cats[c].Members.Add(metadata.InternalId);
+            }
         }
     }
 }

@@ -18,6 +18,10 @@
 
         public string Source { get; set; }
 
+        public string PartFile;
+
+        public int LineNumber;
+
         public static implicit operator RuleData(RuleBases.RulesElement e){
             return new RuleData()
             {
