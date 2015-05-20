@@ -179,7 +179,7 @@ namespace ParagonLib.RuleEngine
                 WaitFileLoaded.WaitOne(10); // Waiting here doesn't actually help, except in a race condition.
                 if (Rules.ContainsKey(id))
                 {
-                    
+                    var rule = Rules[id];
                     //return Rules[id];
                 }
                 if (setting != null && setting.CustomRules.Value.ContainsKey(id))
