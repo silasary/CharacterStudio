@@ -58,7 +58,7 @@ namespace SmartWeakEvent
 			MethodInfo invoke = typeof(T).GetMethod("Invoke");
 			if (invoke == null || invoke.GetParameters().Length != 2)
 				throw new ArgumentException("T must be a delegate type taking 2 parameters");
-			ParameterInfo senderParameter = invoke.GetParameters()[0];
+			//ParameterInfo senderParameter = invoke.GetParameters()[0];
             //if (senderParameter.ParameterType != typeof(object))
             //    throw new ArgumentException("The first delegate parameter must be of type 'object'");
 			ParameterInfo argsParameter = invoke.GetParameters()[1];

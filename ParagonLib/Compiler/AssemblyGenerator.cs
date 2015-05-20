@@ -438,6 +438,13 @@ namespace ParagonLib.Compiler
                         ilgen.Emit(OpCodes.Call, set_Prereqs);
                     }
 
+                    if (re.PrintPrereqs != null)
+                    {
+                        ilgen.Emit(OpCodes.Ldloca, tempdata);
+                        ilgen.Emit(OpCodes.Ldstr, re.PrintPrereqs);
+                        ilgen.Emit(OpCodes.Call, set_PrintPrereqs);
+                    }
+
                     if (re.Categories != null)
                     {
                         ilgen.Emit(OpCodes.Ldloca, tempdata);
@@ -446,7 +453,7 @@ namespace ParagonLib.Compiler
                     }
 
                     Assign(ilgen, PartFile, re.PartFile);
-                    Assign(ilgen, PartFile, re.LineNumber);
+                    Assign(ilgen, LineNum, re.LineNumber);
 
                     ilgen.Emit(OpCodes.Ldloc_0);
                     ilgen.Emit(OpCodes.Call, Register);

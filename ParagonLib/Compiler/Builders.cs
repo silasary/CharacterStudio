@@ -139,7 +139,7 @@ namespace ParagonLib.Compiler
         internal static Expression ValidateExists(string[] args)
         {
             var id = args[0];
-            var type = args[1];
+//            var type = args[1];
             LabelTarget returnTarget = Expression.Label(typeof(string));
             var RuleIsNull = Expression.Equal(Expression.Call(null, RefGetMethod(typeof(RuleFactory), "FindRulesElement"), Expression.Constant(id, typeof(string)), Expression.Constant(null, typeof(string)), Expression.Constant(null, typeof(CampaignSetting))), Expression.Constant(null));
 

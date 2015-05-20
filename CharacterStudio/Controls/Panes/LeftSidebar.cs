@@ -20,10 +20,10 @@ namespace CharacterStudio.Controls.Panes
 
         public override void OnCharacterLoad()
         {
-            //TODO:
-            //if (string.IsNullOrEmpty(CurrentWorkspace.CharacterRef.Portrait))
-            //    this.pictureBox1.ImageLocation = Character.DefaultPortrait(CurrentWorkspace.CharacterRef.Class, CurrentWorkspace.CharacterRef.Race, CurrentWorkspace.CharacterRef.Gender);
-            //else
+            //TODO: Race; Class.
+            if (string.IsNullOrEmpty(CurrentWorkspace.CharacterRef.Portrait))
+                this.pictureBox1.ImageLocation = Character.DefaultPortrait(CurrentWorkspace.CharacterRef.Class, "", ""); //CurrentWorkspace.CharacterRef.Race, CurrentWorkspace.CharacterRef.Gender);
+            else
                 this.pictureBox1.ImageLocation = CurrentWorkspace.CharacterRef.Portrait;
                 CurrentWorkspace.CharacterRef.PropertyChanged += CharacterRef_PropertyChanged;
             base.OnCharacterLoad();
