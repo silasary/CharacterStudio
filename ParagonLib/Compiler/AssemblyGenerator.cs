@@ -67,9 +67,12 @@ namespace ParagonLib.Compiler
                 catch (IOException c)
                 {   // We're not having any luck here. Just use the existing one.
                     Logging.Crashlog(c);
-                    var a = Assembly.LoadFile(new FileInfo(savepath).FullName);
-                    dll = a;
-                    return true;
+                    if (File.Exists(savepath))
+                    {
+                        var a = Assembly.LoadFile(new FileInfo(savepath).FullName);
+                        dll = a;
+                        return true;
+                    }
                 }
                 if (File.Exists(name + (IsRunningOnMono ? ".mdb" : ".pdb")))
                     File.Move(name + (IsRunningOnMono ? ".mdb" : ".pdb"), pdb);
