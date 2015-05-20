@@ -247,9 +247,13 @@ namespace ParagonLib
             WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
             //TODO: Power Blocks!  VERY IMPORTANT. (for iPlay4e)
             writer.WriteStartElement("PowerStats");
-            //foreach (var power in c.workspace.AllElements.Where(e => e.Type == "Power"))
+            foreach (var power in c.workspace.AllElements.Where(e => e.Value.IsAlive).Select(e=> e.Value.Target as CharElement).Where(e=> e.Type == "Power"))
             {
-                
+                writer.WriteStartElement("Power");
+                writer.WriteAttributeString("name", power.Name);
+                // Specifics.  Minimum required: "Power Usage", "Action Type".  Ideally, everything else.
+                // Foreach Weapon, Stats.
+                writer.WriteFullEndElement( );
             }
             //Foreach power
             writer.WriteFullEndElement();
@@ -314,7 +318,7 @@ namespace ParagonLib
             else
             {
 
-                // TODO: URL
+                // TODO: compendium URL attribute.
                 // Legality
                 if (IncludeDetails && !String.IsNullOrEmpty(ele.RulesElement.ShortDescription))
                 {
