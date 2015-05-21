@@ -399,8 +399,8 @@ namespace ParagonLib.Compiler
                 var set_Source = typeof(RuleData).GetProperty("Source").GetSetMethod();
                 var set_Prereqs = typeof(RuleData).GetProperty("Prereqs").GetSetMethod();
                 var set_PrintPrereqs = typeof(RuleData).GetProperty("PrintPrereqs").GetSetMethod();
-                var PartFile = typeof(RuleData).GetField("PartFile");
-                var LineNum = typeof(RuleData).GetField("LineNumber");
+                var set_PartFile = typeof(RuleData).GetProperty("PartFile").GetSetMethod();
+                var set_LineNumber = typeof(RuleData).GetProperty("LineNumber").GetSetMethod();
 
                 var tempdata = ilgen.DeclareLocal(typeof(RuleData));
                 foreach (var re in Metadata)
@@ -452,8 +452,13 @@ namespace ParagonLib.Compiler
                         ilgen.Emit(OpCodes.Call, set_Categories);
                     }
 
-                    Assign(ilgen, PartFile, re.PartFile);
-                    Assign(ilgen, LineNum, re.LineNumber);
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldstr, re.PartFile);
+                    ilgen.Emit(OpCodes.Call, set_PartFile);
+
+                    ilgen.Emit(OpCodes.Ldloca, tempdata);
+                    ilgen.Emit(OpCodes.Ldc_I4, re.LineNumber);
+                    ilgen.Emit(OpCodes.Call, set_LineNumber);
 
                     ilgen.Emit(OpCodes.Ldloc_0);
                     ilgen.Emit(OpCodes.Call, Register);

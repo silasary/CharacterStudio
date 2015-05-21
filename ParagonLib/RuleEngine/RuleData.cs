@@ -18,9 +18,9 @@
 
         public string Source { get; set; }
 
-        public string PartFile;
+        public string PartFile { get; set; }
 
-        public int LineNumber;
+        public int LineNumber { get; set; }
 
         public static implicit operator RuleData(RuleBases.RulesElement e){
             return new RuleData()

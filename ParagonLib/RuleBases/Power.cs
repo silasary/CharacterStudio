@@ -1,11 +1,12 @@
 ﻿using ParagonLib.Compiler;
+using ParagonLib.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ParagonLib.RuleBases
 {
-    public class Power : RulesElement
+    public class Power : RulesElement, IPower
     {
         public struct PowerLine
         {

@@ -312,11 +312,6 @@ namespace ParagonLib.RuleEngine
                 else if (setting != null)
                     doc.Root.Add(new XAttribute("SettingSpecific", "true"));
                 FilesToRegen.Enqueue(doc);
-                if (!runningBackgroundRegen)
-                {
-                    runningBackgroundRegen = true;
-                    new Thread(RegenLoop) { Name = "RegenThread", IsBackground = true, Priority = ThreadPriority.Lowest }.Start();
-                }
             }
             try
             {
@@ -416,9 +411,9 @@ namespace ParagonLib.RuleEngine
             while (FilesToRegen.TryDequeue(out doc))
             {
                 if (doc.Root.Attribute("SettingSpecific") == null)
-                    LoadRuleAssembly(null, AssemblyGenerator.CompileToDll(doc, true));
+                    LoadRuleAssembly(null, AssemblyGenerator.CompileToDll(doc, false));
                 else
-                    AssemblyGenerator.CompileToDll(doc, true); // We lost the dictionary reference, so just prepare it for next time.
+                    AssemblyGenerator.CompileToDll(doc, false); // We lost the dictionary reference, so just prepare it for next time.
             }
             runningBackgroundRegen = false;
         }
@@ -481,6 +476,11 @@ namespace ParagonLib.RuleEngine
                 LoadFile(file);
                 LastUpdated = new object(); // Searches and the like use this to choose to regen.
                 fileLoader.Raise(file, new EventArgs());
+            }
+            if (!runningBackgroundRegen && FilesToRegen.FirstOrDefault() != null)
+            {
+                runningBackgroundRegen = true;
+                new Thread(RegenLoop) { Name = "RegenThread", IsBackground = true, Priority = ThreadPriority.Lowest }.Start();
             }
         }
 
