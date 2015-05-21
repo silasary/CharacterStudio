@@ -93,65 +93,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Common\Field.cs">
+    <Compile Include="Controls\Field.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Common\Field.Designer.cs">
+    <Compile Include="Controls\Field.Designer.cs">
       <DependentUpon>Field.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Common\SelectionControl.cs">
+    <Compile Include="Controls\SelectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Common\SelectionControl.Designer.cs">
+    <Compile Include="Controls\SelectionControl.Designer.cs">
       <DependentUpon>SelectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Common\SimpleCharacterVis.cs">
+    <Compile Include="Controls\SimpleCharacterVis.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Common\SimpleCharacterVis.Designer.cs">
+    <Compile Include="Controls\SimpleCharacterVis.Designer.cs">
       <DependentUpon>SimpleCharacterVis.cs</DependentUpon>
     </Compile>
     <Compile Include="ChoiceConverter.cs" />
-    <Compile Include="Controls\Panes\DetailsPane.cs">
+    <Compile Include="Panes\DetailsPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\DetailsPane.Designer.cs">
+    <Compile Include="Panes\DetailsPane.Designer.cs">
       <DependentUpon>DetailsPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\HomePane.cs">
+    <Compile Include="Panes\HomePane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\HomePane.Designer.cs">
+    <Compile Include="Panes\HomePane.Designer.cs">
       <DependentUpon>HomePane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\LeftSidebar.cs">
+    <Compile Include="Panes\LeftSidebar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\LeftSidebar.Designer.cs">
+    <Compile Include="Panes\LeftSidebar.Designer.cs">
       <DependentUpon>LeftSidebar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\LoadCharacterPane.cs">
+    <Compile Include="Panes\LoadCharacterPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\LoadCharacterPane.Designer.cs">
+    <Compile Include="Panes\LoadCharacterPane.Designer.cs">
       <DependentUpon>LoadCharacterPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\NewCharacterPane.cs">
+    <Compile Include="Panes\NewCharacterPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\NewCharacterPane.Designer.cs">
+    <Compile Include="Panes\NewCharacterPane.Designer.cs">
       <DependentUpon>NewCharacterPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\SelectionPane.cs">
+    <Compile Include="Panes\SelectionPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\SelectionPane.Designer.cs">
+    <Compile Include="Panes\SelectionPane.Designer.cs">
       <DependentUpon>SelectionPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Panes\SelectionPanes\SelectBackground.cs">
+    <Compile Include="Panes\SelectionPanes\SelectBackground.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panes\SelectionPanes\SelectRace.cs">
+    <Compile Include="Panes\SelectionPanes\SelectRace.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PrimaryForm.cs">
@@ -165,31 +165,31 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Controls\Common\Field.resx">
+    <EmbeddedResource Include="Controls\Field.resx">
       <DependentUpon>Field.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Common\SelectionControl.resx">
+    <EmbeddedResource Include="Controls\SelectionControl.resx">
       <DependentUpon>SelectionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Common\SimpleCharacterVis.resx">
+    <EmbeddedResource Include="Controls\SimpleCharacterVis.resx">
       <DependentUpon>SimpleCharacterVis.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\DetailsPane.resx">
+    <EmbeddedResource Include="Panes\DetailsPane.resx">
       <DependentUpon>DetailsPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\HomePane.resx">
+    <EmbeddedResource Include="Panes\HomePane.resx">
       <DependentUpon>HomePane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\LeftSidebar.resx">
+    <EmbeddedResource Include="Panes\LeftSidebar.resx">
       <DependentUpon>LeftSidebar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\LoadCharacterPane.resx">
+    <EmbeddedResource Include="Panes\LoadCharacterPane.resx">
       <DependentUpon>LoadCharacterPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\NewCharacterPane.resx">
+    <EmbeddedResource Include="Panes\NewCharacterPane.resx">
       <DependentUpon>NewCharacterPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panes\SelectionPane.resx">
+    <EmbeddedResource Include="Panes\SelectionPane.resx">
       <DependentUpon>SelectionPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PrimaryForm.resx">
@@ -241,6 +241,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
