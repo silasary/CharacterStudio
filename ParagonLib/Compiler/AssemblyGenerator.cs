@@ -176,7 +176,7 @@ namespace ParagonLib.Compiler
 #endif
                 List<Expression> calcCode = new List<Expression>();
 
-                var InternalId = re.Attribute("internal-id").Value.Trim();
+                var InternalId = re.Attribute("internal-id").Value.Trim().Replace('.','/');
                 var ElementType = re.Attribute("type").Value.Trim();
 
                 var metadata = new RuleData() { 
