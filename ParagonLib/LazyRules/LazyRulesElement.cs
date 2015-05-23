@@ -4,9 +4,10 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using ParagonLib.Compiler;
+using ParagonLib.RuleBases;
 
 
-namespace ParagonLib.RuleBases
+namespace ParagonLib.LazyRules
 {
     public class LazyRulesElement : RulesElement
     {
@@ -15,6 +16,8 @@ namespace ParagonLib.RuleBases
             var type = item.Attribute("type").Value;
             if (type == "Level")
                 return new LazyLevelElement(item);
+            if (type == "Power")
+                return new LazyPower(item);
             return new LazyRulesElement(item);
         }
 
