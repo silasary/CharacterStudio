@@ -249,11 +249,11 @@ namespace ParagonLib
             writer.WriteStartElement("PowerStats");
             foreach (var power in c.workspace.AllElements.Where(e => e.Value.IsAlive).Select(e=> e.Value.Target as CharElement).Where(e=> e.Type == "Power"))
             {
-                writer.WriteStartElement("Power");
-                writer.WriteAttributeString("name", power.Name);
                 var PowerInfo = power.RulesElement as Rules.IPower;
                 if (PowerInfo != null)
                 {
+                    writer.WriteStartElement("Power");
+                    writer.WriteAttributeString("name", power.Name);
                     writer.WriteStartElement("specific");
                     writer.WriteAttributeString("name", "Power Usage");
                     writer.WriteRaw(PowerInfo.PowerUsage);
@@ -265,18 +265,8 @@ namespace ParagonLib
 
                 // Specifics.  Minimum required: "Power Usage", "Action Type".  Ideally, everything else.
                 // Foreach Weapon, Stats.
-                }
-                else
-                {
-                    writer.WriteStartElement("specific");
-                    writer.WriteAttributeString("name", "Power Usage");
-                    writer.WriteFullEndElement();
-                    writer.WriteStartElement("specific");
-                    writer.WriteAttributeString("name", "Action Type");
-                    writer.WriteFullEndElement();
-                }
-
                 writer.WriteFullEndElement( );
+                }
             }
             //Foreach power
             writer.WriteFullEndElement();

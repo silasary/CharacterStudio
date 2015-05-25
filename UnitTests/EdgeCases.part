@@ -13,7 +13,7 @@
 Choose one of your arcane daily attack powers. You gain a +2 bonus to attack rolls with that power. If you retrain that power, you can choose a new arcane daily attack power as your Signature Spell.
    </RulesElement>
   <!-- Apparently if we drop the name, it can make assumptions. This seems messy. -->
-  <!-- This is also an example of <modify list-addition="">, whatever that means. -->
+  <!-- This is also an example of <modify list-addition="">, which apparently appends values to a CSV. -->
   <RulesElement name="Fluid Form" type="Class Feature" internal-id="ID_FMP_CLASS_FEATURE_3507" source="Dragon Magazine 394" revision-date="6/2/2011 1:18:35 PM">
     <Category> 16 </Category>
     <specific name="Short Description"> One at-will power gains the Beast Form keyword </specific>
@@ -24,6 +24,7 @@ Choose one of your arcane daily attack powers. You gain a +2 bonus to attack rol
     </rules>
     Your ability to switch between chaotic forms allows you a unique balance between beast form and humanoid form. Choose a 1st-level at-will attack power that you know. That power gains the beast form keyword while you are in beast form.
   </RulesElement>
+  <!-- Tertiary attacks. Both come from the base.  -->
 <RulesElement name="Chain Lightning" type="Power" internal-id="ID_FMP_POWER_466" source="Player's Handbook" revision-date="8/27/2010 11:22:33 AM">
       <Category> ID_INTERNAL_CATEGORY_ATTACK,ID_INTERNAL_CATEGORY_ENCOUNTER,ID_INTERNAL_CATEGORY_ENCOUNTER_USAGE,ID_FMP_CLASS_9,ID_FMP_CATEGORY_31,ID_FMP_CATEGORY_69,ID_FMP_CATEGORY_25,ID_FMP_CATEGORY_11,ID_INTERNAL_CATEGORY_STANDARD_ACTION,ID_INTERNAL_CATEGORY_MISS,23 </Category>
       <Flavor> From your fingertips springs a tremendous stroke of blinding purple-white lightning that leaps from one enemy to another. </Flavor>
@@ -53,6 +54,7 @@ Choose one of your arcane daily attack powers. You gain a +2 bonus to attack rol
       <specific name="Power Type"> Attack </specific>
 Few spells can unleash as much destruction in a single casting as chain lightning. Used early in combat, this spell can deliver a decisive first blow against a powerful enemy leader while decimating the ranks of its minion allies. Kept in reserve until late in the battle, chain lightning can wipe out an entire wounded enemy force, lashing out unerringly at targets across the battlefield.
    </RulesElement>
+   <!-- Tertiary Attack.  Effect comes from Secondary Attack. -->
     <RulesElement name="Storm of Raining Blades" type="Power" internal-id="ID_FMP_POWER_13285" source="Psionic Power" revision-date="9/21/2010 2:14:43 PM">
       <Category> ID_INTERNAL_CATEGORY_ATTACK,ID_INTERNAL_CATEGORY_DAILY,ID_INTERNAL_CATEGORY_DAILY_USAGE,ID_FMP_PARAGON_PATH_751,ID_FMP_CATEGORY_25,ID_FMP_CATEGORY_35,ID_INTERNAL_CATEGORY_STANDARD_ACTION,20 </Category>
       <Prereqs> Soaring Blade </Prereqs>
@@ -82,4 +84,35 @@ Few spells can unleash as much destruction in a single casting as chain lightnin
       <specific name="Level"> 20 </specific>
       <specific name="Power Type"> Attack </specific>
     </RulesElement>
+	<!--  Modify damage dice -->
+	   <RulesElement name="Greathorn" type="Feat" internal-id="ID_FMP_FEAT_1061" source="Dragon Magazine 369" revision-date="8/27/2010 12:18:36 PM">
+		<Prereqs> Minotaur, goring charge racial power </Prereqs>
+		<print-prereqs> Minotaur, goring charge racial power </print-prereqs>
+		<specific name="Tier"> Heroic </specific>
+		<specific name="Short Description"> Damage dice for goring charge are d8s </specific>
+		<specific name="Special" />
+		<specific name="type" />
+		<specific name="Associated Power Info" />
+		<specific name="Associated Powers" />
+		<rules>
+			<modify name="Goring Charge" type="Power" Field="_DamageDie" value="d8" />
+		</rules>
+The damage dice from your goring charge attack increases from d6s to d8s.
+	</RulesElement>
+	<!-- Change key ability for MBAs -->
+	   <RulesElement name="Intelligent Blademaster" type="Feat" internal-id="ID_FMP_FEAT_613" source="Forgotten Realms Player's Guide" revision-date="8/27/2010 12:18:07 PM">
+		<Prereqs> Swordmage </Prereqs>
+		<print-prereqs> Swordmage </print-prereqs>
+		<specific name="Tier"> Heroic </specific>
+		<specific name="Short Description"> Use Int for your MBAs </specific>
+		<specific name="Special" />
+		<specific name="type" />
+		<specific name="Associated Power Info" />
+		<specific name="Associated Powers" />
+		<rules>
+			<textstring name="melee basic,melee weapon:key ability" value="int" />
+			<textstring name="ranged basic,melee weapon:key ability" value="int" />
+		</rules>
+You can use your Intelligence modifier instead of your Strength modifier when making a basic attack with a melee weapon.
+	</RulesElement>
 </D20Rules>

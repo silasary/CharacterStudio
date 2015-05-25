@@ -379,7 +379,7 @@ namespace ParagonLib.RuleEngine
                 var sname = string.Format("{0}, Version={1}", name.Name, name.Version);
                 if (!CategoriesBySystem.ContainsKey(factory.GameSystem))
                     CategoriesBySystem[factory.GameSystem] = new Dictionary<string, CategoryInfo>();
-                Task.Factory.StartNew(()=> factory.InitMetadata());
+                Task.Factory.StartNew(()=> factory.InitMetadata()).ContinueWith((t)=> fileLoader.Raise(sname, new EventArgs()));
                 RuleFactories[sname] = factory;
 
             }

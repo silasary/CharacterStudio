@@ -1,6 +1,8 @@
 ﻿using ParagonLib.Rules;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using PowerLine = ParagonLib.RuleBases.Power.PowerLine;
 
 namespace ParagonLib.LazyRules
 {
@@ -9,6 +11,7 @@ namespace ParagonLib.LazyRules
         public LazyPower(XElement xpower)
             : base(xpower)
         {
+            var lines = new List<PowerLine>();
             foreach (var ele in xpower.Elements("specific"))
             {
                 var value = ele.Value.Trim();
@@ -25,11 +28,21 @@ namespace ParagonLib.LazyRules
                     case "Keywords":
                         Keywords = value.Split(',').Select(k => k.Trim()).ToArray();
                         break;
-
+                    case "Display":
+                        Display = value;
+                        break;
+                    case "Action Type":
+                        ActionType = value;
+                        break;
+                    case "Attack Type":
+                        AttackType = value;
+                        break;
                     default:
+                        lines.Add((PowerLine)ele);
                         break;
                 }
             }
+            this.Lines = lines.ToArray();
         }
 
         public string ActionType { get; private set; }
@@ -51,5 +64,7 @@ namespace ParagonLib.LazyRules
         public string Target { get; private set; }
 
         public string Trigger { get; private set; }
+
+        PowerLine[] Lines;
     }
 }

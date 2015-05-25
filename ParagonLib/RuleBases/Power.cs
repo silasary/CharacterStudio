@@ -28,6 +28,11 @@ namespace ParagonLib.RuleBases
             {
                 return new PowerLine(e.Element, e.Value);
             }
+
+            public static explicit operator PowerLine(System.Xml.Linq.XElement e)
+            {
+                return new PowerLine(e.Attribute("name").Value.Trim(), e.Value.Trim());
+            }
         }
 
         public Power()
@@ -46,10 +51,11 @@ namespace ParagonLib.RuleBases
             {
                 Lines.Add(line);
             }
-            lines = Lines.ToArray();
+            this.lines = Lines.ToArray();
+            Utils.GrammarParser.ParsePowerLines(lines);
         }
 
-        PowerLine[] lines;
+        public readonly PowerLine[] lines;
 
         protected string _class;
         protected string trigger;
@@ -151,6 +157,8 @@ namespace ParagonLib.RuleBases
                 return keywords;
             }
         }
+
+        public PowerLine[] Lines { get { return lines; } }
     }
 }
 
