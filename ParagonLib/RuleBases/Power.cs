@@ -52,7 +52,8 @@ namespace ParagonLib.RuleBases
                 Lines.Add(line);
             }
             this.lines = Lines.ToArray();
-            Utils.GrammarParser.ParsePowerLines(lines);
+            //Utils.GrammarParser.ParsePowerLines(lines);
+            //TODO: Not complete yet.
         }
 
         public readonly PowerLine[] lines;

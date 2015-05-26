@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PowerLine = ParagonLib.RuleBases.Power.PowerLine;
 
@@ -12,29 +13,30 @@ namespace ParagonLib.Utils
     {
         private static Parser<string> AbilityScores;
         private static Parser<string> Defences;
-        private static Parser<IEnumerable<char>> PlusMod;
+        private static Parser<string> PlusMod;
         private static Parser<string> MinusMod;
         private static Parser<AbilModToken> AbilityPlusMod;
-        private static Parser<AttackStat> AttackStatement;
+        private static Parser<AttackStatToken> AttackStatement;
         private static Parser<IEnumerable<AttackStat>> AttackLineParser;
         private static Parser<IEnumerable<AbilModToken>> MultiAbility;
 
         static GrammarParser()
         {
-            AbilityScores = Parse.Regex(String.Join("|", Workspace.D20AbilityScores)).Token();
+            AbilityScores = Parse.Regex(String.Join("|", Workspace.D20AbilityScores))
+                .Or(Parse.Regex(new Regex(@"Highest( Mental| Physical)? Ability", RegexOptions.IgnoreCase))).Token();
             Defences = Parse.Regex("AC|Reflex|Will|Fortitude").Token();
             PlusMod =
                 from plus in Parse.Char('+')
                 from w in Parse.WhiteSpace
-                from num in Parse.Digit.XMany()
+                from num in Parse.Digit.XMany().Text()
                 select num;
             MinusMod =
                 from minus in Parse.Char('-')
-                from num in Parse.Digit.Many()
+                from num in Parse.Digit.Many().Text()
                 select string.Concat(minus, num);
             AbilityPlusMod =
                 from abil in AbilityScores.Token()
-                from mod in PlusMod.XOr(MinusMod).Token().Optional()
+                from mod in PlusMod.XOr(MinusMod).Text().Token().Optional()
                 select new AbilModToken(abil, mod);
             MultiAbility =(
                 from ability in AbilityPlusMod.Token()
@@ -45,13 +47,18 @@ namespace ParagonLib.Utils
                 from Attack in MultiAbility.Token()
                 from vs in Parse.Regex(@"vs\.").Token()
                 from Defence in Defences.Token()
-                select new AttackStat(Attack, Defence);
+                select new AttackStatToken(Attack, Defence);
             AttackLineParser =
-                (from attack in AttackStatement.Token()
-                 from comma in Parse.Char(',').Optional()
-                 from or in Parse.Regex("or").Token().Optional()
-                select attack).XMany();
-                
+                 from attacktokens in
+                     (from your in Parse.Regex("Your").Token().Optional()
+                      from attacks in
+                          (from attack in AttackStatement.Token()
+                           from comma in Parse.Char(',').Optional()
+                           from or in Parse.Regex("or").Token().Optional()
+                           select attack).AtLeastOnce()
+                      select attacks)
+                 select AttackStat.New(attacktokens);
+
         }
 
         public static void ParsePowerLines(params PowerLine[] lines)
@@ -59,11 +66,9 @@ namespace ParagonLib.Utils
             var AttackLine = lines.FirstOrDefault(n => n.Name == "Attack" || n.Name == "Primary Attack");
             if (AttackLine.Name != null)
             {
-                var res = AttackLineParser.Parse(AttackLine.Value);
+                var res = AttackLineParser.Parse(AttackLine.Value).ToArray();
                 //var res = AttackStatement.Parse(AttackLine.Value);
-
             }
-            
         }
 
 
@@ -72,14 +77,14 @@ namespace ParagonLib.Utils
     struct AbilModToken
     {
         public string Ability;
-        private int Modifier;
+        public int Modifier;
         
 
-        public AbilModToken(string abil, IOption<IEnumerable<char>> mod)
+        public AbilModToken(string abil, IOption<string> mod)
         {
             // TODO: Complete member initialization
             this.Ability = abil;
-            this.Modifier = int.Parse(string.Concat(mod.GetOrElse(new char[] {'0'})));
+            this.Modifier = int.Parse(string.Concat(mod.GetOrElse("0")));
         }
         public override string ToString()
         {
@@ -89,12 +94,12 @@ namespace ParagonLib.Utils
         }
     }
 
-    struct AttackStat
+    struct AttackStatToken
     {
         public IEnumerable<AbilModToken> Attack;
         public string Defence;
 
-        public AttackStat(IEnumerable<AbilModToken> Attack, string Defence)
+        public AttackStatToken(IEnumerable<AbilModToken> Attack, string Defence)
         {
             this.Attack = Attack;
             this.Defence = Defence;
@@ -102,6 +107,35 @@ namespace ParagonLib.Utils
         public override string ToString()
         {
            return string.Format("{0} vs. {2}", string.Join(",", Attack), Defence);
+        }
+    }
+
+    struct AttackStat
+    {
+        public string Ability;
+        public int Modifier;
+        public string Defence;
+
+        public override string ToString()
+        {
+            return string.Format("{0} vs. {2}", string.Join(",", Ability), Defence);
+        }
+
+        internal static IEnumerable<AttackStat> New(IEnumerable<AttackStatToken> Attacks)
+        {
+            foreach (var attack in Attacks)
+            {
+                foreach (var att in attack.Attack)
+                {
+                    
+                yield return new AttackStat()
+                {
+                    Ability = att.Ability,
+                    Modifier = att.Modifier,
+                    Defence = attack.Defence
+                };
+                }
+            }
         }
     }
 }

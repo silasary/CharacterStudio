@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PowerLine = ParagonLib.RuleBases.Power.PowerLine;
 
 namespace UnitTests
 {
     class TestGrammar
     {
-        [Test]
+        [Test,]
         public void TestAttackLine()
         {
             // Below are a list of sample lines, in increasing complexity:
@@ -24,14 +25,13 @@ namespace UnitTests
              "Strength + 2 vs. Reflex, Constitution + 2 vs. Reflex, or Dexterity + 2 vs. Reflex",
              "Your highest ability vs. AC",
              "Highest mental ability vs. Will",
-             "Your highest physical ability vs AC",
+             "Your highest physical ability vs. AC",
              "Strength vs. AC (melee; main weapon and off-hand weapon) or Dexterity vs. AC (ranged), two attacks",
             };
             foreach (var item in lines)
             {
-                GrammarParser.ParsePowerLines(new ParagonLib.RuleBases.Power.PowerLine("Attack", item));
+                GrammarParser.ParsePowerLines(new PowerLine("Attack", item));
             }
-            
         }
     }
 }
