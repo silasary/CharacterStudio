@@ -2,6 +2,7 @@
 using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ParagonLib.LazyRules
     class LazyFactory : IFactory
     {
 
-        Dictionary<string, RulesElement> initialized = new Dictionary<string, RulesElement>();
+        ConcurrentDictionary<string, RulesElement> initialized = new ConcurrentDictionary<string, RulesElement>();
 
         private System.Xml.Linq.XDocument doc;
 

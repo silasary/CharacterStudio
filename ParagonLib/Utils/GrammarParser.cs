@@ -6,11 +6,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PowerLine = ParagonLib.RuleBases.Power.PowerLine;
+using ParagonLib.Utils;
 
-namespace ParagonLib.Utils
+namespace ParagonLib.Grammar
 {
     static public class GrammarParser
     {
+        private static string[] DamageTypes = { "fire", "thunder", "lightning", "force"};
+
         private static Parser<string> AbilityScores;
         private static Parser<string> Defences;
         private static Parser<string> PlusMod;
@@ -19,6 +22,10 @@ namespace ParagonLib.Utils
         private static Parser<AttackStatToken> AttackStatement;
         private static Parser<IEnumerable<AttackStat>> AttackLineParser;
         private static Parser<IEnumerable<AbilModToken>> MultiAbility;
+        
+        private static Parser<DiceStat> Dice;
+        private static Parser<AbilityModToken> AbilityModifier;
+        private static Parser<DamageStat> DamageLineParser;
 
         static GrammarParser()
         {
@@ -58,23 +65,59 @@ namespace ParagonLib.Utils
                            select attack).AtLeastOnce()
                       select attacks)
                  select AttackStat.New(attacktokens);
-
+            // Damage:
+            Dice = (from x in Parse.Digit.Many().Text()
+                    from d in Parse.Char('d')
+                    from y in Parse.Digit.Many().Text()
+                    select new DiceStat { x = int.Parse( x), y = int.Parse( y) })
+                   .Or
+                    (from x in Parse.Digit.Many().Text()
+                     from open in Parse.Char('[')
+                     from name in Parse.Letter.Many().Text()
+                     from close in Parse.Char(']')
+                     select new DiceStat { name = name, x=int.Parse(x) });
+            AbilityModifier =
+                from ability in AbilityScores.Token()
+                from modifer in Parse.Return("modifier").Token()
+                from plus in Parse.Char('+').Token().Optional()
+                select new AbilityModToken(ability);
+            var DamageType = Parse.Regex(string.Join("|", DamageTypes)).Token().Optional();
+            DamageLineParser =
+                from dice in _Plus(Dice).Token().Many()
+                from mod in AbilityModifier.Token().Many()
+                from type in DamageType.Token()
+                from dmg in Parse.Return("damage")
+                select new DamageStat(dice, mod, type);
         }
-
-        public static void ParsePowerLines(params PowerLine[] lines)
+            
+        public static void ParsePowerLines(out AttackStat[] AttackComponents, out DamageStat DamageComponents, params PowerLine[] lines)
         {
             var AttackLine = lines.FirstOrDefault(n => n.Name == "Attack" || n.Name == "Primary Attack");
             if (AttackLine.Name != null)
             {
-                var res = AttackLineParser.Parse(AttackLine.Value).ToArray();
+                AttackComponents = AttackLineParser.Parse(AttackLine.Value).ToArray();
                 //var res = AttackStatement.Parse(AttackLine.Value);
             }
+            else
+                AttackComponents = null;
+            var HitLine = lines.FirstOrDefault(n => n.Name == "Hit");
+            if (HitLine.Name != null)
+            {
+                DamageComponents = DamageLineParser.Parse(HitLine.Value);
+            }
+            else
+                DamageComponents = default(DamageStat);
         }
 
-
+        static Parser<T> _Plus<T>(Parser<T> p)
+        {
+            return from q in p.Token()
+                   from plus in Parse.Char('+').Token().Optional()
+                   select q;
+        }
     }
 
-    struct AbilModToken
+    public struct AbilModToken
     {
         public string Ability;
         public int Modifier;
@@ -110,7 +153,7 @@ namespace ParagonLib.Utils
         }
     }
 
-    struct AttackStat
+    public struct AttackStat
     {
         public string Ability;
         public int Modifier;
@@ -118,7 +161,7 @@ namespace ParagonLib.Utils
 
         public override string ToString()
         {
-            return string.Format("{0} vs. {2}", string.Join(",", Ability), Defence);
+            return string.Format("{0} vs. {1}", Ability, Defence);
         }
 
         internal static IEnumerable<AttackStat> New(IEnumerable<AttackStatToken> Attacks)
@@ -136,6 +179,64 @@ namespace ParagonLib.Utils
                 };
                 }
             }
+        }
+    }
+
+    public struct DamageStat
+    {
+        public DiceStat[] Dice;
+        public AbilityModToken[] Mods;
+        public string type;
+
+        public DamageStat(IEnumerable<DiceStat> dice, IEnumerable<AbilityModToken> mod, IOption<string> type)
+        {
+            // TODO: Complete member initialization
+            this.Dice = dice.ToArray();
+            this.Mods = mod.ToArray();
+            this.type = type.GetOrDefault();
+        }
+        public override string ToString()
+        {
+            return string.Join(" + ", Dice.Cast<object>().Concat(Mods.Cast<object>())) + (string.IsNullOrEmpty(type) ? " damage" : string.Format(" {0} damage", type));
+        }
+        public override bool Equals(object obj)
+        {
+            if (!(obj is DamageStat))
+                return false;
+            var other = (DamageStat)obj;
+
+            if (!(Dice ?? new DiceStat[0]).SequenceEqual(other.Dice ?? new DiceStat[0]))
+                return false;
+            if (!(Mods ?? new AbilityModToken[0]).SequenceEqual(other.Mods ?? new AbilityModToken[0]))
+                return false;
+            return type == other.type;
+        }
+    }
+
+    public struct DiceStat
+    {
+        public int x;
+        public int y;
+        public string name;
+
+        public override string ToString()
+        {
+            return y == 0 ? string.Format("{0}[{1}]", x, name) : string.Format("{0}d{1}", x, y);
+        }
+    }
+
+    public struct AbilityModToken
+    {
+        private string ability;
+
+        public AbilityModToken(string ability)
+        {
+            this.ability = ability;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} modifier", ability);
         }
     }
 }
