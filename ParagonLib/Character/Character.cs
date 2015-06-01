@@ -36,6 +36,8 @@ namespace ParagonLib
         /// </summary>
         public Dictionary<string, string> TextStrings = new Dictionary<string, string>();
 
+        public IEnumerable<Item> Weapons { get { return Loot.Select(loot => loot.Value).Where(i => i.Type == "Weapon"); } }
+
         public Workspace workspace;
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }
 

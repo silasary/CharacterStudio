@@ -52,7 +52,15 @@ namespace ParagonLib
 
         public RulesElement Enchantment { get; private set; }
 
-        public string Type { get { return Base.Type; } }
+        public string Type
+        {
+            get
+            {
+                if (Base == null)
+                    return null;
+                return Base.Type;
+            }
+        }
 
         private D20Currency _cost = null;
         internal string augmentId;
@@ -68,6 +76,20 @@ namespace ParagonLib
                 this.enchantmentId = ids[1];
             if (ids.Length > 2)
                 this.curseId = ids[2];
+        }
+
+        public string Name
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                if (Enchantment != null)
+                {
+                    sb.Append(Enchantment.Name).Append(" ");
+                }
+                sb.Append(Base.Name);
+                return sb.ToString();
+            }
         }
     }
 }

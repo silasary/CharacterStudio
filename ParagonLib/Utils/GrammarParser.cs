@@ -85,7 +85,7 @@ namespace ParagonLib.Grammar
             DamageLineParser =
                 from dice in _Plus(Dice).Token().Many()
                 from mod in AbilityModifier.Token().Many()
-                from type in DamageType.Token()
+                from type in DamageType
                 from dmg in Parse.Return("damage")
                 select new DamageStat(dice, mod, type);
         }

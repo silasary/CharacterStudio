@@ -1,4 +1,5 @@
 ﻿using ParagonLib.Compiler;
+using ParagonLib.Grammar;
 using ParagonLib.Rules;
 using System;
 using System.Collections.Generic;
@@ -52,10 +53,12 @@ namespace ParagonLib.RuleBases
                 Lines.Add(line);
             }
             this.lines = Lines.ToArray();
-            //Utils.GrammarParser.ParsePowerLines(lines);
-            //TODO: Not complete yet.
+            GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, lines);
+            
         }
-
+        
+        AttackStat[] attackComponents;
+        DamageStat damageComponents;
         public readonly PowerLine[] lines;
 
         protected string _class;
@@ -77,6 +80,16 @@ namespace ParagonLib.RuleBases
         //
         // Fortunately, Monk Full Discipline powers use _ChildPower.
         
+        public AttackStat[] AttackComponents
+        {
+            get { return attackComponents; }
+        }
+
+        public DamageStat DamageComponents
+        {
+            get { return damageComponents; }
+        }
+
         public int Level
         {
             get

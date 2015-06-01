@@ -36,7 +36,7 @@ namespace ParagonLib
         public Workspace(string System, Character character)
         {
             this.System = System;
-            if (System != "" && !RuleFactory.KnownSystems.Contains(System))
+            if (!string.IsNullOrEmpty(System) && !RuleFactory.KnownSystems.Contains(System))
                 Logging.Log("Load Character", TraceEventType.Warning,"Warning: Requested system '{0}' not loaded.", System);
             AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
@@ -61,7 +61,6 @@ namespace ParagonLib
         public List<Adventure> AdventureLog { get; set; }
 
         public Dictionary<string, WeakReference> AllElements { get; set; }
-        public Dictionary<string, Loot> AllLoot { get; set; }
 
         public int Level
         {

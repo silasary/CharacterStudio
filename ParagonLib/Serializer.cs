@@ -265,6 +265,17 @@ namespace ParagonLib
 
                 // Specifics.  Minimum required: "Power Usage", "Action Type".  Ideally, everything else.
                 // Foreach Weapon, Stats.
+                    if (PowerInfo.AttackComponents != null)
+                    foreach (var weapon in c.Weapons)
+                    {
+                        writer.WriteStartElement("Weapon");
+                        writer.WriteAttributeString("name", weapon.Name);
+                        SerializeItem(weapon, false);
+                        writer.WriteElementString("AttackBonus", 0.ToString());
+                        writer.WriteElementString("Damage", PowerInfo.DamageComponents.ToString());
+                        //PowerInfo.AttackComponents[0].
+                        writer.WriteEndElement();
+                    }
                 writer.WriteFullEndElement( );
                 }
             }

@@ -1,4 +1,5 @@
-﻿using ParagonLib.Rules;
+﻿using ParagonLib.Grammar;
+using ParagonLib.Rules;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -43,6 +44,11 @@ namespace ParagonLib.LazyRules
                 }
             }
             this.Lines = lines.ToArray();
+            AttackStat[] attackComponents;
+            DamageStat damageComponents;
+            GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, Lines);
+            AttackComponents = attackComponents;
+            DamageComponents = damageComponents;
         }
 
         public string ActionType { get; private set; }
@@ -66,5 +72,9 @@ namespace ParagonLib.LazyRules
         public string Trigger { get; private set; }
 
         PowerLine[] Lines;
+
+        public AttackStat[] AttackComponents { get; private set; }
+
+        public DamageStat DamageComponents { get; private set; }
     }
 }
