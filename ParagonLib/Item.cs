@@ -16,7 +16,7 @@ namespace ParagonLib
         /// <summary>
         /// We need this because elements are lazy-loaded.
         /// </summary>
-        private string GameSystem;
+        protected string GameSystem;
 
         public RulesElement Augment { get; private set; }
 
@@ -50,7 +50,16 @@ namespace ParagonLib
 
         public RulesElement Curse { get; private set; }
 
-        public RulesElement Enchantment { get; private set; }
+        private RulesElement _enchantment;
+        public RulesElement Enchantment
+        {
+            get
+            {
+                if (_enchantment == null)
+                    _enchantment = RuleFactory.FindRulesElement(enchantmentId, GameSystem);
+                return _enchantment;
+            }
+        }
 
         public string Type
         {
@@ -76,6 +85,14 @@ namespace ParagonLib
                 this.enchantmentId = ids[1];
             if (ids.Length > 2)
                 this.curseId = ids[2];
+        }
+
+        protected Item(Item clone)
+        {
+            this.GameSystem = clone.GameSystem;
+            this.baseId = clone.baseId;
+            this.enchantmentId = clone.enchantmentId;
+            this.curseId = clone.curseId;
         }
 
         public string Name

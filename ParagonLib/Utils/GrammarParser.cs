@@ -188,6 +188,8 @@ namespace ParagonLib.Grammar
         public AbilityModToken[] Mods;
         public string type;
 
+        public string Damage { get { return string.Join(" + ", Dice.Cast<object>().Concat(Mods.Cast<object>())); } }
+
         public DamageStat(IEnumerable<DiceStat> dice, IEnumerable<AbilityModToken> mod, IOption<string> type)
         {
             // TODO: Complete member initialization
@@ -197,7 +199,7 @@ namespace ParagonLib.Grammar
         }
         public override string ToString()
         {
-            return string.Join(" + ", Dice.Cast<object>().Concat(Mods.Cast<object>())) + (string.IsNullOrEmpty(type) ? " damage" : string.Format(" {0} damage", type));
+            return Damage + (string.IsNullOrEmpty(type) ? " damage" : string.Format(" {0} damage", type));
         }
         public override bool Equals(object obj)
         {

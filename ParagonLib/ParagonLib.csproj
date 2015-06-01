@@ -66,6 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterData\Implement.cs" />
+    <Compile Include="CharacterData\Weapon.cs" />
     <Compile Include="Compiler\Builders.cs" />
     <Compile Include="Compiler\IFactory.cs" />
     <Compile Include="Compiler\MissingElementAtribute.cs" />
@@ -88,10 +90,10 @@
     <Compile Include="Selection.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="Compiler\Instruction.cs" />
-    <Compile Include="Character\Adventure.cs" />
-    <Compile Include="Character\Loot.cs" />
-    <Compile Include="Character\Character.cs" />
-    <Compile Include="Character\CampaignSetting.cs" />
+    <Compile Include="CharacterData\Adventure.cs" />
+    <Compile Include="CharacterData\Loot.cs" />
+    <Compile Include="CharacterData\Character.cs" />
+    <Compile Include="CharacterData\CampaignSetting.cs" />
     <Compile Include="CharElement.cs" />
     <Compile Include="D20Currency.cs" />
     <Compile Include="Utils\FastSmartWeakEvent.cs" />

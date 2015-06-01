@@ -1,4 +1,5 @@
-﻿using ParagonLib.RuleBases;
+﻿using ParagonLib.CharacterData;
+using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using CharacterStudio.Controls.Panes;
 using ParagonLib;
+using ParagonLib.CharacterData;
 using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;

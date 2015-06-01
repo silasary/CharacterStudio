@@ -5,6 +5,7 @@ using System.Diagnostics;
 using NUnit.Framework;
 using System.IO;
 using ParagonLib.RuleEngine;
+using ParagonLib.CharacterData;
 
 namespace UnitTests
 {

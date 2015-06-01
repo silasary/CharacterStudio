@@ -1,3 +1,4 @@
+using ParagonLib.CharacterData;
 using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
 using System;
@@ -272,7 +273,10 @@ namespace ParagonLib
                         writer.WriteAttributeString("name", weapon.Name);
                         SerializeItem(weapon, false);
                         writer.WriteElementString("AttackBonus", 0.ToString());
-                        writer.WriteElementString("Damage", PowerInfo.DamageComponents.ToString());
+                        writer.WriteElementString("Damage", PowerInfo.DamageComponents.Damage);
+                        if (!string.IsNullOrEmpty(PowerInfo.DamageComponents.type))
+                            writer.WriteElementString("DamageType", PowerInfo.DamageComponents.type);
+
                         //PowerInfo.AttackComponents[0].
                         writer.WriteEndElement();
                     }

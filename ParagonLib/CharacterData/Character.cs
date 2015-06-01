@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace ParagonLib
+namespace ParagonLib.CharacterData
 {
     /// <summary>
     /// Base class for a character.
@@ -36,7 +36,35 @@ namespace ParagonLib
         /// </summary>
         public Dictionary<string, string> TextStrings = new Dictionary<string, string>();
 
-        public IEnumerable<Item> Weapons { get { return Loot.Select(loot => loot.Value).Where(i => i.Type == "Weapon"); } }
+        public IEnumerable<Item> Weapons
+        {
+            get
+            {
+                var weapons = Loot.Where(i => i.Value.Type == "Weapon").ToArray();
+                var implements = Loot.Where(i => i.Value.Type == "Implement" || i.Value.Type == "Superior Implement").ToArray();
+                foreach (var q in weapons)
+                {
+                    var w = q.Value;
+                    if (!(q.Value is Weapon))
+                    {
+                        w = Loot[q.Key] = new Weapon(q.Value);
+                    }
+                    yield return w;
+                }
+                foreach (var q in implements)
+                {
+                    var w = q.Value;
+                    if (!(q.Value is Implement))
+                    {
+                        w = Loot[q.Key] = new Implement(q.Value);
+                    }
+                    if (((Implement)w).IsWeapon)
+                        yield return w;
+                }
+
+                //return weapons.Select(i => i.Value);
+            }
+        }
 
         public Workspace workspace;
         List<Adventure> AdventureLog { get { return workspace.AdventureLog; } set { workspace.AdventureLog = value; } }

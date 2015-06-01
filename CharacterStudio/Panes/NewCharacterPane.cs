@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParagonLib;
 using ParagonLib.RuleEngine;
+using ParagonLib.CharacterData;
 
 namespace CharacterStudio.Controls.Panes
 {

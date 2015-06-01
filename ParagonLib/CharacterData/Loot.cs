@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace ParagonLib
+namespace ParagonLib.CharacterData
 {
     public class Loot : IEqualityComparer<Loot>
     {

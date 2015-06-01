@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Linq;
 using ParagonLib;
+using ParagonLib.CharacterData;
 
 namespace CharacterStudio.Controls.Common
 {
