@@ -1,5 +1,6 @@
 ﻿using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
+using ParagonLib.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ParagonLib.CharacterData
     {
         public Implement(Item item) : base(item)
         {
-            //weaponid = ((Implement)this.Base).WeaponEquiv;
+            weaponid = ((IImplement)this.Base).WeaponEquiv;
         }
 
         internal string weaponid;
