@@ -363,7 +363,7 @@ namespace ParagonLib
         /// </summary>
         /// <param name="item"></param>
         /// <param name="IncludeDetails"></param>
-        private void SerializeItem(Item item, bool IncludeDetails, XmlWriter writer = null)
+        private void SerializeItem(InventoryItem item, bool IncludeDetails, XmlWriter writer = null)
         {
             if (writer == null)  // We can blame the serialized XML journal Entries for this.
                 writer = this.writer;
@@ -567,11 +567,11 @@ namespace ParagonLib
             var parts = node.Elements();
             var ids = parts.Select(p => p.Attribute("internal-id").Value).ToArray();
             var id = string.Join("__", ids);
-            Item item;
+            InventoryItem item;
             if (c.Loot.ContainsKey(id))
                 item = c.Loot[id];
             else
-                item = c.Loot[id] = new Item(ids, c.workspace.System);
+                item = c.Loot[id] = new InventoryItem(ids, c.workspace.System);
             var loot = new Loot(); // We use += below so we don't need explicit casts.
             loot.Count += int.Parse(node.Attribute("count").Value);
             loot.Equipped += int.Parse(node.Attribute("equip-count").Value);

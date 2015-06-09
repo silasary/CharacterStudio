@@ -8,9 +8,9 @@ using System.Text;
 
 namespace ParagonLib.CharacterData
 {
-    class Implement : Item
+    class Implement : InventoryItem
     {
-        public Implement(Item item) : base(item)
+        public Implement(InventoryItem item) : base(item)
         {
             weaponid = ((IImplement)this.Base).WeaponEquiv;
         }

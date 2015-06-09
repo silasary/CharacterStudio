@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using ParagonLib.Compiler;
@@ -14,15 +15,36 @@ namespace ParagonLib.LazyRules
         public static RulesElement New(XElement item)
         {
             var type = item.Attribute("type").Value;
-            if (type == "Level")
-                return new LazyLevelElement(item);
-            if (type == "Power")
-                return new LazyPower(item);
-            return new LazyRulesElement(item);
+            switch (type)
+            {
+                case "Level":
+                    return new LazyLevelElement(item);
+                case "Power":
+                    return new LazyPower(item);
+                case "Implement":
+                case "Superior Implement":
+                case "Gear":
+                case "Weapon":
+                case "Magic Item":
+                    return new LazyItem(item);
+                default:
+                    return new LazyRulesElement(item);
+            }
         }
 
         public List<Instruction> Rules = new List<Instruction>();
         public SpecificsDict Specifics = new SpecificsDict();
+
+        protected string GetSpecific([CallerMemberName] string name = "")
+        {
+            return Specifics[name];
+        }
+        protected int GetSpecificInt([CallerMemberName] string name = "")
+        {
+            int i;
+            int.TryParse(Specifics[name], out i);
+            return i;
+        }
 
         protected LazyRulesElement(XElement item)
         {
@@ -49,7 +71,7 @@ namespace ParagonLib.LazyRules
                 switch (element.Name.LocalName)
                 {
                     case "specific":
-                        Specifics.Add(element.Attribute("name").Value, element.Value);
+                        Specifics[element.Attribute("name").Value] = element.Value;
                         break;
                     case "rules": // Yes, the first call to Calculate() compiles then calls Calculate().
                         Calculate = new Action<CharElement, Workspace>((e, ws) =>
@@ -71,28 +93,7 @@ namespace ParagonLib.LazyRules
 
         public string SourcePart { get; private set; }
 
-        private class LazyLevelElement : LazyRulesElement, ILevel
-        {
-            public LazyLevelElement(XElement item) : base(item)
-            {
-                int xp;
-                if (int.TryParse(item.Element("specific").Value, out xp))
-                    XpNeeded = xp;
-            }
-            public ILevel PreviousLevel {get; set;}
-
-            public int TotalXpNeeded
-            {
-                get
-                {
-                    if (PreviousLevel != null)
-                        return XpNeeded + PreviousLevel.TotalXpNeeded;
-                    return XpNeeded;
-                }
-            }
-
-            public int XpNeeded { get; private set; }
-        }
+        
     }
 
     

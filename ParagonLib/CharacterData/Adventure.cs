@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace ParagonLib
+namespace ParagonLib.CharacterData
 {
     [DataContract(Name = "JournalEntry", Namespace = "")]
     public class Adventure

@@ -204,6 +204,10 @@ namespace ParagonLib.Compiler
                     case "Power":
                         Parent = typeof(Power);
                         break;
+                    case "Implement":
+                    case "Superior Implement":
+                        Parent = typeof(Implement);
+                        break;
                     default:
                         Parent = typeof(RulesElement);
                         break;

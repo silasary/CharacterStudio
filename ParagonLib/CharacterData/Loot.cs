@@ -22,7 +22,7 @@ namespace ParagonLib.CharacterData
 
         public AddRemove Silvered { get; set; }
 
-        public Item ItemRef { get; set; }
+        public InventoryItem ItemRef { get; set; }
 
         public AddRemove ShowPowerCard { get; set; }
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ParagonLib.CharacterData
 {
-    public class Weapon : Item
+    public class Weapon : InventoryItem
     {
-        public Weapon(Item parent) : base(parent)
+        public Weapon(InventoryItem parent) : base(parent)
         {
 
         }

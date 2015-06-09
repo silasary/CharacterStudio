@@ -20,7 +20,7 @@ namespace ParagonLib.CharacterData
 
         public string Height { get; set; }
 
-        public Dictionary<string, Item> Loot { get; protected set; }
+        public Dictionary<string, InventoryItem> Loot { get; protected set; }
 
         public string Name { get { return name; } set { SetField(ref name, value); } }
 
@@ -36,7 +36,7 @@ namespace ParagonLib.CharacterData
         /// </summary>
         public Dictionary<string, string> TextStrings = new Dictionary<string, string>();
 
-        public IEnumerable<Item> Weapons
+        public IEnumerable<InventoryItem> Weapons
         {
             get
             {
@@ -47,7 +47,7 @@ namespace ParagonLib.CharacterData
                     var w = q.Value;
                     if (!(q.Value is Weapon))
                     {
-                        w = Loot[q.Key] = new Weapon(q.Value);
+                        w = Loot[q.Key] = new Weapon(q.Value); // Upgrade a generic Loot into a Weapon.
                     }
                     yield return w;
                 }
@@ -72,7 +72,7 @@ namespace ParagonLib.CharacterData
         public Character(string System)
         {
             workspace = new Workspace(System, this);
-            Loot = new Dictionary<string, Item>();
+            Loot = new Dictionary<string, InventoryItem>();
             foreach (var abil in Workspace.D20AbilityScores)
             {
                 AbilityScores[abil] = 10;
