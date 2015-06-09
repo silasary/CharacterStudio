@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -26,7 +27,7 @@ namespace BuildTools
                         int indexof = name.IndexOfAny(new char[] { '(', '*' });
                         if (indexof > -1)
                             name = name.Substring(0, indexof);
-                        name = name.Replace(' ', '_');
+                        name = Regex.Replace(name, "[ :-]", "_");
                         while (name.Contains("__"))
                             name = name.Replace("__", "_");
                         name = name.TrimEnd('_');

@@ -560,7 +560,7 @@ Level_11_Enhancement,
 Enhancement_Level_11,
 /// <summary></summary>
 /// <affects>Magic Item</affects>
-Disease:_Foul_Rotting,
+Disease_Foul_Rotting,
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Formula_Cost,
@@ -629,7 +629,7 @@ Pet_Hit_Points,
 Pet_Toughness,
 /// <summary></summary>
 /// <affects>Class Feature</affects>
-HALF-CON,
+HALF_CON,
 /// <summary></summary>
 /// <affects>Companion, Power</affects>
 Mount_Companion,
