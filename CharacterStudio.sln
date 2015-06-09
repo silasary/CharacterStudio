@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterStudio-XP", "CharacterStudio-XP\CharacterStudio-XP.csproj", "{51D1E2BE-6212-4F66-BD60-668B5228F962}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTools", "BuildTools\BuildTools.csproj", "{319110BB-046D-4A7B-B48F-FA1AB5D99523}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Debug|x64.ActiveCfg = Debug|x64
 		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Debug|x64.Build.0 = Debug|x64
 		{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +64,12 @@ Global
 		{51D1E2BE-6212-4F66-BD60-668B5228F962}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51D1E2BE-6212-4F66-BD60-668B5228F962}.Release|x64.ActiveCfg = Release|x64
 		{51D1E2BE-6212-4F66-BD60-668B5228F962}.Release|x64.Build.0 = Release|x64
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
