@@ -338,14 +338,10 @@ namespace ParagonLib.RuleEngine
             //RuleFactories.TryAdd(doc)
             var filename = Path.GetFileNameWithoutExtension(doc.Root.Attribute("Filename") == null ? "Unknown" : doc.Root.Attribute("Filename").Value);
             Version version;
-            try
-            {
+            if (doc.Root.Element("UpdateInfo") != null)
                 VersionParser.TryParse(doc.Root.Element("UpdateInfo").Element("Version").Value, out version);
-            }
-            catch (NullReferenceException)
-            {
+            else
                 version = new Version();
-            }
             var sname = string.Format("{0}, Version={1}", filename, version);
             var factory = new LazyRules.LazyFactory(doc);
             if (!CategoriesBySystem.ContainsKey(factory.GameSystem))

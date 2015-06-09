@@ -14,6 +14,7 @@ namespace ParagonLib.Rules
         string Group { get; }
         string FullText { get; }
         string ItemSlot { get; }
-        int count { get; }
+        // Supports "count" specific.
+        int Quantity { get; }
     }
 }

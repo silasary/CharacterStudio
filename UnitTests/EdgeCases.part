@@ -115,4 +115,37 @@ The damage dice from your goring charge attack increases from d6s to d8s.
 		</rules>
 You can use your Intelligence modifier instead of your Strength modifier when making a basic attack with a melee weapon.
 	</RulesElement>
+  <!-- WeaponEqiv is a type, rather than a weapon.  Just to make things hard. -->
+  <RulesElement name="Rod of Dispater +6" type="Magic Item" internal-id="ID_FMP_MAGIC_ITEM_4393" source="Manual of the Planes,Dungeon Magazine 173">
+    <Flavor> A symbol of Dispater's authority, this adamantine rod is shaped like two serpents entwined together, and it grants the power to scour foes with acid. </Flavor>
+    <specific name="Level"> 28 </specific>
+    <specific name="Gold"> 2125000 </specific>
+    <specific name="Magic Item Type"> Rod </specific>
+    <specific name="Tier" />
+    <specific name="_Item_Set_ID" />
+    <specific name="Armor" />
+    <specific name="Weapon" />
+    <specific name="Item Slot"> Off-hand </specific>
+    <specific name="Requirement" />
+    <specific name="Critical"> +6d8 </specific>
+    <specific name="Special" />
+    <specific name="Power">
+      Power (At-Will): Free Action. Use this power when you hit with a melee attack using the rod. The target is pushed 2 squares and dazed (save ends).
+      Power (At-Will • Acid): Standard Action. Ranged 20; Intelligence vs. Reflex; 2d8 + Intelligence modifier acid damage, and the target takes a –2 penalty to attack rolls until the end of your next turn.
+    </specific>
+    <specific name="_Rarity" />
+    <specific name="Enhancement"> +6 attack rolls and damage rolls </specific>
+    <specific name="Granted Powers" />
+    <specific name="Rarity"> Rare </specific>
+    <specific name="Property"> The rod functions as a +6 heavy mace as well as an implement. </specific>
+    <specific name="WeaponEquiv"> mace:weapon </specific>
+    <specific name="EnchantEquiv"> Magic Weapon +6 </specific>
+    <specific name="Offhand Implement Bonus" />
+    <rules>
+      <statadd name="Offhand Implement Bonus" value="+6" />
+      <grant name="WearingRod" type="Category" />
+      <modify name="this" Field="WeaponEquiv" value="mace:weapon" />
+      <modify name="this" Field="EnchantEquiv" value="Magic Weapon +6" />
+    </rules>
+  </RulesElement>
 </D20Rules>

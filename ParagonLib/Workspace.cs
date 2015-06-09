@@ -332,7 +332,7 @@ namespace ParagonLib
         IEnumerable<int> counter() { var i = 1; while (true) yield return i++; }
         internal int GenerateUID()
         {
-            var ids = AllElements.Where(i => i.Value.IsAlive)
+            var ids = AllElements.ToArray().Where(i => i.Value.IsAlive)
                                  .Select(i => (i.Value.Target as CharElement).SelfId)
                                  .ToArray();
             return counter().First(i => !ids.Contains(i));

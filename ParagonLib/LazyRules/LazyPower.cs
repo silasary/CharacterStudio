@@ -9,7 +9,7 @@ namespace ParagonLib.LazyRules
 {
     internal class LazyPower : LazyRulesElement, IPower
     {
-        public LazyPower(XElement xpower)
+        internal LazyPower(XElement xpower)
             : base(xpower)
         {
             var lines = new List<PowerLine>();
