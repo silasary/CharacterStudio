@@ -25,6 +25,7 @@ namespace BuildTools
             StringBuilder ClassWriter = new StringBuilder();
             EmitSpecificsSource(Specifics, Purposes, ClassWriter);
             File.WriteAllText("Specifics.cs", ClassWriter.ToString());
+            Console.WriteLine("Generated Specifics.cs with {0} entries.", Specifics.Count);
             return true;
         }
 
