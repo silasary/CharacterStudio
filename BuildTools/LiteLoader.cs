@@ -18,6 +18,7 @@ namespace BuildTools
 
         public static void LoadIndex(string file)
         {
+            
             XDocument doc = XDocument.Load(file);
             foreach (var n in doc.Root.Elements("Obsolete"))
             {

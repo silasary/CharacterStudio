@@ -1,20 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace BuildTools
 {
-    class BuildTools
+    internal class BuildTools
     {
+        public static string PartsDir { get; set; }
 
+        public static string SolutionDir { get; set; }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            if (args.Length > 0)
+                SolutionDir = args[0];
+            else
+                SolutionDir = new DirectoryInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..")).FullName;
+            PartsDir = new DirectoryInfo("parts").FullName;
+            if (!Directory.Exists(PartsDir))
+                Directory.CreateDirectory(PartsDir);
             foreach (var index in (Environment.GetEnvironmentVariable("Indexes") ?? "").Split(';'))
             {
                 if (!string.IsNullOrEmpty(index))

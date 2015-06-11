@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterStudio", "CharacterStudio\CharacterStudio.csproj", "{C22B3ECE-95C4-4855-9903-12D8CEF4A98E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParagonLib", "ParagonLib\ParagonLib.csproj", "{DFD75940-3D1B-42CE-9ABB-03F84635F9A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{319110BB-046D-4A7B-B48F-FA1AB5D99523} = {319110BB-046D-4A7B-B48F-FA1AB5D99523}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{4A880BEF-3871-48B7-B215-A6492D6AC9C2}"
 EndProject
