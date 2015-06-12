@@ -88,7 +88,7 @@ Unknown,
                     ClassWriter.AppendLine(@"/// <summary></summary>");
                 }
                 ClassWriter.AppendLine(string.Format(@"/// <affects>{0}</affects>", string.Join(", ", s.Value)));
-                ClassWriter.AppendLine(s.Key + ",");
+                ClassWriter.AppendLine(s.Key + ",").AppendLine();
                 if (Comment)
                     ClassWriter.AppendLine("*/");
             }

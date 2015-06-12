@@ -15,2359 +15,3104 @@ namespace ParagonLib.RuleEngine
     public enum Specifics
     {
 Unknown,
-/// <summary></summary>
+/// <summary>How big is this thing?</summary>
 /// <affects>Race, Weapon, Companion, Familiar, Power</affects>
 Size,
+
 /// <summary></summary>
 /// <affects>Race, Armor, Companion, Familiar, Power</affects>
 Speed,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Characteristics,
-/// <summary></summary>
+
+/// <summary>What visually distinguishes people of this Race?</summary>
 /// <affects>Race</affects>
 Physical_Qualities,
-/// <summary></summary>
+
+/// <summary>Tips on how to roleplay members of this race.</summary>
 /// <affects>Race</affects>
 Playing,
+
 /// <summary></summary>
 /// <affects>Race, Power</affects>
 Vision,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Average_Height,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Average_Weight,
+
 /// <summary></summary>
 /// <affects>Race, Power</affects>
 Ability_Scores,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Languages,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Skill_Bonuses,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Male_Names,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Female_Names,
+
 /// <summary></summary>
-/// <affects>Race, Class, Hybrid Class, Feat, Racial Trait, Class Feature, Background, Information, Internal, Trait Package, Companion</affects>
+/// <affects>Race, Class, Hybrid Class, Racial Trait, Class Feature, Background, Information, Feat, Internal, Trait Package, Companion</affects>
 Short_Description,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Racial_Traits,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Names,
-/// <summary></summary>
-/// <affects>Race</affects>
-Tribal_Names,
-/// <summary></summary>
-/// <affects>Race</affects>
-Clan_Names,
-/// <summary></summary>
-/// <affects>Race</affects>
-Bladeling_Names,
-/// <summary></summary>
-/// <affects>Race</affects>
-Bladeling_Surnames,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Build</affects>
 Key_Abilities,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Implements,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Armor_Proficiencies,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Weapon_Proficiencies,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Bonus_to_Defense,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Companion</affects>
 Hit_Points_at_1st_Level,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Companion</affects>
 Hit_Points_per_Level_Gained,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Power</affects>
 Healing_Surges,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Companion, Power</affects>
 Trained_Skills,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Class_Skills,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Build_Options,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Trait Package, Class Feature</affects>
 _PARSED_CLASS_FEATURE,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Role,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Power_Source,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Creating,
+
 /// <summary></summary>
 /// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class</affects>
 Class_Features,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Supplemental,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Weapon Group, Magic Item</affects>
 Implement,
+
 /// <summary></summary>
-/// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class, Racial Trait, Class Feature</affects>
+/// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class, Class Feature, Racial Trait</affects>
 Powers,
+
 /// <summary></summary>
 /// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class</affects>
 Power_Name,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 _RoleElement,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 _PowerSourceElement,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 _SecondaryPowerSourceElement,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Secondary_Abilities,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 Hybrid_Talent_Options,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class</affects>
 _ParentClass,
+
 /// <summary></summary>
 /// <affects>Class, Hybrid Class, Paragon Path</affects>
 Trait_Package,
+
 /// <summary></summary>
 /// <affects>Epic Destiny</affects>
 Immortality,
+
 /// <summary></summary>
-/// <affects>Epic Destiny, Paragon Path, Theme, Feat, Racial Trait, Class Feature, Power, Magic Item, Companion, Item Set Benefit, Internal, Trait Package, Ritual, Ritual Scroll, Background</affects>
+/// <affects>Epic Destiny, Paragon Path, Racial Trait, Class Feature, Companion, Item Set Benefit, Power, Feat, Magic Item, Theme, Internal, Trait Package, Ritual, Ritual Scroll</affects>
 _DisplayPowers,
+
 /// <summary></summary>
 /// <affects>Hybrid Class</affects>
 _BaseClass,
+
 /// <summary></summary>
 /// <affects>Deity</affects>
 Alignment,
+
 /// <summary></summary>
 /// <affects>Deity</affects>
 Domains,
+
 /// <summary></summary>
-/// <affects>Feat, Class Feature, Magic Item, Companion, Familiar, Item Set</affects>
+/// <affects>Feat, Magic Item, Companion, Familiar, Item Set, Class Feature</affects>
 Tier,
-/// <summary></summary>
-/// <affects>Feat, Power, Armor, Magic Item</affects>
-Special,
-/// <summary></summary>
-/// <affects>Feat, Ritual, Racial Trait, Class Feature, Background, Ritual Scroll, Companion</affects>
-type,
-/// <summary></summary>
-/// <affects>Feat, Companion</affects>
-Associated_Power_Info,
-/// <summary></summary>
-/// <affects>Feat, Companion</affects>
-Associated_Powers,
+
 /// <summary></summary>
 /// <affects>Feat</affects>
 Container,
+
 /// <summary></summary>
-/// <affects>Feat, Racial Trait, Background, Class Feature, Power, Ritual, Ritual Scroll</affects>
-Type,
-/// <summary></summary>
-/// <affects>Feat, Racial Trait, Class Feature, Power, Weapon, Magic Item, Item Set Benefit, Internal, Background Choice, CountsAsRace, CountsAsClass, Ritual Scroll, Grants, Build Suggestions, Category</affects>
-_SupportsID,
-/// <summary></summary>
-/// <affects>Feat, Class Feature</affects>
-_RequiresID,
+/// <affects>Feat, Companion</affects>
+Associated_Powers,
+
 /// <summary></summary>
 /// <affects>Ritual, Gear</affects>
 Category,
+
 /// <summary></summary>
 /// <affects>Ritual, Magic Item</affects>
 Key_Skill,
+
 /// <summary></summary>
 /// <affects>Ritual</affects>
 Component_Cost,
+
 /// <summary></summary>
 /// <affects>Ritual</affects>
 Duration,
+
 /// <summary></summary>
-/// <affects>Ritual, Racial Trait, Class Feature, Power, Magic Item, Ritual Scroll</affects>
+/// <affects>Ritual, Racial Trait, Class Feature, Magic Item, Ritual Scroll, Power</affects>
 Level,
+
 /// <summary></summary>
 /// <affects>Ritual, Magic Item</affects>
 Time,
+
 /// <summary></summary>
 /// <affects>Ritual, Ritual Scroll</affects>
 Market_Price,
+
 /// <summary></summary>
 /// <affects>Ritual, Power, Magic Item</affects>
 Prerequisite,
+
+/// <summary></summary>
+/// <affects>Ritual, Class Feature, Background, Ritual Scroll, Feat, Racial Trait, Companion</affects>
+type,
+
 /// <summary></summary>
 /// <affects>Ritual</affects>
 _RELATED_ITEMS,
+
 /// <summary></summary>
 /// <affects>Skill, Magic Item</affects>
 Key_Ability,
+
 /// <summary></summary>
 /// <affects>Skill Usage</affects>
 Trained_Only,
+
 /// <summary></summary>
 /// <affects>Skill Usage</affects>
 Skill,
-/// <summary></summary>
-/// <affects>Racial Trait, Class Feature, Build, Power</affects>
-Class,
-/// <summary></summary>
-/// <affects>Racial Trait, Class Feature, Trait Package</affects>
-_CS_ShortDescription,
+
 /// <summary></summary>
 /// <affects>Racial Trait, Class Feature, Theme, Feat</affects>
 _PARSED_SUB_FEATURES,
-/// <summary></summary>
-/// <affects>Racial Trait, Class Feature</affects>
-_PARSED_CHILD_FEATURES,
-/// <summary></summary>
-/// <affects>Racial Trait, Class Feature</affects>
-Damage_Stat,
+
 /// <summary></summary>
 /// <affects>Racial Trait, Weapon</affects>
 InternalOnly,
+
+/// <summary></summary>
+/// <affects>Racial Trait, Class Feature, Weapon, Item Set Benefit, Internal, Background Choice, CountsAsRace, CountsAsClass, Ritual Scroll, Grants, Feat, Power, Category, Magic Item, Build Suggestions</affects>
+_SupportsID,
+
+/// <summary></summary>
+/// <affects>Class Feature, Build, Power, Racial Trait</affects>
+Class,
+
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 Usage,
+
 /// <summary></summary>
-/// <affects>Class Feature, Trait Package, Paragon Path</affects>
-_CLASSNAME,
+/// <affects>Class Feature, Racial Trait</affects>
+_PARSED_CHILD_FEATURES,
+
 /// <summary></summary>
 /// <affects>Class Feature, Magic Item</affects>
 _ImplementForPower,
+
+/// <summary></summary>
+/// <affects>Class Feature, Racial Trait</affects>
+Damage_Stat,
+
+/// <summary></summary>
+/// <affects>Class Feature, Feat</affects>
+_RequiresID,
+
 /// <summary></summary>
 /// <affects>Build</affects>
 Suggested,
+
 /// <summary></summary>
 /// <affects>Build, Trait Package, Class, Hybrid Class</affects>
 _SUGGESTED_FEATS,
+
 /// <summary></summary>
 /// <affects>Build, Paragon Path</affects>
 _SUGGESTED_POWERS,
+
 /// <summary></summary>
-/// <affects>Power, God Fragment</affects>
+/// <affects>Armor, Weapon, Superior Implement, Gear</affects>
+Full_Text,
+
+/// <summary></summary>
+/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
+Weight,
+
+/// <summary></summary>
+/// <affects>Armor</affects>
+Armor_Bonus,
+
+/// <summary></summary>
+/// <affects>Armor</affects>
+Minimum_Enhancement_Bonus,
+
+/// <summary></summary>
+/// <affects>Armor, Power</affects>
+Check,
+
+/// <summary></summary>
+/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item, Power</affects>
+Gold,
+
+/// <summary></summary>
+/// <affects>Armor, Magic Item, Feat, Power</affects>
+Special,
+
+/// <summary></summary>
+/// <affects>Armor, Weapon</affects>
+Armor_Type,
+
+/// <summary></summary>
+/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
+Item_Slot,
+
+/// <summary></summary>
+/// <affects>Armor, Weapon</affects>
+Armor_Category,
+
+/// <summary></summary>
+/// <affects>Weapon, Magic Item</affects>
+Range,
+
+/// <summary></summary>
+/// <affects>Weapon, Companion</affects>
+Damage,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+Proficiency_Bonus,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+_Primary_End,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+Weapon_Category,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+Hands_Required,
+
+/// <summary></summary>
+/// <affects>Weapon, Superior Implement</affects>
+Group,
+
+/// <summary></summary>
+/// <affects>Weapon, Superior Implement, Magic Item</affects>
+Properties,
+
+/// <summary></summary>
+/// <affects>Weapon, Gear</affects>
+Silver,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+_Secondary_End,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+_IncludeImprovised,
+
+/// <summary></summary>
+/// <affects>Weapon, Magic Item</affects>
+Critical,
+
+/// <summary></summary>
+/// <affects>Weapon, Magic Item</affects>
+Enhancement,
+
+/// <summary></summary>
+/// <affects>Weapon</affects>
+Additional_Slot,
+
+/// <summary></summary>
+/// <affects>Superior Implement, Magic Item</affects>
+WeaponEquiv,
+
+/// <summary></summary>
+/// <affects>Superior Implement</affects>
+_DamageType,
+
+/// <summary></summary>
+/// <affects>Gear</affects>
+Copper,
+
+/// <summary></summary>
+/// <affects>Gear</affects>
+_RelatedElement,
+
+/// <summary></summary>
+/// <affects>Gear</affects>
+count,
+
+/// <summary></summary>
+/// <affects>Gear, Magic Item</affects>
+_Monster,
+
+/// <summary></summary>
+/// <affects>Magic Item, Power</affects>
+Magic_Item_Type,
+
+/// <summary></summary>
+/// <affects>Magic Item, Item Set Benefit</affects>
+_Item_Set_ID,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+Armor,
+
+/// <summary></summary>
+/// <affects>Magic Item, Power, Class Feature</affects>
+Weapon,
+
+/// <summary></summary>
+/// <affects>Magic Item, Power</affects>
+Requirement,
+
+/// <summary></summary>
+/// <affects>Magic Item, Companion, Familiar, Power</affects>
+Power,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+_Rarity,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+Granted_Powers,
+
+/// <summary></summary>
+/// <affects>Magic Item, Power, Gear</affects>
+Property,
+
+/// <summary></summary>
+/// <affects>Background</affects>
+Common_Knowledge,
+
+/// <summary></summary>
+/// <affects>Background</affects>
+Benefit,
+
+/// <summary></summary>
+/// <affects>Background</affects>
+Campaign,
+
+/// <summary></summary>
+/// <affects>Background</affects>
+Associated_Skills,
+
+/// <summary></summary>
+/// <affects>Background</affects>
+Associated_Languages,
+
+/// <summary></summary>
+/// <affects>source</affects>
+IsBeta,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Strength,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Intelligence,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Wisdom,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Dexterity,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Constitution,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Charisma,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Attack_Bonus,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Armor_Class,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Fortitude_Defense,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Reflex_Defense,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Will_Defense,
+
+/// <summary></summary>
+/// <affects>Companion, Familiar, Power</affects>
+Secondary_Speed,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Attack,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Ability_Score,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Charge,
+
+/// <summary></summary>
+/// <affects>Companion, Power</affects>
+Combat_Advantage,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Opportunity_Attacks,
+
+/// <summary></summary>
+/// <affects>Companion, God Fragment, Power, Familiar</affects>
+Quirks,
+
+/// <summary></summary>
+/// <affects>Companion</affects>
+Companion_Power,
+
+/// <summary></summary>
+/// <affects>Familiar, God Fragment, Power</affects>
+Constant_Benefits,
+
+/// <summary></summary>
+/// <affects>Familiar, Power</affects>
+Senses,
+
+/// <summary></summary>
+/// <affects>Item Set</affects>
+Lore,
+
+/// <summary></summary>
+/// <affects>Item Set</affects>
+Set_Items,
+
+/// <summary></summary>
+/// <affects>Item Set</affects>
+Benefits,
+
+/// <summary></summary>
+/// <affects>Item Set Benefit</affects>
+Piece_Count,
+
+/// <summary></summary>
+/// <affects>God Fragment</affects>
+Deity,
+
+/// <summary></summary>
+/// <affects>God Fragment, Power</affects>
+Action_Type,
+
+/// <summary></summary>
+/// <affects>God Fragment, Power</affects>
+Effect,
+
+/// <summary></summary>
+/// <affects>God Fragment, Power</affects>
+Keywords,
+
+/// <summary></summary>
+/// <affects>God Fragment, Power</affects>
+Trigger,
+
+/// <summary></summary>
+/// <affects>God Fragment, Power</affects>
 Power_Usage,
+
+/// <summary></summary>
+/// <affects>Background Choice</affects>
+_IsBenefit,
+
+/// <summary>For more info about the source, look here.</summary>
+/// <affects>source</affects>
+URL,
+
+/// <summary>When was the Sourcebook released?</summary>
+/// <affects>source</affects>
+Release_Date,
+
+/// <summary></summary>
+/// <affects>Feat, Companion</affects>
+Associated_Power_Info,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _SkillPower,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Display,
-/// <summary></summary>
-/// <affects>Power, God Fragment</affects>
-Keywords,
-/// <summary></summary>
-/// <affects>Power, God Fragment</affects>
-Action_Type,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Attack_Type,
-/// <summary></summary>
-/// <affects>Power, God Fragment</affects>
-Effect,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Associated_Feats,
-/// <summary></summary>
-/// <affects>Power</affects>
-Power_Type,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Target,
+
 /// <summary></summary>
-/// <affects>Power, Companion</affects>
-Attack,
+/// <affects>Power</affects>
+_Censure_of_Unity,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Hit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-_ParentFeature,
+_Associated_Feats,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-Sustain_Move,
+Power_Type,
+
 /// <summary></summary>
-/// <affects>Power</affects>
-_Infernal_Pact,
-/// <summary></summary>
-/// <affects>Power, Magic Item</affects>
-Requirement,
-/// <summary></summary>
-/// <affects>Power</affects>
-Targets,
-/// <summary></summary>
-/// <affects>Power</affects>
-Sustain_Minor,
-/// <summary></summary>
-/// <affects>Power</affects>
-Miss,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Secondary_Attack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Secondary_Target,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Attack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Hit,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Miss,
-/// <summary></summary>
-/// <affects>Power</affects>
-Primary_Target,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Artful_Dodger,
+/// <affects>Class Feature, Racial Trait, Trait Package</affects>
+_CS_ShortDescription,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _ChildPower,
-/// <summary></summary>
-/// <affects>Power, God Fragment</affects>
-Trigger,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Weapon,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Brutal_Scoundrel,
-/// <summary></summary>
-/// <affects>Power, Magic Item, Class Feature</affects>
-Weapon,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Special,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Aftereffect,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Star_Pact,
-/// <summary></summary>
-/// <affects>Power</affects>
-_First_Failed_Saving_Throw,
-/// <summary></summary>
-/// <affects>Power</affects>
-_BasicAttack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Secondary_Attack_Type,
-/// <summary></summary>
-/// <affects>Power</affects>
-Primary_Attack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Tertiary_Target,
-/// <summary></summary>
-/// <affects>Power</affects>
-Move_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Sustain_Minor,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Aegis_of_Assault,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Tactical_Presence,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Fey_Pact,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Ruthless_Ruffian,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Covenant_of_Wrath,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Covenant_of_Malediction,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Covenant_of_Preservation,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Target,
-/// <summary></summary>
-/// <affects>Power</affects>
-Sustain_Standard,
-/// <summary></summary>
-/// <affects>Power</affects>
-Minor_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Inspiring_Presence,
-/// <summary></summary>
-/// <affects>Power</affects>
-Aftereffect,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Minor_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Move_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Free_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Subclasses,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Cunning_Sneak,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Sustain_Standard,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Tertiary_Attack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Effect,
-/// <summary></summary>
-/// <affects>Power</affects>
-Aegis_of_Assault,
-/// <summary></summary>
-/// <affects>Power</affects>
-Channel_Divinity,
-/// <summary></summary>
-/// <affects>Power</affects>
-Aegis_of_Shielding,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Secondary_Targets,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Dark_Pact,
-/// <summary></summary>
-/// <affects>Power</affects>
-Dark_Pact,
-/// <summary></summary>
-/// <affects>Power</affects>
-Effects,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Ruthless_Ruffians,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Afftereffect,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Resourceful_Presence,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Virtue_of_Cunning,
-/// <summary></summary>
-/// <affects>Power</affects>
-Virtue_of_Valor,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Virtue_of_Valor,
-/// <summary></summary>
-/// <affects>Power</affects>
-Artful_Dodger,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Bravura_Presence,
-/// <summary></summary>
-/// <affects>Power</affects>
-Augment,
-/// <summary></summary>
-/// <affects>Power</affects>
-_AugmentVersions,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Attack_Type,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _ParentPower,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-_Primal_Guardian,
+_Artful_Dodger,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-_Primal_Predator,
+_Weapon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-_SubClasses,
+Miss,
+
 /// <summary></summary>
 /// <affects>Power</affects>
-_Storm_Magic,
-/// <summary></summary>
-/// <affects>Power</affects>
-_First_Failed_Save,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Second_Failed_Save,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Opportunity_Attack,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Censure_of_Retribution,
+_Special,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Censure_of_Pursuit,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Primal_Predator,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Bloodbond,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_ParentFeature,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Targets,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Primary_Attack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Secondary_Attack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Hit,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Miss,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Subclasses,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Minor_Action,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Move_Action,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Free_Action,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Sustain_Minor,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Aftereffect,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Resourceful_Presence,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_AugmentParent,
+
+/// <summary></summary>
+/// <affects>Weapon, Magic Item</affects>
+_AlternateSlot,
+
+/// <summary></summary>
+/// <affects>Level</affects>
+XP_Needed,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Infernal_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Primary_Target,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Secondary_Target,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Brutal_Scoundrel,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Star_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_First_Failed_Saving_Throw,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_BasicAttack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Attack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Tertiary_Target,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Aegis_of_Assault,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Fey_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Ruthless_Ruffian,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Covenant_of_Wrath,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Covenant_of_Malediction,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Covenant_of_Preservation,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Inspiring_Presence,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Aftereffect,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Sustain_Standard,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Sustain_Minor,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Cunning_Sneak,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Effect,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Aegis_of_Assault,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Channel_Divinity,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Aegis_of_Shielding,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Secondary_Targets,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Dark_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Dark_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Effects,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Tertiary_Attack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Ruthless_Ruffians,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Afftereffect,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Tactical_Presence,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Virtue_of_Cunning,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Virtue_of_Valor,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Virtue_of_Valor,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Artful_Dodger,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Bravura_Presence,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Augment,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_AugmentVersions,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Attack_Type,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Target,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Primal_Guardian,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Storm_Magic,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Opportunity_Attack,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Censure_of_Retribution,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Virtue_of_Prescience,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Virtue_of_Prescience,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Dragon_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Cosmic_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Wild_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aegis_of_Ensnarement,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Wild_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Dragon_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Secondary_Target,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Secondary_Attack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Covenant_of_Perservation,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Standard_action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Seconday_Attack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aegis_of_Shielding,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Afftereffect,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Each_Additional_Failed_Saving_Throw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Stalker_Spirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Protector_Spirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aegis_of_Ensarement,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_First_Failed_Save,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Infernal_Pact_or_Vestige_Pact,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Vestige_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Second_Failed_Save,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Standard_Acton,
+
+/*
 /// <summary></summary>
 /// <affects>Power</affects>
-_Standart_Action,
+â€¢_Standart_Action,
+
+*/
+/*
+/// <summary></summary>
+/// <affects>Power</affects>
+â€¢_Opportunity_Attack,
+
+*/
 /// <summary></summary>
 /// <affects>Power</affects>
 _Immediate_Interrupt,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Removed,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Minor_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Opportunity_Attack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Each_Failed_Saving_Throw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Secondary_Targets,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 First_Failed_Save,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Second_Failed_Save,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Sustain_Move,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Secondary_Damage,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Beast,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Beast,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Ruthless_Ruffian,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _KeyAbilityAs,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _ADDITIONAL_USES,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Whirling_Slayer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Rageblood_Vigor,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Primal_Swarm,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Primal_Swarm,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Thaneborn_Triumph,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Thaneborn_Triumph,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Primal_Guardian,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Earthstrength,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Wildblood,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Earthstrength,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Second_Failed_Saving_Throw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Instinctive_Effect,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Standard_action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Instinctive_Effect,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Opportunity_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _World_Speaker_Spirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Lifespirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Stormheart,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Orb_of_Imposition,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Staff_of_Defense,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Wand_of_Accuracy,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Trigger,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Tome_of_Binding,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Wand_of_Accuracy,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Cold,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Radiant,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Cosmic_Magic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Phase_of_the_Sun,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Phase_of_the_Moon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Phase_of_the_Stars,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Blazing_Sun,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Watching_Moon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Distant_Stars,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Fire,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Lightning,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Thunder,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Other,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Star_Pact,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Lawbreaker's_Doom,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Augment,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Vestige_Pact,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Khaeleth_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Eyes_of_the_Vestige_Augment,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Mount_Vaelis_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Ugar_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Xandor_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Ilmeth_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Shax_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Leraje_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Solis_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Amaan_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Burned_Emperor_Pact_Boon,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Land's_Soul_Pact_Boon,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Queen_of_Namhar,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Master_of_the_Hidden_Flame_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Zuriel_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Karmath_pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Sea_Tyrant_Pact_Boon,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Censure_of_Unity,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Each_Failed_Saving_Throw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Censure_of_Pursuit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Primary_Target,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Primary_Attack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Covenant_of_Wrath,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Covenant_of_Malediction,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Fey_Pact,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Channel_Divnity,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 No_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _No_Action,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_13_Swap_Hit,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_23_Swap_Hit,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_13_Swap,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_23_Swap,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_19_Swap_Hit,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_29_Swap_Hit,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_19_Swap_Effect,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_29_Swap_Effect,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 ,
+
 */
-/// <summary></summary>
-/// <affects>Power</affects>
-_Night_Stalker,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Bleak_Disciple,
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_11,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_21,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
-_Bloodbond,
-/// <summary></summary>
-/// <affects>Power</affects>
 _Thunderborn_Wrath,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Primal_Predator,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Watcher_Spirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Third_Failed_Saving_Throw,
-/// <summary></summary>
-/// <affects>Power, Magic Item, Gear</affects>
-Property,
-/// <summary></summary>
-/// <affects>Power, Magic Item, Companion, Familiar</affects>
-Power,
-/// <summary></summary>
-/// <affects>Power, Armor</affects>
-Check,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Success,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Tertiary_Target,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Mantle_of_Clarity,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Mantle_of_Elation,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Mantle_of_Impulsiveness,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Keyword,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Chaos_Sorcerer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Cosmic_Sorcerer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Axe,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Mace,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Heavy_Blade,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Spear_or_Polearm,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Active_Familiar,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Arcane_Familiar,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Brawler_Style,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Hunter_Fighting_Style,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Brutal_Scoundrel_or_Ruthless_Ruffian,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Insightful_Presence,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Skirmishing_Presence,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aspect_of_the_Ancients,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aspect_of_the_Destroyer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Aspect_of_the_Hunter,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Area,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Close,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 First_Failed_Saving_Throw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Second_Failed_Saving_Throw,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _1_target,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _2_targets,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _3,_4,_or_5_targets,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Thaxter_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Baatar_Pact_Boon,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Onyx_Queen_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Unknown_Arcanist_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Kronata_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Vykolad_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Earthen_Maker_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Kulnoghrim_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Ascendant_Commander_Pact_Boon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Rune_of_Destruction,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Rune_of_Protection,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Spiritbond,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Intrinsic_Nature,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Symbiosis,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Secondary_Hit,
-/// <summary></summary>
-/// <affects>Power</affects>
-_Standard_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Melee,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_19_Swap,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_29_Swap,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Keywords,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _1.,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _2.,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _3.,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _4.,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Iron_Soul,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Standard_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Sustain_No_Action,
-/// <summary></summary>
-/// <affects>Power</affects>
-_ThemePower,
-/// <summary></summary>
-/// <affects>Power</affects>
-_AugmentParent,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Keyword,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Area,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Close,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Opportunity_Action,
-/// <summary></summary>
-/// <affects>Armor, Weapon, Superior Implement, Gear</affects>
-Full_Text,
-/// <summary></summary>
-/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
-Weight,
-/// <summary></summary>
-/// <affects>Armor</affects>
-Armor_Bonus,
-/// <summary></summary>
-/// <affects>Armor</affects>
-Minimum_Enhancement_Bonus,
-/// <summary></summary>
-/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item, Power</affects>
-Gold,
-/// <summary></summary>
-/// <affects>Armor, Weapon</affects>
-Armor_Type,
-/// <summary></summary>
-/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
-Item_Slot,
-/// <summary></summary>
-/// <affects>Armor, Weapon</affects>
-Armor_Category,
-/// <summary></summary>
-/// <affects>Weapon, Magic Item</affects>
-Range,
-/// <summary></summary>
-/// <affects>Weapon, Companion</affects>
-Damage,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-Proficiency_Bonus,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-_Primary_End,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-Weapon_Category,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-Hands_Required,
-/// <summary></summary>
-/// <affects>Weapon, Superior Implement</affects>
-Group,
-/// <summary></summary>
-/// <affects>Weapon, Superior Implement, Magic Item</affects>
-Properties,
-/// <summary></summary>
-/// <affects>Weapon, Gear</affects>
-Silver,
-/// <summary></summary>
-/// <affects>Weapon, Magic Item</affects>
-_AlternateSlot,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-_Secondary_End,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-_IncludeImprovised,
-/// <summary></summary>
-/// <affects>Weapon, Magic Item</affects>
-Critical,
-/// <summary></summary>
-/// <affects>Weapon, Magic Item</affects>
-Enhancement,
-/// <summary></summary>
-/// <affects>Weapon</affects>
-Additional_Slot,
-/// <summary></summary>
-/// <affects>Superior Implement, Magic Item</affects>
-WeaponEquiv,
-/// <summary></summary>
-/// <affects>Superior Implement</affects>
-_DamageType,
-/// <summary></summary>
-/// <affects>Gear</affects>
-Copper,
-/// <summary></summary>
-/// <affects>Gear</affects>
-_RelatedElement,
-/// <summary></summary>
-/// <affects>Gear</affects>
-count,
-/// <summary></summary>
-/// <affects>Gear, Magic Item</affects>
-_Monster,
-/// <summary></summary>
-/// <affects>Magic Item, Power</affects>
-Magic_Item_Type,
-/// <summary></summary>
-/// <affects>Magic Item, Item Set Benefit</affects>
-_Item_Set_ID,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-Armor,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-_Rarity,
-/// <summary></summary>
-/// <affects>Magic Item, Background</affects>
-Granted_Powers,
+
 /// <summary></summary>
 /// <affects>Magic Item, Power</affects>
 Rarity,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 _IsEnchant,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Offhand_Implement_Bonus,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 _ImplementEquiv,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 _ImplementForClass,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Component,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-Proficient_As,
-/// <summary></summary>
-/// <affects>Magic Item, Power</affects>
-Utility_Power,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-utility_Power,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-_UniversalImplement,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-EnchantEquiv,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-_AlwaysExecute,
-/// <summary></summary>
-/// <affects>Magic Item</affects>
-_CannotBeBought,
-/// <summary></summary>
-/// <affects>Background</affects>
-Common_Knowledge,
-/// <summary></summary>
-/// <affects>Background</affects>
-Benefit,
-/// <summary></summary>
-/// <affects>Background</affects>
-Campaign,
-/// <summary></summary>
-/// <affects>Background</affects>
-Associated_Skills,
-/// <summary></summary>
-/// <affects>Background</affects>
-Associated_Languages,
-/// <summary></summary>
-/// <affects>source</affects>
-IsBeta,
-/// <summary></summary>
-/// <affects>source</affects>
-URL,
-/// <summary></summary>
-/// <affects>source</affects>
-Release_Date,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Strength,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Intelligence,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Wisdom,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Dexterity,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Constitution,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Charisma,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Attack_Bonus,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Armor_Class,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Fortitude_Defense,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Reflex_Defense,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Will_Defense,
-/// <summary></summary>
-/// <affects>Companion, Familiar, Power</affects>
-Secondary_Speed,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Ability_Score,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Charge,
-/// <summary></summary>
-/// <affects>Companion, Power</affects>
-Combat_Advantage,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Opportunity_Attacks,
-/// <summary></summary>
-/// <affects>Companion, God Fragment, Power, Familiar</affects>
-Quirks,
-/// <summary></summary>
-/// <affects>Companion</affects>
-Companion_Power,
-/// <summary></summary>
-/// <affects>Familiar, God Fragment, Power</affects>
-Constant_Benefits,
-/// <summary></summary>
-/// <affects>Familiar, Power</affects>
-Senses,
-/// <summary></summary>
-/// <affects>Item Set</affects>
-Lore,
-/// <summary></summary>
-/// <affects>Item Set</affects>
-Set_Items,
-/// <summary></summary>
-/// <affects>Item Set</affects>
-Benefits,
-/// <summary></summary>
-/// <affects>Item Set Benefit</affects>
-Piece_Count,
-/// <summary></summary>
-/// <affects>God Fragment</affects>
-Deity,
-/// <summary></summary>
-/// <affects>Level</affects>
-XP_Needed,
-/// <summary></summary>
-/// <affects>Background Choice</affects>
-_IsBenefit,
+
 /// <summary></summary>
 /// <affects>Class Feature, Class</affects>
 _DisplayName,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+Proficient_As,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+EnchantEquiv,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+_UniversalImplement,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+_AlwaysExecute,
+
+/// <summary></summary>
+/// <affects>Magic Item, Power</affects>
+Utility_Power,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+_CannotBeBought,
+
 /// <summary></summary>
 /// <affects>Magic Item, Weapon, Class Feature, Power</affects>
 _Tags,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 _Bonus,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 _Enhancement,
+
 /// <summary></summary>
 /// <affects>Magic Item, Gear</affects>
 _AssociatedMonsters,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Level_11_Enhancement,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Servant_of_the_Staff_Stats,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Servant_of_the_Staff_Traits,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Servant_of_the_Staff_Defenses,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Servant_of_the_Staff_Hit_Points,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Servant_of_the_Staff_Speed,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Enhancement_Level_11,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Disease_Foul_Rotting,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Formula_Cost,
+
 /// <summary></summary>
 /// <affects>Companion, Power</affects>
 Standard_Actions,
+
 /// <summary></summary>
 /// <affects>Companion, Power</affects>
 Move_Actions,
+
 /// <summary></summary>
 /// <affects>Companion, Power</affects>
 Triggered_Actions,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Attributes,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Statistics,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Defenses,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Hit_Points,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Skills,
+
+/// <summary></summary>
+/// <affects>Magic Item</affects>
+utility_Power,
+
 /// <summary></summary>
 /// <affects>Magic Item, Power</affects>
 Attack_Power,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Alternative_Reward,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Levels,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Summoned_Creature,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Implacable,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Standard_Action,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Stone_Grasp,
+
 /// <summary></summary>
 /// <affects>Magic Item</affects>
 Uitilty_Power,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Checking_the_Curse,
+
+/// <summary></summary>
+/// <affects>Background, Racial Trait, Feat, Class Feature, Power, Ritual, Ritual Scroll</affects>
+Type,
+
 /// <summary></summary>
 /// <affects>Background</affects>
 Common_Kowledge,
+
 /// <summary></summary>
 /// <affects>Racial Trait</affects>
 _TraitReplacement,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Efect,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Animal_Form,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Spellbinding_Beauty,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Wooden_Form,
+
+/// <summary></summary>
+/// <affects>Race</affects>
+Tribal_Names,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 1_2_Stinkpot,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 3–4_Firepot,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 5–6_Gluepot,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Earth_friend,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Earth_Glide,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Nonthreatening,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 DIsplay,
+
+/// <summary></summary>
+/// <affects>Race</affects>
+Clan_Names,
+
+/// <summary></summary>
+/// <affects>Race</affects>
+Bladeling_Names,
+
+/// <summary></summary>
+/// <affects>Race</affects>
+Bladeling_Surnames,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Attitudes_and_Beliefs,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Tinker_Gnome_Communities,
+
 /// <summary></summary>
 /// <affects>Race</affects>
 Tinker_Gnomre_Adventurers,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Elemental_Spirit,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Sorcerer_King_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_ThemePower,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_15,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_25,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_13,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 _Requirement,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_23,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_17,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_27,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Level_23,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_19,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Level_29,
+
 */
 /// <summary></summary>
 /// <affects>Class Feature, Power, Feat</affects>
 _DisplayAssociates,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Summoned_Companion,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+Move_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Immediate_Interrupt,
+
 /// <summary></summary>
 /// <affects>Associate</affects>
 _Associated_Power,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Sarifal_Advisor,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Advisor's_Acumen,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Speak_with_Beasts,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Battle_Blessing,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _?Fetch,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _?Carry,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _?Manipulate,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Requirment,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefits,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefits,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Hit_Aftereffect,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Miss_Aftereffect,
+
 /// <summary></summary>
 /// <affects>Feat</affects>
 Rod_Expertise,
+
+/// <summary></summary>
+/// <affects>Trait Package, Class Feature, Paragon Path</affects>
+_CLASSNAME,
+
 /// <summary></summary>
 /// <affects>Class, Paragon Path</affects>
 _SUGGESTED_FEATURES,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Rules_Item,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 1_2,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 3_4,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 5_6,
+
 */
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 Pact_Reward,
+
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 _DisplayWeapons,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Creature,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Origin,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Eyes_of_the_Woodland,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Special_Movement,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Hell's_Dark_Presence,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Vanish_into_the_Void,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Shining_Presence,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Dancing_Shadows,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Death_Throes,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Teleporation,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Mists_of_Shadow,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Invisibility,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Soul_Devourer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Teleportation,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Disruptive_Tentacles,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Child_of_the_Void,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Displacement,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Gloom_Pact,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Onyx_Queen_Pact_Boon,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Sustain_Standard,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Spellbook,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Secondary_Attack_Type,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Berserker_Fury,
+
 /// <summary></summary>
 /// <affects>Class</affects>
 Skald_Powers,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_SubClasses,
+
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 Pet_Hit_Points,
+
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 Pet_Toughness,
+
 /// <summary></summary>
 /// <affects>Class Feature</affects>
 HALF_CON,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Initiative,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Perception,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Faithful_Pack_Hound,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Telepathy,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Notes,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Guardian_Companion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Each_Failed_Save,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Water,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Air,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 _Earth,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Mantle_of_Clarity,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Mantle_of_Elation,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Mantle_of_Impulsiveness,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 _Close_burst_1,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
+_Night_Stalker,
+
+/// <summary></summary>
+/// <affects>Power</affects>
+_Bleak_Disciple,
+
+/// <summary></summary>
+/// <affects>Power</affects>
 Aegis_of_Ensnarement,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Information,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Light,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 See_the_Unseen,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Deceptive_Move,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Owl's_Eyes,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Alchemical_Synergy,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Blood_Feast,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Dragon's_Breath,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Hunting_Falcon,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Rat's_Cunning,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Raven's_Speech,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Independent_Spirit,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Serpent's_Startle,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Spider's_Web,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 See_All,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Devoted_Minion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Tenacious_Guard,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Agile_Digits,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Lizard's_Immunity,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Ooze's_Malleability,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Parrot's_Speech,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Rootling_Camouflage,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Glamered_Scout,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Skull's_Gaze,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Toad's_Healing,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Silent_Predator,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Form_of_Air,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Wisp's_Escape,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Beholderkin_Eye_Ray,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Blackspawn_Stealth,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Bluespawn_Shock,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Form_of_Earth,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Form_of_Fire,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Grayspawn_Toughness,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Greenspawn's_Diversion,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Form_of_Ice,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Redspawn_Toughness,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Cockatrice's_Defense,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Whitespawn_Minion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Chaos_Echo,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gibbering_Utterances,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Shadow_Shroud,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 His_Own_Bear,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Fastieth_Activity,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Bloodthorn_Drain,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Scorpion's_Injection,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Infuse_Mark,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Defensive_Stance,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Gadfly's_Bite,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Thieving_Magpie,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Monkey_Business,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Octopus's_Flexibility,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Saddle_Assistance,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Soarwood_Lift,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Infuse_Summoned,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Book_Bearer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Warforged_Watchfulness,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Vine's_Clasp,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Clotting_Factor,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Dimensional_Lock,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Mobile_Infusion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Foulspawn_Babble,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Hammer's_Ring,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Feyling's_Reservoir,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Nightmare_Voice,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Silver_Beams,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Bearer_of_News,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Fate's_Agent,
+
 */
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Gallant's_Call,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Moon_Bite,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Incorporeal,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Elemental_Servant,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Cleaning,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Irresistible_Dance,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Dazzling_Breath,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Feylight_Form,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Danger_Sense,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Shared_Buoyancy,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Overheat,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Expert_Forager,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Horrific_Aversion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Poisonous_Deterrent,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Telepathic_Mimicry,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Empathic_Guidance,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Piercing_Scream,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Under_Raven's_Wing,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Animal_Companion,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Cat's_Stealth,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Distracting_Attack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 On_the_Track,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Hawk's_Eye,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Nimble_Fingers,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Snatch_and_Scoot,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Tentacle,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Blinking_Pack,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Blinking_Bite,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Alert_Companion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Claw,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Ferocious_Companion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Companion,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Healing_Surge_Value,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Phantom_on_the_Wind,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Brittle_Skin,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Triggered_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Frozen_in_Place,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Heart_of_Flame,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Aquatic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Sensitive_to_Cold,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Dust_and_Smoke,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Resistance,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Frost_Armor,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Minor_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Self_Repair,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Fearsome_Presence,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Immediate_Interrupt,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Mad_Delusions,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Uncanny_Senses_and_Grip,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Free_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Burning_Inside,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Fire_Within,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Flickering_Flames,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Move_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Vicious,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Rattle_the_Cage,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Standard_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefits_Immediate_Interrupt,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Corrosive_Secretions,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Unnatural_Flexibility,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Noxious_Vapors,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefits_Move_Action,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Fiery_Intensity,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Flowing_Lava,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Immediate_Reaction),
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Aquatic,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Aquatic,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Stone's_Resilience,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Earth_Glide,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Storm_Dancer,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Soaring_Talon,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Eye_of_the_Storm,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Ephemeral_Wings,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Passive_Benefit_Ethereal_Personality,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Active_Benefit_Buffeting_Winds,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gift_of_Stone,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gift_of_Wind,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gift_of_Flame,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gift_of_Water,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Formed_from_Fire,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Cover,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Fluttering_Form,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Shattering_Tremors,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Gift_of_Fire,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Guttering_Flames,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Frozen_Waves,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Stone_Body,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Agile_Flames,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Icy_Strength,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Storm_Sight,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Debris_Cloud,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Animal_Attack,
+
 /// <summary></summary>
 /// <affects>Companion, Power</affects>
 Mount_Companion,
+
 /// <summary></summary>
 /// <affects>Companion</affects>
 Manipulate_Items,
+
 /*
 /// <summary></summary>
 /// <affects>Power</affects>
 Tempter's_Influence,
+
 */
 /// <summary></summary>
 /// <affects>Power</affects>
 Bite,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Demonic_Lore,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Vengeful_Temptation,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Piercing_Charger,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Kick,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Fey_Step,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Horn_Touch,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Traits,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Mists_of_Pluton,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Detect_Arcana,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Immunities,
+
 /// <summary></summary>
 /// <affects>Power</affects>
 Countermeasures,
+
 
     }
 }
