@@ -56,7 +56,7 @@ namespace ParagonLib.Compiler
                         ws.GetStat("blah").Add("Example", "bkagt", "+4","7",null);
                       }
                      */
-                    operation = Builders.StatAdd(Parameters["name"], Params(Parameters, StatAddInfo));
+                    operation = Builders.StatAdd(Parameters["name"], Parameters);
                     break;
 
                 case "statalias":
@@ -64,24 +64,24 @@ namespace ParagonLib.Compiler
                     break;
 
                 case "grant":
-                    operation = Builders.Grant(Params(Parameters, GrantInfo));
-                    validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, GrantInfo)));
+                    operation = Builders.CallOnCharElem(GrantInfo, Parameters);
+                    //validation = Builders.ValidationLambda(Builders.ValidateExists(Params(Parameters, GrantInfo)));
                     break;
 
                 case "select":
-                    operation = Builders.Select(Params(Parameters, SelectInfo));
+                    operation = Builders.CallOnCharElem(SelectInfo, Parameters);
                     break;
 
                 case "textstring":
-                    operation = Builders.TextString(Parameters["name"], Params(Parameters, TextStringInfo));
+                    operation = Builders.TextString(Parameters["name"], Parameters);
                     break;
 
                 case "replace":
-                    operation = Builders.Replace(Params(Parameters, ReplaceInfo));
+                    operation = Builders.CallOnCharElem(ReplaceInfo, Parameters);
                     break;
 
                 case "modify":
-                    operation = Builders.Modify(Params(Parameters, ModifyInfo));
+                    operation = Builders.CallOnCharElem(ModifyInfo, Parameters);
                     break;
 
                 case "suggest":
@@ -89,7 +89,7 @@ namespace ParagonLib.Compiler
                     operation = Builders.Lambda();
                     break;
                 case "drop":
-                    operation = Builders.CallOnCharElem(DropInfo, Params(Parameters, DropInfo));
+                    operation = Builders.CallOnCharElem(DropInfo, Parameters);
                     break;
                 default:
                     throw new System.Xml.XmlException(String.Format("Operation '{0}' unknown.", Operation));
@@ -107,41 +107,7 @@ namespace ParagonLib.Compiler
             return Body;
         }
 
-        [Obsolete("", true)]
-        private string[] Params(DefaultDictionary<string, string> Parameters, params string[] keys)
-        {
-            Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
-            string[] vals = new string[keys.Length];
-            for (int i = 0; i < keys.Length; i++)
-            {
-                if (keys[i] == "charelem")
-                    vals[i] = keys[i];
-                else
-                    vals[i] = Parameters[keys[i]];
-                Parameters.Remove(keys[i]);
-            }
-            Parameters.Remove("name");
-            Logging.LogIf(Parameters.Count > 0, TraceEventType.Warning, "Xml Loader", "Unexpected params! {0}", Parameters.FirstOrDefault()); // We got a value we weren't expecting.  Let someone know.
-            return vals;
-        }
-
-        private static string[] Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
-        {
-            var keys = method.GetParameters().Select(p => p.Name.Replace('_','-')).ToArray();
-            Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
-            string[] vals = new string[keys.Length];
-            for (int i = 0; i < keys.Length; i++)
-            {
-                if (keys[i] == "charelem")
-                    vals[i] = keys[i];
-                else
-                    vals[i] = Parameters[keys[i]];
-                Parameters.Remove(keys[i]);
-            }
-            Parameters.Remove("name");
-            Logging.LogIf(Parameters.Count > 0, TraceEventType.Warning, "Xml Loader", "Unexpected {0} params! {1}", method.Name, Parameters.FirstOrDefault()); // We got a value we weren't expecting.  Let someone know.
-            return vals;
-        }
+        
 
         private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
         private static MethodInfo TextStringInfo = typeof(Workspace.Stat).GetMethod("AddText");

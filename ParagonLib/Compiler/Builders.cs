@@ -6,13 +6,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ParagonLib.Compiler
 {
     internal static class Builders
     {
+        private static MethodInfo StatAddInfo = typeof(Workspace.Stat).GetMethod("Add");
+        private static MethodInfo AddTextInfo = Builders.RefGetMethod(typeof(Workspace.Stat), "AddText");
+
         private static ParameterExpression pCharElement = Expression.Parameter(typeof(CharElement), "e");
         private static ParameterExpression pWorkspace = Expression.Parameter(typeof(Workspace), "ws");
+        private static ParameterExpression lLastElement = Expression.Parameter(typeof(string), "lastElement");
         private static ParameterExpression[] pa = new ParameterExpression[] { pCharElement, pWorkspace };
 
         public static Expression GetStat(string name)
@@ -28,7 +33,7 @@ namespace ParagonLib.Compiler
             else if (Body.Length == 1)
                 return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Body.First(), pa);
             else
-                return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(Body), pa);
+                return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(new ParameterExpression[] { lLastElement},  new Expression[] { Expression.Assign(lLastElement, Expression.Constant(""))}.Concat( Body)), pa);
         }
 
         public static FieldInfo RefGetField(Type t, string f)
@@ -61,19 +66,19 @@ namespace ParagonLib.Compiler
             return d;
         }
 
-        public static Expression StatAdd(string name, string[] args)
+        public static Expression StatAdd(string name, Dictionary<string, string> args)
         {
             return Expression.Call(
-                Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "Add"),
-                    Args(args)
+                Builders.GetStat(name), StatAddInfo,
+                    Params(args, StatAddInfo)
                 );
         }
 
-        public static Expression TextString(string name, string[] args)
+        public static Expression TextString(string name, Dictionary<string,string> args)
         {
-            return Expression.Call(
-                Builders.GetStat(name), Builders.RefGetMethod(typeof(Workspace.Stat), "AddText"),
-                    Args(args)
+            return Expression.Call(Builders.GetStat(name), 
+                AddTextInfo,
+                Params(args, AddTextInfo)
                 );
         }
 
@@ -98,34 +103,12 @@ namespace ParagonLib.Compiler
             return Lambda(rules.ToArray());
         }
 
-        internal static Expression Modify(string[] args)
-        {
-            return Expression.Call(
-                pCharElement, Builders.RefGetMethod(typeof(CharElement), "Modify"),
-                args.Select(e => Expression.Constant(e, typeof(String)))
-            );
-        }
-        internal static Expression CallOnCharElem(MethodInfo method, string[] args)
+        internal static Expression CallOnCharElem(MethodInfo method, Dictionary<string, string> args)
         {
             return Expression.Call(
                 pCharElement, method,
-                args.Select(e => Expression.Constant(e, typeof(String)))
+                Params(args, method)
             );
-        }
-        internal static Expression Replace(string[] args)
-        {
-            return Expression.Call(
-                pCharElement, Builders.RefGetMethod(typeof(CharElement), "Replace"),
-                args.Select(e => Expression.Constant(e, typeof(String)))
-            );
-        }
-
-        internal static Expression Select(string[] args)
-        {
-            return Expression.Call(
-                pCharElement, Builders.RefGetMethod(typeof(CharElement), "Select"),
-                    args.Select(e => Expression.Constant(e, typeof(String)))
-                );
         }
 
         internal static Expression StatAlias(string name, string alias)
@@ -156,17 +139,24 @@ namespace ParagonLib.Compiler
              */
         }
 
-        private static IEnumerable<Expression> Args(string[] args)
+        private static IEnumerable<Expression> Params(DefaultDictionary<string, string> Parameters, MethodInfo method)
         {
-            foreach (var a in args)
+            var keys = method.GetParameters().Select(p => p.Name.Replace('_', '-')).ToArray();
+            Parameters = new Dictionary<string, string>(Parameters, StringComparer.CurrentCultureIgnoreCase);
+            for (int i = 0; i < keys.Length; i++)
             {
-                if (a == "charelem")
+                if (keys[i] == "charelem")
                     yield return pCharElement;
+                else if (method.Name=="Modify" && keys[i] == "name" && Parameters[keys[i]] == null)
+                    yield return lLastElement;
                 else
-                    yield return Expression.Constant(a, typeof(String));
+                    yield return Expression.Constant(Parameters[keys[i]], typeof(String));
+                Parameters.Remove(keys[i]);
             }
-            yield break;
+            Parameters.Remove("name");
+            Logging.LogIf(Parameters.Count > 0, TraceEventType.Warning, "Xml Loader", "Unexpected {0} params! {1}", method.Name, Parameters.FirstOrDefault()); // We got a value we weren't expecting.  Let someone know.
         }
+
         private static Expression StringFormat(ConstantExpression Format, ConstantExpression arg0)
         {
             return Expression.Call(typeof(string).GetMethod("Format", new Type[] { typeof(string), typeof(object) }), Format, arg0);

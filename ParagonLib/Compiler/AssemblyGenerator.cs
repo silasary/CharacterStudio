@@ -284,7 +284,8 @@ namespace ParagonLib.Compiler
                         MethodAttributes.Public |
                         MethodAttributes.VtableLayoutMask,
                         typeof(void), new Type[] { typeof(CharElement), typeof(Workspace) });
-                    Builders.Merge(calcCode).CompileToMethod(methodbuilder, generator);
+                    var method = Builders.Merge(calcCode);
+                    method.CompileToMethod(methodbuilder, generator);
                     //typeBuilder.DefineMethodOverride(methodbuilder, Builders.RefGetMethod(typeof(RulesElementBase), "Calculate"));
                 }
                 typeBuilder.CreateType();
