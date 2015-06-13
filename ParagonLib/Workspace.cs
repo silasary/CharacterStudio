@@ -274,7 +274,7 @@ namespace ParagonLib
                 public string type;
                 public string value;
                 public string String;
-                private int charelem;
+                private WeakReference<CharElement> charelem;
 
                 public bit(string value, string condition, string requires, string type, int Level, CharElement source)
                 {
@@ -285,9 +285,9 @@ namespace ParagonLib
                     this.Level = Level;
                     this.String = "";
                     if (source == null)
-                        this.charelem = 0;
+                        this.charelem = null;
                     else
-                        this.charelem = source.SelfId;
+                        this.charelem = new WeakReference<CharElement>(source);
                 }
 
                 public bit(string text, string condition, string requires, int Level, CharElement source)
@@ -299,9 +299,9 @@ namespace ParagonLib
                     this.Level = Level;
                     this.value = "";
                     if (source == null)
-                        this.charelem = 0;
+                        this.charelem = null;
                     else
-                        this.charelem = source.SelfId;
+                        this.charelem = new WeakReference<CharElement>(source);
                 }
                 
             }
