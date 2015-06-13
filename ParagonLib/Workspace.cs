@@ -39,7 +39,7 @@ namespace ParagonLib
             this.System = System;
             if (!string.IsNullOrEmpty(System) && !RuleFactory.KnownSystems.Contains(System))
                 Logging.Log("Load Character", TraceEventType.Warning,"Warning: Requested system '{0}' not loaded.", System);
-            AllElements = new Dictionary<string, WeakReference>();
+            _AllElements = new Dictionary<string, WeakReference>();
             AdventureLog = new List<Adventure>();
             ParserFunctions = new Dictionary<string, Func<string,string, int>>();
             ParserFunctions["ABILITYMOD"] = (p,q) => { return (ParseInt(p) - 10 ) / 2; };
@@ -61,7 +61,18 @@ namespace ParagonLib
 
         public List<Adventure> AdventureLog { get; set; }
 
-        public Dictionary<string, WeakReference> AllElements { get; set; }
+        public Dictionary<string, WeakReference> _AllElements { get; set; }
+        public IEnumerable<CharElement> AllElements
+        {
+            get
+            {
+                return _AllElements.Values
+                    .Where(wr => wr.IsAlive).Select(wr => wr.Target as CharElement)
+                    //.Select(c => c.)
+                    ;
+            }
+        }
+
 
         public int Level
         {
@@ -142,10 +153,9 @@ namespace ParagonLib
                     }
                 }
 #if DEBUG //HACK:  REWRITE YOUR UNIT TESTS!
-                foreach (var item in AllElements.Values.ToArray())
+                foreach (var el in AllElements.ToArray())
                 {
-                    CharElement el;
-                    if ((item.Target != null) && !((el = (CharElement)item.Target).Parent != null && el.Parent.IsAlive) && el.RulesElement != null)
+                    if (el.RulesElement != null)
                     {
                         if (el.RulesElement.Type == "Test")
                             el.Recalculate();
@@ -332,8 +342,8 @@ namespace ParagonLib
         IEnumerable<int> counter() { var i = 1; while (true) yield return i++; }
         internal int GenerateUID()
         {
-            var ids = AllElements.ToArray().Where(i => i.Value.IsAlive)
-                                 .Select(i => (i.Value.Target as CharElement).SelfId)
+            var ids = AllElements.ToArray()
+                                 .Select(i => i.SelfId)
                                  .ToArray();
             return counter().First(i => !ids.Contains(i));
 
@@ -348,7 +358,7 @@ namespace ParagonLib
             var negate = p.StartsWith("!");
             if (negate)
                 p = p.Substring(1);
-            var success = AllElements.Where(n => n.Value.IsAlive).Select(n => n.Value.Target as CharElement).FirstOrDefault(n => n.Name == p) != null;
+            var success = AllElements.FirstOrDefault(n => n.Name == p) != null;
             if (negate)
                 return !success;
             else

@@ -19,7 +19,7 @@ namespace ParagonLib
             SelfId = p;
             this.workspace = workspace;
             this.RulesElement = re;
-            workspace.AllElements[id] = new WeakReference(this);
+            workspace._AllElements[id] = new WeakReference(this);
         }
 
         public WeakReference Parent { get; set; }

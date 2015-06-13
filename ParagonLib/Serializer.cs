@@ -248,7 +248,7 @@ namespace ParagonLib
             WriteComment("\n         The fields for your powers. Each power is then followed\n         by the stats with that power paired with each legal weapon.\n         The weapons are listed in priority as the builder sees it.\n         Particularly, the first weapon listed is the default.\n      ");
             //TODO: Power Blocks!  VERY IMPORTANT. (for iPlay4e)
             writer.WriteStartElement("PowerStats");
-            foreach (var power in c.workspace.AllElements.Where(e => e.Value.IsAlive).Select(e=> e.Value.Target as CharElement).Where(e=> e.Type == "Power"))
+            foreach (var power in c.workspace.AllElements.Where(e=> e.Type == "Power"))
             {
                 var PowerInfo = power.RulesElement as Rules.IPower;
                 if (PowerInfo != null)
@@ -315,11 +315,8 @@ namespace ParagonLib
             // Experiment further with ip4e before bloating file?
             WriteComment("\n         The list of all rules elements the character has, after taking into\n         account retraining, multiclass power swapping, etc.\n      ");
             writer.WriteStartElement("RulesElementTally");
-            foreach (var rule in c.workspace.AllElements)
+            foreach (var ele in c.workspace.AllElements)
             {
-                if (!rule.Value.IsAlive)
-                    continue;
-                var ele = (rule.Value.Target as CharElement);
                 if (ele.Disabled)
                     continue;
                 writer.WriteStartElement("RulesElement");

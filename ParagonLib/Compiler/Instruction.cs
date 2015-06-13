@@ -46,7 +46,7 @@ namespace ParagonLib.Compiler
             // This here is extreme optimization.  We're taking the instruction set and compiling it to refer to constant values,
             // rather than the dictionary (or XML) we started with
 
-            Expression<Func<string>> validation = null;
+            //Expression<Func<string>> validation = null;
             switch (Operation)
             {
                 case "statadd":
