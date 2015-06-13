@@ -158,6 +158,7 @@ namespace ParagonLib
             }
         }
 
+        [Obsolete]
         public bool Disabled { get; set; }
     }
 }

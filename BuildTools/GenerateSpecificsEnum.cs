@@ -69,7 +69,9 @@ namespace ParagonLib.RuleEngine
 {
     public enum Specifics
     {
+// This is assigned to any specific that doesn't feature below.
 Unknown,
+
 ");
             foreach (var s in Specifics)
             {
