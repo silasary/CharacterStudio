@@ -14,13 +14,15 @@ namespace ParagonLib.RuleEngine
 {
     public enum Specifics
     {
+// This is assigned to any specific that doesn't feature below.
 Unknown,
+
 /// <summary>Describes how large or small the thing is.</summary>
-/// <affects>Race, Weapon, Companion, Familiar, Power</affects>
+/// <affects>Race, Weapon, Companion, Familiar, Companion (Tivaan's Companion Cards), Power</affects>
 Size,
 
 /// <summary>Describes the base movement or affects the maximum movement of the creature</summary>
-/// <affects>Race, Armor, Companion, Familiar, Power</affects>
+/// <affects>Race, Armor, Companion, Familiar, Companion (Tivaan's Companion Cards), Power, Power (Tivaan's Companion Cards)</affects>
 Speed,
 
 /// <summary>Some ajctives describing the race</summary>
@@ -36,7 +38,7 @@ Physical_Qualities,
 Playing,
 
 /// <summary>What kinds of lighting conditions can the race see in? Powers that change this.</summary>
-/// <affects>Race, Power</affects>
+/// <affects>Race, Power (Tivaan's Companion Cards)</affects>
 Vision,
 
 /// <summary>Gives a suggested heignt range for a character in feet and inches.</summary>
@@ -48,7 +50,7 @@ Average_Height,
 Average_Weight,
 
 /// <summary>Lists the scores that the race gives bonuses to.</summary>
-/// <affects>Race, Power</affects>
+/// <affects>Race, Power (Tivaan's Companion Cards)</affects>
 Ability_Scores,
 
 /// <summary>Lists languages granted by the race</summary>
@@ -112,7 +114,7 @@ Hit_Points_per_Level_Gained,
 Healing_Surges,
 
 /// <summary></summary>
-/// <affects>Class, Hybrid Class, Companion, Power</affects>
+/// <affects>Class, Hybrid Class, Companion, Power (Tivaan's Companion Cards)</affects>
 Trained_Skills,
 
 /// <summary></summary>
@@ -192,7 +194,7 @@ Trait_Package,
 Immortality,
 
 /// <summary></summary>
-/// <affects>Epic Destiny, Paragon Path, Racial Trait, Class Feature, Companion, Item Set Benefit, Power, Feat, Magic Item, Theme, Internal, Trait Package, Ritual, Ritual Scroll</affects>
+/// <affects>Epic Destiny, Paragon Path, Racial Trait, Class Feature, Companion, Item Set Benefit, Power, Feat, Magic Item, Companion (Tivaan's Companion Cards), Theme, Internal, Trait Package, Ritual, Ritual Scroll</affects>
 _DisplayPowers,
 
 /// <summary></summary>
@@ -208,7 +210,7 @@ Alignment,
 Domains,
 
 /// <summary></summary>
-/// <affects>Feat, Magic Item, Companion, Familiar, Item Set, Class Feature</affects>
+/// <affects>Feat, Magic Item, Companion, Familiar, Item Set, Companion (Tivaan's Companion Cards), Class Feature</affects>
 Tier,
 
 /// <summary></summary>
@@ -344,7 +346,7 @@ Check,
 Gold,
 
 /// <summary></summary>
-/// <affects>Armor, Magic Item, Feat, Power</affects>
+/// <affects>Armor, Magic Item, Feat, Power, Power (Tivaan's Companion Cards)</affects>
 Special,
 
 /// <summary></summary>
@@ -500,27 +502,27 @@ Associated_Languages,
 IsBeta,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Strength,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Intelligence,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Wisdom,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Dexterity,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Constitution,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Charisma,
 
 /// <summary></summary>
@@ -528,19 +530,19 @@ Charisma,
 Attack_Bonus,
 
 /// <summary></summary>
-/// <affects>Companion</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
 Armor_Class,
 
 /// <summary></summary>
-/// <affects>Companion</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
 Fortitude_Defense,
 
 /// <summary></summary>
-/// <affects>Companion</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
 Reflex_Defense,
 
 /// <summary></summary>
-/// <affects>Companion</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
 Will_Defense,
 
 /// <summary></summary>
@@ -548,11 +550,11 @@ Will_Defense,
 Secondary_Speed,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion, Power, Power (Tivaan's Companion Cards)</affects>
 Attack,
 
 /// <summary></summary>
-/// <affects>Companion</affects>
+/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
 Ability_Score,
 
 /// <summary></summary>
@@ -568,7 +570,7 @@ Combat_Advantage,
 Opportunity_Attacks,
 
 /// <summary></summary>
-/// <affects>Companion, God Fragment, Power, Familiar</affects>
+/// <affects>Companion, God Fragment, Companion (Tivaan's Companion Cards), Power, Familiar</affects>
 Quirks,
 
 /// <summary></summary>
@@ -580,7 +582,7 @@ Companion_Power,
 Constant_Benefits,
 
 /// <summary></summary>
-/// <affects>Familiar, Power</affects>
+/// <affects>Familiar, Power, Power (Tivaan's Companion Cards)</affects>
 Senses,
 
 /// <summary></summary>
@@ -604,7 +606,7 @@ Piece_Count,
 Deity,
 
 /// <summary></summary>
-/// <affects>God Fragment, Power</affects>
+/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
 Action_Type,
 
 /// <summary></summary>
@@ -612,7 +614,7 @@ Action_Type,
 Effect,
 
 /// <summary></summary>
-/// <affects>God Fragment, Power</affects>
+/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
 Keywords,
 
 /// <summary></summary>
@@ -620,7 +622,7 @@ Keywords,
 Trigger,
 
 /// <summary></summary>
-/// <affects>God Fragment, Power</affects>
+/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
 Power_Usage,
 
 /// <summary></summary>
@@ -644,15 +646,15 @@ Associated_Power_Info,
 _SkillPower,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Display,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Attack_Type,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Target,
 
 /// <summary></summary>
@@ -660,7 +662,7 @@ Target,
 _Censure_of_Unity,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Hit,
 
 /// <summary></summary>
@@ -1072,7 +1074,7 @@ _Immediate_Interrupt,
 Removed,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Minor_Action,
 
 /// <summary></summary>
@@ -1168,7 +1170,7 @@ Earthstrength,
 _Second_Failed_Saving_Throw,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Instinctive_Effect,
 
 /// <summary></summary>
@@ -1275,12 +1277,10 @@ _Other,
 /// <affects>Power</affects>
 Star_Pact,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-_Lawbreaker's_Doom,
+_Lawbreaker_s_Doom,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 _Augment,
@@ -1333,12 +1333,10 @@ _Amaan_Pact_Boon,
 /// <affects>Power</affects>
 _Burned_Emperor_Pact_Boon,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-_Land's_Soul_Pact_Boon,
+_Land_s_Soul_Pact_Boon,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 _Queen_of_Namhar,
@@ -1716,7 +1714,7 @@ Area,
 Close,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Opportunity_Action,
 
 /// <summary></summary>
@@ -1824,35 +1822,35 @@ Disease_Foul_Rotting,
 Formula_Cost,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Standard_Actions,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
 Move_Actions,
 
 /// <summary></summary>
-/// <affects>Companion, Power</affects>
+/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards), Power</affects>
 Triggered_Actions,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Attributes,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards), Power</affects>
 Statistics,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards), Power</affects>
 Defenses,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards), Power</affects>
 Hit_Points,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards), Power</affects>
 Skills,
 
 /// <summary></summary>
@@ -1872,7 +1870,7 @@ Alternative_Reward,
 Levels,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Summoned_Creature,
 
 /// <summary></summary>
@@ -1880,7 +1878,7 @@ Summoned_Creature,
 Implacable,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Standard_Action,
 
 /// <summary></summary>
@@ -2079,12 +2077,10 @@ _Associated_Power,
 /// <affects>Power</affects>
 Sarifal_Advisor,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Advisor's_Acumen,
+Advisor_s_Acumen,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Speak_with_Beasts,
@@ -2189,12 +2185,10 @@ Eyes_of_the_Woodland,
 /// <affects>Power</affects>
 Special_Movement,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Hell's_Dark_Presence,
+Hell_s_Dark_Presence,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Vanish_into_the_Void,
@@ -2288,11 +2282,11 @@ Pet_Toughness,
 HALF_CON,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Initiative,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Perception,
 
 /// <summary></summary>
@@ -2373,12 +2367,10 @@ See_the_Unseen,
 /// <affects>Power</affects>
 Deceptive_Move,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Owl's_Eyes,
+Owl_s_Eyes,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Alchemical_Synergy,
@@ -2387,44 +2379,34 @@ Alchemical_Synergy,
 /// <affects>Power</affects>
 Blood_Feast,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Dragon's_Breath,
+Dragon_s_Breath,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Hunting_Falcon,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Rat's_Cunning,
+Rat_s_Cunning,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Raven's_Speech,
+Raven_s_Speech,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Independent_Spirit,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Serpent's_Startle,
+Serpent_s_Startle,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Spider's_Web,
+Spider_s_Web,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 See_All,
@@ -2441,24 +2423,18 @@ Tenacious_Guard,
 /// <affects>Power</affects>
 Agile_Digits,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Lizard's_Immunity,
+Lizard_s_Immunity,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Ooze's_Malleability,
+Ooze_s_Malleability,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Parrot's_Speech,
+Parrot_s_Speech,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Rootling_Camouflage,
@@ -2467,18 +2443,14 @@ Rootling_Camouflage,
 /// <affects>Power</affects>
 Glamered_Scout,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Skull's_Gaze,
+Skull_s_Gaze,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Toad's_Healing,
+Toad_s_Healing,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Silent_Predator,
@@ -2487,12 +2459,10 @@ Silent_Predator,
 /// <affects>Power</affects>
 Form_of_Air,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Wisp's_Escape,
+Wisp_s_Escape,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Beholderkin_Eye_Ray,
@@ -2517,12 +2487,10 @@ Form_of_Fire,
 /// <affects>Power</affects>
 Grayspawn_Toughness,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Greenspawn's_Diversion,
+Greenspawn_s_Diversion,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Form_of_Ice,
@@ -2531,12 +2499,10 @@ Form_of_Ice,
 /// <affects>Power</affects>
 Redspawn_Toughness,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Cockatrice's_Defense,
+Cockatrice_s_Defense,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Whitespawn_Minion,
@@ -2565,12 +2531,10 @@ Fastieth_Activity,
 /// <affects>Power</affects>
 Bloodthorn_Drain,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Scorpion's_Injection,
+Scorpion_s_Injection,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Infuse_Mark,
@@ -2579,12 +2543,10 @@ Infuse_Mark,
 /// <affects>Power</affects>
 Defensive_Stance,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Gadfly's_Bite,
+Gadfly_s_Bite,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Thieving_Magpie,
@@ -2593,12 +2555,10 @@ Thieving_Magpie,
 /// <affects>Power</affects>
 Monkey_Business,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Octopus's_Flexibility,
+Octopus_s_Flexibility,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Saddle_Assistance,
@@ -2619,12 +2579,10 @@ Book_Bearer,
 /// <affects>Power</affects>
 Warforged_Watchfulness,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Vine's_Clasp,
+Vine_s_Clasp,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Clotting_Factor,
@@ -2641,18 +2599,14 @@ Mobile_Infusion,
 /// <affects>Power</affects>
 Foulspawn_Babble,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Hammer's_Ring,
+Hammer_s_Ring,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Feyling's_Reservoir,
+Feyling_s_Reservoir,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Nightmare_Voice,
@@ -2665,18 +2619,14 @@ Silver_Beams,
 /// <affects>Power</affects>
 Bearer_of_News,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Fate's_Agent,
+Fate_s_Agent,
 
-*/
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Gallant's_Call,
+Gallant_s_Call,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Moon_Bite,
@@ -2741,22 +2691,18 @@ Empathic_Guidance,
 /// <affects>Power</affects>
 Piercing_Scream,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Under_Raven's_Wing,
+Under_Raven_s_Wing,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Animal_Companion,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Cat's_Stealth,
+Cat_s_Stealth,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Distracting_Attack,
@@ -2765,12 +2711,10 @@ Distracting_Attack,
 /// <affects>Power</affects>
 On_the_Track,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Hawk's_Eye,
+Hawk_s_Eye,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Nimble_Fingers,
@@ -2804,191 +2748,187 @@ Claw,
 Ferocious_Companion,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Companion,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Healing_Surge_Value,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Phantom_on_the_Wind,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Brittle_Skin,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Triggered_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Frozen_in_Place,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Heart_of_Flame,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Aquatic,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Sensitive_to_Cold,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Dust_and_Smoke,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Resistance,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Frost_Armor,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Minor_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Self_Repair,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Fearsome_Presence,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Immediate_Interrupt,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Mad_Delusions,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Uncanny_Senses_and_Grip,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Free_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Burning_Inside,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Fire_Within,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Flickering_Flames,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Move_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Vicious,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Rattle_the_Cage,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Standard_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefits_Immediate_Interrupt,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Corrosive_Secretions,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Unnatural_Flexibility,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Noxious_Vapors,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefits_Move_Action,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Fiery_Intensity,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Flowing_Lava,
 
-/*
 /// <summary></summary>
-/// <affects>Power</affects>
-Active_Benefit_Immediate_Reaction),
+/// <affects>Power (Tivaan's Companion Cards)</affects>
+Active_Benefit_Immediate_Reaction,
 
-*/
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Aquatic,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Aquatic,
 
-/*
 /// <summary></summary>
-/// <affects>Power</affects>
-Passive_Benefit_Stone's_Resilience,
+/// <affects>Power (Tivaan's Companion Cards)</affects>
+Passive_Benefit_Stone_s_Resilience,
 
-*/
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Earth_Glide,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Storm_Dancer,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Soaring_Talon,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Eye_of_the_Storm,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Ephemeral_Wings,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Passive_Benefit_Ethereal_Personality,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Active_Benefit_Buffeting_Winds,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Gift_of_Stone,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Gift_of_Wind,
 
 /// <summary></summary>
@@ -2996,59 +2936,59 @@ Gift_of_Wind,
 Gift_of_Flame,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
 Gift_of_Water,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Formed_from_Fire,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Cover,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Fluttering_Form,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Shattering_Tremors,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Gift_of_Fire,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Guttering_Flames,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Frozen_Waves,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Stone_Body,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Agile_Flames,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Icy_Strength,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Storm_Sight,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Debris_Cloud,
 
 /// <summary></summary>
-/// <affects>Power</affects>
+/// <affects>Power (Tivaan's Companion Cards)</affects>
 Animal_Attack,
 
 /// <summary></summary>
@@ -3059,12 +2999,10 @@ Mount_Companion,
 /// <affects>Companion</affects>
 Manipulate_Items,
 
-/*
 /// <summary></summary>
 /// <affects>Power</affects>
-Tempter's_Influence,
+Tempter_s_Influence,
 
-*/
 /// <summary></summary>
 /// <affects>Power</affects>
 Bite,
