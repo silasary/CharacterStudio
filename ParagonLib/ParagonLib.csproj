@@ -105,6 +105,7 @@
     <Compile Include="CharacterData\CampaignSetting.cs" />
     <Compile Include="CharElement.cs" />
     <Compile Include="D20Currency.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\FastSmartWeakEvent.cs" />
     <Compile Include="Utils\GrammarParser.cs" />
     <Compile Include="Utils\VersionParser.cs" />

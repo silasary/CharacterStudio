@@ -88,8 +88,6 @@ namespace ParagonLib
 
         private void WriteRulesElementNested(CharElement ele)
         {
-            if (ele.Disabled && ele.Type != "Level")
-                return;
             writer.WriteStartElement("RulesElement");
 
             SerializeRuleElement(ele, false);

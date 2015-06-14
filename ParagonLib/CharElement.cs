@@ -75,7 +75,6 @@ namespace ParagonLib
                 if (child.Parent == null || !child.Parent.IsAlive) 
                     child.Parent = new WeakReference(this);
                 child.Method = AquistitionMethod.Granted;
-                child.Disabled = disabled;
                 return;
             }
 
@@ -83,7 +82,6 @@ namespace ParagonLib
             child.Method = AquistitionMethod.Granted;
             this.Children.Add(child);
             child.Parent = new WeakReference(this);
-            child.Disabled = disabled;
 
         }
 
@@ -134,8 +132,6 @@ namespace ParagonLib
         {
             if (this.SelfId == -1)
                 SelfId = workspace.GenerateUID();
-            if (Disabled)
-                return; 
             if (this.RulesElement == null)
                 this.RulesElement = RuleFactory.FindRulesElement(RulesElementId, workspace.System);
             if (this.RulesElement == null)
@@ -158,7 +154,34 @@ namespace ParagonLib
             }
         }
 
-        [Obsolete]
-        public bool Disabled { get; set; }
+        public void BlockElement(CharElement source)
+        {
+            blocks.Add(new WeakReference(source));
+            foreach (var child in Children)
+            {
+                child.BlockElement(source);
+            }
+        }
+        List<WeakReference> blocks = new List<WeakReference>();
+
+        //public void Unblock(object blockingObject)
+        //{
+        //    blocks.RemoveAll(b => b.Target == blockingObject);
+        //}
+
+        public bool Disabled
+        {
+            get
+            {
+                foreach (var block in blocks.ToArray())
+                {
+                    if (block.IsAlive)
+                        return true;
+                    else
+                        blocks.Remove(block);
+                }
+                return false;
+            }
+        }
     }
 }

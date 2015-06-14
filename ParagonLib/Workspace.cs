@@ -1,6 +1,7 @@
 ﻿using ParagonLib.CharacterData;
 using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
+using ParagonLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -68,6 +69,7 @@ namespace ParagonLib
             {
                 return _AllElements.Values
                     .Where(wr => wr.IsAlive).Select(wr => wr.Target as CharElement)
+                    .Where(ce => !ce.Disabled);
                     //.Select(c => c.)
                     ;
             }
@@ -225,8 +227,11 @@ namespace ParagonLib
             {
                 int total = 0;
                 DefaultDictionary<string, int> TypeBonus = new DefaultDictionary<string, int>();
+                Clean();
                 foreach (var bit in bits)
                 {
+                    if (bit.charelem.GetTargetOrDefault().Disabled)
+                        continue;
                     int val = calc(bit, Level);
                     if (string.IsNullOrEmpty(bit.type))
                         total += val;
@@ -238,6 +243,11 @@ namespace ParagonLib
                     total += type.Value;
                 }
                 return total;
+            }
+
+            private void Clean()
+            {
+                bits.RemoveAll(b => !b.charelem.IsAlive());
             }
 
             private int calc(Stat.bit bit, int Level)
@@ -284,7 +294,7 @@ namespace ParagonLib
                 public string type;
                 public string value;
                 public string String;
-                private WeakReference<CharElement> charelem;
+                internal WeakReference<CharElement> charelem;
 
                 public bit(string value, string condition, string requires, string type, int Level, CharElement source)
                 {
