@@ -15,15 +15,15 @@ namespace ParagonLib.RuleEngine
     public enum Specifics
     {
 Unknown,
-/// <summary>How big is this thing?</summary>
+/// <summary>Describes how large or small the thing is.</summary>
 /// <affects>Race, Weapon, Companion, Familiar, Power</affects>
 Size,
 
-/// <summary></summary>
+/// <summary>Describes the base movement or affects the maximum movement of the creature</summary>
 /// <affects>Race, Armor, Companion, Familiar, Power</affects>
 Speed,
 
-/// <summary></summary>
+/// <summary>Some ajctives describing the race</summary>
 /// <affects>Race</affects>
 Characteristics,
 
@@ -35,23 +35,23 @@ Physical_Qualities,
 /// <affects>Race</affects>
 Playing,
 
-/// <summary></summary>
+/// <summary>What kinds of lighting conditions can the race see in? Powers that change this.</summary>
 /// <affects>Race, Power</affects>
 Vision,
 
-/// <summary></summary>
+/// <summary>Gives a suggested heignt range for a character in feet and inches.</summary>
 /// <affects>Race</affects>
 Average_Height,
 
-/// <summary></summary>
+/// <summary>Gives a suggested weight range for a character in pounds</summary>
 /// <affects>Race</affects>
 Average_Weight,
 
-/// <summary></summary>
+/// <summary>Lists the scores that the race gives bonuses to.</summary>
 /// <affects>Race, Power</affects>
 Ability_Scores,
 
-/// <summary></summary>
+/// <summary>Lists languages granted by the race</summary>
 /// <affects>Race</affects>
 Languages,
 
