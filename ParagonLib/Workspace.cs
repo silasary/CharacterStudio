@@ -230,7 +230,7 @@ namespace ParagonLib
                 Clean();
                 foreach (var bit in bits)
                 {
-                    if (bit.charelem.GetTargetOrDefault().Disabled)
+                    if (bit.charelem != null && bit.charelem.GetTargetOrDefault().Disabled)
                         continue;
                     int val = calc(bit, Level);
                     if (string.IsNullOrEmpty(bit.type))
@@ -247,7 +247,7 @@ namespace ParagonLib
 
             private void Clean()
             {
-                bits.RemoveAll(b => !b.charelem.IsAlive());
+                bits.RemoveAll(b => b.charelem !=null && !b.charelem.IsAlive());
             }
 
             private int calc(Stat.bit bit, int Level)

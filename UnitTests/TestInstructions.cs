@@ -32,12 +32,12 @@ new XDocument(new XElement(XName.Get("D20Rules"), new XAttribute("game-system", 
         new XAttribute("internal-id", "TEST_GRANT_GRANTER"),
         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To grant an Element")),
         new XElement(XName.Get("rules"),
-            new XElement(XName.Get("grant"), new XAttribute("name", "TEST_GRANT_GRANTEE"), new XAttribute("type", "Test"))
+            new XElement(XName.Get("grant"), new XAttribute("name", "TEST_GRANT_GRANTEE"), new XAttribute("type", "_Test"))
             )
         ),
     new XElement(XName.Get("RulesElement"),
         new XAttribute("name", "Grantee"),
-        new XAttribute("type", "Test"),
+        new XAttribute("type", "_Test"),
         new XAttribute("internal-id", "TEST_GRANT_GRANTEE"),
         new XElement(XName.Get("specific"), new XAttribute("name", "Purpose"), new XText("To be granted")),
         new XElement(XName.Get("rules"),
