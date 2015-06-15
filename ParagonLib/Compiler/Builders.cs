@@ -30,8 +30,8 @@ namespace ParagonLib.Compiler
 
             if (Body.Length == 0)
                 return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(pCharElement, pWorkspace), pa);
-            else if (Body.Length == 1)
-                return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Body.First(), pa);
+            //else if (Body.Length == 1)
+            //    return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Body.First(), pa);
             else
                 return Expression<Action<CharElement, Workspace>>.Lambda<Action<CharElement, Workspace>>(Expression.Block(new ParameterExpression[] { lLastElement},  new Expression[] { Expression.Assign(lLastElement, Expression.Constant(""))}.Concat( Body)), pa);
         }

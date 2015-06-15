@@ -58,6 +58,13 @@ namespace CharacterStudio.Controls.Panes
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var browse = new System.Windows.Forms.OpenFileDialog();
+            browse.Filter = "Character Builder Files|*.dnd4e;*.D20Character";
+            browse.ShowDialog();
+        }
+
 
                 //private void listView1_DoubleClick(object sender, EventArgs e)
         //{

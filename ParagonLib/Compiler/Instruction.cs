@@ -22,6 +22,7 @@ namespace ParagonLib.Compiler
         /// </summary>
         public Func<string> Validate;
         
+        [Obsolete]
         public Instruction(string Operation, Dictionary<string, string> Parameters, string filename=null, int linenum = -1)
         {
             Body = Generate(Operation, Parameters, filename, linenum, 0);
@@ -119,10 +120,5 @@ namespace ParagonLib.Compiler
 
         internal Expression Body;
         internal DebugInfoGenerator PdbGenerator = DebugInfoGenerator.CreatePdbGenerator();
-
-        internal static Expression<Action<CharElement, Workspace>> Merge(IEnumerable<Instruction> Rules)
-        {
-            return Builders.Merge(Rules.Select(s => s.Body));
-        }
     }
 }

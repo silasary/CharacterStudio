@@ -32,7 +32,7 @@ namespace ParagonLib.LazyRules
             }
         }
 
-        public List<Instruction> Rules = new List<Instruction>();
+        public List<System.Linq.Expressions.Expression> Rules = new List<System.Linq.Expressions.Expression>();
         public SpecificsDict Specifics = new SpecificsDict();
 
         protected string GetSpecific([CallerMemberName] string name = "")
@@ -76,11 +76,12 @@ namespace ParagonLib.LazyRules
                     case "rules": // Yes, the first call to Calculate() compiles then calls Calculate().
                         Calculate = new Action<CharElement, Workspace>((e, ws) =>
                         {
+                            int n = 0;
                             foreach (var rule in element.Elements())
                             {
-                                Rules.Add(new Instruction(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), SourcePart, ((IXmlLineInfo)rule).LineNumber));
+                                Rules.Add(Instruction.Generate(rule.Name.LocalName, Builders.MakeDict(rule.Attributes()), SourcePart, ((IXmlLineInfo)rule).LineNumber,n++));
                             }
-                            var Body = Instruction.Merge(Rules);
+                            var Body = Builders.Merge(Rules);
                             Calculate = Body.Compile();
                             Calculate(e, ws);
                         });
