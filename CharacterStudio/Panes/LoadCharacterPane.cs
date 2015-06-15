@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using CharacterStudio.Controls.Common;
+using ParagonLib;
 
 namespace CharacterStudio.Controls.Panes
 {
@@ -37,7 +38,7 @@ namespace CharacterStudio.Controls.Panes
         {
             InitializeComponent();
             checkedListBox1.Items.Add(new Folder("(Recent)"),true);
-            checkedListBox1.Items.AddRange(KnownFolders.Select<string,object>(f => new Folder(f)).ToArray());
+            checkedListBox1.Items.AddRange(Serializer.KnownFolders.Select<string,object>(f => new Folder(f)).ToArray());
         }
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace CharacterStudio.Controls.Panes
                 var folder = (Folder)checkedListBox1.SelectedItem;
                 IEnumerable<string> chars;
                 if (folder == "(Recent)")
-                    chars = KnownFiles;
+                    chars = Serializer.KnownFiles;
                 else
                     chars = Directory.GetFiles(folder.path, "*.dnd4e").Union(Directory.GetFiles(folder.path, "*.D20Character"));
 
@@ -57,34 +58,7 @@ namespace CharacterStudio.Controls.Panes
             }
         }
 
-        public static IEnumerable<string> KnownFiles {
-            get
-            {
-                List<string> files = new List<string>();
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
-                if (File.Exists(path))
-                    files.AddRange(File.ReadAllLines(path));
-                    path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "builder_known_files.txt");
-                if (File.Exists(path))
-                    files.AddRange(File.ReadAllLines(path));
-                return files.Distinct( ).Where(f => File.Exists(f));
-            }
-        }
 
-        public static IEnumerable<string> KnownFolders
-        {
-            get
-            {
-                List<string> files = new List<string>();
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
-                if (File.Exists(path))
-                    files.AddRange(File.ReadAllLines(path));
-                        path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "builder_known_files.txt");
-                if (File.Exists(path))
-                    files.AddRange(File.ReadAllLines(path));
-                return files.Distinct( ).Where(f => Directory.Exists(f));
-            }
-        }
                 //private void listView1_DoubleClick(object sender, EventArgs e)
         //{
         //    if (listView1.SelectedItems.Count > 0)

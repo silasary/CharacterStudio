@@ -106,6 +106,8 @@ namespace ParagonLib.CharacterData
             if (!Directory.Exists(folder = Path.GetDirectoryName(savefile)))
                 Directory.CreateDirectory(folder);
             new Serializer().Save(this, savefile);
+            Serializer.AddKnown(savefile);
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

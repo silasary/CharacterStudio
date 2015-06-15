@@ -831,5 +831,40 @@ namespace ParagonLib
         {
             writer.WriteComment(string.Format("{0}", p));
         }
+
+        public static IEnumerable<string> KnownFiles
+        {
+            get
+            {
+                List<string> files = new List<string>();
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
+                if (File.Exists(path))
+                    files.AddRange(File.ReadAllLines(path));
+                path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "builder_known_files.txt");
+                if (File.Exists(path))
+                    files.AddRange(File.ReadAllLines(path));
+                return files.Distinct().Where(f => File.Exists(f));
+            }
+        }
+
+        public static IEnumerable<string> KnownFolders
+        {
+            get
+            {
+                List<string> files = new List<string>();
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "builder_known_files.txt");
+                if (File.Exists(path))
+                    files.AddRange(File.ReadAllLines(path));
+                path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio", "builder_known_files.txt");
+                if (File.Exists(path))
+                    files.AddRange(File.ReadAllLines(path));
+                return files.Distinct().Where(f => Directory.Exists(f));
+            }
+        }
+
+        public static bool AddKnown(string FileFolder)
+        {
+            return false;
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using ParagonLib;
 
 namespace CharacterStudio.Controls.Panes
 {
@@ -30,7 +31,7 @@ namespace CharacterStudio.Controls.Panes
 
         private void HomePane_Load(object sender, EventArgs e)
         {
-            var knownfiles = LoadCharacterPane.KnownFiles;
+            var knownfiles = Serializer.KnownFiles;
             flowLayoutPanel1.Controls.AddRange(knownfiles.Select(c => new Controls.Common.SimpleCharacterVis(c)).ToArray());
 
         }
