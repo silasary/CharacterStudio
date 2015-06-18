@@ -864,6 +864,8 @@ namespace ParagonLib
 
         public static bool AddKnown(string FileFolder)
         {
+            if (Path.GetFileNameWithoutExtension(FileFolder) == "Temp")
+                return false;
             return false;
         }
     }

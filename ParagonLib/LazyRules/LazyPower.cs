@@ -46,9 +46,9 @@ namespace ParagonLib.LazyRules
             this.Lines = lines.ToArray();
             AttackStat[] attackComponents;
             DamageStat damageComponents;
-            GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, Lines);
-            AttackComponents = attackComponents;
-            DamageComponents = damageComponents;
+            //GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, Lines);
+            //AttackComponents = attackComponents;
+            //DamageComponents = damageComponents;
         }
 
         public string ActionType { get; private set; }

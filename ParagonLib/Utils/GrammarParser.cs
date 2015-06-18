@@ -92,7 +92,7 @@ namespace ParagonLib.Grammar
             
         public static void ParsePowerLines(out AttackStat[] AttackComponents, out DamageStat DamageComponents, params PowerLine[] lines)
         {
-            var AttackLine = lines.FirstOrDefault(n => n.Name == "Attack" || n.Name == "Primary Attack");
+            var AttackLine = lines.FirstOrDefault(n => (n.Name == "Attack" || n.Name == "Primary Attack") && n.Value != "");
             if (AttackLine.Name != null)
             {
                 AttackComponents = AttackLineParser.Parse(AttackLine.Value).ToArray();

@@ -53,7 +53,7 @@ namespace ParagonLib.RuleBases
                 Lines.Add(line);
             }
             this.lines = Lines.ToArray();
-            GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, lines);
+            //GrammarParser.ParsePowerLines(out attackComponents, out damageComponents, lines);
             
         }
         

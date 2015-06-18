@@ -62,7 +62,13 @@ namespace CharacterStudio.Controls.Panes
         {
             var browse = new System.Windows.Forms.OpenFileDialog();
             browse.Filter = "Character Builder Files|*.dnd4e;*.D20Character";
-            browse.ShowDialog();
+            browse.CheckFileExists = true;
+            if (browse.ShowDialog() == DialogResult.OK)
+            {
+                LoadCharacter(new ParagonLib.Serializer().Load(browse.FileName));
+                DisplayPanel<DetailsPane>();
+            }
+
         }
 
 

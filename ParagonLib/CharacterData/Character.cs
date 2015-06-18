@@ -52,7 +52,7 @@ namespace ParagonLib.CharacterData
                     yield return w;
                 }
                 foreach (var q in implements)
-                {
+                { // Implements are slightly harder. They may or may not be weapons
                     var w = q.Value;
                     if (!(q.Value is Implement))
                     {
@@ -61,8 +61,6 @@ namespace ParagonLib.CharacterData
                     if (((Implement)w).IsWeapon)
                         yield return w;
                 }
-
-                //return weapons.Select(i => i.Value);
             }
         }
 
