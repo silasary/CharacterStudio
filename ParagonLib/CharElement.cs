@@ -128,6 +128,7 @@ namespace ParagonLib
         {
             //TODO: Drop()
         }
+
         internal void Recalculate()
         {
             if (this.SelfId == -1)

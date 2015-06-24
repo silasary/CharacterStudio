@@ -48,9 +48,9 @@ namespace ParagonLib
                             var m = workspace.funcregex.Match(bit.value);
                             if (m.Success)
                             {
+                                writer.WriteAttributeString("statlink", m.Groups["Arg"].Value);
                                 if (m.Groups["Func"].Value == "ABILITYMOD")
                                     writer.WriteAttributeString("abilmod", "true");
-                                writer.WriteAttributeString("statlink", m.Groups["Arg"].Value);
                             }
                             else
                                 writer.WriteAttributeString("statlink", bit.value.Trim('+'));
