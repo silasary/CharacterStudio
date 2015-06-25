@@ -91,6 +91,26 @@ namespace ParagonLib.RuleEngine
             {
                 var Comment = false;
                 var HasPurpose = Purposes.ContainsKey(s.Key);
+                string Usage=null;
+                if (HasPurpose)
+                    Usage = Purposes[s.Key].Usage;
+                if (!string.IsNullOrEmpty(Usage))
+                {
+                    switch (Usage[0])
+                    {
+                        case 'c':
+                        case 'C':
+                            Usage = "Content";
+                            break;
+                        case 'm':
+                        case 'M':
+                            Usage = "Meta";
+                            break;
+                        default:
+                            Usage = "";
+                            break;
+                    }
+                }
                 if (!HasPurpose && s.Value.Count() == 1 && s.Value.First() == "Power")
                 {
                     Comment = true;
@@ -103,10 +123,13 @@ namespace ParagonLib.RuleEngine
                 {
                     ClassWriter.AppendLine("\t\t/// <summary></summary>");
                 }
-                //ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value)));
-                ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value)));
-                if (HasPurpose && !string.IsNullOrEmpty(Purposes[s.Key].Usage))
-                    ClassWriter.AppendLine("\t\t[Usage(\"" + Purposes[s.Key].Usage + "\")]");
+                ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value)));
+                //ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value)));
+                if (HasPurpose)
+                    ClassWriter.AppendLine("\t\t[Usage(\"" + Usage + "\")]");
+                else
+                    ClassWriter.AppendLine("\t\t[Usage(\"\")]");
+
 
                 ClassWriter.AppendLine("\t\t"+s.Key + ",").AppendLine();
                 if (Comment)
@@ -115,16 +138,16 @@ namespace ParagonLib.RuleEngine
             ClassWriter.Append(
 @"
     }
-    [AttributeUsage(AttributeTargets.All)]
-    sealed class AffectsAttribute : Attribute
-    {
-        public AffectsAttribute(params string[] affects)
-        {
-            this.Affects = affects;
-        }
-
-        public string[] Affects { get; private set; }
-    }
+//    [AttributeUsage(AttributeTargets.All)]
+//    sealed class AffectsAttribute : Attribute
+//    {
+//        public AffectsAttribute(params string[] affects)
+//        {
+//            this.Affects = affects;
+//        }
+//
+//        public string[] Affects { get; private set; }
+//    }
     [AttributeUsage(AttributeTargets.All)]
     sealed class UsageAttribute : Attribute
     {

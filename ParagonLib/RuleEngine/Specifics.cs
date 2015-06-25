@@ -21,3053 +21,3789 @@ namespace ParagonLib.RuleEngine
         Unknown,
 
 		/// <summary></summary>
-		[Affects("Race", "Weapon", "Companion", "Familiar", "Companion (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Race, Weapon, Companion, Familiar, Companion (Tivaan's Companion Cards), Power</affects>
 		[Usage("Content")]
 		Size,
 
 		/// <summary>Describes the base movement or affects the maximum movement of the creature</summary>
-		[Affects("Race", "Armor", "Companion", "Familiar", "Companion (Tivaan's Companion Cards)", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Race, Armor, Companion, Familiar, Companion (Tivaan's Companion Cards), Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("c")]
 		Speed,
 
 		/// <summary>Some ajctives describing the race</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("Content")]
 		Characteristics,
 
 		/// <summary>What visually distinguishes people of this Race?</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("c")]
 		Physical_Qualities,
 
 		/// <summary>Tips on how to roleplay members of this race.</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("c")]
 		Playing,
 
 		/// <summary>What kinds of lighting conditions can the race see in? Powers that change this.</summary>
-		[Affects("Race", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Race, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Vision,
 
 		/// <summary>Gives a suggested heignt range for a character in feet and inches.</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Average_Height,
 
 		/// <summary>Gives a suggested weight range for a character in pounds</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Average_Weight,
 
 		/// <summary>Lists the scores that the race gives bonuses to.</summary>
-		[Affects("Race", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Race, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Ability_Scores,
 
 		/// <summary>Lists languages granted by the race</summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Languages,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Skill_Bonuses,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Male_Names,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Female_Names,
 
 		/// <summary></summary>
-		[Affects("Race", "Class", "Hybrid Class", "Racial Trait", "Class Feature", "Background", "Information", "Feat", "Internal", "Trait Package", "Companion")]
+		/// <affects>Race, Class, Hybrid Class, Racial Trait, Class Feature, Background, Information, Feat, Internal, Trait Package, Companion</affects>
+		[Usage("")]
 		Short_Description,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Racial_Traits,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Names,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Build")]
+		/// <affects>Class, Hybrid Class, Build</affects>
+		[Usage("")]
 		Key_Abilities,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Implements,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Armor_Proficiencies,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Weapon_Proficiencies,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Bonus_to_Defense,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Companion")]
+		/// <affects>Class, Hybrid Class, Companion</affects>
+		[Usage("")]
 		Hit_Points_at_1st_Level,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Companion")]
+		/// <affects>Class, Hybrid Class, Companion</affects>
+		[Usage("")]
 		Hit_Points_per_Level_Gained,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Power")]
+		/// <affects>Class, Hybrid Class, Power</affects>
+		[Usage("")]
 		Healing_Surges,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Companion", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Class, Hybrid Class, Companion, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Trained_Skills,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Class_Skills,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Build_Options,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Trait Package", "Class Feature")]
-		[Usage("Meta")]
-        _PARSED_CLASS_FEATURE,
+		/// <affects>Class, Hybrid Class, Trait Package, Class Feature</affects>
+		[Usage("")]
+		_PARSED_CLASS_FEATURE,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Role,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Power_Source,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Creating,
 
 		/// <summary></summary>
-		[Affects("Class", "Epic Destiny", "Paragon Path", "Hybrid Class")]
+		/// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class</affects>
+		[Usage("")]
 		Class_Features,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Supplemental,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Weapon Group", "Magic Item")]
+		/// <affects>Class, Hybrid Class, Weapon Group, Magic Item</affects>
+		[Usage("")]
 		Implement,
 
 		/// <summary></summary>
-		[Affects("Class", "Epic Destiny", "Paragon Path", "Hybrid Class", "Class Feature", "Racial Trait")]
+		/// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class, Class Feature, Racial Trait</affects>
+		[Usage("")]
 		Powers,
 
 		/// <summary></summary>
-		[Affects("Class", "Epic Destiny", "Paragon Path", "Hybrid Class")]
+		/// <affects>Class, Epic Destiny, Paragon Path, Hybrid Class</affects>
+		[Usage("")]
 		Power_Name,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		_RoleElement,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		_PowerSourceElement,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		_SecondaryPowerSourceElement,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Secondary_Abilities,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		Hybrid_Talent_Options,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class")]
+		/// <affects>Class, Hybrid Class</affects>
+		[Usage("")]
 		_ParentClass,
 
 		/// <summary></summary>
-		[Affects("Class", "Hybrid Class", "Paragon Path")]
+		/// <affects>Class, Hybrid Class, Paragon Path</affects>
+		[Usage("")]
 		Trait_Package,
 
 		/// <summary></summary>
-		[Affects("Epic Destiny")]
+		/// <affects>Epic Destiny</affects>
+		[Usage("")]
 		Immortality,
 
 		/// <summary></summary>
-		[Affects("Epic Destiny", "Paragon Path", "Racial Trait", "Class Feature", "Companion", "Item Set Benefit", "Power", "Feat", "Magic Item", "Companion (Tivaan's Companion Cards)", "Theme", "Internal", "Trait Package", "Ritual", "Ritual Scroll")]
+		/// <affects>Epic Destiny, Paragon Path, Racial Trait, Class Feature, Companion, Item Set Benefit, Power, Feat, Magic Item, Companion (Tivaan's Companion Cards), Theme, Internal, Trait Package, Ritual, Ritual Scroll</affects>
+		[Usage("")]
 		_DisplayPowers,
 
 		/// <summary></summary>
-		[Affects("Hybrid Class")]
+		/// <affects>Hybrid Class</affects>
+		[Usage("")]
 		_BaseClass,
 
 		/// <summary></summary>
-		[Affects("Deity")]
+		/// <affects>Deity</affects>
+		[Usage("")]
 		Alignment,
 
 		/// <summary></summary>
-		[Affects("Deity")]
+		/// <affects>Deity</affects>
+		[Usage("")]
 		Domains,
 
 		/// <summary></summary>
-		[Affects("Feat", "Magic Item", "Companion", "Familiar", "Item Set", "Companion (Tivaan's Companion Cards)", "Class Feature")]
+		/// <affects>Feat, Magic Item, Companion, Familiar, Item Set, Companion (Tivaan's Companion Cards), Class Feature</affects>
+		[Usage("")]
 		Tier,
 
 		/// <summary></summary>
-		[Affects("Feat")]
+		/// <affects>Feat</affects>
+		[Usage("")]
 		Container,
 
 		/// <summary></summary>
-		[Affects("Feat", "Companion")]
+		/// <affects>Feat, Companion</affects>
+		[Usage("")]
 		Associated_Powers,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Gear")]
+		/// <affects>Ritual, Gear</affects>
+		[Usage("")]
 		Category,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Magic Item")]
+		/// <affects>Ritual, Magic Item</affects>
+		[Usage("")]
 		Key_Skill,
 
 		/// <summary></summary>
-		[Affects("Ritual")]
+		/// <affects>Ritual</affects>
+		[Usage("")]
 		Component_Cost,
 
 		/// <summary></summary>
-		[Affects("Ritual")]
+		/// <affects>Ritual</affects>
+		[Usage("")]
 		Duration,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Racial Trait", "Class Feature", "Magic Item", "Ritual Scroll", "Power")]
+		/// <affects>Ritual, Racial Trait, Class Feature, Magic Item, Ritual Scroll, Power</affects>
+		[Usage("")]
 		Level,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Magic Item")]
+		/// <affects>Ritual, Magic Item</affects>
+		[Usage("")]
 		Time,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Ritual Scroll")]
+		/// <affects>Ritual, Ritual Scroll</affects>
+		[Usage("")]
 		Market_Price,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Power", "Magic Item")]
+		/// <affects>Ritual, Power, Magic Item</affects>
+		[Usage("")]
 		Prerequisite,
 
 		/// <summary></summary>
-		[Affects("Ritual", "Class Feature", "Background", "Ritual Scroll", "Feat", "Racial Trait", "Companion")]
+		/// <affects>Ritual, Class Feature, Background, Ritual Scroll, Feat, Racial Trait, Companion</affects>
+		[Usage("")]
 		type,
 
 		/// <summary></summary>
-		[Affects("Ritual")]
+		/// <affects>Ritual</affects>
+		[Usage("")]
 		_RELATED_ITEMS,
 
 		/// <summary></summary>
-		[Affects("Skill", "Magic Item")]
+		/// <affects>Skill, Magic Item</affects>
+		[Usage("")]
 		Key_Ability,
 
 		/// <summary></summary>
-		[Affects("Skill Usage")]
+		/// <affects>Skill Usage</affects>
+		[Usage("")]
 		Trained_Only,
 
 		/// <summary></summary>
-		[Affects("Skill Usage")]
+		/// <affects>Skill Usage</affects>
+		[Usage("")]
 		Skill,
 
 		/// <summary></summary>
-		[Affects("Racial Trait", "Class Feature", "Theme", "Feat")]
+		/// <affects>Racial Trait, Class Feature, Theme, Feat</affects>
+		[Usage("")]
 		_PARSED_SUB_FEATURES,
 
 		/// <summary></summary>
-		[Affects("Racial Trait", "Weapon")]
+		/// <affects>Racial Trait, Weapon</affects>
+		[Usage("")]
 		InternalOnly,
 
 		/// <summary></summary>
-		[Affects("Racial Trait", "Class Feature", "Weapon", "Item Set Benefit", "Internal", "Background Choice", "CountsAsRace", "CountsAsClass", "Ritual Scroll", "Grants", "Feat", "Power", "Category", "Magic Item", "Build Suggestions")]
+		/// <affects>Racial Trait, Class Feature, Weapon, Item Set Benefit, Internal, Background Choice, CountsAsRace, CountsAsClass, Ritual Scroll, Grants, Feat, Power, Category, Magic Item, Build Suggestions</affects>
+		[Usage("")]
 		_SupportsID,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Build", "Power", "Racial Trait")]
+		/// <affects>Class Feature, Build, Power, Racial Trait</affects>
+		[Usage("")]
 		Class,
 
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		Usage,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Racial Trait")]
+		/// <affects>Class Feature, Racial Trait</affects>
+		[Usage("")]
 		_PARSED_CHILD_FEATURES,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Magic Item")]
+		/// <affects>Class Feature, Magic Item</affects>
+		[Usage("")]
 		_ImplementForPower,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Racial Trait")]
+		/// <affects>Class Feature, Racial Trait</affects>
+		[Usage("")]
 		Damage_Stat,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Feat")]
+		/// <affects>Class Feature, Feat</affects>
+		[Usage("")]
 		_RequiresID,
 
 		/// <summary></summary>
-		[Affects("Build")]
+		/// <affects>Build</affects>
+		[Usage("")]
 		Suggested,
 
 		/// <summary></summary>
-		[Affects("Build", "Trait Package", "Class", "Hybrid Class")]
+		/// <affects>Build, Trait Package, Class, Hybrid Class</affects>
+		[Usage("")]
 		_SUGGESTED_FEATS,
 
 		/// <summary></summary>
-		[Affects("Build", "Paragon Path")]
+		/// <affects>Build, Paragon Path</affects>
+		[Usage("")]
 		_SUGGESTED_POWERS,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon", "Superior Implement", "Gear")]
+		/// <affects>Armor, Weapon, Superior Implement, Gear</affects>
+		[Usage("")]
 		Full_Text,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon", "Superior Implement", "Gear", "Magic Item")]
+		/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
+		[Usage("")]
 		Weight,
 
 		/// <summary></summary>
-		[Affects("Armor")]
+		/// <affects>Armor</affects>
+		[Usage("")]
 		Armor_Bonus,
 
 		/// <summary></summary>
-		[Affects("Armor")]
+		/// <affects>Armor</affects>
+		[Usage("")]
 		Minimum_Enhancement_Bonus,
 
 		/// <summary></summary>
-		[Affects("Armor", "Power")]
+		/// <affects>Armor, Power</affects>
+		[Usage("")]
 		Check,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon", "Superior Implement", "Gear", "Magic Item", "Power")]
+		/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item, Power</affects>
+		[Usage("")]
 		Gold,
 
 		/// <summary></summary>
-		[Affects("Armor", "Magic Item", "Feat", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Armor, Magic Item, Feat, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Special,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon")]
+		/// <affects>Armor, Weapon</affects>
+		[Usage("")]
 		Armor_Type,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon", "Superior Implement", "Gear", "Magic Item")]
+		/// <affects>Armor, Weapon, Superior Implement, Gear, Magic Item</affects>
+		[Usage("")]
 		Item_Slot,
 
 		/// <summary></summary>
-		[Affects("Armor", "Weapon")]
+		/// <affects>Armor, Weapon</affects>
+		[Usage("")]
 		Armor_Category,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Magic Item")]
+		/// <affects>Weapon, Magic Item</affects>
+		[Usage("")]
 		Range,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Companion")]
+		/// <affects>Weapon, Companion</affects>
+		[Usage("")]
 		Damage,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		Proficiency_Bonus,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		_Primary_End,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		Weapon_Category,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		Hands_Required,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Superior Implement")]
+		/// <affects>Weapon, Superior Implement</affects>
+		[Usage("")]
 		Group,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Superior Implement", "Magic Item")]
+		/// <affects>Weapon, Superior Implement, Magic Item</affects>
+		[Usage("")]
 		Properties,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Gear")]
+		/// <affects>Weapon, Gear</affects>
+		[Usage("")]
 		Silver,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		_Secondary_End,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		_IncludeImprovised,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Magic Item")]
+		/// <affects>Weapon, Magic Item</affects>
+		[Usage("")]
 		Critical,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Magic Item")]
+		/// <affects>Weapon, Magic Item</affects>
+		[Usage("")]
 		Enhancement,
 
 		/// <summary></summary>
-		[Affects("Weapon")]
+		/// <affects>Weapon</affects>
+		[Usage("")]
 		Additional_Slot,
 
 		/// <summary></summary>
-		[Affects("Superior Implement", "Magic Item")]
+		/// <affects>Superior Implement, Magic Item</affects>
+		[Usage("")]
 		WeaponEquiv,
 
 		/// <summary></summary>
-		[Affects("Superior Implement")]
+		/// <affects>Superior Implement</affects>
+		[Usage("")]
 		_DamageType,
 
 		/// <summary></summary>
-		[Affects("Gear")]
+		/// <affects>Gear</affects>
+		[Usage("")]
 		Copper,
 
 		/// <summary></summary>
-		[Affects("Gear")]
+		/// <affects>Gear</affects>
+		[Usage("")]
 		_RelatedElement,
 
 		/// <summary></summary>
-		[Affects("Gear")]
+		/// <affects>Gear</affects>
+		[Usage("")]
 		count,
 
 		/// <summary></summary>
-		[Affects("Gear", "Magic Item")]
+		/// <affects>Gear, Magic Item</affects>
+		[Usage("")]
 		_Monster,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power")]
+		/// <affects>Magic Item, Power</affects>
+		[Usage("")]
 		Magic_Item_Type,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Item Set Benefit")]
+		/// <affects>Magic Item, Item Set Benefit</affects>
+		[Usage("")]
 		_Item_Set_ID,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Armor,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power", "Class Feature")]
+		/// <affects>Magic Item, Power, Class Feature</affects>
+		[Usage("")]
 		Weapon,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power")]
+		/// <affects>Magic Item, Power</affects>
+		[Usage("")]
 		Requirement,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Companion", "Familiar", "Power")]
+		/// <affects>Magic Item, Companion, Familiar, Power</affects>
+		[Usage("")]
 		Power,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_Rarity,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Granted_Powers,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power", "Gear")]
+		/// <affects>Magic Item, Power, Gear</affects>
+		[Usage("")]
 		Property,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Common_Knowledge,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Benefit,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Campaign,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Associated_Skills,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Associated_Languages,
 
 		/// <summary></summary>
-		[Affects("source")]
+		/// <affects>source</affects>
+		[Usage("")]
 		IsBeta,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Strength,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Intelligence,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Wisdom,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Dexterity,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Constitution,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Charisma,
 
 		/// <summary></summary>
-		[Affects("Companion")]
+		/// <affects>Companion</affects>
+		[Usage("")]
 		Attack_Bonus,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Armor_Class,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Fortitude_Defense,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Reflex_Defense,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Will_Defense,
 
 		/// <summary></summary>
-		[Affects("Companion", "Familiar", "Power")]
+		/// <affects>Companion, Familiar, Power</affects>
+		[Usage("")]
 		Secondary_Speed,
 
 		/// <summary></summary>
-		[Affects("Companion", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Attack,
 
 		/// <summary></summary>
-		[Affects("Companion", "Companion (Tivaan's Companion Cards)")]
+		/// <affects>Companion, Companion (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Ability_Score,
 
 		/// <summary></summary>
-		[Affects("Companion")]
+		/// <affects>Companion</affects>
+		[Usage("")]
 		Charge,
 
 		/// <summary></summary>
-		[Affects("Companion", "Power")]
+		/// <affects>Companion, Power</affects>
+		[Usage("")]
 		Combat_Advantage,
 
 		/// <summary></summary>
-		[Affects("Companion")]
+		/// <affects>Companion</affects>
+		[Usage("")]
 		Opportunity_Attacks,
 
 		/// <summary></summary>
-		[Affects("Companion", "God Fragment", "Companion (Tivaan's Companion Cards)", "Power", "Familiar")]
+		/// <affects>Companion, God Fragment, Companion (Tivaan's Companion Cards), Power, Familiar</affects>
+		[Usage("")]
 		Quirks,
 
 		/// <summary></summary>
-		[Affects("Companion")]
+		/// <affects>Companion</affects>
+		[Usage("")]
 		Companion_Power,
 
 		/// <summary></summary>
-		[Affects("Familiar", "God Fragment", "Power")]
+		/// <affects>Familiar, God Fragment, Power</affects>
+		[Usage("")]
 		Constant_Benefits,
 
 		/// <summary></summary>
-		[Affects("Familiar", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Familiar, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Senses,
 
 		/// <summary></summary>
-		[Affects("Item Set")]
+		/// <affects>Item Set</affects>
+		[Usage("")]
 		Lore,
 
 		/// <summary></summary>
-		[Affects("Item Set")]
+		/// <affects>Item Set</affects>
+		[Usage("")]
 		Set_Items,
 
 		/// <summary></summary>
-		[Affects("Item Set")]
+		/// <affects>Item Set</affects>
+		[Usage("")]
 		Benefits,
 
 		/// <summary></summary>
-		[Affects("Item Set Benefit")]
+		/// <affects>Item Set Benefit</affects>
+		[Usage("")]
 		Piece_Count,
 
 		/// <summary></summary>
-		[Affects("God Fragment")]
+		/// <affects>God Fragment</affects>
+		[Usage("")]
 		Deity,
 
 		/// <summary></summary>
-		[Affects("God Fragment", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Action_Type,
 
 		/// <summary></summary>
-		[Affects("God Fragment", "Power")]
+		/// <affects>God Fragment, Power</affects>
+		[Usage("")]
 		Effect,
 
 		/// <summary></summary>
-		[Affects("God Fragment", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Keywords,
 
 		/// <summary></summary>
-		[Affects("God Fragment", "Power")]
+		/// <affects>God Fragment, Power</affects>
+		[Usage("")]
 		Trigger,
 
 		/// <summary></summary>
-		[Affects("God Fragment", "Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>God Fragment, Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Power_Usage,
 
 		/// <summary></summary>
-		[Affects("Background Choice")]
+		/// <affects>Background Choice</affects>
+		[Usage("")]
 		_IsBenefit,
 
 		/// <summary>For more info about the source, look here.</summary>
-		[Affects("source")]
+		/// <affects>source</affects>
+		[Usage("")]
 		URL,
 
 		/// <summary>When was the Sourcebook released?</summary>
-		[Affects("source")]
+		/// <affects>source</affects>
+		[Usage("")]
 		Release_Date,
 
 		/// <summary></summary>
-		[Affects("Feat", "Companion")]
+		/// <affects>Feat, Companion</affects>
+		[Usage("")]
 		Associated_Power_Info,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_SkillPower,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Display,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Attack_Type,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Censure_of_Unity,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Hit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Associated_Feats,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Power_Type,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Racial Trait", "Trait Package")]
+		/// <affects>Class Feature, Racial Trait, Trait Package</affects>
+		[Usage("")]
 		_CS_ShortDescription,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_ChildPower,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_ParentPower,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Artful_Dodger,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Weapon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Miss,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Special,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Censure_of_Pursuit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Primal_Predator,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Bloodbond,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_ParentFeature,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Targets,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Primary_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Hit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Miss,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Subclasses,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Minor_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Move_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Free_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Sustain_Minor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aftereffect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Resourceful_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_AugmentParent,
 
 		/// <summary></summary>
-		[Affects("Weapon", "Magic Item")]
+		/// <affects>Weapon, Magic Item</affects>
+		[Usage("")]
 		_AlternateSlot,
 
 		/// <summary></summary>
-		[Affects("Level")]
+		/// <affects>Level</affects>
+		[Usage("")]
 		XP_Needed,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Infernal_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Primary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Brutal_Scoundrel,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Star_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_First_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_BasicAttack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Tertiary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aegis_of_Assault,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Fey_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Ruthless_Ruffian,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Covenant_of_Wrath,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Covenant_of_Malediction,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Covenant_of_Preservation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Inspiring_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Aftereffect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Sustain_Standard,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Sustain_Minor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Cunning_Sneak,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Effect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Aegis_of_Assault,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Channel_Divinity,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Aegis_of_Shielding,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Targets,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Dark_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dark_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Effects,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Tertiary_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Ruthless_Ruffians,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Afftereffect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Tactical_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Virtue_of_Cunning,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Virtue_of_Valor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Virtue_of_Valor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Artful_Dodger,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Bravura_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Augment,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_AugmentVersions,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Attack_Type,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Primal_Guardian,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Storm_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Opportunity_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Censure_of_Retribution,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Virtue_of_Prescience,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Virtue_of_Prescience,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Dragon_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Cosmic_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Wild_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aegis_of_Ensnarement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Wild_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dragon_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Secondary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Secondary_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Covenant_of_Perservation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Standard_action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Seconday_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aegis_of_Shielding,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Afftereffect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Each_Additional_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Stalker_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Protector_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aegis_of_Ensarement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_First_Failed_Save,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Infernal_Pact_or_Vestige_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Vestige_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Second_Failed_Save,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Standard_Acton,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		â€¢_Standart_Action,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		â€¢_Opportunity_Attack,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Immediate_Interrupt,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Removed,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Minor_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Opportunity_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Each_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Secondary_Targets,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		First_Failed_Save,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Second_Failed_Save,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Sustain_Move,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Damage,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Beast,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Beast,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Ruthless_Ruffian,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_KeyAbilityAs,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_ADDITIONAL_USES,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Whirling_Slayer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Rageblood_Vigor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Primal_Swarm,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Primal_Swarm,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Thaneborn_Triumph,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Thaneborn_Triumph,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Primal_Guardian,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Earthstrength,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Wildblood,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Earthstrength,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Second_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Instinctive_Effect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Standard_action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Instinctive_Effect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Opportunity_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_World_Speaker_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Lifespirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Stormheart,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Orb_of_Imposition,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Staff_of_Defense,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Wand_of_Accuracy,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Trigger,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Tome_of_Binding,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Wand_of_Accuracy,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Cold,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Radiant,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Cosmic_Magic,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Phase_of_the_Sun,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Phase_of_the_Moon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Phase_of_the_Stars,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Blazing_Sun,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Watching_Moon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Distant_Stars,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Fire,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Lightning,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Thunder,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Other,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Star_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Lawbreaker_s_Doom,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Augment,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Vestige_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Khaeleth_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Eyes_of_the_Vestige_Augment,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Mount_Vaelis_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Ugar_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Xandor_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Ilmeth_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Shax_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Leraje_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Solis_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Amaan_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Burned_Emperor_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Land_s_Soul_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Queen_of_Namhar,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Master_of_the_Hidden_Flame_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Zuriel_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Karmath_pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Sea_Tyrant_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Each_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Censure_of_Pursuit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Primary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Primary_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Covenant_of_Wrath,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Covenant_of_Malediction,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Fey_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Channel_Divnity,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		No_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_No_Action,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_13_Swap_Hit,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_23_Swap_Hit,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_13_Swap,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_23_Swap,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_19_Swap_Hit,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_29_Swap_Hit,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_19_Swap_Effect,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_29_Swap_Effect,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_11,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_21,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Thunderborn_Wrath,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Primal_Predator,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Watcher_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Third_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Success,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Tertiary_Target,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Keyword,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Chaos_Sorcerer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Cosmic_Sorcerer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Axe,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Mace,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Heavy_Blade,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Spear_or_Polearm,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Active_Familiar,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Arcane_Familiar,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Brawler_Style,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Hunter_Fighting_Style,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Brutal_Scoundrel_or_Ruthless_Ruffian,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Insightful_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Skirmishing_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aspect_of_the_Ancients,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aspect_of_the_Destroyer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Aspect_of_the_Hunter,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Area,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Close,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		First_Failed_Saving_Throw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Second_Failed_Saving_Throw,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_1_target,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_2_targets,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_3,_4,_or_5_targets,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Thaxter_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Baatar_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Unknown_Arcanist_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Kronata_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Vykolad_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Earthen_Maker_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Kulnoghrim_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Ascendant_Commander_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Rune_of_Destruction,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Rune_of_Protection,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Spiritbond,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Intrinsic_Nature,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Symbiosis,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Hit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Melee,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_19_Swap,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_29_Swap,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Keywords,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_1.,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_2.,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_3.,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_4.,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Iron_Soul,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Standard_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Sustain_No_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Keyword,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Area,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Close,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Opportunity_Action,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power")]
+		/// <affects>Magic Item, Power</affects>
+		[Usage("")]
 		Rarity,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_IsEnchant,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Offhand_Implement_Bonus,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_ImplementEquiv,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_ImplementForClass,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Component,
 
 		/// <summary></summary>
-		[Affects("Class Feature", "Class")]
+		/// <affects>Class Feature, Class</affects>
+		[Usage("")]
 		_DisplayName,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Proficient_As,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		EnchantEquiv,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_UniversalImplement,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_AlwaysExecute,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power")]
+		/// <affects>Magic Item, Power</affects>
+		[Usage("")]
 		Utility_Power,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_CannotBeBought,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Weapon", "Class Feature", "Power")]
+		/// <affects>Magic Item, Weapon, Class Feature, Power</affects>
+		[Usage("")]
 		_Tags,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_Bonus,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		_Enhancement,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Gear")]
+		/// <affects>Magic Item, Gear</affects>
+		[Usage("")]
 		_AssociatedMonsters,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Level_11_Enhancement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Servant_of_the_Staff_Stats,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Servant_of_the_Staff_Traits,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Servant_of_the_Staff_Defenses,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Servant_of_the_Staff_Hit_Points,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Servant_of_the_Staff_Speed,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Enhancement_Level_11,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Disease_Foul_Rotting,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Formula_Cost,
 
 		/// <summary></summary>
-		[Affects("Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Standard_Actions,
 
 		/// <summary></summary>
-		[Affects("Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Move_Actions,
 
 		/// <summary></summary>
-		[Affects("Companion (Tivaan's Companion Cards)", "Power (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Companion (Tivaan's Companion Cards), Power (Tivaan's Companion Cards), Power</affects>
+		[Usage("")]
 		Triggered_Actions,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Attributes,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Power (Tivaan's Companion Cards), Power</affects>
+		[Usage("")]
 		Statistics,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Power (Tivaan's Companion Cards), Power</affects>
+		[Usage("")]
 		Defenses,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Power (Tivaan's Companion Cards), Power</affects>
+		[Usage("")]
 		Hit_Points,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)", "Power")]
+		/// <affects>Power (Tivaan's Companion Cards), Power</affects>
+		[Usage("")]
 		Skills,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		utility_Power,
 
 		/// <summary></summary>
-		[Affects("Magic Item", "Power")]
+		/// <affects>Magic Item, Power</affects>
+		[Usage("")]
 		Attack_Power,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Alternative_Reward,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Levels,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Summoned_Creature,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Implacable,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Standard_Action,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Stone_Grasp,
 
 		/// <summary></summary>
-		[Affects("Magic Item")]
+		/// <affects>Magic Item</affects>
+		[Usage("")]
 		Uitilty_Power,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Checking_the_Curse,
 
 		/// <summary></summary>
-		[Affects("Background", "Racial Trait", "Feat", "Class Feature", "Power", "Ritual", "Ritual Scroll")]
+		/// <affects>Background, Racial Trait, Feat, Class Feature, Power, Ritual, Ritual Scroll</affects>
+		[Usage("")]
 		Type,
 
 		/// <summary></summary>
-		[Affects("Background")]
+		/// <affects>Background</affects>
+		[Usage("")]
 		Common_Kowledge,
 
 		/// <summary></summary>
-		[Affects("Racial Trait")]
+		/// <affects>Racial Trait</affects>
+		[Usage("")]
 		_TraitReplacement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Efect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Animal_Form,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Spellbinding_Beauty,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Wooden_Form,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Tribal_Names,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		1_2_Stinkpot,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		3–4_Firepot,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		5–6_Gluepot,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Earth_friend,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Earth_Glide,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Nonthreatening,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		DIsplay,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Clan_Names,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Bladeling_Names,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Bladeling_Surnames,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Attitudes_and_Beliefs,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Tinker_Gnome_Communities,
 
 		/// <summary></summary>
-		[Affects("Race")]
+		/// <affects>Race</affects>
+		[Usage("")]
 		Tinker_Gnomre_Adventurers,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Elemental_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Sorcerer_King_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_ThemePower,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_15,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_25,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_13,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Requirement,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_23,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_17,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_27,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Level_23,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_19,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Level_29,
 
 */
 		/// <summary></summary>
-		[Affects("Class Feature", "Power", "Feat")]
+		/// <affects>Class Feature, Power, Feat</affects>
+		[Usage("")]
 		_DisplayAssociates,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Summoned_Companion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Move_Action,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Immediate_Interrupt,
 
 		/// <summary></summary>
-		[Affects("Associate")]
+		/// <affects>Associate</affects>
+		[Usage("")]
 		_Associated_Power,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Sarifal_Advisor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Advisor_s_Acumen,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Speak_with_Beasts,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Battle_Blessing,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_?Fetch,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_?Carry,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_?Manipulate,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Requirment,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Passive_Benefits,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Active_Benefits,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Hit_Aftereffect,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Miss_Aftereffect,
 
 		/// <summary></summary>
-		[Affects("Feat")]
+		/// <affects>Feat</affects>
+		[Usage("")]
 		Rod_Expertise,
 
 		/// <summary></summary>
-		[Affects("Trait Package", "Class Feature", "Paragon Path")]
+		/// <affects>Trait Package, Class Feature, Paragon Path</affects>
+		[Usage("")]
 		_CLASSNAME,
 
 		/// <summary></summary>
-		[Affects("Class", "Paragon Path")]
+		/// <affects>Class, Paragon Path</affects>
+		[Usage("")]
 		_SUGGESTED_FEATURES,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Rules_Item,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		1_2,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		3_4,
 
 */
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		5_6,
 
 */
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		Pact_Reward,
 
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		_DisplayWeapons,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Creature,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Origin,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Eyes_of_the_Woodland,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Special_Movement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Hell_s_Dark_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Vanish_into_the_Void,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Shining_Presence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dancing_Shadows,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Death_Throes,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Teleporation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Mists_of_Shadow,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Invisibility,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Soul_Devourer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Teleportation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Disruptive_Tentacles,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Child_of_the_Void,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Displacement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Gloom_Pact,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Onyx_Queen_Pact_Boon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Sustain_Standard,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Spellbook,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Secondary_Attack_Type,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Berserker_Fury,
 
 		/// <summary></summary>
-		[Affects("Class")]
+		/// <affects>Class</affects>
+		[Usage("")]
 		Skald_Powers,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_SubClasses,
 
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		Pet_Hit_Points,
 
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		Pet_Toughness,
 
 		/// <summary></summary>
-		[Affects("Class Feature")]
+		/// <affects>Class Feature</affects>
+		[Usage("")]
 		HALF_CON,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Initiative,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Perception,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Faithful_Pack_Hound,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Telepathy,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Notes,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Guardian_Companion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Each_Failed_Save,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Water,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Air,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Earth,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Mantle_of_Clarity,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Mantle_of_Elation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Mantle_of_Impulsiveness,
 
 /*
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Close_burst_1,
 
 */
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Night_Stalker,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		_Bleak_Disciple,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Aegis_of_Ensnarement,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Information,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Light,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		See_the_Unseen,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Deceptive_Move,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Owl_s_Eyes,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Alchemical_Synergy,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Blood_Feast,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dragon_s_Breath,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Hunting_Falcon,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Rat_s_Cunning,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Raven_s_Speech,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Independent_Spirit,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Serpent_s_Startle,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Spider_s_Web,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		See_All,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Devoted_Minion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Tenacious_Guard,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Agile_Digits,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Lizard_s_Immunity,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Ooze_s_Malleability,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Parrot_s_Speech,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Rootling_Camouflage,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Glamered_Scout,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Skull_s_Gaze,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Toad_s_Healing,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Silent_Predator,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Form_of_Air,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Wisp_s_Escape,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Beholderkin_Eye_Ray,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Blackspawn_Stealth,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Bluespawn_Shock,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Form_of_Earth,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Form_of_Fire,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Grayspawn_Toughness,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Greenspawn_s_Diversion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Form_of_Ice,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Redspawn_Toughness,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Cockatrice_s_Defense,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Whitespawn_Minion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Chaos_Echo,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Gibbering_Utterances,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Shadow_Shroud,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		His_Own_Bear,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Fastieth_Activity,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Bloodthorn_Drain,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Scorpion_s_Injection,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Infuse_Mark,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Defensive_Stance,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Gadfly_s_Bite,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Thieving_Magpie,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Monkey_Business,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Octopus_s_Flexibility,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Saddle_Assistance,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Soarwood_Lift,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Infuse_Summoned,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Book_Bearer,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Warforged_Watchfulness,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Vine_s_Clasp,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Clotting_Factor,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dimensional_Lock,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Mobile_Infusion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Foulspawn_Babble,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Hammer_s_Ring,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Feyling_s_Reservoir,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Nightmare_Voice,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Silver_Beams,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Bearer_of_News,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Fate_s_Agent,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Gallant_s_Call,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Moon_Bite,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Incorporeal,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Elemental_Servant,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Cleaning,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Irresistible_Dance,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Dazzling_Breath,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Feylight_Form,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Danger_Sense,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Shared_Buoyancy,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Overheat,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Expert_Forager,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Horrific_Aversion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Poisonous_Deterrent,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Telepathic_Mimicry,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Empathic_Guidance,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Piercing_Scream,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Under_Raven_s_Wing,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Animal_Companion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Cat_s_Stealth,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Distracting_Attack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		On_the_Track,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Hawk_s_Eye,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Nimble_Fingers,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Snatch_and_Scoot,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Tentacle,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Blinking_Pack,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Blinking_Bite,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Alert_Companion,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Claw,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Ferocious_Companion,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Companion,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Healing_Surge_Value,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Phantom_on_the_Wind,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Brittle_Skin,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Triggered_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Frozen_in_Place,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Heart_of_Flame,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Aquatic,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Sensitive_to_Cold,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Dust_and_Smoke,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Resistance,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Frost_Armor,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Minor_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Self_Repair,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Fearsome_Presence,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Immediate_Interrupt,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Mad_Delusions,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Uncanny_Senses_and_Grip,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Free_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Burning_Inside,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Fire_Within,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Flickering_Flames,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Move_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Vicious,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Rattle_the_Cage,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Standard_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefits_Immediate_Interrupt,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Corrosive_Secretions,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Unnatural_Flexibility,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Noxious_Vapors,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefits_Move_Action,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Fiery_Intensity,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Flowing_Lava,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Immediate_Reaction,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Aquatic,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Aquatic,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Stone_s_Resilience,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Earth_Glide,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Storm_Dancer,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Soaring_Talon,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Eye_of_the_Storm,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Ephemeral_Wings,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Passive_Benefit_Ethereal_Personality,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Active_Benefit_Buffeting_Winds,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Gift_of_Stone,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Gift_of_Wind,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Gift_of_Flame,
 
 		/// <summary></summary>
-		[Affects("Power", "Power (Tivaan's Companion Cards)")]
+		/// <affects>Power, Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Gift_of_Water,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Formed_from_Fire,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Cover,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Fluttering_Form,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Shattering_Tremors,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Gift_of_Fire,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Guttering_Flames,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Frozen_Waves,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Stone_Body,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Agile_Flames,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Icy_Strength,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Storm_Sight,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Debris_Cloud,
 
 		/// <summary></summary>
-		[Affects("Power (Tivaan's Companion Cards)")]
+		/// <affects>Power (Tivaan's Companion Cards)</affects>
+		[Usage("")]
 		Animal_Attack,
 
 		/// <summary></summary>
-		[Affects("Companion", "Power")]
+		/// <affects>Companion, Power</affects>
+		[Usage("")]
 		Mount_Companion,
 
 		/// <summary></summary>
-		[Affects("Companion")]
+		/// <affects>Companion</affects>
+		[Usage("")]
 		Manipulate_Items,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Tempter_s_Influence,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Bite,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Demonic_Lore,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Vengeful_Temptation,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Piercing_Charger,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Kick,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Fey_Step,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Horn_Touch,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Traits,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Mists_of_Pluton,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Detect_Arcana,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Immunities,
 
 		/// <summary></summary>
-		[Affects("Power")]
+		/// <affects>Power</affects>
+		[Usage("")]
 		Countermeasures,
 
 
     }
-    [AttributeUsage(AttributeTargets.All)]
-    sealed class AffectsAttribute : Attribute
-    {
-        public AffectsAttribute(params string[] affects)
-        {
-            this.Affects = affects;
-        }
-
-        public string[] Affects { get; private set; }
-    }
+//    [AttributeUsage(AttributeTargets.All)]
+//    sealed class AffectsAttribute : Attribute
+//    {
+//        public AffectsAttribute(params string[] affects)
+//        {
+//            this.Affects = affects;
+//        }
+//
+//        public string[] Affects { get; private set; }
+//    }
     [AttributeUsage(AttributeTargets.All)]
     sealed class UsageAttribute : Attribute
     {
