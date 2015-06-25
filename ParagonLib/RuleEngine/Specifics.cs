@@ -20,8 +20,9 @@ namespace ParagonLib.RuleEngine
         // This is assigned to any specific that doesn't feature below.
         Unknown,
 
-		/// <summary>Describes how large or small the thing is.</summary>
+		/// <summary></summary>
 		[Affects("Race", "Weapon", "Companion", "Familiar", "Companion (Tivaan's Companion Cards)", "Power")]
+		[Usage("Content")]
 		Size,
 
 		/// <summary>Describes the base movement or affects the maximum movement of the creature</summary>
@@ -130,7 +131,8 @@ namespace ParagonLib.RuleEngine
 
 		/// <summary></summary>
 		[Affects("Class", "Hybrid Class", "Trait Package", "Class Feature")]
-		_PARSED_CLASS_FEATURE,
+		[Usage("Meta")]
+        _PARSED_CLASS_FEATURE,
 
 		/// <summary></summary>
 		[Affects("Class", "Hybrid Class")]

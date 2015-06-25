@@ -14,6 +14,7 @@ namespace BuildTools
         class SpecificDetails
         {
             public string Purpose { get; set; }
+            public string Usage { get; set; }
         }
         public static bool Generate()
         {
@@ -37,20 +38,25 @@ namespace BuildTools
             if (!File.Exists("Specifics.cs"))
                 return;
             var Summary = new Regex("<summary>(.*)</summary>");
+            var Usage = new Regex("\\[Usage\\(\"(.*)\"\\)\\]");
             var Name = new Regex(@"^\W+([A-Za-z_]+),");
 
-            string purpose = "";
+            var data = new SpecificDetails();
             foreach (var line in File.ReadAllLines("Specifics.cs"))
             {
                 var match = Summary.Match(line);
                 if (match.Success)
-                    purpose = match.Groups[1].Value;
+                    data.Purpose = match.Groups[1].Value;
+                else if ((match = Usage.Match(line)).Success)
+                    data.Usage = match.Groups[1].Value;
                 else if ((match = Name.Match(line)).Success)
                 {
                     var name = match.Groups[1].Value;
                     if (!Purposes.ContainsKey(name))
                         Purposes[name] = new SpecificDetails();
-                    Purposes[name].Purpose = purpose;
+                    Purposes[name].Purpose = data.Purpose;
+                    Purposes[name].Usage = data.Usage;
+                    data = new SpecificDetails();
                 }
             }
         }
@@ -99,6 +105,9 @@ namespace ParagonLib.RuleEngine
                 }
                 //ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value)));
                 ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value)));
+                if (HasPurpose && !string.IsNullOrEmpty(Purposes[s.Key].Usage))
+                    ClassWriter.AppendLine("\t\t[Usage(\"" + Purposes[s.Key].Usage + "\")]");
+
                 ClassWriter.AppendLine("\t\t"+s.Key + ",").AppendLine();
                 if (Comment)
                     ClassWriter.AppendLine("*/");
