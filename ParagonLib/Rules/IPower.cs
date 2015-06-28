@@ -2,7 +2,7 @@
 using System;
 namespace ParagonLib.Rules
 {
-    interface IPower
+    public interface IPower : IRulesElement
     {
         string ActionType { get; }
         string AttackType { get; }

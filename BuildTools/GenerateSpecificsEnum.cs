@@ -13,23 +13,25 @@ namespace BuildTools
     {
         class SpecificDetails
         {
+            public string OriginalName { get; set; }
+            public List<string> AttachedTypes { get; set; }
             public string Purpose { get; set; }
             public string Usage { get; set; }
         }
         public static bool Generate()
         {
             Environment.CurrentDirectory = Path.Combine(BuildTools.SolutionDir, "ParagonLib", "RuleEngine");
-            Dictionary<string, IEnumerable<string>> Specifics = new Dictionary<string, IEnumerable<string>>();
+            //Dictionary<string, IEnumerable<string>> Specifics = new Dictionary<string, IEnumerable<string>>();
             Dictionary<string, SpecificDetails> Purposes = new Dictionary<string, SpecificDetails>();
             
 
-            ScanParts(Specifics);
             ScanOldSource(Purposes);
+            ScanParts(Purposes);
 
             StringBuilder ClassWriter = new StringBuilder();
-            EmitSpecificsSource(Specifics, Purposes, ClassWriter);
-            File.WriteAllText("Specifics.cs", ClassWriter.ToString());
-            Console.WriteLine("Generated Specifics.cs with {0} entries.", Specifics.Count);
+            EmitSpecificsSource(Purposes, ClassWriter);
+            File.WriteAllText("Specifics.cs", ClassWriter.ToString(), Encoding.UTF8);
+            Console.WriteLine("Generated Specifics.cs with {0} entries.", Purposes.Count);
             return true;
         }
 
@@ -38,9 +40,10 @@ namespace BuildTools
             if (!File.Exists("Specifics.cs"))
                 return;
             var Summary = new Regex("<summary>(.*)</summary>");
-            var Usage = new Regex("\\[Usage\\(\"(.*)\"\\)\\]");
+            //var Usage = new Regex("\\[Usage\\(\"(.*)\"\\)\\]");
+            var Usage = new Regex(@"\[Usage\(""(.*)""\)\]");
             var Name = new Regex(@"^\W+([A-Za-z_]+),");
-
+            
             var data = new SpecificDetails();
             foreach (var line in File.ReadAllLines("Specifics.cs"))
             {
@@ -61,7 +64,43 @@ namespace BuildTools
             }
         }
 
-        private static void EmitSpecificsSource(Dictionary<string, IEnumerable<string>> Specifics, Dictionary<string, SpecificDetails> Purposes, StringBuilder ClassWriter)
+        private static void ScanParts(Dictionary<string, SpecificDetails> Specifics)
+        {
+            foreach (var part in Directory.GetFiles(BuildTools.PartsDir))
+            {
+                var Part = XDocument.Load(part);
+                foreach (var re in Part.Root.Descendants("RulesElement"))
+                {
+                    if (re.Attribute("internal-id").Value.StartsWith("ID_TIV_COMPANION"))
+                    {
+                        re.Attribute("type").Value += " (Tivaan's Companion Cards)";
+                    }
+                    var type = re.Attribute("type").Value;
+                    foreach (var spec in re.Elements("specific"))
+                    {
+                        var name = spec.Attribute("name").Value;
+                        int indexof = name.IndexOfAny(new char[] { '(', '*' });
+                        if (indexof > -1)
+                            name = name.Substring(0, indexof);
+                        name = Regex.Replace(name, @"[ :\-'\?)]", "_");
+                        while (name.Contains("__"))
+                            name = name.Replace("__", "_");
+                        name = name.TrimEnd('_');
+                        name = name.TrimStart('•');
+                        if (!Specifics.ContainsKey(name))
+                            Specifics[name] = new SpecificDetails();
+                        if (Specifics[name].AttachedTypes == null)
+                            Specifics[name].AttachedTypes = new List<string>();
+                        if (!Specifics[name].AttachedTypes.Contains(type))
+                            Specifics[name].AttachedTypes.Add(type);
+                        if (Specifics[name].OriginalName == null)
+                            Specifics[name].OriginalName = spec.Attribute("name").Value;
+                    }
+                }
+            }
+        }
+
+        private static void EmitSpecificsSource(Dictionary<string, SpecificDetails> Specifics, StringBuilder ClassWriter)
         {
             ClassWriter.Append(
 @"using System;
@@ -90,10 +129,8 @@ namespace ParagonLib.RuleEngine
             foreach (var s in Specifics)
             {
                 var Comment = false;
-                var HasPurpose = Purposes.ContainsKey(s.Key);
-                string Usage=null;
-                if (HasPurpose)
-                    Usage = Purposes[s.Key].Usage;
+                var HasPurpose = !string.IsNullOrEmpty(s.Value.Purpose);
+                var Usage = s.Value.Usage;
                 if (!string.IsNullOrEmpty(Usage))
                 {
                     switch (Usage[0])
@@ -111,26 +148,21 @@ namespace ParagonLib.RuleEngine
                             break;
                     }
                 }
-                if (!HasPurpose && s.Value.Count() == 1 && s.Value.First() == "Power")
+                if (s.Value.AttachedTypes == null)
+                    continue;
+                if (!HasPurpose && s.Value.AttachedTypes.Count() == 1 && s.Value.AttachedTypes.First() == "Power")
                 {
                     Comment = true;
                     ClassWriter.AppendLine("/*");
                 }
 
-                if (HasPurpose)
-                    ClassWriter.AppendLine(string.Format("\t\t/// <summary>{0}</summary>", Purposes[s.Key].Purpose));
-                else
-                {
-                    ClassWriter.AppendLine("\t\t/// <summary></summary>");
-                }
-                ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value)));
-                //ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value)));
-                if (HasPurpose)
-                    ClassWriter.AppendLine("\t\t[Usage(\"" + Usage + "\")]");
-                else
-                    ClassWriter.AppendLine("\t\t[Usage(\"\")]");
-
-
+                ClassWriter.AppendLine(string.Format("\t\t/// <summary>{0}</summary>", s.Value.Purpose));
+                if (!string.IsNullOrEmpty(s.Value.OriginalName))
+                    ClassWriter.AppendLine(string.Format("\t\t/// <name>{0}</name>", s.Value.OriginalName));
+                ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value.AttachedTypes)));
+                //ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value.AttachedTypes)));
+                ClassWriter.AppendLine("\t\t[Usage(\"" + Usage + "\")]");
+            
                 ClassWriter.AppendLine("\t\t"+s.Key + ",").AppendLine();
                 if (Comment)
                     ClassWriter.AppendLine("*/");
@@ -162,36 +194,5 @@ namespace ParagonLib.RuleEngine
 ");
         }
 
-        private static void ScanParts(Dictionary<string, IEnumerable<string>> Specifics)
-        {
-            foreach (var part in Directory.GetFiles(BuildTools.PartsDir))
-            {
-                var Part = XDocument.Load(part);
-                foreach (var re in Part.Root.Descendants("RulesElement"))
-                {
-                    if (re.Attribute("internal-id").Value.StartsWith("ID_TIV_COMPANION"))
-                    {
-                        re.Attribute("type").Value += " (Tivaan's Companion Cards)";
-                    }
-                    var type = re.Attribute("type").Value;
-                    foreach (var spec in re.Elements("specific"))
-                    {
-                        var name = spec.Attribute("name").Value;
-                        int indexof = name.IndexOfAny(new char[] { '(', '*' });
-                        if (indexof > -1)
-                            name = name.Substring(0, indexof);
-                        name = Regex.Replace(name, @"[ :\-')]", "_");
-                        while (name.Contains("__"))
-                            name = name.Replace("__", "_");
-                        name = name.TrimEnd('_');
-                        name = name.TrimStart('•');
-                        if (!Specifics.ContainsKey(name))
-                            Specifics[name] = new List<string>();
-                        if (!Specifics[name].Contains(type))
-                            (Specifics[name] as List<string>).Add(type);
-                    }
-                }
-            }
-        }
     }
 }
