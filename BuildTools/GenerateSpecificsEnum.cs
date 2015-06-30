@@ -82,7 +82,7 @@ namespace BuildTools
                         int indexof = name.IndexOfAny(new char[] { '(', '*' });
                         if (indexof > -1)
                             name = name.Substring(0, indexof);
-                        name = Regex.Replace(name, @"[ :\-'\?)]", "_");
+                        name = Regex.Replace(name, @"[ :\-'\?\.)]", "_");
                         while (name.Contains("__"))
                             name = name.Replace("__", "_");
                         name = name.TrimEnd('_');

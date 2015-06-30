@@ -83,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleBases\Background.cs" />
     <Compile Include="RuleBases\Implement.cs" />
+    <Compile Include="Rules\IRulesElement.cs" />
     <Compile Include="RuleBases\Item.cs" />
     <Compile Include="RuleEngine\Specifics.cs" />
     <Compile Include="Rules\IImplement.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Utils\FastSmartWeakEvent.cs" />
     <Compile Include="Utils\GrammarParser.cs" />
     <Compile Include="Utils\VersionParser.cs" />
+    <Compile Include="Visualizers\PowerVisualizer.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Workspace.Serialization.cs">
       <DependentUpon>Workspace.cs</DependentUpon>
@@ -126,7 +128,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Visualizers\PowerConverter.xslt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,8 +1,9 @@
 ﻿using System;
+using ParagonLib.Rules;
 
 namespace ParagonLib.RuleBases
 {
-    public abstract class RulesElement
+    public abstract class RulesElement : IRulesElement
     {
         public string _Text
         {

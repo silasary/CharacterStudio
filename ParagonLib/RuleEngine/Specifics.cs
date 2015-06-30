@@ -20,7 +20,7 @@ namespace ParagonLib.RuleEngine
         // This is assigned to any specific that doesn't feature below.
         Unknown,
 
-        /// <summary>Describes how large or small the thing is.</summary>
+		/// <summary>Describes how large or small the thing is.</summary>
 		/// <name>Size</name>
 		/// <affects>Race, Weapon, Companion, Familiar, Companion (Tivaan's Companion Cards), Power</affects>
 		[Usage("Content")]
@@ -5004,6 +5004,30 @@ namespace ParagonLib.RuleEngine
 		Countermeasures,
 
 */
+/*
+		/// <summary></summary>
+		/// <name> ?Fetch</name>
+		/// <affects>Power</affects>
+		[Usage("")]
+		_Fetch,
+
+*/
+/*
+		/// <summary></summary>
+		/// <name> ?Carry</name>
+		/// <affects>Power</affects>
+		[Usage("")]
+		_Carry,
+
+*/
+/*
+		/// <summary></summary>
+		/// <name> ?Manipulate</name>
+		/// <affects>Power</affects>
+		[Usage("")]
+		_Manipulate,
+
+*/
 		/// <summary></summary>
 		/// <name>Hit Points at 1st Level</name>
 		/// <affects>Class, Hybrid Class, Companion</affects>
@@ -5159,7 +5183,7 @@ namespace ParagonLib.RuleEngine
 		/// <name> 1.</name>
 		/// <affects>Power</affects>
 		[Usage("")]
-		_1.,
+		_1,
 
 */
 /*
@@ -5167,7 +5191,7 @@ namespace ParagonLib.RuleEngine
 		/// <name> 2.</name>
 		/// <affects>Power</affects>
 		[Usage("")]
-		_2.,
+		_2,
 
 */
 /*
@@ -5175,7 +5199,7 @@ namespace ParagonLib.RuleEngine
 		/// <name> 3.</name>
 		/// <affects>Power</affects>
 		[Usage("")]
-		_3.,
+		_3,
 
 */
 /*
@@ -5183,7 +5207,7 @@ namespace ParagonLib.RuleEngine
 		/// <name> 4.</name>
 		/// <affects>Power</affects>
 		[Usage("")]
-		_4.,
+		_4,
 
 */
 		/// <summary></summary>
@@ -5292,30 +5316,6 @@ namespace ParagonLib.RuleEngine
 		/// <affects>Power</affects>
 		[Usage("")]
 		Level_29,
-
-*/
-/*
-		/// <summary></summary>
-		/// <name> ?Fetch</name>
-		/// <affects>Power</affects>
-		[Usage("")]
-		_Fetch,
-
-*/
-/*
-		/// <summary></summary>
-		/// <name> ?Carry</name>
-		/// <affects>Power</affects>
-		[Usage("")]
-		_Carry,
-
-*/
-/*
-		/// <summary></summary>
-		/// <name> ?Manipulate</name>
-		/// <affects>Power</affects>
-		[Usage("")]
-		_Manipulate,
 
 */
 /*

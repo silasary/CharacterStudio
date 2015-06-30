@@ -526,7 +526,7 @@ namespace ParagonLib.Compiler
             bool specific = false;
             var name = item.Name.LocalName;
             var value = item.Value.Trim();
-            if (name == "specific")
+            if (name == "specific" || name == "meta")
             {
                 name = item.Attribute("name").Value; // DO NOT TRIM. Specifics exist so that they can have leading whitespace.
                 specific = true;
