@@ -20,7 +20,7 @@ namespace UnitTests
             var vis = new ParagonLib.Visualizers.PowerVisualizer();
             XDocument Part = XDocument.Load(part, LoadOptions.SetLineInfo);
             var xd = new XmlDocument();
-            foreach (var re in Part.Root.Elements())
+            foreach (var re in Part.Root.Elements("RulesElement"))
             {
                 if (re.Attribute("type").Value != "Power")
                     continue;
