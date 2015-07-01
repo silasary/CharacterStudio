@@ -35,6 +35,7 @@ namespace BuildTools
                 LiteLoader.LoadIndex(index);
             }
             Assert.True(GenerateSpecificsEnum.Generate());
+            Assert.True(GenerateExporters.Generate());
         }
     }
 }

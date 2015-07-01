@@ -531,7 +531,7 @@ namespace ParagonLib.Compiler
                 name = item.Attribute("name").Value; // DO NOT TRIM. Specifics exist so that they can have leading whitespace.
                 specific = true;
             }
-            var fname = name.Replace(" ", "");
+            var fname = name.Replace(" ", "_");
             fname = char.ToLower(fname[0]) + fname.Substring(1);
             string[] badnames = { "type", "class" };
             if (badnames.Contains(fname))

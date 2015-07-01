@@ -11,7 +11,8 @@ namespace BuildTools
 {
     static class GenerateSpecificsEnum
     {
-        class SpecificDetails
+        internal static Dictionary<string, SpecificDetails> Purposes;
+        internal class SpecificDetails
         {
             public string OriginalName { get; set; }
             public List<string> AttachedTypes { get; set; }
@@ -22,7 +23,7 @@ namespace BuildTools
         {
             Environment.CurrentDirectory = Path.Combine(BuildTools.SolutionDir, "ParagonLib", "RuleEngine");
             //Dictionary<string, IEnumerable<string>> Specifics = new Dictionary<string, IEnumerable<string>>();
-            Dictionary<string, SpecificDetails> Purposes = new Dictionary<string, SpecificDetails>();
+            Purposes = new Dictionary<string, SpecificDetails>();
             
 
             ScanOldSource(Purposes);
@@ -148,7 +149,7 @@ namespace ParagonLib.RuleEngine
                             break;
                     }
                 }
-                if (s.Value.AttachedTypes == null)
+                if (s.Value.AttachedTypes == null && !HasPurpose)
                     continue;
                 if (!HasPurpose && s.Value.AttachedTypes.Count() == 1 && s.Value.AttachedTypes.First() == "Power")
                 {

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenerateExporters.cs" />
     <Compile Include="GenerateSpecificsEnum.cs" />
     <Compile Include="BuildTools.cs" />
     <Compile Include="LiteLoader.cs" />
@@ -55,7 +56,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-	<!-- Once we build BuildTools, immediately run it, so it can generate source files for ParagonLib -->
+    <!-- Once we build BuildTools, immediately run it, so it can generate source files for ParagonLib -->
     <ManagedExeLauncher Condition="('$(OS)' != 'Windows_NT')">mono </ManagedExeLauncher>
     <PostBuildEvent>$(ManagedExeLauncher)$(TargetPath) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
