@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +26,11 @@ namespace ParagonLib.RuleBases
                 return XpNeeded; 
             }
         }
-    }
+#region _GENERATED_
+
+protected override string GetSpecific(string specific) {
+    return base.GetSpecific(specific);
+}
+#endregion _GENERATED_
+	}
 }

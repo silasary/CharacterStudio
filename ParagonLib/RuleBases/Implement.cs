@@ -1,4 +1,4 @@
-﻿using ParagonLib.Rules;
+using ParagonLib.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +15,11 @@ namespace ParagonLib.RuleBases
         {
             get { return weaponEquiv; }
         }
-    }
+#region _GENERATED_
+
+protected override string GetSpecific(string specific) {
+    return base.GetSpecific(specific);
+}
+#endregion _GENERATED_
+	}
 }

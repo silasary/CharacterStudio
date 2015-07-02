@@ -1,4 +1,4 @@
-﻿using ParagonLib.Compiler;
+using ParagonLib.Compiler;
 using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
@@ -67,5 +67,11 @@ namespace ParagonLib.RuleBases
         }
 
         public int CurrentLevel { get; private set; }
-    }
+#region _GENERATED_
+
+protected override string GetSpecific(string specific) {
+    return base.GetSpecific(specific);
+}
+#endregion _GENERATED_
+	}
 }

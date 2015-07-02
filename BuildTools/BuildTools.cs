@@ -14,6 +14,8 @@ namespace BuildTools
 
         private static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += 
+                (s, e) => Console.WriteLine(e.ExceptionObject.ToString());
             if (args.Length > 0)
                 SolutionDir = args[0];
             else

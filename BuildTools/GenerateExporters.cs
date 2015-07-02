@@ -73,7 +73,18 @@ namespace BuildTools
                         GetSpecific.Attributes = MemberAttributes.Family;                    
                     else
                         GetSpecific.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-
+                    foreach (Match f in m)
+                    {
+                        if (f.Groups["t"].Value != "string")
+                            continue;
+                        GetSpecific.Statements.Add(new CodeConditionStatement(
+                               new CodeBinaryOperatorExpression(new CodeVariableReferenceExpression("specific"), CodeBinaryOperatorType.ValueEquality, new CodePrimitiveExpression(f.Groups["p"].Value)),
+                                new CodeStatement[] 
+                                {
+                                    new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), f.Groups["f"].Value))
+                                }
+                            ));
+                    }
                     
                     
                     GetSpecific.Statements.Add(new CodeMethodReturnStatement(

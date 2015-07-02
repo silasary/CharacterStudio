@@ -1,4 +1,4 @@
-﻿using ParagonLib.Compiler;
+using ParagonLib.Compiler;
 using ParagonLib.Grammar;
 using ParagonLib.Rules;
 using System;
@@ -173,6 +173,12 @@ namespace ParagonLib.RuleBases
         }
 
         public PowerLine[] Lines { get { return lines; } }
-    }
+#region _GENERATED_
+
+protected override string GetSpecific(string specific) {
+    return base.GetSpecific(specific);
+}
+#endregion _GENERATED_
+	}
 }
 
