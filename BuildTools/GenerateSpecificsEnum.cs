@@ -149,9 +149,9 @@ namespace ParagonLib.RuleEngine
                             break;
                     }
                 }
-                if (s.Value.AttachedTypes == null && !HasPurpose)
+                if (s.Value.AttachedTypes == null && !HasPurpose && string.IsNullOrEmpty(Usage))
                     continue;
-                if (!HasPurpose && s.Value.AttachedTypes.Count() == 1 && s.Value.AttachedTypes.First() == "Power")
+                if (!HasPurpose && s.Value.AttachedTypes?.Count() == 1 && s.Value.AttachedTypes.First() == "Power")
                 {
                     Comment = true;
                     ClassWriter.AppendLine("/*");
@@ -160,7 +160,8 @@ namespace ParagonLib.RuleEngine
                 ClassWriter.AppendLine(string.Format("\t\t/// <summary>{0}</summary>", s.Value.Purpose));
                 if (!string.IsNullOrEmpty(s.Value.OriginalName))
                     ClassWriter.AppendLine(string.Format("\t\t/// <name>{0}</name>", s.Value.OriginalName));
-                ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value.AttachedTypes)));
+                if (s.Value.AttachedTypes != null)
+                    ClassWriter.AppendLine(string.Format("\t\t/// <affects>{0}</affects>", string.Join(", ", s.Value.AttachedTypes)));
                 //ClassWriter.AppendLine(string.Format("\t\t[Affects(\"{0}\")]", string.Join("\", \"", s.Value.AttachedTypes)));
                 ClassWriter.AppendLine("\t\t[Usage(\"" + Usage + "\")]");
             

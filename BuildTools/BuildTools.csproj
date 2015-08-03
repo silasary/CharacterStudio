@@ -55,10 +55,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+ 
+   <PropertyGroup>
     <!-- Once we build BuildTools, immediately run it, so it can generate source files for ParagonLib -->
+ <!--
     <ManagedExeLauncher Condition="('$(OS)' != 'Windows_NT')">mono </ManagedExeLauncher>
     <PostBuildEvent>$(ManagedExeLauncher)$(TargetPath) $(SolutionDir)</PostBuildEvent>
+  -->
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

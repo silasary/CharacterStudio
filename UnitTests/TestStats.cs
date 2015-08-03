@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+#pragma warning disable CS0612
 
 namespace UnitTests
 {
@@ -116,3 +117,5 @@ namespace UnitTests
         }
     }
 }
+
+#pragma warning restore CS0612
