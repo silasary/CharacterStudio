@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ParagonLib.Rules
+namespace CharacterStudio.Rules
 {
     public interface IRulesElement
     {

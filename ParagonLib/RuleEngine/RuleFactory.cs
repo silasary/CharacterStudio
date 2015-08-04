@@ -15,6 +15,8 @@ using ParagonLib.RuleBases;
 using SmartWeakEvent;
 using ParagonLib.Utils;
 using ParagonLib.Rules;
+using CharacterStudio;
+using CharacterStudio.Rules;
 
 namespace ParagonLib.RuleEngine
 {
@@ -31,7 +33,7 @@ namespace ParagonLib.RuleEngine
         private static List<string> knownSystems = new List<string>();
         private static Queue<XElement> UpdateQueue = new Queue<XElement>();
         private static Thread UpdateThread;
-        private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
+        //private static AutoResetEvent WaitFileLoaded = new AutoResetEvent(false);
         
         public static readonly string BaseFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Character Studio");
         public static readonly string RulesFolder = Path.Combine(BaseFolder, "Rules");
@@ -41,7 +43,7 @@ namespace ParagonLib.RuleEngine
         static RuleFactory()
         {
             Directory.CreateDirectory(RulesFolder);
-            FileLoaded += (f,e) => WaitFileLoaded.Set();
+            //FileLoaded += (f,e) => WaitFileLoaded.Set();
             try
             {
                 var DefRules = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultRules");
@@ -176,7 +178,7 @@ namespace ParagonLib.RuleEngine
             {
                 if (WaitingForRule != null)
                     WaitingForRule(id);
-                WaitFileLoaded.WaitOne(10); // Waiting here doesn't actually help, except in a race condition.
+                //WaitFileLoaded.WaitOne(10); // Waiting here doesn't actually help, except in a race condition.
                 if (Rules.ContainsKey(id))
                 {
                     var rule = Rules[id];

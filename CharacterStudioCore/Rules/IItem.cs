@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ParagonLib.Rules
+namespace CharacterStudio.Rules
 {
     public interface IItem
     {

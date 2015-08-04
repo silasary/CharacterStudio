@@ -1,4 +1,4 @@
-﻿namespace ParagonLib.RuleEngine
+﻿namespace CharacterStudio.Rules
 {
     public struct RuleData
     {
@@ -22,17 +22,17 @@
 
         public int LineNumber { get; set; }
 
-        public static implicit operator RuleData(RuleBases.RulesElement e){
-            return new RuleData()
-            {
-                Name = e.Name,
-                Type = e.Type,
-                GameSystem = e.GameSystem,
-                Categories = e.Category,
-                InternalId = e.InternalId,
-                Prereqs = e.Prereqs,
-                PrintPrereqs = e.PrintPrereqs
-            };
+        public RuleData(IRulesElement e){
+            Name = e.Name;
+            Type = e.Type;
+            GameSystem = e.GameSystem;
+            Categories = e.Category;
+            InternalId = e.InternalId;
+            Prereqs = e.Prereqs;
+            PrintPrereqs = e.PrintPrereqs;
+            Source = e.Source;
+            PartFile = null;
+            LineNumber = -1;
         }
     }
 }

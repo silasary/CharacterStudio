@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using PowerLine = ParagonLib.RuleBases.Power.PowerLine;
+using CharacterStudio.Rules;
 
 namespace ParagonLib.LazyRules
 {

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using CharacterStudio.Rules;
 
 namespace ParagonLib
 {
@@ -248,7 +249,7 @@ namespace ParagonLib
             writer.WriteStartElement("PowerStats");
             foreach (var power in c.workspace.AllElements.Where(e=> e.Type == "Power"))
             {
-                var PowerInfo = power.RulesElement as Rules.IPower;
+                var PowerInfo = power.RulesElement as IPower;
                 if (PowerInfo != null)
                 {
                     writer.WriteStartElement("Power");
@@ -264,20 +265,21 @@ namespace ParagonLib
 
                 // Specifics.  Minimum required: "Power Usage", "Action Type".  Ideally, everything else.
                 // Foreach Weapon, Stats.
-                    if (PowerInfo.AttackComponents != null)
-                    foreach (var weapon in c.Weapons)
-                    {
-                        writer.WriteStartElement("Weapon");
-                        writer.WriteAttributeString("name", weapon.Name);
-                        SerializeItem(weapon, false);
-                        writer.WriteElementString("AttackBonus", 0.ToString());
-                        writer.WriteElementString("Damage", PowerInfo.DamageComponents.Damage);
-                        if (!string.IsNullOrEmpty(PowerInfo.DamageComponents.type))
-                            writer.WriteElementString("DamageType", PowerInfo.DamageComponents.type);
+                //TODO: FIX
+                    //if (PowerInfo.AttackComponents != null)
+                    //foreach (var weapon in c.Weapons)
+                    //{
+                    //    writer.WriteStartElement("Weapon");
+                    //    writer.WriteAttributeString("name", weapon.Name);
+                    //    SerializeItem(weapon, false);
+                    //    writer.WriteElementString("AttackBonus", 0.ToString());
+                    //    writer.WriteElementString("Damage", PowerInfo.DamageComponents.Damage);
+                    //    if (!string.IsNullOrEmpty(PowerInfo.DamageComponents.type))
+                    //        writer.WriteElementString("DamageType", PowerInfo.DamageComponents.type);
 
-                        //PowerInfo.AttackComponents[0].
-                        writer.WriteEndElement();
-                    }
+                    //    //PowerInfo.AttackComponents[0].
+                    //    writer.WriteEndElement();
+                    //}
                 writer.WriteFullEndElement( );
                 }
             }

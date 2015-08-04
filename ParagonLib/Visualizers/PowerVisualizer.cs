@@ -9,6 +9,7 @@ using System.Xml.Xsl;
 using System.Reflection;
 using System.Xml;
 using ParagonLib.RuleEngine;
+using CharacterStudio.Rules;
 
 namespace ParagonLib.Visualizers
 {

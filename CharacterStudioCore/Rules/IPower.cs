@@ -1,6 +1,4 @@
-﻿using ParagonLib.Grammar;
-using System;
-namespace ParagonLib.Rules
+﻿namespace CharacterStudio.Rules
 {
     public interface IPower : IRulesElement
     {
@@ -14,7 +12,7 @@ namespace ParagonLib.Rules
         string PowerUsage { get; }
         string Target { get; }
         string Trigger { get; }
-        AttackStat[] AttackComponents { get; }
-        DamageStat DamageComponents { get; }
+        //AttackStat[] AttackComponents { get; }
+        //DamageStat DamageComponents { get; }
     }
 }

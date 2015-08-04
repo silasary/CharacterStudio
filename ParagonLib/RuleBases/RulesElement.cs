@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
+using CharacterStudio;
+using CharacterStudio.Rules;
 using ParagonLib.RuleEngine;
 using ParagonLib.Rules;
 
@@ -38,6 +40,11 @@ namespace ParagonLib.RuleBases
             var m = this.GetType().GetMethod("Calculate", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
             if (m != null)
                 Calculate = (Action<CharElement, Workspace>)m.CreateDelegate(typeof(Action<CharElement, Workspace>));
+        }
+
+        public static implicit operator RuleData(RulesElement e)
+        {
+            return new RuleData(e);
         }
 
         public string GetSpecific(Specifics specific)

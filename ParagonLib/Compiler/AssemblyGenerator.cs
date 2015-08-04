@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using ParagonLib.Utils;
 using ParagonLib.Rules;
 using ParagonLib.RuleEngine;
+using CharacterStudio;
+using CharacterStudio.Rules;
 
 namespace ParagonLib.Compiler
 {

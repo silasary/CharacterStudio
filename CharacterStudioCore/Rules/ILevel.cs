@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ParagonLib.RuleBases
+namespace CharacterStudio.Rules
 {
     public interface ILevel
     {

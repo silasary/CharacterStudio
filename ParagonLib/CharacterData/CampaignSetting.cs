@@ -7,6 +7,8 @@ using System.IO;
 using System.Threading;
 using ParagonLib.RuleBases;
 using ParagonLib.RuleEngine;
+using CharacterStudio;
+using CharacterStudio.Rules;
 
 namespace ParagonLib
 {

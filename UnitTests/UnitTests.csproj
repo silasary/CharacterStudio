@@ -80,14 +80,23 @@
     <Compile Include="TestInstructions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCharacter.cs" />
+    <Compile Include="TestRulesDb.cs" />
     <Compile Include="TestStats.cs" />
     <Compile Include="TestXSLT.cs" />
     <Compile Include="__.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CharacterStudioCore\CharacterStudioCore.csproj">
+      <Project>{adc85f08-efce-46d6-a122-0119216492ef}</Project>
+      <Name>CharacterStudioCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ParagonLib\ParagonLib.csproj">
       <Project>{dfd75940-3d1b-42ce-9abb-03f84635f9a7}</Project>
       <Name>ParagonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RulesDb\RulesDb.csproj">
+      <Project>{22ba5e48-9386-4a34-8d98-291f7524ddb1}</Project>
+      <Name>RulesDb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
