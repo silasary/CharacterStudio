@@ -222,7 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CharacterStudioCore\CharacterStudioCore.csproj">
-      <Project>{adc85f08-efce-46d6-a122-0119216492ef}</Project>
+      <Project>{ADC85F08-EFCE-46D6-A122-0119216492EF}</Project>
       <Name>CharacterStudioCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\ParagonLib\ParagonLib.csproj">

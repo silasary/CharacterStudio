@@ -1,11 +1,7 @@
-﻿using ParagonLib;
-using ParagonLib.RuleBases;
-using ParagonLib.RuleEngine;
+﻿using ParagonLib.RuleEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using CharacterStudio.Rules;
 
 namespace CharacterStudio.Controls.Common
 {
@@ -23,10 +19,10 @@ namespace CharacterStudio.Controls.Common
 
         protected override void OnLoad(EventArgs e)
         {
-            IEnumerable<RuleData> res = search.Results;
+            var res = search.Results;
             var setting = CurrentWorkspace.Setting;
             if (setting != null)
-                res = res.Where(n => setting.IsRuleLegal(n));
+                res = res.Where(n => setting.IsRuleLegal(n)).ToArray();
             if (res.Count() == 1)
             {
                 this.Selection = res.FirstOrDefault().InternalId;
