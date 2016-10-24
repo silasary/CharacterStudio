@@ -81,7 +81,7 @@ namespace UnitTests
                 }
             }
             };
-            //todo: Twin Strike.
+            //TODO: Twin Strike.
              //"Strength vs. AC (melee; main weapon and off-hand weapon) or Dexterity vs. AC (ranged), two attacks",
             foreach (var item in lines)
             {
@@ -92,7 +92,8 @@ namespace UnitTests
             }
         }
 
-        [Test]
+        //[Test]
+        //[Ignore]
         public void TestDamageLine()
         {
             Func<DamageStat,DamageStat[]> array = (DamageStat d) => new DamageStat[] { d };
