@@ -4,16 +4,7 @@ node {
 	}
 
     stage('Build') {
-      if (isUnix())
-      {
-        sh 'nuget restore'
-        sh 'xbuild'
-      }
-      else
-      {
-        bat 'nuget restore'
-        bat 'msbuild'
-      }
+		msbuild()
     }
 
     stage('Archive') {

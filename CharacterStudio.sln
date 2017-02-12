@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFD9C41B-A19E-4FDC-8168-932D6492A637}"
 	ProjectSection(SolutionItems) = preProject
 		Example Elements.xml = Example Elements.xml
+		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterStudio-XP", "CharacterStudio-XP\CharacterStudio-XP.csproj", "{51D1E2BE-6212-4F66-BD60-668B5228F962}"

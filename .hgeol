@@ -1,5 +1,0 @@
-[patterns]
-**.txt = native
-**.csproj = CRLF
-**.sln = CRLF
-**.cs = native

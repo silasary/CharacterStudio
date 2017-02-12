@@ -63,7 +63,8 @@ namespace UnitTests
                 var i = Activator.CreateInstance(t) as RulesElement;
                 if (i != null)
                 {
-                    Assert.IsNotNullOrEmpty(i.Name);
+                    Assert.IsNotNull(i.Name);
+                    Assert.IsNotEmpty(i.Name);
                     Assert.IsNotNull(i.Calculate);
                 }
             }
