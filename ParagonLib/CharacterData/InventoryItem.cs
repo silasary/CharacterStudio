@@ -76,7 +76,7 @@ namespace ParagonLib
         internal string baseId;
         internal string curseId;
         internal string enchantmentId;
-     
+
         public InventoryItem(string[] ids, string gameSystem)
         {
             this.GameSystem = gameSystem;

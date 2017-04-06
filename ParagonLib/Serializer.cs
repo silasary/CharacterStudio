@@ -650,7 +650,13 @@ namespace ParagonLib
         {
             var name = node.Attribute("name").Value;
             var gs = name.Substring(4).Trim('_'); // This works for both NOTE_ and EXT_, leaving just the guid.
-            Guid guid = Guid.Parse(gs);
+            Guid guid;
+            if (!Guid.TryParse(gs, out guid))
+            {
+                // Not a Journal Entry.
+                return;
+            }
+
             var adv = c.workspace.AdventureLog.FirstOrDefault(n => n.guid == guid);
             if (adv == null)
                 c.workspace.AdventureLog.Add(adv = new Adventure(guid));
